@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 SET (CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS ON)
 SET (CMAKE_USER_MAKE_RULES_OVERRIDE_CXX ${CMAKE_CURRENT_SOURCE_DIR}/cxx_flag_overrides.cmake)
  
-PROJECT (sqlite-wrapper)
+PROJECT (sqlite_wrapper)
  
 SET( CMAKE_BUILD_TYPE Debug )
  
@@ -17,13 +17,13 @@ INCLUDE (CheckCXXSourceRuns)
 INCLUDE (FindPkgConfig)
  
 IF (MSVC)
-	OPTION (ENABLE_NARROW_STRING "Build sqlite-wrapper with std::string instead of std::wstring" OFF)
+	OPTION (ENABLE_NARROW_STRING "Build sqlite_wrapper with std::string instead of std::wstring" OFF)
 ELSE ()
-	OPTION (ENABLE_NARROW_STRING "Build sqlite-wrapper with std::string instead of std::wstring" ON)
+	OPTION (ENABLE_NARROW_STRING "Build sqlite_wrapper with std::string instead of std::wstring" ON)
 ENDIF ()
  
 IF (ENABLE_NARROW_STRING)
-       SET (SQLITE-WRAPPER_NARROW_STRING true)
+       SET (SQLITE_WRAPPER_NARROW_STRING true)
 ENDIF()
  
 ADD_DEFINITIONS(-D BOOST_FILESYSTEM_NO_DEPRECATED)
@@ -31,16 +31,16 @@ ADD_DEFINITIONS(-D BOOST_FILESYSTEM_NO_DEPRECATED)
 IF (CMAKE_COMPILER_IS_GNUCXX)
 	#CHECK_CXX_COMPILER_FLAG(
 	#	"-std=c++0x"
-	#	SQLITE-WRAPPER_HAVE_VARIADIC_TEMPLATES
+	#	SQLITE_WRAPPER_HAVE_VARIADIC_TEMPLATES
 	#)
  
 	IF(UNIX)
-		SET (SQLITE-WRAPPER_STRING_IS_UTF8 true)
+		SET (SQLITE_WRAPPER_STRING_IS_UTF8 true)
 	ENDIF()
  
 	CHECK_CXX_COMPILER_FLAG(
 		"-fvisibility=hidden"
-		SQLITE-WRAPPER_HAVE_GCC_VISIBILITY
+		SQLITE_WRAPPER_HAVE_GCC_VISIBILITY
 	)
  
 	OPTION (ENABLE_DEBUG_WARNINGS "Enable -Wpadded and -Weffc++" OFF)
@@ -56,7 +56,7 @@ IF (CMAKE_COMPILER_IS_GNUCXX)
  
 	SET (CMAKE_CXX_FLAGS_RELEASE "-O3 -fomit-frame-pointer -DNDEBUG")
  
-	IF (SQLITE-WRAPPER_HAVE_GCC_VISIBILITY)
+	IF (SQLITE_WRAPPER_HAVE_GCC_VISIBILITY)
 		ADD_DEFINITIONS(-fvisibility=hidden)
 	ENDIF ()
  
@@ -65,7 +65,7 @@ IF (CMAKE_COMPILER_IS_GNUCXX)
 		 #include <cstdlib>
 		int main() { int status; char *name =
 		abi::__cxa_demangle(typeid(int).name(),0,0,&status); std::free(name); }"
-		SQLITE-WRAPPER_HAS_GNU_DEMANGLE
+		SQLITE_WRAPPER_HAS_GNU_DEMANGLE
 	)
  
 	SET (CMAKE_REQUIRED_FLAGS "-Wall -Werror -pedantic")
@@ -77,7 +77,7 @@ IF (CMAKE_COMPILER_IS_GNUCXX)
 		DO_MESSAGE(test)
 		int main() {}
 		"
-		SQLITE-WRAPPER_HAVE_GCC_PRAGMA_MESSAGE
+		SQLITE_WRAPPER_HAVE_GCC_PRAGMA_MESSAGE
 	)
  
 	SET (CMAKE_REQUIRED_FLAGS "")
@@ -93,19 +93,19 @@ SET (LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 SET (EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
  
 # Create package file for relocateable package
-SET (pkgfile "${CMAKE_BINARY_DIR}/sqlite-wrapper.pc")
+SET (pkgfile "${CMAKE_BINARY_DIR}/sqlite_wrapper.pc")
 FILE(WRITE ${pkgfile}
 	"prefix=${CMAKE_INSTALL_PREFIX}\n"
 	"exec_prefix=\${prefix}\n"
 	"libdir=\${prefix}/lib\n"
 	"includedir=\${prefix}/include\n"
 	"\n"
-	"Name: sqlite-wrapper\n"
+	"Name: sqlite_wrapper\n"
 	"Description: a sqlite wrapper\n"
 	"Version: 1.0\n"
 	"Requires:\n"
-	"Libs: -L\${libdir} -lsqlite-wrapper\n"
-	"Cflags: -I\${includedir}/sqlite-wrapper")
+	"Libs: -L\${libdir} -lsqlite_wrapper\n"
+	"Cflags: -I\${includedir}/sqlite_wrapper")
 
 INSTALL (FILES ${pkgfile} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/pkgconfig)
  
@@ -119,7 +119,7 @@ CHECK_CXX_SOURCE_RUNS(
 			? EXIT_SUCCESS
 			: EXIT_FAILURE;
 	}"
-	SQLITE-WRAPPER_HAVE_POSIX
+	SQLITE_WRAPPER_HAVE_POSIX
 )
  
 CHECK_CXX_SOURCE_RUNS(
@@ -132,7 +132,7 @@ CHECK_CXX_SOURCE_RUNS(
 			? EXIT_SUCCESS
 			: EXIT_FAILURE;
 	}"
-	SQLITE-WRAPPER_HAVE_CLOCK_GETTIME
+	SQLITE_WRAPPER_HAVE_CLOCK_GETTIME
 )
  
 SET (Boost_ADDITIONAL_VERSIONS "1.38" "1.38.0")
@@ -159,17 +159,17 @@ CHECK_CXX_SOURCE_COMPILES(
 	{
 	   boost::uint_least64_t test;
 	}"
-	SQLITE-WRAPPER_HAVE_ATLEAST_UINT64
+	SQLITE_WRAPPER_HAVE_ATLEAST_UINT64
 )
  
 CONFIGURE_FILE(
 	${CMAKE_SOURCE_DIR}/config.hpp.in
-	${CMAKE_SOURCE_DIR}/include/sqlite-wrapper/config.hpp
+	${CMAKE_SOURCE_DIR}/include/sqlite_wrapper/config.hpp
 )
  
-SET( SQLITE-WRAPPER_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/sqlite-wrapper )
+SET( SQLITE_WRAPPER_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/sqlite_wrapper )
   
-SET( sqlite-wrapper_files_string "" )
+SET( sqlite_wrapper_files_string "" )
 
 ADD_SUBDIRECTORY (src)
  
@@ -194,7 +194,7 @@ IF( DOXYGEN_FOUND )
  
 	SET( doc_files
 		${CMAKE_BINARY_DIR}/Doxyfile 
-		${CMAKE_SOURCE_DIR}/doc/sqlite-wrapper.hpp
+		${CMAKE_SOURCE_DIR}/doc/sqlite_wrapper.hpp
 		)
  
 	add_custom_target(
