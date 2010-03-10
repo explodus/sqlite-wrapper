@@ -1,4 +1,4 @@
-ï»¿///	@file		db.h
+///	@file		include/sqlite-wrapper/db.h
 ///	@date		09.03.2010	14:52
 ///	file base	db
 ///	file ext	h
@@ -1028,12 +1028,12 @@ namespace db
   enum field_extra
   {
     e_nullExtra          = 0,  //!< \a null extra
-    eFixedField         = 2,  //!< \a Feld mit fester GrÃ¶ÃŸe (numerischer Typ)
+    eFixedField         = 2,  //!< \a Feld mit fester Größe (numerischer Typ)
     eVariableField      = 4,  //!< \a variables Feld (textlicher Typ)
-    eAutoIncrField      = 8,  //!< \a automatisch erhÃ¶hendes Feld
-    eUpdatableField     = 16, //!< \a verÃ¤nderbares Feld
-    eRequiredField      = 32, //!< \a benÃ¶tigtes Feld
-    eZeroLengthAllowed  = 64  //!< \a NulllÃ¤nge erlaubt
+    eAutoIncrField      = 8,  //!< \a automatisch erhöhendes Feld
+    eUpdatableField     = 16, //!< \a veränderbares Feld
+    eRequiredField      = 32, //!< \a benötigtes Feld
+    eZeroLengthAllowed  = 64  //!< \a Nulllänge erlaubt
   };
 
   class split;
@@ -1150,7 +1150,7 @@ namespace db
     split_map(std::map<string, string>& data) 
       : std::map<string, string>(data) {}
 
-    /** gibt Text zurÃ¼ck mit eingefÃ¼gtem Abgrenzer */
+    /** gibt Text zurück mit eingefügtem Abgrenzer */
     string join_fields(string delim) const
     {
       string res;
@@ -1363,10 +1363,10 @@ namespace db
         push_back(string(*i));
     }
 
-    /** Gibt eine Teilmenge von Texten zurÃ¼ck
+    /** Gibt eine Teilmenge von Texten zurück
     \param start Startindex
     \param end Endindex
-    Indexe kÃ¶nnen negativ sein. Aktueller Index is dann berechnet vom Ende von split. */
+    Indexe können negativ sein. Aktueller Index is dann berechnet vom Ende von split. */
     split slice(int start, int end) const
     {
       std::vector<string> data;
@@ -1385,7 +1385,7 @@ namespace db
       return data; 
     }
 
-    /** gibt Text zurÃ¼ck mit eingefÃ¼gtem Abgrenzer */
+    /** gibt Text zurück mit eingefügtem Abgrenzer */
     string join(string delim) const
     {
       string res;
@@ -1397,7 +1397,7 @@ namespace db
       }
       return res; 
     }
-    /** FÃ¼gt AusdrÃ¼cke ans Ende eines anderen split an */
+    /** Fügt Ausdrücke ans Ende eines anderen split an */
     split & extend(const split & s)
     {
       for (size_t i = 0; i < s.size(); i++)
@@ -3415,7 +3415,7 @@ namespace db
       case e_date_time:
         detail::erase_all<string>(v, _T("'"));
         detail::erase_all<string>(v, _T("`"));
-        detail::erase_all<string>(v, _T("Â´"));
+        detail::erase_all<string>(v, _T("´"));
         v = _T("'") + v;
         v += _T("'");
         break;
@@ -3475,7 +3475,7 @@ namespace db
     }
   }; 
 
-  /** hilft beim anlegen von UPDATE-SQL AusdrÃ¼cken. */
+  /** hilft beim anlegen von UPDATE-SQL Ausdrücken. */
   class upd 
   {
     string _delim1;
