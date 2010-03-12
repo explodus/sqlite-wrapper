@@ -1,5 +1,4 @@
-﻿
-///	@file		include/sqlite_wrapper/db.hpp
+﻿///	@file		include/sqlite_wrapper/db.hpp
 ///	@date		09.03.2010	14:52
 ///	file base	db
 ///	file ext	h
@@ -95,6 +94,7 @@ namespace db
   {
 #ifndef BOOST_NO_STD_LOCALE
 
+		/// @todo need documentation
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    db::string
@@ -131,6 +131,7 @@ namespace db
       const long TIME_MAX = 2147483647L;
 
       /// @brief     LEAPYEAR
+			/// @todo need documentation
       ///
       /// <BR>qualifier
       /// <BR>access    public  
@@ -282,6 +283,7 @@ namespace db
       }
 
       /// @brief     SetTz
+			/// @todo need documentation
       ///
       /// <BR>qualifier
       /// <BR>access    public  
@@ -339,6 +341,7 @@ namespace db
       }
 
       /// @brief     TmToSystemTime
+			/// @todo need documentation
       ///
       /// <BR>qualifier
       /// <BR>access    public  
@@ -361,6 +364,7 @@ namespace db
       }
 
       /// @brief     mktime_ce
+			/// @todo need documentation
       ///
       /// <BR>qualifier
       /// <BR>access    public  
@@ -584,6 +588,7 @@ namespace db
         return secs;
       }
 
+			/// @todo need documentation
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    DWORD
@@ -618,6 +623,7 @@ namespace db
         return (DWORD)(jdd - jddYearStart);
       }
 
+			/// @todo need documentation
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    void
@@ -641,6 +647,7 @@ namespace db
         tmbuffer->tm_isdst = _isdst;			
       }
 
+			/// @todo need documentation
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    struct tm *
@@ -667,6 +674,7 @@ namespace db
         return tmbuf;
       }
 
+			/// @todo need documentation
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    struct tm *
@@ -681,6 +689,7 @@ namespace db
         return gmtime_r_ce(timer, tmbuf, TRUE);
       }
 
+			/// @todo need documentation
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    struct tm*
@@ -692,6 +701,7 @@ namespace db
       { return localtime_r_ce(timer, &tmbuf); }
     }
 
+		/// @todo need documentation
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    db::string
@@ -716,6 +726,7 @@ namespace db
       return ss.str();
     }
 
+		/// @todo need documentation
     /// <BR>qualifier
     /// <BR>access    public static  
     /// @return    db::time_t_ce
@@ -742,6 +753,7 @@ namespace db
 #endif
 
     /// @brief     replace_all
+		/// @todo need documentation
     ///
     /// <BR>qualifier
     /// <BR>access    public  
@@ -774,6 +786,7 @@ namespace db
     }
 
     /// @brief     erase_all
+		/// @todo need documentation
     ///
     /// <BR>qualifier
     /// <BR>access    public  
@@ -790,6 +803,7 @@ namespace db
     }
 
     /// @brief     replace_all_copy
+		/// @todo need documentation
     ///
     /// <BR>qualifier
     /// <BR>access    public  
@@ -809,6 +823,7 @@ namespace db
     }
 
     /// @brief     erase_all_copy
+		/// @todo need documentation
     ///
     /// <BR>qualifier
     /// <BR>access    public  
@@ -827,6 +842,7 @@ namespace db
     }
 
     /// @brief     to_string
+		/// @todo need documentation
     ///
     /// <BR>access    public  
     /// @return    db::string
@@ -839,6 +855,7 @@ namespace db
     { ostringstream ost; ost << a; return ost.str(); }   
 
 
+		/// @todo need documentation
     /// @brief        to_type
     ///
     /// @return       typename T
@@ -851,6 +868,7 @@ namespace db
     { istringstream ost(a); T ret; ost >> ret; return ret; }   
 
     /// @brief        to_string
+		/// @todo need documentation
     ///
     /// @return       db::string
     /// @param        a as const double &
@@ -904,6 +922,7 @@ namespace db
 
 #ifdef _MFC_VER
     ///
+		/// @todo need documentation
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    db::string
@@ -924,7 +943,8 @@ namespace db
       return ss.str();
     }
 
-    /// <BR>qualifier
+		/// @todo need documentation
+		/// <BR>qualifier
     /// <BR>access    public static  
     /// @return    COleDateTime
     /// @param     s as const string & 
@@ -953,6 +973,7 @@ namespace db
 #endif // _MFCVER
 
     /// @brief     front_back_delim
+		/// @todo need documentation
     ///
     /// <BR>qualifier
     /// <BR>access    protected  
@@ -980,10 +1001,8 @@ namespace db
     }  
   }
 
-  /** 
-  \enum  db::param_types
-  \brief Parameter Typen 
-  */
+  /// @enum  db::param_types
+  /// @brief Parameter Typen 
   enum param_types
   {
     e_null,       //!< \a null type
@@ -1098,42 +1117,49 @@ namespace db
       } 
     };
 
-    /** exception thrown when a record is not found */    
+    /// exception thrown when a record is not found
     class not_found : public base {
     public:
       not_found(const string& s=_T("")) : base(_T("NotFound: ")+s){}
     };
-    /** exception thrown when database cannot be accessed */
+    
+		/// exception thrown when database cannot be accessed
     class db_error : public base {
     public:
       db_error(const string& m=_T("")) : base(_T("Database Error: ")+m){}
     };
-    /** exception thrown when SQL statement cannot be executed */
+    
+		/// exception thrown when SQL statement cannot be executed
     class sql_error : public base {
     public:
       sql_error(const string& m=_T("")) : base(_T("SQL Error: ")+m){}
     };
-    /** exception thrown when Param handling get failed */
+    
+		/// exception thrown when Param handling get failed
     class param_error : public base {
     public:
       param_error(const string& m=_T("")) : base(_T("Param Error: ")+m){}
     };
-    /** exception thrown when backend produces internal error */
+    
+		/// exception thrown when backend produces internal error
     class internal_error : public base {
     public:
       internal_error(const string& m=_T("")) : base(_T("Internal Error: ")+m){}
     };
-    /** exception thrown when backend cannot allocate memory */
+    
+		/// exception thrown when backend cannot allocate memory
     class memory_error : public base {
     public:
       memory_error(const string& m=_T("")) : base(_T("Allocation failed: ")+m){}
     };
-    /** exception thrown when database (disk) is full */
+    
+		/// exception thrown when database (disk) is full
     class insertion_error : public base {
     public:
       insertion_error(const string& m=_T("")) : base(_T("Database full: ")+m){}
     };
-    /** exception thrown when none of other exceptions match */
+    
+		/// exception thrown when none of other exceptions match
     class unknown_error : public base {
       // handles the rest
     public:
@@ -1141,17 +1167,17 @@ namespace db
     };
   }
 
-  /** splitmap basis */
+  /// splitmap basis
   class split_map : public std::map<string, string> 
   {
   public:
-    /** empty splitmap */
+    /// empty splitmap
     split_map() {}
-    /** from map */
+    /// from map
     split_map(std::map<string, string>& data) 
       : std::map<string, string>(data) {}
 
-    /** gibt Text zurück mit eingefügtem Abgrenzer */
+    /// gibt Text zurück mit eingefügtem Abgrenzer
     string join_fields(string delim) const
     {
       string res;
@@ -1180,7 +1206,7 @@ namespace db
     }
   };
 
-  /** fieldtype interface */
+	/// fieldtype interface
   class field 
   {
   public:
@@ -1193,6 +1219,7 @@ namespace db
     long _length;
   public:
     /// @brief     field
+		/// @todo need documentation
     ///
     /// <BR>qualifier : _name(n), _type(t), _extra(e_nullExtra), _length(-1)
     /// <BR>access    public  
@@ -1333,18 +1360,18 @@ namespace db
 
   typedef std::pair<field, field> field_pair;
 
-  /** split basis */
+  ///split basis
   class split : public std::vector<string> 
   {
   public:
-    /** empty split */
+    ///empty split
     split() {}
 
-    /** from string vector */
+    ///from string vector
     split(std::vector<string> data) 
       : std::vector<string>(data) {}
 
-    /** from string. split to parts using delimeter */
+    ///from string. split to parts using delimeter
     split(string s, string delim=_T(" "))
     {
       if (s.length()==0)
@@ -1364,10 +1391,21 @@ namespace db
         push_back(string(*i));
     }
 
-    /** Gibt eine Teilmenge von Texten zurück
-    \param start Startindex
-    \param end Endindex
-    Indexe können negativ sein. Aktueller Index is dann berechnet vom Ende von split. */
+		/// @todo to englisch
+		/// @brief        Gibt eine Teilmenge von Texten zurück
+		///								Indexe können negativ sein. 
+		///								Aktueller Index is dann berechnet vom Ende von split.
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public  
+    /// @return       db::split
+    /// @param        start as int - Startindex
+    /// @param        end as int - Endindex
+    ///
+    /// @author       Torsten Schroeder
+    /// @author       schroeder@ipe-chemnitz.de / explodus@gmx.de
+    /// @date         12.3.2010 8:30
+    ///
     split slice(int start, int end) const
     {
       std::vector<string> data;
@@ -1386,7 +1424,7 @@ namespace db
       return data; 
     }
 
-    /** gibt Text zurück mit eingefügtem Abgrenzer */
+    ///gibt Text zurück mit eingefügtem Abgrenzer
     string join(string delim) const
     {
       string res;
@@ -1398,7 +1436,7 @@ namespace db
       }
       return res; 
     }
-    /** Fügt Ausdrücke ans Ende eines anderen split an */
+    ///Fügt Ausdrücke ans Ende eines anderen split an
     split & extend(const split & s)
     {
       for (size_t i = 0; i < s.size(); i++)
@@ -1409,7 +1447,7 @@ namespace db
 
   namespace expr
   {
-    /** expression base class */
+    ///expression base class
     class base 
     {
     protected:
@@ -1611,7 +1649,7 @@ namespace db
 
     };
 
-    /** base class for operators in sql terms */
+    ///base class for operators in sql terms
     class oper : public base 
     {
     protected:
@@ -1620,11 +1658,13 @@ namespace db
       string data;
       bool escape;
 
-      ///
+			/// @brief 
+			/// @todo need documentation
+			///
       /// <BR>qualifier
       /// <BR>access    protected  
       /// @return    bool
-      /// @param     const param_types & type
+      /// @param     type as const param_types &
       ///
       /// @date      18:2:2009   11:26
       ///
@@ -1648,9 +1688,9 @@ namespace db
       /// <BR>qualifier : _field(fld), op(o), data(d), escape(check_escape(_field.type()))
       /// <BR>access    protected  
       /// @return    
-      /// @param     const field & fld
-      /// @param     const string & o
-      /// @param     const string & d
+      /// @param     fld as const field & 
+      /// @param     o as const string &
+      /// @param     o as const string &
       ///
       /// @date      18:2:2009   11:28
       ///
@@ -1703,7 +1743,7 @@ namespace db
       }
     };
 
-    /** ==, is equal operator */
+    ///==, is equal operator
     class eq : public oper {
     public:
       /// @brief     ==, is equal operator
@@ -1722,7 +1762,7 @@ namespace db
       {}
     };
 
-    /** <> not equal operator */
+    ///<> not equal operator
     class not_eq : public oper {
     public:
       /// @brief     not_eq
@@ -1741,7 +1781,7 @@ namespace db
       {}
     };
 
-    /** > greater then operator */
+    ///> greater then operator
     class gt : public oper {
     public:
       /// @brief     gt
@@ -1760,7 +1800,7 @@ namespace db
       {}
     };
 
-    /** greater then or equal operator */
+    ///greater then or equal operator
     class gt_eq : public oper {
     public:
       /// @brief     gt_eq
@@ -1779,7 +1819,7 @@ namespace db
       {}
     };
 
-    /** lower then operator */
+    ///lower then operator
     class lt : public oper {
     public:
       /// @brief     lt
@@ -1798,7 +1838,7 @@ namespace db
       {}
     };
 
-    /** lower then or equal operator */
+    ///lower then or equal operator
     class lt_eq : public oper {
     public:
       /// @brief     lt_eq
@@ -1817,7 +1857,7 @@ namespace db
       {}
     };
 
-    /** loke operator */
+    ///like operator
     class like : public oper {
     public:
       /// @brief     like
@@ -1835,7 +1875,7 @@ namespace db
       {}
     };
 
-    /** in Operator */
+    ///in Operator
     class in : public oper {
     public:
       /// @brief     in
@@ -1878,7 +1918,7 @@ namespace db
     };
   }
 
-  /** dynamic parameter class*/
+  ///dynamic parameter class*/
   class param 
 #ifndef BOOST_NO_STD_LOCALE
     : sigb::trackable
@@ -2020,55 +2060,55 @@ namespace db
       } 
     }
 
-    /** gesetzt als bool */
+    ///gesetzt als bool
     void set(bool dat)
     { 
       _type = e_bool;
       _data = dat ? _T("TRUE") : _T("FALSE");
     } 
-    /** gesetzt als int */
+    ///gesetzt als int
     void set(int dat)
     { 
       _type = e_int;
       _data = boost::str(format(_T("%d")) % dat);
     } 
-    /** gesetzt als unsigned */
+    ///gesetzt als unsigned
     void set(unsigned dat)
     { 
       _type = e_unsigned;
       _data = boost::str(format(_T("%d")) % dat);
     } 
-    /** gesetzt als long */
+    ///gesetzt als long
     void set(long dat)
     { 
       _type = e_long;
       _data = boost::str(format(_T("%ld")) % dat);
     } 
-    /** gesetzt als float */
+    ///gesetzt als float
     void set(float dat)
     { 
       _type = e_float;
       _data = boost::str(format(_T("%f")) % dat);
     } 
-    /** gesetzt als double */
+    ///gesetzt als double
     void set(double dat)
     { 
       _type = e_double;
       _data = boost::str(format(_T("%f")) % dat);
     } 
-    /** gesetzt als char */
+    ///gesetzt als char
     void set(char dat)
     { 
       _type = e_char;
       _data = dat;
     } 
-    /** gesetzt als const TCHAR* */
+    ///gesetzt als const TCHAR*
     void set(const TCHAR* dat)
     { 
       _type = e_string;
       _data = dat;
     } 
-    /** gesetzt als const string& */
+    ///gesetzt als const string&
     void set(const string& dat, bool isBlob=false)
     { 
       _type = isBlob?e_blob:e_string;
@@ -2076,14 +2116,14 @@ namespace db
     } 
 
 #ifndef BOOST_NO_STD_LOCALE
-    /** gesetzt als boost::gregorian::date */
+    ///gesetzt als boost::gregorian::date
     void set(const boost::gregorian::date& dat)
     { 
       _type = e_date_time;
       _data = detail::to_sql_string(dat);
     } 
 #else
-    /** gesetzt als time_t_ce */
+    ///gesetzt als time_t_ce
     void set(const time_t_ce& dat)
     { 
       _type = e_date_time;
@@ -2383,7 +2423,7 @@ namespace db
     { return a.str(); } 
   }
 
-  /** table rows interface */
+  ///table rows interface
   class row
   {
   protected:
@@ -2625,7 +2665,7 @@ namespace db
   typedef boost::detail::allocator::partial_std_allocator_wrapper<
     boost::detail::quick_allocator<row > > alloc_row; 
 
-  /** cursor interface */
+  ///cursor interface
   class query
   {
   protected:
@@ -2669,7 +2709,7 @@ namespace db
 
     inline void execute(const string& cmd);
 
-    /** get a row by number */
+    ///get a row by number
     const row& getRow(size_type row_num) const 
     { 
       const value_type& pValue(*(begin()+row_num));
@@ -2681,13 +2721,13 @@ namespace db
       return pValue; 
     }
 
-    /** get a row by number */
+    ///get a row by number
     const_reference operator[] (size_type row_num) const 
     { return *(begin()+row_num); }
     reference operator[] (size_type row_num) 
     { return *(begin()+row_num); }
 
-    /** get id from field title */
+    ///get id from field title
     int getIdOf(const string& sField) const  
     { 
       field_type::const_iterator iTB(_field.begin());
@@ -2712,40 +2752,40 @@ namespace db
         return NULL;
     }
 
-    /** begin iterator */
+    ///begin iterator
     const_iterator begin() const { return _data.begin(); }
-    /** end iterator */
+    ///end iterator
     const_iterator end() const   { return _data.end(); }
-    /** begin iterator */
+    ///begin iterator
     iterator begin()             { return _data.begin(); }
-    /** end iterator */
+    ///end iterator
     iterator end()               { return _data.end(); }
-    /** begin iterator */
+    ///begin iterator
     const_fiterator fbegin() const { return _field.begin(); }
-    /** end iterator */
+    ///end iterator
     const_fiterator fend() const   { return _field.end(); }
-    /** begin iterator */
+    ///begin iterator
     fiterator fbegin()             { return _field.begin(); }
-    /** end iterator */
+    ///end iterator
     fiterator fend()               { return _field.end(); }
-    /** container size */
+    ///container size
     size_type size() const         { return _data.size(); }
-    /** is container empty? */
+    ///is container empty?
     bool empty() const             { return _data.empty(); }
     bool f_empty() const           { return _field.empty(); }
 
     bool operator==(const query& t) const 
     { return  _data == t._data; }
 
-    /** push a row to the row container */
+    ///push a row to the row container
     void push_back(const value_type& v)  { _data.push_back(v); }
-    /** push a field title to the field container */
+    ///push a field title to the field container
     void push_back(const fvalue_type& v)  { _field.push_back(v); }
   };
 
   typedef boost::shared_ptr<query> query_ptr;
 
-  /** helper class, generates SELECT SQL statements */
+  ///helper class, generates SELECT SQL statements
   class sel 
   {
   protected:
@@ -3226,7 +3266,7 @@ namespace db
     virtual string str() const { return this->operator string(); }
   }; 
 
-  /** helper class, generates DELETE SQL statements */
+  ///helper class, generates DELETE SQL statements
   class del : public sel
   {
   public:
@@ -3274,7 +3314,7 @@ namespace db
     virtual ~del() {}
   };
 
-  /** helper class, generates INSERT SQL statements */
+  ///helper class, generates INSERT SQL statements
   class ins 
   {
   protected:
@@ -3476,7 +3516,7 @@ namespace db
     }
   }; 
 
-  /** hilft beim anlegen von UPDATE-SQL Ausdrücken. */
+  ///hilft beim anlegen von UPDATE-SQL Ausdrücken.
   class upd 
   {
     string _delim1;
@@ -3649,7 +3689,7 @@ namespace db
     }
   };
 
-  /** datenbank interface */
+  ///datenbank interface
   class base
   {
     sqlite3* _db;
@@ -4268,11 +4308,11 @@ namespace db
 
 } // namespace db
 
-/** overload from the global && operator */
+///overload from the global && operator
 inline db::expr::and operator&&(const db::expr::base& o1, 
                                 const db::expr::base& o2)
 { return db::expr::and(o1,o2); }
-/** overload from the global || operator */
+///overload from the global || operator
 inline db::expr::or operator||(const db::expr::base& o1, 
                                const db::expr::base& o2)
 { return db::expr::or(o1,o2); }
