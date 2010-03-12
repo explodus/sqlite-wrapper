@@ -32,22 +32,30 @@
 
 #pragma warning( push, 1 )
 
+#include "config.hpp"
+
 #include <windows.h>
 #include <vector>
 #include <map>
 #include <iostream>
+#include <sstream>
 #include <iomanip>
 
 #ifndef BOOST_NO_STD_LOCALE
-#include <boost/date_time/gregorian/gregorian.hpp>
-#include <boost/signals.hpp>
-namespace sigb = boost::BOOST_SIGNALS_NAMESPACE;
+	#include <boost/date_time/gregorian/gregorian.hpp>
+	#include <boost/signals.hpp>
+	namespace sigb = boost::BOOST_SIGNALS_NAMESPACE;
 #else
-#include <time.h>
+	#include <time.h>
 #endif // BOOST_NO_STD_LOCALE
+
 #ifdef _MFC_VER
-#include <ATLComTime.h>
+	#include <ATLComTime.h>
 #endif
+
+#ifdef _MSC_VER
+	#include <tchar.h>
+#endif // _MSC_VER
 
 #include <boost/format.hpp>
 #include <boost/detail/allocator_utilities.hpp>
@@ -59,6 +67,14 @@ namespace sigb = boost::BOOST_SIGNALS_NAMESPACE;
 
 #ifndef UNREFERENCED_PARAMETER
 #define UNREFERENCED_PARAMETER(P) { (P) = (P); } 
+#endif
+
+#ifndef _tcsstr
+	#ifdef _UNICODE
+		#define _tcsstr wcsstr
+	#else
+		#define _tcsstr strstr
+	#endif // _UNICODE
 #endif
 
 #ifndef _T
@@ -94,6 +110,126 @@ namespace db
 
   namespace detail
   {
+		/// char to wchar_t conversion class
+		class a2w
+		{
+		public:
+			/// @brief        constructor
+			///
+			/// <BR>qualifier throw(...) : empty_(0)
+			/// <BR>access    private  
+			/// @return       
+			/// @param        psz as _In_opt_ LPCWSTR
+			/// @param        nCodePage as unsigned
+			///
+			/// @date         12.3.2010 14:16
+			///
+			a2w(
+				_In_opt_ const char* psz
+				, _In_opt_ unsigned nCodePage = CP_UTF8 ) throw(...) : 
+			empty_(0)
+			{
+				init( psz, nCodePage );
+			}
+
+			/// <BR>qualifier const throw()
+			/// <BR>access    public  
+			/// @return       const wchar_t*
+			///
+			/// @date         12.3.2010 14:39
+			///
+			operator const wchar_t*() const throw()
+			{
+				if (sz_.size())
+					return( &*sz_.begin() );
+				else
+					return empty_;
+			}
+
+		private:
+			/// @brief        init
+			///
+			/// <BR>qualifier throw(...)
+			/// <BR>access    private  
+			/// @return       void
+			/// @param        psz as _In_opt_ const char *
+			/// @param        nConvertCodePage as _In_ UINT
+			///
+			/// @date         12.3.2010 14:39
+			///
+			inline void init(
+				_In_opt_ const char* psz
+				, _In_ UINT nConvertCodePage) throw(...);
+
+		public:
+			const wchar_t* empty_;
+			std::vector<wchar_t> sz_;
+
+		private:
+			a2w( const a2w& ) throw();
+			a2w& operator=( const a2w& ) throw();
+		};
+
+		/// wchar_t to char conversion class
+		class w2a
+		{
+		public:
+			/// @brief        constructor
+			///
+			/// <BR>qualifier throw(...) : empty_(0)
+			/// <BR>access    private  
+			/// @return       
+			/// @param        psz as const wchar_t*
+			/// @param        nCodePage as unsigned
+			///
+			/// @date         12.3.2010 14:16
+			///
+			w2a(
+				  _In_opt_ const wchar_t* psz
+				, _In_opt_ unsigned nCodePage = CP_ACP ) throw(...) : 
+				empty_(0)
+			{
+				init( psz, nCodePage );
+			}
+
+			/// <BR>qualifier const throw()
+			/// <BR>access    public  
+			/// @return       const char*
+			///
+			/// @date         12.3.2010 14:39
+			///
+			operator const char*() const throw()
+			{
+				if (sz_.size())
+					return( &*sz_.begin() );
+				else
+					return empty_;
+			}
+
+		private:
+			/// @brief        init
+			///
+			/// <BR>qualifier throw(...)
+			/// <BR>access    private  
+			/// @return       void
+			/// @param        psz as _In_opt_ const wchar_t *
+			/// @param        nConvertCodePage as _In_ UINT
+			///
+			/// @date         12.3.2010 14:39
+			///
+			inline void init(
+				  _In_opt_ const wchar_t* psz
+				, _In_ UINT nConvertCodePage) throw(...);
+
+		public:
+			const char* empty_;
+			std::vector<char> sz_;
+
+		private:
+			w2a( const w2a& ) throw();
+			w2a& operator=( const w2a& ) throw();
+		};
+
 #ifndef BOOST_NO_STD_LOCALE
 
 		/// @todo need documentation
@@ -909,6 +1045,7 @@ namespace db
     inline string to_string(const string& a) 
     { return a; }   
 
+#ifdef _MFC_VER
     /// @brief        specialise
     ///
     /// <BR>qualifier
@@ -922,7 +1059,6 @@ namespace db
     inline string to_string(const CString& a) 
     { return string(a); }   
 
-#ifdef _MFC_VER
     ///
 		/// @todo need documentation
     /// <BR>qualifier
@@ -1276,7 +1412,7 @@ namespace db
     ///              _values(f._values), _extra(f._extra), _length(f._length)
     /// <BR>access    public  
     /// @return    
-    /// @param     const field & f
+    /// @param     f as const field &
     ///
     /// @date      6:8:2009   10:56
     ///
@@ -1506,7 +1642,7 @@ namespace db
       /// <BR>qualifier : expr(e)
       /// <BR>access    public  
       /// @return    
-      /// @param     const string & e
+      /// @param     e as const string &
       ///
       /// @date      18:2:2009   11:17
       ///
@@ -1528,8 +1664,8 @@ namespace db
       /// <BR>access    protected  
       /// @return    
       /// @param     string o
-      /// @param     const base & e1_
-      /// @param     const base & e2_
+      /// @param     e1_ as const base &
+      /// @param     e2_ as const base &
       ///
       /// @date      18:2:2009   11:20
       ///
@@ -1561,8 +1697,8 @@ namespace db
       /// <BR>qualifier : connective(_T("and"), e1_, e2_)
       /// <BR>access    public  
       /// @return    
-      /// @param     const base & e1_
-      /// @param     const base & e2_
+      /// @param     e1_ as const base &
+      /// @param     e2_ as const base &
       ///
       /// @date      18:2:2009   11:22
       ///
@@ -1595,8 +1731,8 @@ namespace db
       /// <BR>qualifier : connective(_T("or"), e1_, e2_)
       /// <BR>access    public  
       /// @return    
-      /// @param     const base & e1_
-      /// @param     const base & e2_
+      /// @param     e1_ as const base &
+      /// @param     e2_ as const base &
       ///
       /// @date      18:2:2009   11:22
       ///
@@ -1631,7 +1767,7 @@ namespace db
       /// <BR>qualifier : exp(_exp)
       /// <BR>access    public  
       /// @return    
-      /// @param     const base & _exp
+      /// @param     _exp as const base &
       ///
       /// @date      18:2:2009   11:23
       ///
@@ -1666,13 +1802,13 @@ namespace db
       /// <BR>qualifier
       /// <BR>access    protected  
       /// @return    bool
-      /// @param     type as const param_types &
+      /// @param     type_ as const param_types &
       ///
       /// @date      18:2:2009   11:26
       ///
-      inline bool check_escape(const param_types& type)
+      inline bool check_escape(const param_types& type_)
       {
-        switch(type) 
+        switch(type_) 
         {
         case e_string:
         case e_char:
@@ -1692,7 +1828,7 @@ namespace db
       /// @return    
       /// @param     fld as const field & 
       /// @param     o as const string &
-      /// @param     o as const string &
+      /// @param     d as const string &
       ///
       /// @date      18:2:2009   11:28
       ///
@@ -1716,9 +1852,9 @@ namespace db
       /// <BR>qualifier : _field(fld), op(o), data(f2.fullName()), escape(false)
       /// <BR>access    protected  
       /// @return    
-      /// @param     const field & fld
-      /// @param     const string & o
-      /// @param     const field & f2
+      /// @param     fld as const field &
+      /// @param     o as const string &
+      /// @param     f2 as const field &
       ///
       /// @date      18:2:2009   11:30
       ///
@@ -1753,8 +1889,8 @@ namespace db
       /// <BR>qualifier : oper<typename T>(fld, _T("="), d)
       /// <BR>access    public  
       /// @return    
-      /// @param     const field & fld
-      /// @param     const T & d
+      /// @param     fld as const field &
+      /// @param     d as const T &
       ///
       /// @date      20:2:2009   11:52
       ///
@@ -1772,8 +1908,8 @@ namespace db
       /// <BR>qualifier : oper(fld, _T("<>"), d)
       /// <BR>access    public  
       /// @return    
-      /// @param     const field & fld
-      /// @param     const T & d
+      /// @param     fld as const field &
+      /// @param     d as const T &
       ///
       /// @date      20:2:2009   13:03
       ///
@@ -1791,8 +1927,8 @@ namespace db
       /// <BR>qualifier : oper(fld, _T(">"), d)
       /// <BR>access    public  
       /// @return    
-      /// @param     const field & fld
-      /// @param     const T & d
+      /// @param     fld as const field &
+      /// @param     d as const T &
       ///
       /// @date      20:2:2009   13:02
       ///
@@ -1810,8 +1946,8 @@ namespace db
       /// <BR>qualifier : oper(fld, _T(">="), d)
       /// <BR>access    public  
       /// @return    
-      /// @param     const field & fld
-      /// @param     const T & d
+      /// @param     fld as const field &
+      /// @param     d as const T &
       ///
       /// @date      20:2:2009   13:01
       ///
@@ -1829,8 +1965,8 @@ namespace db
       /// <BR>qualifier : oper(fld, _T("<"), d)
       /// <BR>access    public  
       /// @return    
-      /// @param     const field & fld
-      /// @param     const T & d
+      /// @param     fld as const field &
+      /// @param     d as const T &
       ///
       /// @date      20:2:2009   13:01
       ///
@@ -1848,8 +1984,8 @@ namespace db
       /// <BR>qualifier : oper(fld, _T("<="), d)
       /// <BR>access    public  
       /// @return    
-      /// @param     const field & fld
-      /// @param     const T & d
+      /// @param     fld as const field &
+      /// @param     d as const T &
       ///
       /// @date      20:2:2009   13:01
       ///
@@ -1867,8 +2003,8 @@ namespace db
       /// <BR>qualifier : oper(fld, _T("LIKE"), d)
       /// <BR>access    public  
       /// @return    
-      /// @param     const field & fld
-      /// @param     const string & d
+      /// @param     fld as const field &
+      /// @param     d as const string &
       ///
       /// @date      20:2:2009   13:00
       ///
@@ -1885,8 +2021,8 @@ namespace db
       /// <BR>qualifier : oper(fld, _T("IN"), _T("(")+set+_T(")"))
       /// <BR>access    public  
       /// @return    
-      /// @param     const field & fld
-      /// @param     const string & set
+      /// @param     fld as const field &
+      /// @param     set as const string &
       ///
       /// @date      20:2:2009   13:01
       ///
@@ -1899,8 +2035,8 @@ namespace db
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    
-      /// @param     const field & fld
-      /// @param     const sel & s
+      /// @param     fld as const field &
+      /// @param     s as const sel &
       ///
       /// @date      20:2:2009   13:01
       ///
@@ -1947,7 +2083,7 @@ namespace db
     /// <BR>qualifier : _col(col), _type(e_null), _is_changed(false)
     /// <BR>access    public  
     /// @return    
-    /// @param     unsigned col
+    /// @param     col as unsigned
     ///
     /// @date      20:2:2009   14:36
     ///
@@ -1970,7 +2106,7 @@ namespace db
     /// <BR>qualifier : _col(Param._col), _type(Param._type), _is_changed(false), _data(Param._data)
     /// <BR>access    public  
     /// @return    
-    /// @param     const param & Param
+    /// @param     Param as const param &
     ///
     /// @date      20:2:2009   14:35
     ///
@@ -1992,7 +2128,7 @@ namespace db
     /// <BR>qualifier 
     /// <BR>access    public  
     /// @return    void
-    /// @param     param_types & Type
+    /// @param     Type as param_types
     ///
     /// @date      20:2:2009   14:35
     ///
@@ -2012,7 +2148,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    void
-    /// @param     sqlite3_stmt * stm
+    /// @param     stm as sqlite3_stmt *
     ///
     /// @date      20:2:2009   14:34
     ///
@@ -2046,7 +2182,7 @@ namespace db
 #ifdef _UNICODE
           std::string blob(reinterpret_cast<const char*>(
             sqlite3_column_blob(stm, _col)));
-          std::wstring wblob = CA2W(blob.c_str());
+					std::wstring wblob = detail::a2w(blob.c_str());
           set(wblob);
 #else
           set(reinterpret_cast<const char*>(
@@ -2148,7 +2284,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    void
-    /// @param     const string & data
+    /// @param     d as const string &ata
     ///
     /// @date      20:2:2009   14:40
     ///
@@ -2164,7 +2300,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    void
-    /// @param     const param & data
+    /// @param     data as const param &
     ///
     /// @date      20:2:2009   14:40
     ///
@@ -2180,7 +2316,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    void
-    /// @param     const param * data
+    /// @param     data as const param *
     ///
     /// @date      20:2:2009   14:40
     ///
@@ -2336,7 +2472,7 @@ namespace db
     boost::gregorian::date get_date_time() const
     {
 #ifdef _UNICODE
-      std::string data = CW2AEX<256>(_data.c_str());
+			std::string data = detail::w2a(_data.c_str());
       return boost::date_time::parse_date<
         boost::gregorian::date>(data);
 #else
@@ -2349,7 +2485,7 @@ namespace db
     /// <BR>qualifier const
     /// <BR>access    public  
     /// @return    db::time_t_ce
-    /// @param     const time_t_ce * tmp
+    /// @param     tmp as const time_t_ce *
     ///
     /// @date      19:3:2009   10:36
     ///
@@ -2362,7 +2498,7 @@ namespace db
     /// <BR>qualifier const
     /// <BR>access    public  
     /// @return    COleDateTime
-    /// @param     const COleDateTime * tmp
+    /// @param     tmp as const COleDateTime *
     ///
     /// @date      19:3:2009   10:36
     ///
@@ -2375,7 +2511,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    const param&
-    /// @param     const param & v
+    /// @param     v as const param &
     ///
     /// @date      20:2:2009   9:24
     ///
@@ -2403,7 +2539,7 @@ namespace db
     /// <BR>qualifier const
     /// <BR>access    public  
     /// @return    bool
-    /// @param     const param & v
+    /// @param     v as const param &
     ///
     /// @date      20:2:2009   9:24
     ///
@@ -2449,8 +2585,8 @@ namespace db
     /// <BR>qualifier : _query(query_), _row(row_)
     /// <BR>access    public  
     /// @return    
-    /// @param     query * query_
-    /// @param     unsigned row_
+    /// @param     query_ as query *
+    /// @param     row_ as unsigned
     ///
     /// @date      20:2:2009   9:24
     ///
@@ -2463,7 +2599,7 @@ namespace db
     /// <BR>qualifier : _query(r._query), _row(r._row)
     /// <BR>access    public  
     /// @return    
-    /// @param     const row & r
+    /// @param     r as const row &
     ///
     /// @date      20:2:2009   9:23
     ///
@@ -2489,7 +2625,7 @@ namespace db
     /// <BR>qualifier const
     /// <BR>access    public  
     /// @return    const param&
-    /// @param     size_type field_num
+    /// @param     field_num as size_type 
     ///
     /// @date      20:2:2009   9:23
     ///
@@ -2504,7 +2640,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    param&
-    /// @param     size_type field_num
+    /// @param     field_num as size_type
     ///
     /// @date      20:2:2009   9:23
     ///
@@ -2519,7 +2655,7 @@ namespace db
     /// <BR>qualifier const
     /// <BR>access    public  
     /// @return    db::row::const_reference
-    /// @param     size_type field_num
+    /// @param     field_num as size_type
     ///
     /// @date      20:2:2009   9:22
     ///
@@ -2531,7 +2667,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    db::row::reference
-    /// @param     size_type field_num
+    /// @param     field_num as size_type
     ///
     /// @date      20:2:2009   9:21
     ///
@@ -2543,11 +2679,11 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    param*
-    /// @param     const string &
+    /// @param     field_title as const string &
     ///
     /// @date      20:2:2009   9:21
     ///
-    param* operator[] (const string& /*field_title*/)
+    param* operator[] (const string& field_title)
     { return (NULL); }
 
     /// @brief     const begin iterator
@@ -2635,7 +2771,7 @@ namespace db
     /// <BR>qualifier const 
     /// <BR>access    public  
     /// @return    bool
-    /// @param     const row & t
+    /// @param     t as const row &
     ///
     /// @date      20:2:2009   9:19
     ///
@@ -2646,7 +2782,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    void
-    /// @param     const value_type & v
+    /// @param     v as const value_type &
     ///
     /// @date      20:2:2009   9:18
     ///
@@ -2657,7 +2793,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    void
-    /// @param     sqlite3_stmt * stm
+    /// @param     stm as sqlite3_stmt *
     ///
     /// @date      20:2:2009   9:18
     ///
@@ -2825,7 +2961,7 @@ namespace db
     ///              _delim1(_T("")), _delim2(_T(""))
     /// <BR>access    public  
     /// @return    
-    /// @param     const string & tablename
+    /// @param     tablename as const string & 
     ///
     /// @date      20:2:2009   14:03
     ///
@@ -2839,8 +2975,8 @@ namespace db
     ///              _delim1(delim), _delim2(delim)
     /// <BR>access    public  
     /// @return    
-    /// @param     const string & tablename
-    /// @param     const string & delim
+    /// @param     tablename as const string &
+    /// @param     delim as const string &
     ///
     /// @date      20:2:2009   14:03
     ///
@@ -2855,9 +2991,9 @@ namespace db
     ///              _delim1(delim1), _delim2(delim2)
     /// <BR>access    public  
     /// @return    
-    /// @param     const string & tablename
-    /// @param     const string & delim1
-    /// @param     const string & delim2
+    /// @param     tablename as const string &
+    /// @param     delim1 as const string &
+    /// @param     delim2 as const string &
     ///
     /// @date      20:2:2009   14:03
     ///
@@ -2872,7 +3008,7 @@ namespace db
     /// <BR>qualifier : _distinct(s._distinct), _limit(s._limit), _offset(s._offset), _where(s._where), _having(s._having), _delim1(s._delim1), _delim2(s._delim2), _results(s._results), _sources(s._sources), _groupBy(s._groupBy), _orderBy(s._orderBy)
     /// <BR>access    public  
     /// @return    
-    /// @param     const sel & s
+    /// @param     s as const sel &
     ///
     ///
     sel(const sel& s) : _distinct(s._distinct), _limit(s._limit),
@@ -2898,7 +3034,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    sel &
-    /// @param     const sel & s
+    /// @param     s as const sel &
     ///
     ///
     sel & operator=(const sel& s)
@@ -2925,7 +3061,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    sel &
-    /// @param     const string & s
+    /// @param     s as const string &
     ///
     /// @date      20:2:2009   14:02
     ///
@@ -2937,7 +3073,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    sel &
-    /// @param     const expr::base & e
+    /// @param     e as const expr::base &
     ///
     /// @date      20:2:2009   14:02
     ///
@@ -2949,7 +3085,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    sel &
-    /// @param     const field_pair & f
+    /// @param     f as const field_pair &
     ///
     /// @date      6:8:2009   10:58
     ///
@@ -2961,7 +3097,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     bool d
+    /// @param     d as bool
     ///
     /// @date      20:2:2009   14:02
     ///
@@ -2976,7 +3112,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     int value
+    /// @param     value as int
     ///
     /// @date      20:2:2009   14:02
     ///
@@ -2991,7 +3127,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     const field_pair& f
+    /// @param     f as const field_pair&
     ///
     /// @date      20:2:2009   14:02
     ///
@@ -3006,7 +3142,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     int value
+    /// @param     value as int 
     ///
     /// @date      20:2:2009   14:02
     ///
@@ -3021,8 +3157,8 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     string r
-    /// @param     string alias
+    /// @param     r as string
+    /// @param     alias as string
     ///
     /// @date      20:2:2009   14:02
     ///
@@ -3039,8 +3175,8 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     string r
-    /// @param     string alias
+    /// @param     r as string
+    /// @param     alias as string
     ///
     /// @date      20:2:2009   14:02
     ///
@@ -3059,8 +3195,8 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     string r
-    /// @param     string alias
+    /// @param     r as string
+    /// @param     alias as string
     ///
     /// @date      20:2:2009   14:02
     ///
@@ -3099,8 +3235,8 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     string s
-    /// @param     string alias
+    /// @param     s as string
+    /// @param     alias as string
     ///
     /// @date      20:2:2009   14:01
     ///
@@ -3121,7 +3257,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     const expr::base & w
+    /// @param     w as const expr::base &
     ///
     /// @date      20:2:2009   14:01
     ///
@@ -3136,7 +3272,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     string w
+    /// @param     w as string
     ///
     /// @date      20:2:2009   14:01
     ///
@@ -3151,7 +3287,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     string gb
+    /// @param     gb as string
     ///
     /// @date      20:2:2009   14:01
     ///
@@ -3167,7 +3303,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     const expr::base & h
+    /// @param     h as const expr::base &
     ///
     /// @date      20:2:2009   14:01
     ///
@@ -3182,7 +3318,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     string h
+    /// @param     h as string
     ///
     /// @date      20:2:2009   14:01
     ///
@@ -3197,8 +3333,8 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    virtual public  
     /// @return    sel &
-    /// @param     string ob
-    /// @param     bool ascending
+    /// @param     ob as string
+    /// @param     ascending as bool 
     ///
     /// @date      20:2:2009   14:00
     ///
@@ -3331,7 +3467,7 @@ namespace db
     /// <BR>qualifier : _source(tab)
     /// <BR>access    public  
     /// @return    
-    /// @param     const string & tab
+    /// @param     tab as const string &
     ///
     /// @date      20:2:2009   9:07
     ///
@@ -3343,8 +3479,8 @@ namespace db
     /// <BR>qualifier : _source(tab), _delim1(delim), _delim2(delim)
     /// <BR>access    public  
     /// @return    
-    /// @param     const string & tab
-    /// @param     const string & delim
+    /// @param     tab as const string &
+    /// @param     delim as const string &
     ///
     /// @date      20:2:2009   9:07
     ///
@@ -3357,9 +3493,9 @@ namespace db
     /// <BR>qualifier : _source(tab), _delim1(delim1), _delim2(delim2)
     /// <BR>access    public  
     /// @return    
-    /// @param     const string & tab
-    /// @param     const string & delim1
-    /// @param     const string & delim2
+    /// @param     tab as const string &
+    /// @param     delim1 as const string &
+    /// @param     delim2 as const string &
     ///
     /// @date      20:2:2009   9:07
     ///
@@ -3396,7 +3532,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    ins &
-    /// @param     const db::field & f
+    /// @param     f as const db::field &
     ///
     /// @date      20:2:2009   9:07
     ///
@@ -3413,8 +3549,8 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    ins &
-    /// @param     string t
-    /// @param     param * v
+    /// @param     t as string
+    /// @param     v as param *
     ///
     /// @date      20:2:2009   9:07
     ///
@@ -3442,9 +3578,9 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    ins &
-    /// @param     string t
-    /// @param     string v
-    /// @param     param_types p
+    /// @param     t as string
+    /// @param     v as string
+    /// @param     p as param_types
     ///
     /// @date      20:2:2009   9:07
     ///
@@ -3473,8 +3609,8 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    ins &
-    /// @param     const string & t
-    /// @param     const T & v
+    /// @param     t as const string &
+    /// @param     v as const T &
     ///
     /// @date      20:2:2009   11:07
     ///
@@ -3544,7 +3680,7 @@ namespace db
     /// <BR>qualifier : table(t), _where(_T("True"))
     /// <BR>access    public  
     /// @return    
-    /// @param     const string & t
+    /// @param     t as const string &
     ///
     /// @date      20:2:2009   11:15
     ///
@@ -3556,8 +3692,8 @@ namespace db
     /// <BR>qualifier : table(t), _where(_T("True")), _delim1(d), _delim2(d)
     /// <BR>access    public  
     /// @return    
-    /// @param     const string & t
-    /// @param     const string & d
+    /// @param     t as const string &
+    /// @param     d as const string &
     ///
     /// @date      20:2:2009   11:15
     ///
@@ -3570,9 +3706,9 @@ namespace db
     /// <BR>qualifier : table(t), _where(_T("True")), _delim1(d1), _delim2(d2)
     /// <BR>access    public  
     /// @return    
-    /// @param     const string & t
-    /// @param     const string & d1
-    /// @param     const string & d2
+    /// @param     t as const string &
+    /// @param     d as const string &1
+    /// @param     d as const string &2
     ///
     /// @date      20:2:2009   11:15
     ///
@@ -3585,7 +3721,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    upd&
-    /// @param     const expr::base & e
+    /// @param     e as const expr::base &
     ///
     /// @date      20:2:2009   11:14
     ///
@@ -3600,7 +3736,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    upd &
-    /// @param     const expr::base & e
+    /// @param     e as const expr::base &
     ///
     /// @date      20:2:2009   11:14
     ///
@@ -3612,7 +3748,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    upd &
-    /// @param     const db::field & f
+    /// @param     f as const db::field &
     ///
     /// @date      20:2:2009   11:14
     ///
@@ -3629,8 +3765,8 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    upd&
-    /// @param     const field & f
-    /// @param     const string & val
+    /// @param     f as const field &
+    /// @param     val as const string &
     ///
     /// @date      20:2:2009   11:14
     ///
@@ -3650,8 +3786,8 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    upd&
-    /// @param     const field & f
-    /// @param     const T & val
+    /// @param     f as const field &
+    /// @param     val as const T &
     ///
     /// @date      20:2:2009   11:14
     ///
@@ -3703,7 +3839,7 @@ namespace db
       /// <BR>qualifier
       /// <BR>access    private static  
       /// @return    int
-      /// @param     void * db_
+      /// @param     db_ as void *
       ///
       /// @date      20:2:2009   14:13
       ///
@@ -3779,7 +3915,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    void
-    /// @param     int status
+    /// @param     status as int
     ///
     /// @date      20:2:2009   14:13
     ///
@@ -3803,7 +3939,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    void
-    /// @param     const std::string & file
+    /// @param     file as const std::string &
     ///
     /// @date      20:2:2009   14:14
     ///
@@ -3869,7 +4005,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    query&
-    /// @param     const string & cmd
+    /// @param     cmd as const string &
     ///
     /// @date      20:2:2009   14:15
     ///
@@ -3880,7 +4016,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    db::query_ptr
-    /// @param     const string & cmd
+    /// @param     cmd as const string &
     ///
     /// @date      13:7:2009   13:14
     ///
@@ -3941,8 +4077,8 @@ namespace db
       /// <BR>qualifier : _type(type_), _name(name_)
       /// <BR>access    public  
       /// @return    
-      /// @param     param_types type_
-      /// @param     const string & name_
+      /// @param     type_ as param_types
+      /// @param     name_ as const string &
       ///
       /// @date      14:9:2009   10:00
       ///
@@ -3955,7 +4091,7 @@ namespace db
       /// <BR>qualifier : CObject(), _type(f._type), _name(f._name)
       /// <BR>access    public  
       /// @return    
-      /// @param     const field & f
+      /// @param     f as const field &
       ///
       /// @date      28:9:2009   15:17
       ///
@@ -3967,7 +4103,7 @@ namespace db
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    field&
-      /// @param     const field & f
+      /// @param     f as const field &
       ///
       /// @date      28:9:2009   15:21
       ///
@@ -3989,7 +4125,7 @@ namespace db
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    void
-      /// @param     CArchive & ar
+      /// @param     ar as CArchive &
       ///
       /// @date      14:9:2009   10:00
       ///
@@ -4054,7 +4190,7 @@ namespace db
       /// <BR>qualifier : CObject(), _data(r._data)
       /// <BR>access    public  
       /// @return    
-      /// @param     const row & r
+      /// @param     r as const row &
       ///
       /// @date      28:9:2009   15:18
       ///
@@ -4076,7 +4212,7 @@ namespace db
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    row&
-      /// @param     const row & r
+      /// @param     r as const row &
       ///
       /// @date      28:9:2009   15:22
       ///
@@ -4094,7 +4230,7 @@ namespace db
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    void
-      /// @param     CArchive & ar
+      /// @param     ar as CArchive &
       ///
       /// @date      14:9:2009   10:15
       ///
@@ -4180,7 +4316,7 @@ namespace db
       /// <BR>qualifier : CObject(), _name(t._name), _fields(t._fields), _rows(t._rows)
       /// <BR>access    public  
       /// @return    
-      /// @param     const table & t
+      /// @param     t as const table &
       ///
       /// @date      28:9:2009   15:19
       ///
@@ -4193,7 +4329,7 @@ namespace db
       /// <BR>qualifier : _name(name_)
       /// <BR>access    public  
       /// @return    
-      /// @param     const db::string & name_
+      /// @param     name_ as const db::string &
       ///
       /// @date      14:9:2009   9:46
       ///
@@ -4205,7 +4341,7 @@ namespace db
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    table&
-      /// @param     const table & r
+      /// @param     r as const table &
       ///
       /// @date      28:9:2009   15:23
       ///
@@ -4232,7 +4368,7 @@ namespace db
       /// <BR>qualifier
       /// <BR>access    public  
       /// @return    void
-      /// @param     CArchive & ar
+      /// @param     ar as CArchive &
       ///
       /// @date      14:9:2009   9:46
       ///
@@ -4324,8 +4460,8 @@ inline db::expr::or operator||(const db::expr::base& o1,
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::eq
-/// @param     const db::field & fld
-/// @param     const T & f2
+/// @param     f as const db::field &ld
+/// @param     f2 as const T &
 ///
 /// @date      20:2:2009   14:17
 ///
@@ -4338,8 +4474,8 @@ inline db::expr::eq operator==(const db::field& fld, const T& f2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::gt
-/// @param     const db::field & fld
-/// @param     const T & o2
+/// @param     f as const db::field &ld
+/// @param     o2 as const T &
 ///
 /// @date      20:2:2009   14:17
 ///
@@ -4352,8 +4488,8 @@ inline db::expr::gt operator>(const db::field& fld, const T& o2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::gt_eq
-/// @param     const db::field & fld
-/// @param     const T & o2
+/// @param     f as const db::field &ld
+/// @param     o2 as const T &
 ///
 /// @date      20:2:2009   14:17
 ///
@@ -4366,8 +4502,8 @@ inline db::expr::gt_eq operator>=(const db::field& fld, const T& o2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::lt
-/// @param     const db::field & fld
-/// @param     const T & o2
+/// @param     f as const db::field &ld
+/// @param     o2 as const T &
 ///
 /// @date      20:2:2009   14:21
 ///
@@ -4380,8 +4516,8 @@ inline db::expr::lt operator<(const db::field& fld, const T& o2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::lt_eq
-/// @param     const db::field & fld
-/// @param     const T & o2
+/// @param     f as const db::field &ld
+/// @param     o2 as const T &
 ///
 /// @date      20:2:2009   14:22
 ///
@@ -4394,8 +4530,8 @@ inline db::expr::lt_eq operator<=(const db::field& fld, const T& o2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::not_eq
-/// @param     const db::field & fld
-/// @param     const T & f2
+/// @param     f as const db::field &ld
+/// @param     f2 as const T &
 ///
 /// @date      20:2:2009   14:22
 ///
@@ -4408,7 +4544,7 @@ inline db::expr::not_eq operator!=(const db::field& fld, const T& f2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::not
-/// @param     const db::expr::base & exp
+/// @param     exp as const db::expr::base & 
 ///
 /// @date      20:2:2009   14:23
 ///
@@ -4420,8 +4556,8 @@ inline db::expr::not operator!(const db::expr::base &exp)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::in
-/// @param     const db::field & fld
-/// @param     const TCHAR * f2
+/// @param     f as const db::field &ld
+/// @param     f2 as const TCHAR *
 ///
 /// @date      20:2:2009   14:23
 ///
@@ -4433,8 +4569,8 @@ inline db::expr::in operator<<(const db::field& fld, const TCHAR* f2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::in
-/// @param     const db::field & fld
-/// @param     const db::string & f2
+/// @param     f as const db::field &ld
+/// @param     f2 as const db::string &
 ///
 /// @date      20:2:2009   14:23
 ///
@@ -4446,7 +4582,7 @@ inline db::expr::in operator<<(const db::field& fld, const db::string& f2)
 /// <BR>qualifier const
 /// <BR>access    public  
 /// @return    db::expr::in
-/// @param     const string & set
+/// @param     set as const string &
 ///
 /// @date      20:2:2009   14:24
 ///
@@ -4458,7 +4594,7 @@ inline db::expr::in db::field::In(const string& set) const
 /// <BR>qualifier const
 /// <BR>access    public  
 /// @return    db::expr::in
-/// @param     const sel & sel
+/// @param     s as const sel &el
 ///
 /// @date      20:2:2009   14:23
 ///
@@ -4470,7 +4606,7 @@ inline db::expr::in db::field::In(const sel& sel) const
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::like
-/// @param     const string & s
+/// @param     s as const string &
 ///
 /// @date      20:2:2009   14:24
 ///
@@ -4608,6 +4744,126 @@ inline void db::query::execute(const string& cmd)
   }
   sqlite3_finalize(_stm);
   _stm = NULL; 
+}
+
+inline void db::detail::w2a::init(
+	  _In_opt_ const wchar_t* psz
+	, _In_ UINT nConvertCodePage) throw(...)
+{
+	if (psz == NULL)
+	{
+		sz_.clear();
+		return;
+	}
+
+	int nLengthW(lstrlenW( psz )+1);		 
+	int nLengthA(nLengthW*4);
+
+	sz_.resize(nLengthA);
+
+	bool bFailed(0 == ::WideCharToMultiByte( 
+		nConvertCodePage
+		, 0
+		, psz
+		, nLengthW
+		, &*sz_.begin()
+		, nLengthA
+		, NULL
+		, NULL));
+
+	if (bFailed)
+	{
+		if (GetLastError()==ERROR_INSUFFICIENT_BUFFER)
+		{
+			nLengthA = ::WideCharToMultiByte( 
+				nConvertCodePage
+				, 0
+				, psz
+				, nLengthW
+				, NULL
+				, 0
+				, NULL
+				, NULL);
+
+			sz_.resize(nLengthA);
+
+			bFailed=(0 == ::WideCharToMultiByte(
+				nConvertCodePage
+				, 0
+				, psz
+				, nLengthW
+				, &*sz_.begin()
+				, nLengthA
+				, NULL
+				, NULL));
+		}			
+	}
+
+	if (bFailed)
+	{
+		std::basic_stringstream<db::char_type> err;
+		err << DB_TEXT("Lasterror was ") 
+			<< GetLastError() 
+			<< DB_TEXT("\n");
+		throw db::exception::unknown_error(err.str());
+	}
+}
+
+inline void db::detail::a2w::init(
+	  _In_opt_ const char* psz
+	, _In_ UINT nCodePage) throw(...)
+{
+	if (psz == NULL)
+	{
+		sz_.clear();
+		return;
+	}
+
+	int nLengthA(lstrlenA( psz )+1);		 
+	int nLengthW(nLengthA);
+
+	sz_.resize(nLengthW);
+
+	bool bFailed(0 == ::MultiByteToWideChar(
+		  nCodePage
+		, 0
+		, psz
+		, nLengthA
+		, &*sz_.begin()
+		, nLengthW));
+
+	if (bFailed)
+	{
+		if (GetLastError()==ERROR_INSUFFICIENT_BUFFER)
+		{
+			nLengthW = ::MultiByteToWideChar(
+				  nCodePage
+				, 0
+				, psz
+				, nLengthA
+				, NULL
+				, 0);
+
+			sz_.resize(nLengthW);
+
+			bFailed=(0 == ::MultiByteToWideChar(
+				  nCodePage
+				, 0
+				, psz
+				, nLengthA
+				, &*sz_.begin()
+				, nLengthW));
+		}			
+	}
+
+	if (bFailed)
+	{
+		std::basic_stringstream<db::char_type> err;
+		err << DB_TEXT("Lasterror was ") 
+			<< GetLastError() 
+			<< DB_TEXT("\n");
+		throw db::exception::unknown_error(err.str());
+	}
 }
 
 #endif // db_h__
