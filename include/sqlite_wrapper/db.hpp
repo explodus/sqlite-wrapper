@@ -55,7 +55,7 @@ namespace sigb = boost::BOOST_SIGNALS_NAMESPACE;
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include "sqlite3.h"
+#include "sqlite/sqlite3.h"
 
 #ifndef UNREFERENCED_PARAMETER
 #define UNREFERENCED_PARAMETER(P) { (P) = (P); } 
