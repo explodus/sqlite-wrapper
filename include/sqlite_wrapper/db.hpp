@@ -2284,7 +2284,7 @@ namespace db
     /// <BR>qualifier
     /// <BR>access    public  
     /// @return    void
-    /// @param     d as const string &ata
+    /// @param     data as const string &
     ///
     /// @date      20:2:2009   14:40
     ///
@@ -3707,8 +3707,8 @@ namespace db
     /// <BR>access    public  
     /// @return    
     /// @param     t as const string &
-    /// @param     d as const string &1
-    /// @param     d as const string &2
+    /// @param     d1 as const string &
+    /// @param     d2 as const string &
     ///
     /// @date      20:2:2009   11:15
     ///
@@ -4460,7 +4460,7 @@ inline db::expr::or operator||(const db::expr::base& o1,
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::eq
-/// @param     f as const db::field &ld
+/// @param     fld as const db::field &
 /// @param     f2 as const T &
 ///
 /// @date      20:2:2009   14:17
@@ -4474,7 +4474,7 @@ inline db::expr::eq operator==(const db::field& fld, const T& f2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::gt
-/// @param     f as const db::field &ld
+/// @param     fld as const db::field &
 /// @param     o2 as const T &
 ///
 /// @date      20:2:2009   14:17
@@ -4488,7 +4488,7 @@ inline db::expr::gt operator>(const db::field& fld, const T& o2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::gt_eq
-/// @param     f as const db::field &ld
+/// @param     fld as const db::field &
 /// @param     o2 as const T &
 ///
 /// @date      20:2:2009   14:17
@@ -4502,7 +4502,7 @@ inline db::expr::gt_eq operator>=(const db::field& fld, const T& o2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::lt
-/// @param     f as const db::field &ld
+/// @param     fld as const db::field &
 /// @param     o2 as const T &
 ///
 /// @date      20:2:2009   14:21
@@ -4516,7 +4516,7 @@ inline db::expr::lt operator<(const db::field& fld, const T& o2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::lt_eq
-/// @param     f as const db::field &ld
+/// @param     fld as const db::field &
 /// @param     o2 as const T &
 ///
 /// @date      20:2:2009   14:22
@@ -4530,7 +4530,7 @@ inline db::expr::lt_eq operator<=(const db::field& fld, const T& o2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::not_eq
-/// @param     f as const db::field &ld
+/// @param     fld as const db::field &
 /// @param     f2 as const T &
 ///
 /// @date      20:2:2009   14:22
@@ -4556,7 +4556,7 @@ inline db::expr::not operator!(const db::expr::base &exp)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::in
-/// @param     f as const db::field &ld
+/// @param     fld as const db::field &
 /// @param     f2 as const TCHAR *
 ///
 /// @date      20:2:2009   14:23
@@ -4569,7 +4569,7 @@ inline db::expr::in operator<<(const db::field& fld, const TCHAR* f2)
 /// <BR>qualifier
 /// <BR>access    public  
 /// @return    db::expr::in
-/// @param     f as const db::field &ld
+/// @param     fld as const db::field &
 /// @param     f2 as const db::string &
 ///
 /// @date      20:2:2009   14:23
@@ -4594,7 +4594,7 @@ inline db::expr::in db::field::In(const string& set) const
 /// <BR>qualifier const
 /// <BR>access    public  
 /// @return    db::expr::in
-/// @param     s as const sel &el
+/// @param     sel as const sel &
 ///
 /// @date      20:2:2009   14:23
 ///
