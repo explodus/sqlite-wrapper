@@ -4,6 +4,8 @@
 ///	file ext	h
 ///
 /// @author		T. Schroeder (explodus@gmx.de)
+///
+/// This software is released under the BSD Licence
 ///	
 ///	Using		:
 ///		This code may be used in compiled form in any way you desire. This
