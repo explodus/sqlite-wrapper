@@ -44,7 +44,7 @@ namespace db { namespace log {
 			typedef boost::shared_ptr< basic > ptr;
 		};
 
-		/// Simplest buffer.
+		/// Simplest file buffer.
 		class file : private boost::noncopyable
 		{
 			db::ofstream of_;
@@ -69,7 +69,7 @@ namespace db { namespace log {
 
 	namespace provider
 	{
-		/// Simplest provider.
+		/// Simplest universal provider.
 		template<typename Buffer>
 		class basic : private boost::noncopyable
 		{
@@ -114,7 +114,6 @@ namespace db { namespace log {
 		class basic
 		{
 		private:
-
 			basic();
 			~basic();
 
@@ -243,17 +242,27 @@ namespace db { namespace log {
 	template <typename Log>
 	class message : private boost::noncopyable
 	{
+		Log& base_;
+
 	public:
 		/// The log type.
 		typedef Log log_type;
 
 		explicit message(
-			  log_type& base_
-			, const db::string& msg) : boost::noncopyable()
+		    log_type& _base
+			, const db::string& msg) : boost::noncopyable(), base_(_base)
 		{
 			// Put message.
 			base_ << log_type::formatter_type::decorate_message(msg);
 		}
+
+		bool operator()(const db::string& msg) const
+		{
+			// Put message.
+			base_ << log_type::formatter_type::decorate_message(msg);
+			return true;
+		}
+
 	};
 
 	/// @brief Wraps scope into a pair of log statements.
