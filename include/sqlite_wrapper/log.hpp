@@ -232,16 +232,19 @@ namespace db { namespace log {
 		/// The log type.
 		typedef Log log_type;
 
-		/// Construct a log_scope.
-		/**
-		* This constructor creates scope statement.
-		*
-		* @param scope_log The log object that the log_scope will use to display
-		* its content.
-		*
-		* @param scope_message The scope's message. It usually includes scope name.
-		*/
-		explicit log_scope(
+		/// @brief        This constructor creates scope statement
+		///
+		/// <BR>qualifier : boost::noncopyable() , log_(scope_log) , message(scope_message)
+		/// <BR>access    public  
+		/// @return       
+		/// @param        scope_log as log_type & - The log object that the
+		///								log_scope will use to display its content
+		/// @param        scope_message as const db::string & - The scope's
+		///								message. It usually includes scope name.
+		///
+		/// @date         15.3.2010 10:51
+		///
+		explicit scope(
 			  log_type& scope_log
 			, const db::string& scope_message)
 			: boost::noncopyable()
@@ -254,11 +257,15 @@ namespace db { namespace log {
 			log_.increase_indent();
 		}
 
-		/// Destructor.
-		/**
-		* Puts closing statement and decreases indentation level.
-		*/
-		~log_scope()
+		/// @brief Puts closing statement and decreases indentation level
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       
+		///
+		/// @date         15.3.2010 10:50
+		///
+		~scope()
 		{
 			// Decrease indent.
 			log_.decrease_indent();
