@@ -3,7 +3,7 @@
 ///
 /// @date 01.03.2010 15:15
 ///
-/// @author Thomas Heller (thom.heller@gmail.com)
+/// @author T. Schroeder (explodus@gmx.de)
 ///
 /// @brief 
 ///

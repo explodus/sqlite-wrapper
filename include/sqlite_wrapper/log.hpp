@@ -172,6 +172,8 @@ namespace db { namespace log {
 		log_debug        //!< debug level messages
 	};
 
+	extern level global_level;
+
 	/// Provides logging functionality.
 	/// The log class template provides logging functionality.
 	template 
@@ -243,6 +245,7 @@ namespace db { namespace log {
 	class message : private boost::noncopyable
 	{
 		Log& base_;
+		level last_level_;
 
 	public:
 		/// The log type.
@@ -250,19 +253,23 @@ namespace db { namespace log {
 
 		explicit message(
 		    log_type& _base
-			, const db::string& msg) : boost::noncopyable(), base_(_base)
+			, const db::string& msg
+			, const level lvl = db::log::log_error) 
+			: boost::noncopyable()
+			, base_(_base)
+			, last_level_(lvl)
 		{
-			// Put message.
-			base_ << log_type::formatter_type::decorate_message(msg);
+			if (last_level_ <= global_level)
+				base_ << 
+					log_type::formatter_type::decorate_message(msg); 
 		}
 
 		bool operator()(const db::string& msg) const
 		{
-			// Put message.
-			base_ << log_type::formatter_type::decorate_message(msg);
+			if (last_level_ <= global_level)
+				base_ << log_type::formatter_type::decorate_message(msg);
 			return true;
 		}
-
 	};
 
 	/// @brief Wraps scope into a pair of log statements.

@@ -35,6 +35,7 @@ SOURCE_GROUP( "Header Files\\detail" FILES
 
 SET( sqlite_wrapper_source_top
 	${CMAKE_SOURCE_DIR}/src/cout.cpp
+	${CMAKE_SOURCE_DIR}/src/log_level.cpp
 	)
 
 SET( sqlite3_source_top
