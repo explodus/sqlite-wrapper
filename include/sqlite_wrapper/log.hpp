@@ -29,22 +29,25 @@
 #include <boost/shared_ptr.hpp>
 
 #include <sqlite_wrapper/config.hpp>
+#include <sqlite_wrapper/db.hpp>
 
 namespace db { namespace log {
 
 	namespace buffer
 	{
 		/// Simplest buffer.
+		template<typename T = db::ostream>
 		class basic : private boost::noncopyable
 		{
 		public:
-			db::ostream& output_stream() 
+			typename T& output_stream() 
 			{ return db::cout; }
 
 			typedef boost::shared_ptr< basic > ptr;
 		};
 
 		/// Simplest file buffer.
+		template<typename T = db::ostream>
 		class file : private boost::noncopyable
 		{
 			db::ofstream of_;
@@ -60,10 +63,43 @@ namespace db { namespace log {
 			{
 			}
 
-			db::ostream& output_stream() 
+			typename T& output_stream() 
 			{ return of_; }
 
 			typedef boost::shared_ptr< file > ptr;
+		};
+
+		/// Simplest database buffer.
+		template<typename T = db::base>
+		class database : private boost::noncopyable
+		{
+			T db_;
+
+		public:
+			database(const db::string& name)
+			{
+				#ifdef SQLITE_WRAPPER_NARROW_STRING
+					db_.connect(name);
+				#else
+					db_.connect(static_cast<const char*>(
+						db::detail::w2a(name.c_str())));
+				#endif // SQLITE_WRAPPER_NARROW_STRING
+
+				{
+					db::ostringstream s_cr;
+					s_cr 
+						<< DB_TEXT("CREATE TABLE IF NOT EXISTS ") 
+						<< DB_TEXT("log(id as integer autoincrement")
+						<< DB_TEXT(", date_time as text")
+						<< DB_TEXT(", msg as text);");
+					db_.execute_ptr(s_cr.str());
+				}
+			}
+
+			typename T& output_stream() 
+			{ return db_; }
+
+			typedef boost::shared_ptr< database > ptr;
 		};
 	}
 
@@ -117,6 +153,16 @@ namespace db { namespace log {
 			basic();
 			~basic();
 
+			static db::string get_akt_time()
+			{
+#ifndef BOOST_NO_STD_LOCALE
+				return db::detail::to_sql_string(
+					boost::gregorian::day_clock::local_day());
+#else
+				return db::detail::to_sql_string(db::time::time_ce(0));
+#endif
+			}
+
 		public:
 			template <typename OutputStream>
 			static void do_format(
@@ -126,6 +172,9 @@ namespace db { namespace log {
 			{
 				for (size_t i(0); i<indent; ++i)
 					stream << DB_TEXT(' ');
+				
+				stream << get_akt_time();
+				stream << DB_TEXT(" - ");
 				// Push data.
 				stream << data.c_str();
 				// Push delimiter (end of line).
@@ -140,6 +189,9 @@ namespace db { namespace log {
 			{
 				for (size_t i(0); i<indent; ++i)
 					stream << DB_TEXT(' ');
+
+				stream << get_akt_time();
+				stream << DB_TEXT(" - ");
 				// Push data.
 				stream << data;
 				// Push delimiter (end of line).
@@ -147,7 +199,54 @@ namespace db { namespace log {
 			}
 
 			static db::string decorate_message(const db::string& msg)
+			{ 
+				return msg; 
+				//return db::string(DB_TEXT("[")) + 
+				//	msg + 
+				//	db::string(DB_TEXT("]")); 
+			}
+
+			static db::string decorate_scope_open(const db::string& msg)
 			{ return msg; }
+
+			static db::string decorate_scope_close(const db::string& msg)
+			{ return db::string(DB_TEXT("\\")) + msg; }
+		};
+
+		/// Simplest formatter.
+		class database
+		{
+			database();
+			~database();
+
+			static db::string get_akt_time()
+			{
+#ifndef BOOST_NO_STD_LOCALE
+				return db::detail::to_sql_string(
+					boost::gregorian::day_clock::local_day());
+#else
+				return db::detail::to_sql_string(db::time::time_ce(0));
+#endif
+			}
+
+		public:
+
+			template <typename Database, typename T>
+			static void do_format(
+				  Database& db_
+				, size_t indent
+				, const T& data)
+			{
+				db_.execute_ptr((
+					  db::ins(DB_TEXT("log"))
+					% db::field(DB_TEXT("date_time"), get_akt_time())
+					% db::field(DB_TEXT("msg"), db::detail::to_string(data))));
+			}
+
+			static db::string decorate_message(const db::string& msg)
+			{ 
+				return msg; 
+			}
 
 			static db::string decorate_scope_open(const db::string& msg)
 			{ return msg; }
@@ -299,15 +398,19 @@ namespace db { namespace log {
 		///
 		explicit scope(
 			  log_type& scope_log
-			, const db::string& scope_message)
+			, const db::string& scope_message
+			, const level lvl = db::log::log_debug)
 			: boost::noncopyable()
 			, log_(scope_log)
-			, message(scope_message)
+			, message_(scope_message)
+			, last_level_(lvl)
 		{
-			// Put opening message.
-			log_ << log_type::formatter_type::decorate_scope_open(message);
-			// Increase indent.
-			log_.increase_indent();
+			if (last_level_ <= global_level)
+			{
+				log_ << 
+					log_type::formatter_type::decorate_scope_open(message_);
+				log_.increase_indent();
+			}
 		}
 
 		/// @brief Puts closing statement and decreases indentation level
@@ -320,10 +423,12 @@ namespace db { namespace log {
 		///
 		~scope()
 		{
-			// Decrease indent.
-			log_.decrease_indent();
-			// Put closing message.
-			log_ << log_type::formatter_type::decorate_scope_close(message);
+			if (last_level_ <= global_level)
+			{
+				log_.decrease_indent();
+				log_ << 
+					log_type::formatter_type::decorate_scope_close(message_);
+			}
 		}
 
 	private:
@@ -331,7 +436,9 @@ namespace db { namespace log {
 		log_type& log_;
 
 		/// The message associated with the scope.
-		db::string message;
+		db::string message_;
+
+		level last_level_;
 	};
 
 } }
