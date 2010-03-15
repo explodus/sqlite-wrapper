@@ -38,28 +38,56 @@ namespace db { namespace log {
 		class basic : private boost::noncopyable
 		{
 		public:
-			db::ostream& output_stream()
+			db::ostream& output_stream() 
 			{ return db::cout; }
-		};
-		typedef boost::shared_ptr< basic > basic_ptr;
 
+			typedef boost::shared_ptr< basic > ptr;
+		};
+
+		/// Simplest buffer.
+		class file : private boost::noncopyable
+		{
+			db::ofstream of_;
+
+		public:
+			file(const db::string& name) : 
+				#ifdef SQLITE_WRAPPER_NARROW_STRING
+					of_(name)
+				#else
+					of_(static_cast<const char*>(
+						db::detail::w2a(name.c_str())))
+				#endif // SQLITE_WRAPPER_NARROW_STRING
+			{
+			}
+
+			db::ostream& output_stream() 
+			{ return of_; }
+
+			typedef boost::shared_ptr< file > ptr;
+		};
 	}
 
 	namespace provider
 	{
 		/// Simplest provider.
+		template<typename Buffer>
 		class basic : private boost::noncopyable
 		{
-		public:
-
 			basic()
 				: boost::noncopyable()
+			{
+			}
+		public:
+			typedef Buffer buffer_type;
+
+			basic(typename buffer_type::ptr buffer_ptr)
+				: boost::noncopyable()
 				, indent_(0)
-				, buffer_( new buffer::basic() )
+				, buffer_( buffer_ptr )
 			{
 			}
 
-			buffer::basic_ptr operator() const
+			typename buffer_type::ptr get_buffer() const
 			{ return buffer_; }
 
 			void increase_indent()
@@ -68,14 +96,14 @@ namespace db { namespace log {
 			void decrease_indent()
 			{ --indent_; }
 
-			size_t get_indent() const
+			size_t indent() const
 			{ return indent_; }
 
 		private:
 			/// Current indentation level.
 			size_t indent_;
 			/// 
-			buffer::basic_ptr buffer_;
+			typename buffer_type::ptr buffer_;
 		};
 
 	}
@@ -91,30 +119,42 @@ namespace db { namespace log {
 			~basic();
 
 		public:
+			template <typename OutputStream>
+			static void do_format(
+				OutputStream& stream
+				, size_t indent
+				, const db::string& data)
+			{
+				for (size_t i(0); i<indent; ++i)
+					stream << DB_TEXT(' ');
+				// Push data.
+				stream << data.c_str();
+				// Push delimiter (end of line).
+				stream << std::endl;
+			}
+
 			template <typename OutputStream, typename T>
 			static void do_format(
 				  OutputStream& stream
 				, size_t indent
 				, const T& data)
 			{
-				// Push indent.
-				std::fill_n(
-					std::ostream_iterator< db::char_type >(stream), 
-						indent, DB_TEXT(' ') );
+				for (size_t i(0); i<indent; ++i)
+					stream << DB_TEXT(' ');
 				// Push data.
 				stream << data;
 				// Push delimiter (end of line).
-				stream << std::endl;
+				stream << DB_TEXT('\n');
 			}
 
-			static db::string decorate_message(const db::string& message)
-			{ return message; }
+			static db::string decorate_message(const db::string& msg)
+			{ return msg; }
 
-			static db::string decorate_scope_open(const db::string& message)
-			{ return message; }
+			static db::string decorate_scope_open(const db::string& msg)
+			{ return msg; }
 
-			static db::string decorate_scope_close(const db::string& message)
-			{ return db::string(DB_TEXT("\\")) + message; }
+			static db::string decorate_scope_close(const db::string& msg)
+			{ return db::string(DB_TEXT("\\")) + msg; }
 		};
 
 	}
@@ -134,9 +174,7 @@ namespace db { namespace log {
 	};
 
 	/// Provides logging functionality.
-	/**
-	* The log class template provides logging functionality.
-	*/
+	/// The log class template provides logging functionality.
 	template 
 	<
 		  typename Provider = provider::basic
@@ -144,8 +182,11 @@ namespace db { namespace log {
 	>
 	class base : private boost::noncopyable
 	{
-	public:
+		/// Construct a log.
+		base() : boost::noncopyable()
+		{ }
 
+	public:
 		/// The I/O provider type.
 		typedef Provider provider_type;
 		/// The I/O provider pointer type.
@@ -154,10 +195,6 @@ namespace db { namespace log {
 		typedef Format formatter_type;
 		/// The log type.
 		typedef base<provider_type, formatter_type> log_type;
-
-		/// Construct a log.
-		base() : boost::noncopyable(), provider_( new provider_type() )
-		{ }
 
 		/// Construct a log.
 		base(const provider_ptr_type& io_provider)
@@ -191,7 +228,7 @@ namespace db { namespace log {
 		base& operator << (const T& data)
 		{
 			formatter_type::do_format(
-				  provider_()->output_stream()
+				  provider_->get_buffer()->output_stream()
 				, provider_->indent()
 				, data);
 			return *this;

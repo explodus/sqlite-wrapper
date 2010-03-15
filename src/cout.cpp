@@ -15,7 +15,7 @@
 #include <iostream>
 
 ///
-db::ostream & db::cout
+db::ostream& db::cout
 (
 #ifdef SQLITE_WRAPPER_NARROW_STRING
 	std::cout

@@ -13,7 +13,7 @@
  
 /* #undef SQLITE_WRAPPER_HAVE_VARIADIC_TEMPLATES */
 /* #undef SQLITE_WRAPPER_HAVE_POSIX */
-#define SQLITE_WRAPPER_HAVE_ATLEAST_UINT64
+/* #undef SQLITE_WRAPPER_HAVE_ATLEAST_UINT64 */
 /* #undef SQLITE_WRAPPER_HAVE_DEFAULTED_AND_DELETED_FUNCTIONS */
 /* #undef SQLITE_WRAPPER_NARROW_STRING */
 /* #undef SQLITE_WRAPPER_HAVE_CLOCK_GETTIME */
@@ -40,6 +40,7 @@
 #include <iosfwd>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <iomanip>
 
 #if defined (WIN32) || defined (WIN64)
@@ -79,14 +80,30 @@ namespace db
 #ifdef SQLITE_WRAPPER_NARROW_STRING
 	typedef char char_type;
 	#define DB_TEXT(x) x
+	typedef std::string string;
 #else
 	typedef wchar_t char_type;
 	#define DB_TEXT(x) L ## x
+	typedef std::wstring string;
 #endif
  
-	typedef std::basic_string<char_type> string;
 	typedef std::basic_ostream<char_type> ostream;
 	typedef std::basic_istream<char_type> istream;
+	
+	typedef std::basic_ofstream
+	<
+	  char_type
+	, std::char_traits<char_type> 
+	> 
+	ofstream;
+	
+	typedef std::basic_ifstream
+	<
+	  char_type
+	, std::char_traits<char_type> 
+	> 
+	ifstream;
+	
 	typedef std::basic_ostringstream<char_type> ostringstream;
 	typedef std::basic_istringstream<char_type> istringstream;
 	typedef boost::basic_format<char_type > format;
