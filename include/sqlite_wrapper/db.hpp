@@ -34,30 +34,6 @@
 
 #include "config.hpp"
 
-#include <windows.h>
-#include <vector>
-#include <map>
-#include <iostream>
-#include <sstream>
-#include <iomanip>
-
-#ifndef BOOST_NO_STD_LOCALE
-	#include <boost/date_time/gregorian/gregorian.hpp>
-	#include <boost/signals.hpp>
-	namespace sigb = boost::BOOST_SIGNALS_NAMESPACE;
-#else
-	#include <time.h>
-#endif // BOOST_NO_STD_LOCALE
-
-#ifdef _MFC_VER
-	#include <ATLComTime.h>
-#endif
-
-#ifdef _MSC_VER
-	#include <tchar.h>
-#endif // _MSC_VER
-
-#include <boost/format.hpp>
 #include <boost/detail/allocator_utilities.hpp>
 #include <boost/detail/quick_allocator.hpp> 
 #include <boost/lexical_cast.hpp>
@@ -65,1080 +41,13 @@
 
 #include "sqlite/sqlite3.h"
 
-#ifndef UNREFERENCED_PARAMETER
-#define UNREFERENCED_PARAMETER(P) { (P) = (P); } 
-#endif
-
-#ifndef _tcsstr
-	#ifdef _UNICODE
-		#define _tcsstr wcsstr
-	#else
-		#define _tcsstr strstr
-	#endif // _UNICODE
-#endif
-
-#ifndef _T
-	#ifdef _UNICODE
-		#define _T(x) L ## x
-	#else
-		#define _T(x) ## x
-	#endif // _UNICODE
-#endif
-
 #pragma warning( pop )
+
+#include "detail/time.hpp"
+#include "detail/tools.hpp"
 
 namespace db
 {
-#ifdef _UNICODE
-  typedef std::wstring string;
-  typedef std::wostringstream ostringstream;
-  typedef std::wistringstream istringstream;
-  typedef std::wostream ostream;
-  typedef boost::basic_format<wchar_t > format;
-#else
-  typedef std::string string;
-  typedef std::ostringstream ostringstream;
-  typedef std::istringstream istringstream;
-  typedef std::ostream ostream;
-  typedef boost::basic_format<char > format;
-#endif // _UNICODE
-
-  typedef std::pair<string, string> string_pair;
-  typedef std::vector<string> string_vec;
-
-  typedef LONGLONG time_t_ce;
-
-  namespace detail
-  {
-		/// char to wchar_t conversion class
-		class a2w
-		{
-		public:
-			/// @brief        constructor
-			///
-			/// <BR>qualifier throw(...) : empty_(0)
-			/// <BR>access    private  
-			/// @return       
-			/// @param        psz as _In_opt_ LPCWSTR
-			/// @param        nCodePage as unsigned
-			///
-			/// @date         12.3.2010 14:16
-			///
-			a2w(
-				_In_opt_ const char* psz
-				, _In_opt_ unsigned nCodePage = CP_UTF8 ) throw(...) : 
-			empty_(0)
-			{
-				init( psz, nCodePage );
-			}
-
-			/// <BR>qualifier const throw()
-			/// <BR>access    public  
-			/// @return       const wchar_t*
-			///
-			/// @date         12.3.2010 14:39
-			///
-			operator const wchar_t*() const throw()
-			{
-				if (sz_.size())
-					return( &*sz_.begin() );
-				else
-					return empty_;
-			}
-
-		private:
-			/// @brief        init
-			///
-			/// <BR>qualifier throw(...)
-			/// <BR>access    private  
-			/// @return       void
-			/// @param        psz as _In_opt_ const char *
-			/// @param        nConvertCodePage as _In_ UINT
-			///
-			/// @date         12.3.2010 14:39
-			///
-			inline void init(
-				_In_opt_ const char* psz
-				, _In_ UINT nConvertCodePage) throw(...);
-
-		public:
-			const wchar_t* empty_;
-			std::vector<wchar_t> sz_;
-
-		private:
-			a2w( const a2w& ) throw();
-			a2w& operator=( const a2w& ) throw();
-		};
-
-		/// wchar_t to char conversion class
-		class w2a
-		{
-		public:
-			/// @brief        constructor
-			///
-			/// <BR>qualifier throw(...) : empty_(0)
-			/// <BR>access    private  
-			/// @return       
-			/// @param        psz as const wchar_t*
-			/// @param        nCodePage as unsigned
-			///
-			/// @date         12.3.2010 14:16
-			///
-			w2a(
-				  _In_opt_ const wchar_t* psz
-				, _In_opt_ unsigned nCodePage = CP_ACP ) throw(...) : 
-				empty_(0)
-			{
-				init( psz, nCodePage );
-			}
-
-			/// <BR>qualifier const throw()
-			/// <BR>access    public  
-			/// @return       const char*
-			///
-			/// @date         12.3.2010 14:39
-			///
-			operator const char*() const throw()
-			{
-				if (sz_.size())
-					return( &*sz_.begin() );
-				else
-					return empty_;
-			}
-
-		private:
-			/// @brief        init
-			///
-			/// <BR>qualifier throw(...)
-			/// <BR>access    private  
-			/// @return       void
-			/// @param        psz as _In_opt_ const wchar_t *
-			/// @param        nConvertCodePage as _In_ UINT
-			///
-			/// @date         12.3.2010 14:39
-			///
-			inline void init(
-				  _In_opt_ const wchar_t* psz
-				, _In_ UINT nConvertCodePage) throw(...);
-
-		public:
-			const char* empty_;
-			std::vector<char> sz_;
-
-		private:
-			w2a( const w2a& ) throw();
-			w2a& operator=( const w2a& ) throw();
-		};
-
-#ifndef BOOST_NO_STD_LOCALE
-
-		/// @todo need documentation
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    db::string
-    /// @param     d as const boost::gregorian::date & 
-    ///
-    /// @date      18:2:2009   11:44
-    ///
-    inline string to_sql_string(const boost::gregorian::date& d) 
-    {
-      boost::gregorian::date::ymd_type ymd = d.year_month_day();
-      ostringstream ss;
-      ss << ymd.year << _T("-")
-        << std::setw(2) << std::setfill(_T('0')) 
-        << ymd.month.as_number() //solves problem with gcc 3.1 hanging
-        << _T("-")
-        << std::setw(2) << std::setfill(_T('0')) 
-        << ymd.day;
-      return ss.str();
-    }
-
-#else
-
-    namespace time
-    {
-      const unsigned TIME_FAILURE	= 0xFFFFFFFF;
-      /// Ascii buffer size is 26 bytes, (24 chars and CR+LF)
-      const unsigned ASC_BUFF_SIZE = 26;  
-      const long SEC_IN_HOUR = 3600L;
-      const long SECS_IN_MIN = 60L;
-      const unsigned DAYSPERWEEK = 7;
-      const unsigned YEAR0 = 1900;
-      const unsigned EPOCH_YR = 1970;
-      const long SECS_DAY = (24L * 60L * 60L);
-      const long TIME_MAX = 2147483647L;
-
-      /// @brief     LEAPYEAR
-			/// @todo need documentation
-      ///
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    bool
-      /// @param     year as T
-      ///
-      /// @date      20:2:2009   9:54
-      ///
-      template<class T>
-      bool LEAPYEAR(T year) {
-        return (!((year) % 4) && (((year) % 100) || !((year) % 400)));
-      }
-
-      static LONG _localtime;
-
-      // Is the local time in daylight savings time
-      //
-      static DWORD _isdst;
-
-      // Bias for daylight savings time
-      //
-      static int _dstBias;
-
-      // Contains the time zone string
-      //
-      static char tz_name[2][32];
-
-      static struct tm tmbuf;
-
-      // Contains the 1/1/1970 reference date/time
-      //
-      const SYSTEMTIME st1970 = {1970, 1,	4, 1, 0, 0, 0, 0};
-
-      const int _ytab[2][12] = 
-      {
-        {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
-        {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
-      };
-
-      // Contains the days of the week abreviation
-      //
-      static const char *aday[] = {
-        "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-      };
-
-      // Contains the days of the week full name
-      //
-      static const char *day[] = {
-        "Sunday", "Monday", "Tuesday", "Wednesday",
-        "Thursday", "Friday", "Saturday"
-      };
-
-      // Contains the months of the year abreviation
-      //
-      static const char *amonth[] = {
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-      };
-
-      // Contains the months of the year full name
-      //
-      static char *month[] = {
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-      };
-
-      /// @brief     Convert 100ns units since 1601 to seconds since 1970
-      ///
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    LONGLONG
-      /// @param     st as SYSTEMTIME*
-      ///
-      /// @date      11:3:2009   10:15
-      ///
-      inline LONGLONG SystemTimeToSecondsSince1970(SYSTEMTIME *st)
-      {
-        ULARGE_INTEGER	uli;
-        FILETIME		ft;
-        ULARGE_INTEGER	uli1970;
-        FILETIME		ft1970;
-
-        // convert to a FILETIME
-        // Gives number of 100-nanosecond intervals since January 1, 1601 (UTC)
-        if(!SystemTimeToFileTime(st, &ft))
-          return TIME_FAILURE;
-
-        // convert to a FILETIME
-        // Gives number of 100-nanosecond intervals since January 1, 1970 (UTC)
-        if(!SystemTimeToFileTime(&st1970, &ft1970))
-          return TIME_FAILURE;
-
-        // Copy file time structures into ularge integer so we can do
-        // the math more easily
-        memcpy(&uli, &ft, sizeof(uli));
-        memcpy(&uli1970, &ft1970, sizeof(uli1970));
-
-        // Subtract the 1970 number of 100 ns value from the 1601 100 ns value
-        // so we can get the number of 100 ns value between 1970 and now
-        // then devide be 10,000,000 to get the number of seconds since 1970
-        uli.QuadPart = ((uli.QuadPart - uli1970.QuadPart) / 10000000);
-
-        return (LONGLONG)uli.QuadPart;
-      }
-
-      /// @brief     Convert seconds since 1970 to a file time 
-			///	           in 100ns units since 1601 then to a system time.
-      ///
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    void
-      /// @param     timer as const time_t_ce * 
-      /// @param     st as SYSTEMTIME * 
-      /// @param     local as BOOLEAN 
-      ///
-      inline void SecondsSince1970ToSystemTime(const time_t_ce * timer, 
-        SYSTEMTIME * st, BOOLEAN local)
-      {
-        ULARGE_INTEGER	uli;
-        FILETIME		ft;
-        ULARGE_INTEGER	uli1970;
-        FILETIME		ft1970;
-
-        // Convert system time to file time
-        //
-        if(!SystemTimeToFileTime(&st1970, &ft1970))
-        { st = NULL; return; }
-
-        // convert hundreds of nanosecs to secs: 1 sec = 1e7 100ns
-        // Gives number of seconds since 1/1/1601 (UTC)
-        memcpy(&uli, timer, sizeof(uli));
-        memcpy(&uli1970, &ft1970, sizeof(uli1970));
-
-        // If we want local time then subtract the number of seconds between
-        // UTC and current local time
-        if (local) // Calculate 100ns since 1/1/1601 local time
-          uli.QuadPart = (((uli.QuadPart - _localtime)*10000000) + uli1970.QuadPart);
-        else // Calculate 100ns since 1/1/1601 UTC
-          uli.QuadPart = ((uli.QuadPart)*10000000 + uli1970.QuadPart);
-
-        // copy data back into the ft
-        memcpy(&ft, &uli, sizeof(uli));
-
-        // convert to a SYSTEMTIME
-        if(!FileTimeToSystemTime(&ft, st))
-        { st = NULL; return; }
-
-        return;
-      }
-
-      /// @brief     SetTz
-			/// @todo need documentation
-      ///
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    void
-      /// @param     _st as SYSTEMTIME * 
-      ///
-      /// @date      20:2:2009   9:54
-      ///
-      inline void SetTz(SYSTEMTIME *_st)
-      {
-        TIME_ZONE_INFORMATION	tz;
-        SYSTEMTIME				st = *_st;
-        FILETIME				ftDT; // Daylight savings file time
-        FILETIME				ftST; // Standard time file time
-        FILETIME				ft;   // file time to compare
-        int						i;
-
-        GetTimeZoneInformation(&tz);
-
-        // Convert current system time, daylight savings changover time
-        // and standard time to file time to see if current time is between
-        // the two dates.  If so then we are in daylight savings otherwise we
-        // are not.
-        //
-        SystemTimeToFileTime(&st, &ft);
-        tz.DaylightDate.wYear = st.wYear;
-        tz.StandardDate.wYear = st.wYear;
-        SystemTimeToFileTime(&tz.DaylightDate, &ftDT);
-        SystemTimeToFileTime(&tz.StandardDate, &ftST);
-
-        // -1 First file time is earlier than second file time. 
-        //  0 First file time is equal to second file time. 
-        //  1 First file time is later than second file time. 
-        //
-        if ((CompareFileTime(&ft,&ftDT) >= 0) && 
-					(CompareFileTime(&ft,&ftST) <= 0) )
-          _isdst = TRUE;
-        else
-          _isdst = FALSE;
-
-        // Set localtime difference in seconds from UTC
-        if (_isdst) // Adjust for Daylight Savings Time and convert to seconds
-          _localtime = (tz.Bias + tz.DaylightBias) * SECS_IN_MIN;
-        else // Convert to seconds
-          _localtime = tz.Bias * SECS_IN_MIN;
-
-        _dstBias = tz.DaylightBias;
-
-        // Set the standard and daylight strings
-        for (i=0;i<32;i++)
-        {
-          tz_name[0][i] = (char)tz.StandardName[i];
-          tz_name[1][i] = (char)tz.DaylightName[i];
-        }
-      }
-
-      /// @brief     TmToSystemTime
-			/// @todo need documentation
-      ///
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    void
-      /// @param     tmbuffer as struct tm * 
-      /// @param     st as SYSTEMTIME * 
-      ///
-      /// @date      20:2:2009   9:54
-      ///
-      inline void TmToSystemTime(struct tm * tmbuffer, SYSTEMTIME *st)
-      {
-        st->wHour = static_cast<WORD>(tmbuffer->tm_hour);
-        st->wDay = static_cast<WORD>(tmbuffer->tm_mday);
-        st->wMinute = static_cast<WORD>(tmbuffer->tm_min);
-        st->wMonth = static_cast<WORD>(tmbuffer->tm_mon + 1);
-        st->wSecond = static_cast<WORD>(tmbuffer->tm_sec);
-        st->wDayOfWeek = static_cast<WORD>(tmbuffer->tm_wday);
-        st->wYear = static_cast<WORD>(tmbuffer->tm_year + 1900);
-        st->wMilliseconds = 0;
-      }
-
-      /// @brief     mktime_ce
-			/// @todo need documentation
-      ///
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    time_t_ce
-      /// @param     tptr as struct tm * 
-      ///
-      /// @date      20:2:2009   9:54
-      ///
-      inline time_t_ce mktime_ce(struct tm *tptr)
-      {
-        SYSTEMTIME st;
-        TmToSystemTime(tptr, &st);
-        SetTz(&st);
-
-        DWORD day = 0;
-        DWORD year = 0;
-        DWORD seconds = 0;
-        DWORD overflow;
-        DWORD tm_year;
-        DWORD yday, month;
-
-        // see if seconds are < 0
-        while(tptr->tm_sec < 0)
-        {
-          // steal 60 seconds from the minutes
-          tptr->tm_sec += 60;
-          tptr->tm_min--;
-        }
-        // roll any seconds > 60 into the minutes
-        tptr->tm_min += tptr->tm_sec / 60;
-        // then crop them off
-        tptr->tm_sec %= 60;
-
-        // see if minutes are < 0
-        while(tptr->tm_min < 0)
-        {
-          // steal 60 minutes from the hours
-          tptr->tm_min += 60;
-          tptr->tm_hour--;
-        }
-        // roll any minutes > 60 into the hours
-        tptr->tm_hour += tptr->tm_min / 60;
-        // then crop them off
-        tptr->tm_min %= 60;
-
-        // see if hours are < 0
-        while(tptr->tm_hour < 0)
-        {
-          // steal 24 hours from the days
-          tptr->tm_hour += 24;
-          day--;
-        }
-        // keep any "excess" days (tm doesn't have a convenient place for this)
-        day += tptr->tm_hour / 24;
-        // crop
-        tptr->tm_hour %= 24;
-
-        // roll any months > 12 into the years
-        tptr->tm_year += tptr->tm_mon / 12;
-        // then crop the off
-        tptr->tm_mon %= 12;
-
-        // see if months are < 0
-        if (tptr->tm_mon < 0) 
-        {
-          // steal 12 months from the years
-          tptr->tm_mon += 12;
-          tptr->tm_year--;
-        }
-
-        // add number of days into the month to total day
-        day += (tptr->tm_mday - 1);
-
-        // if days are < 0 then calculate the number of days
-        // checking to see if the month is a leap year month
-        while (day < 0) 
-        {
-          // If months are < 0 then steal 12 months from number of years
-          // for the day calculation
-          if(--tptr->tm_mon < 0) 
-          {
-            tptr->tm_year--;
-            tptr->tm_mon = 11;
-          }
-          day += _ytab[LEAPYEAR(YEAR0 + tptr->tm_year)][tptr->tm_mon];
-        }
-        // if day is greater then the number of days in the month
-        // subtract the number of days in the month and adjust the 
-        // month
-        while (day >= static_cast<DWORD>(
-					_ytab[LEAPYEAR(YEAR0 + tptr->tm_year)][tptr->tm_mon])) 
-        {
-          day -= _ytab[LEAPYEAR(YEAR0 + tptr->tm_year)][tptr->tm_mon];
-          if (++(tptr->tm_mon) == 12) 
-          {
-            tptr->tm_mon = 0;
-            tptr->tm_year++;
-          }
-        }
-        tptr->tm_mday = day + 1;
-        year = EPOCH_YR;
-
-        // if year is less then 1970 then return error
-        if (static_cast<DWORD>(tptr->tm_year) < year - YEAR0) 
-					return (time_t_ce) -1;
-
-        seconds = 0;
-        day = 0;                      // Means days since day 0 now
-        overflow = 0;
-
-        // Assume that when day becomes negative, there will certainly
-        // be overflow on seconds.
-        // The check for overflow needs not to be done for leapyears
-        // divisible by 400.
-        // The code only works when year (1970) is not a leapyear.
-        tm_year = tptr->tm_year + YEAR0;
-
-        // make sure we are not past the max year for 32-bit number
-        if (TIME_MAX / 365 < tm_year - year) overflow++;
-
-        // calculate number of days since EPOCH
-        day = (tm_year - year) * 365;
-
-        if (TIME_MAX - day < (tm_year - year) / 4 + 1) overflow++;
-
-        day += (tm_year - year) / 4 + 
-					((tm_year % 4) && tm_year % 4 < year % 4);
-        day -= (tm_year - year) / 100 + 
-					((tm_year % 100) && tm_year % 100 < year % 100);
-        day += (tm_year - year) / 400 + 
-					((tm_year % 400) && tm_year % 400 < year % 400);
-
-        // setup for calculation of the yday or Julian day since Jan 1
-        yday = month = 0;
-
-        // add up the number of days for the preceding months
-        while (month < static_cast<DWORD>(tptr->tm_mon))
-        {
-          yday += _ytab[LEAPYEAR(tm_year)][month];
-          month++;
-        }
-        // add the number of days in the current month
-        yday += (tptr->tm_mday - 1);
-
-        // make sure the didn't overflow
-        if (day + yday < 0) overflow++;
-
-        day += yday;
-
-        // set the year day in the structure
-        tptr->tm_yday = yday;
-
-        // calculate the weekday
-        tptr->tm_wday = (day + 4) % 7;               // Day 0 was thursday (4)
-
-        // start the seconds calculation by totaling the hours, min, seconds
-        seconds = ((tptr->tm_hour * 60L) + tptr->tm_min) * 60L + tptr->tm_sec;
-
-        // make sure we are not going to overflow
-        if ((TIME_MAX - seconds) / SECS_DAY < day) overflow++;
-
-        // calculate the number of seconds for the number of days
-        seconds += day * SECS_DAY;
-
-        // Now adjust according to timezone and daylight saving time
-        if (((_localtime > 0) && 
-					(TIME_MAX - _localtime < static_cast<long>(seconds)))
-          || ((_localtime < 0) && (static_cast<long>(seconds) < -_localtime)))
-          overflow++;
-
-        // Adjust for local time zone
-        seconds += _localtime;
-
-        // return error if we are going to blow the max values
-        if (overflow) return (time_t_ce) -1;
-
-        if ((time_t_ce) seconds != seconds) return (time_t_ce) -1;
-
-        // return the number of seconds since EPOCH
-        return (time_t_ce) seconds;
-      }
-
-      /// @brief     Get the current time from the system clock. 
-      ///            Stores that value in timer. If timer is null, 
-      ///            the value is not stored, but it is still returned 
-      ///            by the function.
-      ///
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    time_t_ce
-      /// @param     tloc as time_t_ce * 
-      ///
-      ///
-      inline time_t_ce time_ce(time_t_ce *tloc)
-      {
-        SYSTEMTIME	st;
-        LONGLONG	secs = 0;
-
-        // Get current system time
-        GetSystemTime(&st);
-
-        // Set time zone information
-        SetTz(&st);
-
-        // convert system time to number of seconds since 1970
-        secs = SystemTimeToSecondsSince1970(&st);
-
-        // check for failure
-        if(secs == TIME_FAILURE)
-          return TIME_FAILURE;
-
-        // If tloc is not NULL, the return value is also 
-        // stored in the location to which tloc points
-        if(tloc != NULL)
-        {
-          if(IsBadWritePtr(tloc, sizeof(time_t_ce)))
-            return TIME_FAILURE;
-          memcpy(tloc, &secs, sizeof(time_t_ce));
-        }
-
-        return secs;
-      }
-
-			/// @todo need documentation
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    DWORD
-      /// @param     st as SYSTEMTIME * 
-      ///
-      /// @date      18:3:2009   13:45
-      ///
-      inline DWORD JulianDays(SYSTEMTIME * st)
-      {
-        int m = 0;
-        int y = 0;
-        double jdd = 0;
-        double jddYearStart = 0;
-
-        // Calculate the Julian day for the beginning of the year
-        m = 13;
-        y = st->wYear - 1;
-        jddYearStart = 1 + (153 * m - 457) / 5 + 365 * y + (y / 4) - (y / 100) + 
-          (y / 400) + 1721118.5;
-
-        // Calculate Julian Day for Current Date
-        if (st->wMonth >= 3)
-        {
-          m = st->wMonth;
-          y = st->wYear;
-        }
-        jdd = st->wDay + (153 * m - 457) / 5 + 365 * y + (y / 4) - (y / 100) + 
-          (y / 400) + 1721118.5;
-
-        // Subract the year start Julian date from the Current Julian date to get
-        // the number of Julian days from the year start
-        return (DWORD)(jdd - jddYearStart);
-      }
-
-			/// @todo need documentation
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    void
-      /// @param     st as SYSTEMTIME * 
-      /// @param     tmbuffer as struct tm * 
-      ///
-      /// @date      18:3:2009   13:43
-      ///
-      inline void SystemTimeToTm(SYSTEMTIME *st, struct tm * tmbuffer)
-      {
-        tmbuffer->tm_hour = st->wHour;
-        tmbuffer->tm_mday = st->wDay;
-        tmbuffer->tm_min = st->wMinute;
-        tmbuffer->tm_mon = st->wMonth - 1;
-        tmbuffer->tm_sec = st->wSecond;
-        tmbuffer->tm_wday = st->wDayOfWeek;
-				// Julian days, numer of days since Jan 1
-        tmbuffer->tm_yday = JulianDays(st);		
-        tmbuffer->tm_year = st->wYear - 1900;
-				// Is Daylight Savings Time
-        tmbuffer->tm_isdst = _isdst;			
-      }
-
-			/// @todo need documentation
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    struct tm *
-      /// @param     timer as const time_t_ce * 
-      /// @param     tmbuf as struct tm * 
-      /// @param     local as BOOLEAN 
-      ///
-      /// @date      18:3:2009   13:43
-      ///
-      inline struct tm *gmtime_r_ce(const time_t_ce *timer, 
-      struct tm *tmbuf, BOOLEAN local)
-      {
-        SYSTEMTIME	st;
-
-        SecondsSince1970ToSystemTime(timer, &st, local);
-        SetTz(&st);
-        if(_isdst) {
-          SecondsSince1970ToSystemTime(timer, &st, local);
-        }
-
-        // copy SYSTEMTIME data to tm structure
-        SystemTimeToTm(&st, tmbuf);
-
-        return tmbuf;
-      }
-
-			/// @todo need documentation
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    struct tm *
-      /// @param     timer as const time_t_ce * 
-      /// @param     tmbuf as struct tm * 
-      ///
-      /// @date      18:3:2009   13:40
-      ///
-      inline struct tm *localtime_r_ce(const time_t_ce *timer, 
-      struct tm *tmbuf)
-      {
-        return gmtime_r_ce(timer, tmbuf, TRUE);
-      }
-
-			/// @todo need documentation
-      /// <BR>qualifier
-      /// <BR>access    public  
-      /// @return    struct tm*
-      /// @param     timer as const time_t_ce * 
-      ///
-      /// @date      18:3:2009   13:40
-      ///
-      inline struct tm* localtime_ce(const time_t_ce* timer)
-      { return localtime_r_ce(timer, &tmbuf); }
-    }
-
-		/// @todo need documentation
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    db::string
-    /// @param     d as const time_t_ce & 
-    ///
-    /// @date      18:2:2009   11:44
-    ///
-    inline string to_sql_string(const time_t_ce& d) 
-    {
-      tm* _tm(0);
-      _tm = time::localtime_ce(&d);
-      ostringstream ss;
-      if (!_tm)
-        return ss.str();
-      ss << std::setw(2) << std::setfill(_T('0'))
-        << _tm->tm_mday << _T(".")
-        << std::setw(2) << std::setfill(_T('0')) 
-        << _tm->tm_mon
-        << _T(".") << _tm->tm_year << _T(" ")
-        << _tm->tm_hour << _T(":") << _tm->tm_min << _T(":")
-        << _tm->tm_sec;
-      return ss.str();
-    }
-
-		/// @todo need documentation
-    /// <BR>qualifier
-    /// <BR>access    public static  
-    /// @return    db::time_t_ce
-    /// @param     s as const string & 
-    /// @param     tmp as const time_t_ce * 
-    ///
-    /// @date      19:3:2009   10:32
-    ///
-    inline time_t_ce from_sql_string(
-			  const string& s
-			, const time_t_ce* tmp = 0) 
-    {
-			/// @todo replace UNREFERENCED_PARAMETER
-      UNREFERENCED_PARAMETER(tmp);
-      tm _tm = {0};
-      int err = _stscanf(s.c_str(), _T("%d.%d.%d %d:%d:%d"), 
-        &_tm.tm_mday, &_tm.tm_mon, &_tm.tm_year,
-        &_tm.tm_hour, &_tm.tm_min, &_tm.tm_sec);
-			/// @todo replace UNREFERENCED_PARAMETER
-      UNREFERENCED_PARAMETER(err);
-      return time::mktime_ce(&_tm);
-    }
-
-#endif
-
-    /// @brief     replace_all
-		/// @todo need documentation
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    typename S::size_type
-    /// @param     s as S & 
-    /// @param     from as const S & 
-    /// @param     to as const S & 
-    ///
-    /// @date      20:2:2009   9:53
-    ///
-    template<typename S>
-    inline typename S::size_type replace_all(S& s, const S& from, const S& to)
-    {
-      typedef typename S::size_type st;
-      st cnt(S::npos);
-
-      if(from != to && !from.empty()) {
-        st pos1(0), pos2(0);
-        const st from_len(from.size()), to_len(to.size());
-        cnt = 0;
-
-        while((pos1 = s.find(from, pos2)) != S::npos) {
-          s.replace(pos1, from_len, to);
-          pos2 = pos1 + to_len;
-          ++cnt;
-        }
-      }
-
-      return cnt;
-    }
-
-    /// @brief     erase_all
-		/// @todo need documentation
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    typename S::size_type
-    /// @param     s as S & 
-    /// @param     from as const S & 
-    ///
-    /// @date      20:2:2009   9:53
-    ///
-    template<typename S>
-    inline typename S::size_type erase_all(S& s, const S& from)
-    {
-      return replace_all<S>(s, from, _T(""));
-    }
-
-    /// @brief     replace_all_copy
-		/// @todo need documentation
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    S
-    /// @param     s as const S & 
-    /// @param     from as const S & 
-    /// @param     to as const S & 
-    ///
-    /// @date      20:2:2009   9:52
-    ///
-    template<typename S>
-    inline S replace_all_copy(const S& s, const S& from, const S& to)
-    {
-      S ret(s);
-      replace_all<S>(ret, from, to);
-      return ret;
-    }
-
-    /// @brief     erase_all_copy
-		/// @todo need documentation
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    S
-    /// @param     s as const S & 
-    /// @param     from as const S & 
-    ///
-    /// @date      20:2:2009   9:52
-    ///
-    template<typename S>
-    inline S erase_all_copy(const S& s, const S& from)
-    {
-      S ret(s);
-      replace_all<S>(ret, from, _T(""));
-      return ret;
-    }
-
-    /// @brief     to_string
-		/// @todo need documentation
-    ///
-    /// <BR>access    public  
-    /// @return    db::string
-    /// @param     a as T 
-    ///
-    /// @date      20:2:2009   9:52
-    ///
-    template<class T> 
-    inline string to_string(const T& a) 
-    { ostringstream ost; ost << a; return ost.str(); }   
-
-
-		/// @todo need documentation
-    /// @brief        to_type
-    ///
-    /// @return       typename T
-    /// @param        a as const string &
-    ///
-    /// @date         9.3.2010 9:16
-    ///
-    template<typename T> 
-    inline typename T to_type(const string& a) 
-    { istringstream ost(a); T ret; ost >> ret; return ret; }   
-
-    /// @brief        to_string
-		/// @todo need documentation
-    ///
-    /// @return       db::string
-    /// @param        a as const double &
-    ///
-    /// @date         9.3.2010 9:16
-    ///
-    template<> 
-    inline string to_string(const double& a) 
-    { 
-			ostringstream ost; 
-			ost << std::setprecision(16) << a; 
-			return ost.str(); 
-		}   
-
-    /// @brief        specialise
-    ///
-    /// @return       db::string
-    /// @param        a as const bool &
-    ///
-    /// @date         9.3.2010 9:16
-    ///
-    template<> 
-    inline string to_string(const bool& a) 
-    { return string(a?_T("1"):_T("0")); } 
-
-    /// @brief        specialise
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return       db::string
-    /// @param        a as const string &
-    ///
-    /// @date         9.3.2010 9:17
-    ///
-    template<> 
-    inline string to_string(const string& a) 
-    { return a; }   
-
-#ifdef _MFC_VER
-    /// @brief        specialise
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return       db::string
-    /// @param        a as const CString &
-    ///
-    /// @date         9.3.2010 9:17
-    ///
-    template<> 
-    inline string to_string(const CString& a) 
-    { return string(a); }   
-
-    ///
-		/// @todo need documentation
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    db::string
-    /// @param     d as const COleDateTime & 
-    ///
-    /// @date      19:3:2009   10:28
-    ///
-    inline string to_sql_string(const COleDateTime& d) 
-    {
-      ostringstream ss;
-      ss << std::setw(2) << std::setfill(_T('0'))
-        << d.GetDay() << _T(".")
-        << std::setw(2) << std::setfill(_T('0')) 
-        << d.GetMonth()
-        << _T(".") << d.GetYear() << _T(" ")
-        << d.GetHour() << _T(":") << d.GetMinute() << _T(":")
-        << d.GetSecond();
-      return ss.str();
-    }
-
-		/// @todo need documentation
-		/// <BR>qualifier
-    /// <BR>access    public static  
-    /// @return    COleDateTime
-    /// @param     s as const string & 
-    /// @param     tmp as const COleDateTime * 
-    ///
-    /// @date      19:3:2009   10:33
-    ///
-    static COleDateTime from_sql_string(const string& s, 
-      const COleDateTime *tmp=0) 
-    {
-			/// @todo replace UNREFERENCED_PARAMETER
-      UNREFERENCED_PARAMETER(tmp);
-      COleDateTime ret;
-      tm _tm = {0};
-      int err = _stscanf(s.c_str(), _T("%d.%d.%d %d:%d:%d"), 
-        &_tm.tm_mday, &_tm.tm_mon, &_tm.tm_year,
-        &_tm.tm_hour, &_tm.tm_min, &_tm.tm_sec);
-			/// @todo replace UNREFERENCED_PARAMETER
-      UNREFERENCED_PARAMETER(err);
-      ret.SetDateTime(_tm.tm_year, _tm.tm_mon, _tm.tm_mday, 
-        _tm.tm_hour, _tm.tm_min, _tm.tm_sec);
-      if (ret.GetStatus()==COleDateTime::invalid)
-        ret = to_type<double>(s);
-      return ret;
-    }
-#endif // _MFCVER
-
-    /// @brief     front_back_delim
-		/// @todo need documentation
-    ///
-    /// <BR>qualifier
-    /// <BR>access    protected  
-    /// @return    void
-    /// @param     sText as T & 
-    /// @param     delim1 as const T & 
-    /// @param     delim2 as const T & 
-    ///
-    /// @date      20:2:2009   9:08
-    ///
-    template<class T> 
-    inline void front_back_delim(T& sText, const T& delim1, const T& delim2)
-    { sText = delim1 + sText + delim2; }
-
-    inline string escape_sql(const string& str)
-    { 
-      if (str == _T("NULL"))
-        return str;
-
-      string ret(detail::replace_all_copy<string>(str, 
-        _T("\'NULL\'"), _T("NULL")));
-      ret = detail::replace_all_copy<string>(str, _T("'"), _T("''"));
-      ret = _T("'") + ret + _T("'");
-      return ret;
-    }  
-  }
-
   /// @enum  db::param_types
   /// @brief Parameter Typen 
   enum param_types
@@ -1258,50 +167,50 @@ namespace db
     /// exception thrown when a record is not found
     class not_found : public base {
     public:
-      not_found(const string& s=_T("")) : base(_T("NotFound: ")+s){}
+      not_found(const string& s=DB_TEXT("")) : base(DB_TEXT("NotFound: ")+s){}
     };
     
 		/// exception thrown when database cannot be accessed
     class db_error : public base {
     public:
-      db_error(const string& m=_T("")) : base(_T("Database Error: ")+m){}
+      db_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Database Error: ")+m){}
     };
     
 		/// exception thrown when SQL statement cannot be executed
     class sql_error : public base {
     public:
-      sql_error(const string& m=_T("")) : base(_T("SQL Error: ")+m){}
+      sql_error(const string& m=DB_TEXT("")) : base(DB_TEXT("SQL Error: ")+m){}
     };
     
 		/// exception thrown when Param handling get failed
     class param_error : public base {
     public:
-      param_error(const string& m=_T("")) : base(_T("Param Error: ")+m){}
+      param_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Param Error: ")+m){}
     };
     
 		/// exception thrown when backend produces internal error
     class internal_error : public base {
     public:
-      internal_error(const string& m=_T("")) : base(_T("Internal Error: ")+m){}
+      internal_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Internal Error: ")+m){}
     };
     
 		/// exception thrown when backend cannot allocate memory
     class memory_error : public base {
     public:
-      memory_error(const string& m=_T("")) : base(_T("Allocation failed: ")+m){}
+      memory_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Allocation failed: ")+m){}
     };
     
 		/// exception thrown when database (disk) is full
     class insertion_error : public base {
     public:
-      insertion_error(const string& m=_T("")) : base(_T("Database full: ")+m){}
+      insertion_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Database full: ")+m){}
     };
     
 		/// exception thrown when none of other exceptions match
     class unknown_error : public base {
       // handles the rest
     public:
-      unknown_error(const string& m=_T("")) : base(_T("Unknown Error: ")+m){}
+      unknown_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Unknown Error: ")+m){}
     };
   }
 
@@ -1338,7 +247,7 @@ namespace db
         if(i->second.length()!=0)
           res += i->second;
         else
-          res += _T("NULL");
+          res += DB_TEXT("NULL");
       }
       return res; 
     }
@@ -1432,7 +341,7 @@ namespace db
 
     string fullName() const { 
       if (table().length()>0) 
-        return  table() + _T(".") + name(); 
+        return  table() + DB_TEXT(".") + name(); 
       else
         return  name(); }
 
@@ -1510,7 +419,7 @@ namespace db
       : std::vector<string>(data) {}
 
     ///from string. split to parts using delimeter
-    split(string s, string delim=_T(" "))
+    split(string s, string delim=DB_TEXT(" "))
     {
       if (s.length()==0)
         return;
@@ -1520,7 +429,7 @@ namespace db
       pointers.push_back(ptr);
       while((ptr = _tcsstr(ptr, delim.c_str()))) 
       {
-        *ptr = _T('\0');
+        *ptr = DB_TEXT('\0');
         ptr += len;
         pointers.push_back(ptr);
       }
@@ -1600,7 +509,7 @@ namespace db
       ///
       /// @date      18:2:2009   11:16
       ///
-      virtual string str() const { return _T("True"); }
+      virtual string str() const { return DB_TEXT("True"); }
 
       /// @brief     operator string
       ///
@@ -1683,8 +592,8 @@ namespace db
       /// @date      20:2:2009   12:55
       ///
       virtual string str() const {
-        string res = _T("(") + e1.str() + _T(") ") + op 
-          + _T(" (") + e2.str() + _T(")");
+        string res = DB_TEXT("(") + e1.str() + DB_TEXT(") ") + op 
+          + DB_TEXT(" (") + e2.str() + DB_TEXT(")");
         return res;
       }
     };  
@@ -1694,7 +603,7 @@ namespace db
     public:
       /// @brief     connects 2 expressions with the AND operator
       ///
-      /// <BR>qualifier : connective(_T("and"), e1_, e2_)
+      /// <BR>qualifier : connective(DB_TEXT("and"), e1_, e2_)
       /// <BR>access    public  
       /// @return    
       /// @param     e1_ as const base &
@@ -1703,7 +612,7 @@ namespace db
       /// @date      18:2:2009   11:22
       ///
       explicit and(const base & e1_, const base & e2_) : 
-      connective(_T("and"), e1_, e2_) {}
+      connective(DB_TEXT("and"), e1_, e2_) {}
 
       /// @brief     str
       ///
@@ -1714,9 +623,9 @@ namespace db
       /// @date      20:2:2009   12:56
       ///
       virtual string str() const {     
-        if (e1.str() == _T("True"))
+        if (e1.str() == DB_TEXT("True"))
           return e2.str();
-        else if (e2.str() == _T("True"))
+        else if (e2.str() == DB_TEXT("True"))
           return e1.str();
         else
           return connective::str();
@@ -1728,7 +637,7 @@ namespace db
     public:
       /// @brief     connects 2 expressions with the OR operator
       ///
-      /// <BR>qualifier : connective(_T("or"), e1_, e2_)
+      /// <BR>qualifier : connective(DB_TEXT("or"), e1_, e2_)
       /// <BR>access    public  
       /// @return    
       /// @param     e1_ as const base &
@@ -1737,7 +646,7 @@ namespace db
       /// @date      18:2:2009   11:22
       ///
       explicit or(const base & e1_, const base & e2_) 
-        : connective(_T("or"), e1_, e2_) {}
+        : connective(DB_TEXT("or"), e1_, e2_) {}
 
       /// @brief     str
       ///
@@ -1748,10 +657,10 @@ namespace db
       /// @date      20:2:2009   12:56
       ///
       virtual string str() const {
-        if (e1.str() == _T("True"))
-          return _T("True");
-        else if (e2.str() == _T("True"))
-          return _T("True");
+        if (e1.str() == DB_TEXT("True"))
+          return DB_TEXT("True");
+        else if (e2.str() == DB_TEXT("True"))
+          return DB_TEXT("True");
         else
           return connective::str();
       }
@@ -1782,7 +691,7 @@ namespace db
       /// @date      20:2:2009   12:57
       ///
       virtual string str() const {    
-        return _T("not (")+exp.str()+_T(")");
+        return DB_TEXT("not (")+exp.str()+DB_TEXT(")");
       }
 
     };
@@ -1840,7 +749,7 @@ namespace db
 
       template<typename T>
       explicit oper(const field & fld, const string& o, const T& d) 
-        : _field(fld), op(o), data(_T("0")), 
+        : _field(fld), op(o), data(DB_TEXT("0")), 
         escape(check_escape(_field.type())) 
       {
         data = detail::to_string(d);
@@ -1875,7 +784,7 @@ namespace db
       ///
       virtual string str() const {
         string res;
-        res += _field.fullName() + _T(" ") + op + _T(" ") + 
+        res += _field.fullName() + DB_TEXT(" ") + op + DB_TEXT(" ") + 
           (escape ? detail::escape_sql(data) : data);
         return res;
       }
@@ -1886,7 +795,7 @@ namespace db
     public:
       /// @brief     ==, is equal operator
       ///
-      /// <BR>qualifier : oper<typename T>(fld, _T("="), d)
+      /// <BR>qualifier : oper<typename T>(fld, DB_TEXT("="), d)
       /// <BR>access    public  
       /// @return    
       /// @param     fld as const field &
@@ -1896,7 +805,7 @@ namespace db
       ///
       template<typename T>
       explicit eq(const field & fld, const T& d)
-        : oper(fld, _T("="), d) 
+        : oper(fld, DB_TEXT("="), d) 
       {}
     };
 
@@ -1905,7 +814,7 @@ namespace db
     public:
       /// @brief     not_eq
       ///
-      /// <BR>qualifier : oper(fld, _T("<>"), d)
+      /// <BR>qualifier : oper(fld, DB_TEXT("<>"), d)
       /// <BR>access    public  
       /// @return    
       /// @param     fld as const field &
@@ -1915,7 +824,7 @@ namespace db
       ///
       template<typename T>
       explicit not_eq(const field & fld, const T& d)
-        : oper(fld, _T("<>"), d) 
+        : oper(fld, DB_TEXT("<>"), d) 
       {}
     };
 
@@ -1924,7 +833,7 @@ namespace db
     public:
       /// @brief     gt
       ///
-      /// <BR>qualifier : oper(fld, _T(">"), d)
+      /// <BR>qualifier : oper(fld, DB_TEXT(">"), d)
       /// <BR>access    public  
       /// @return    
       /// @param     fld as const field &
@@ -1934,7 +843,7 @@ namespace db
       ///
       template<typename T>
       explicit gt(const field & fld, const T& d)
-        : oper(fld, _T(">"), d) 
+        : oper(fld, DB_TEXT(">"), d) 
       {}
     };
 
@@ -1943,7 +852,7 @@ namespace db
     public:
       /// @brief     gt_eq
       ///
-      /// <BR>qualifier : oper(fld, _T(">="), d)
+      /// <BR>qualifier : oper(fld, DB_TEXT(">="), d)
       /// <BR>access    public  
       /// @return    
       /// @param     fld as const field &
@@ -1953,7 +862,7 @@ namespace db
       ///
       template<typename T>
       explicit gt_eq(const field & fld, const T& d)
-        : oper(fld, _T(">="), d) 
+        : oper(fld, DB_TEXT(">="), d) 
       {}
     };
 
@@ -1962,7 +871,7 @@ namespace db
     public:
       /// @brief     lt
       ///
-      /// <BR>qualifier : oper(fld, _T("<"), d)
+      /// <BR>qualifier : oper(fld, DB_TEXT("<"), d)
       /// <BR>access    public  
       /// @return    
       /// @param     fld as const field &
@@ -1972,7 +881,7 @@ namespace db
       ///
       template<typename T>
       explicit lt(const field & fld, const T& d)
-        : oper(fld, _T("<"), d) 
+        : oper(fld, DB_TEXT("<"), d) 
       {}
     };
 
@@ -1981,7 +890,7 @@ namespace db
     public:
       /// @brief     lt_eq
       ///
-      /// <BR>qualifier : oper(fld, _T("<="), d)
+      /// <BR>qualifier : oper(fld, DB_TEXT("<="), d)
       /// <BR>access    public  
       /// @return    
       /// @param     fld as const field &
@@ -1991,7 +900,7 @@ namespace db
       ///
       template<typename T>
       explicit lt_eq(const field & fld, const T& d)
-        : oper(fld, _T("<="), d) 
+        : oper(fld, DB_TEXT("<="), d) 
       {}
     };
 
@@ -2000,7 +909,7 @@ namespace db
     public:
       /// @brief     like
       ///
-      /// <BR>qualifier : oper(fld, _T("LIKE"), d)
+      /// <BR>qualifier : oper(fld, DB_TEXT("LIKE"), d)
       /// <BR>access    public  
       /// @return    
       /// @param     fld as const field &
@@ -2009,7 +918,7 @@ namespace db
       /// @date      20:2:2009   13:00
       ///
       explicit like(const field & fld, const string& d)
-        : oper(fld, _T("LIKE"), d) 
+        : oper(fld, DB_TEXT("LIKE"), d) 
       {}
     };
 
@@ -2018,7 +927,7 @@ namespace db
     public:
       /// @brief     in
       ///
-      /// <BR>qualifier : oper(fld, _T("IN"), _T("(")+set+_T(")"))
+      /// <BR>qualifier : oper(fld, DB_TEXT("IN"), DB_TEXT("(")+set+DB_TEXT(")"))
       /// <BR>access    public  
       /// @return    
       /// @param     fld as const field &
@@ -2027,7 +936,7 @@ namespace db
       /// @date      20:2:2009   13:01
       ///
       explicit in(const field & fld, const string& set)
-        : oper(fld, _T("IN"), _T("(")+set+_T(")")) 
+        : oper(fld, DB_TEXT("IN"), DB_TEXT("(")+set+DB_TEXT(")")) 
       {}
 
       /// @brief     in
@@ -2051,7 +960,7 @@ namespace db
       /// @date      20:2:2009   13:01
       ///
       virtual string str() const 
-      { return _field.fullName() + _T(" ") + op + _T(" ") + data; }
+      { return _field.fullName() + DB_TEXT(" ") + op + DB_TEXT(" ") + data; }
 
     };
   }
@@ -2076,7 +985,7 @@ namespace db
     /// @date      20:2:2009   14:36
     ///
     param() : _type(e_null), _is_changed(false)
-    { _data = _T(""); }
+    { _data = DB_TEXT(""); }
   public:
     /// @brief     param
     ///
@@ -2088,7 +997,7 @@ namespace db
     /// @date      20:2:2009   14:36
     ///
     param(unsigned col) : _col(col), _type(e_null), _is_changed(false)
-    { _data = _T(""); }
+    { _data = DB_TEXT(""); }
 
     /// @brief     ~param
     ///
@@ -2202,37 +1111,37 @@ namespace db
     void set(bool dat)
     { 
       _type = e_bool;
-      _data = dat ? _T("TRUE") : _T("FALSE");
+      _data = dat ? DB_TEXT("TRUE") : DB_TEXT("FALSE");
     } 
     ///gesetzt als int
     void set(int dat)
     { 
       _type = e_int;
-      _data = boost::str(format(_T("%d")) % dat);
+      _data = boost::str(format(DB_TEXT("%d")) % dat);
     } 
     ///gesetzt als unsigned
     void set(unsigned dat)
     { 
       _type = e_unsigned;
-      _data = boost::str(format(_T("%d")) % dat);
+      _data = boost::str(format(DB_TEXT("%d")) % dat);
     } 
     ///gesetzt als long
     void set(long dat)
     { 
       _type = e_long;
-      _data = boost::str(format(_T("%ld")) % dat);
+      _data = boost::str(format(DB_TEXT("%ld")) % dat);
     } 
     ///gesetzt als float
     void set(float dat)
     { 
       _type = e_float;
-      _data = boost::str(format(_T("%f")) % dat);
+      _data = boost::str(format(DB_TEXT("%f")) % dat);
     } 
     ///gesetzt als double
     void set(double dat)
     { 
       _type = e_double;
-      _data = boost::str(format(_T("%f")) % dat);
+      _data = boost::str(format(DB_TEXT("%f")) % dat);
     } 
     ///gesetzt als char
     void set(char dat)
@@ -2277,7 +1186,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:39
     ///
-    void set_null() { _type=e_null; _data = _T(""); }
+    void set_null() { _type=e_null; _data = DB_TEXT(""); }
 
     /// @brief     set_with_old_type
     ///
@@ -2349,7 +1258,7 @@ namespace db
     bool get_bool() const
     {
       if (_type == e_bool)
-        return _data == _T("TRUE") ? true : false;
+        return _data == DB_TEXT("TRUE") ? true : false;
       else
         return false; 
     } 
@@ -2425,7 +1334,7 @@ namespace db
     TCHAR get_char() const 
     {
       if (_data.length()==0)
-        return _T(' ');
+        return DB_TEXT(' ');
       else
         return _data[0];
     }
@@ -2880,7 +1789,7 @@ namespace db
       if (iField<_field.size())
         return _field[iField].name();
       else
-        return _T("");
+        return DB_TEXT("");
     }
     const field* getFieldInfo(unsigned iField) const  
     { 
@@ -2944,21 +1853,21 @@ namespace db
   public:
     /// @brief     sel
     ///
-    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(_T("True")), 
-    ///              _delim1(_T("")), _delim2(_T(""))
+    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(DB_TEXT("True")), 
+    ///              _delim1(DB_TEXT("")), _delim2(DB_TEXT(""))
     /// <BR>access    public  
     /// @return    
     ///
     /// @date      20:2:2009   14:03
     ///
     sel() : _distinct(false), _limit(0), _offset(0), 
-      _where(_T("True")), _delim1(_T("")), _delim2(_T(""))
+      _where(DB_TEXT("True")), _delim1(DB_TEXT("")), _delim2(DB_TEXT(""))
     {}
 
     /// @brief     sel
     ///
-    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(_T("True")), 
-    ///              _delim1(_T("")), _delim2(_T(""))
+    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(DB_TEXT("True")), 
+    ///              _delim1(DB_TEXT("")), _delim2(DB_TEXT(""))
     /// <BR>access    public  
     /// @return    
     /// @param     tablename as const string & 
@@ -2966,12 +1875,12 @@ namespace db
     /// @date      20:2:2009   14:03
     ///
     sel(const string& tablename) : _distinct(false), _limit(0), _offset(0), 
-      _where(_T("True")), _delim1(_T("")), _delim2(_T(""))
+      _where(DB_TEXT("True")), _delim1(DB_TEXT("")), _delim2(DB_TEXT(""))
     { source(tablename); }
 
     /// @brief     sel
     ///
-    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(_T("True")), 
+    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(DB_TEXT("True")), 
     ///              _delim1(delim), _delim2(delim)
     /// <BR>access    public  
     /// @return    
@@ -2981,13 +1890,13 @@ namespace db
     /// @date      20:2:2009   14:03
     ///
     sel(const string& tablename, const string& delim) : _distinct(false), 
-      _limit(0), _offset(0), _where(_T("True")), _delim1(delim), 
+      _limit(0), _offset(0), _where(DB_TEXT("True")), _delim1(delim), 
       _delim2(delim)
     { source(tablename); }
 
     /// @brief     sel
     ///
-    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(_T("True")), 
+    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(DB_TEXT("True")), 
     ///              _delim1(delim1), _delim2(delim2)
     /// <BR>access    public  
     /// @return    
@@ -2999,7 +1908,7 @@ namespace db
     ///
     sel(const string& tablename, const string& delim1, 
       const string& delim2) : _distinct(false), 
-      _limit(0), _offset(0), _where(_T("True")), _delim1(delim1), 
+      _limit(0), _offset(0), _where(DB_TEXT("True")), _delim1(delim1), 
       _delim2(delim2)
     { source(tablename); }
 
@@ -3162,10 +2071,10 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & result_no_delim(string r, string alias=_T(""))
+    virtual sel & result_no_delim(string r, string alias=DB_TEXT(""))
     { 
       if (alias.length())
-        r += _T(" AS ") + alias;
+        r += DB_TEXT(" AS ") + alias;
       _results.push_back(r); 
       return *this;
     }
@@ -3180,11 +2089,11 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & result(string r, string alias=_T(""))
+    virtual sel & result(string r, string alias=DB_TEXT(""))
     { 
       if (alias.length())
-        r += _T(" AS ") + alias;
-      if (r!=_T("*")) 
+        r += DB_TEXT(" AS ") + alias;
+      if (r!=DB_TEXT("*")) 
         detail::front_back_delim(r, _delim1, _delim2);
       _results.push_back(r); 
       return *this;
@@ -3200,16 +2109,16 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & result_max(string r, string alias=_T(""))
+    virtual sel & result_max(string r, string alias=DB_TEXT(""))
     { 
-      r = _T("MAX(")+r;
-      r += _T(")");
-      if (r!=_T("*")) 
+      r = DB_TEXT("MAX(")+r;
+      r += DB_TEXT(")");
+      if (r!=DB_TEXT("*")) 
         detail::front_back_delim(r, _delim1, _delim2);
       if (alias.length())
       {
         detail::front_back_delim(alias, _delim1, _delim2);
-        r += _T(" AS ") + alias;
+        r += DB_TEXT(" AS ") + alias;
       }
       _results.push_back(r); 
       return *this;
@@ -3240,13 +2149,13 @@ namespace db
     ///
     /// @date      20:2:2009   14:01
     ///
-    virtual sel & source(string s, string alias=_T(""))
+    virtual sel & source(string s, string alias=DB_TEXT(""))
     {
       detail::front_back_delim(s, _delim1, _delim2);
       if (alias.length())
       {
         detail::front_back_delim(alias, _delim1, _delim2);
-        s += _T(" AS ") + alias;
+        s += DB_TEXT(" AS ") + alias;
       }
       _sources.push_back(s);
       return *this;
@@ -3343,7 +2252,7 @@ namespace db
       string value = ob;
       detail::front_back_delim(value, _delim1, _delim2);
       if (!ascending)
-        value += _T(" DESC");
+        value += DB_TEXT(" DESC");
       _orderBy.push_back(value); 
       return *this;
     }
@@ -3359,32 +2268,32 @@ namespace db
     virtual operator string() const
     {
       ostringstream res;
-      res << _T("SELECT ");
+      res << DB_TEXT("SELECT ");
       if (_distinct)
-        res << _T("DISTINCT ");
-      res << _results.join(_T(","));
-      res << _T(" FROM ");
-      res << _sources.join(_T(","));
+        res << DB_TEXT("DISTINCT ");
+      res << _results.join(DB_TEXT(","));
+      res << DB_TEXT(" FROM ");
+      res << _sources.join(DB_TEXT(","));
       
       if (_join.first.table().length()!=0 && 
           _join.second.table().length()!=0 && 
           _sources.size()==1)
-        res << _T(" INNER JOIN ") << _join.first.table() << _T(" ON ") << 
-          _join.first.fullName() << _T(" = ") << _join.second.fullName() << 
-          _T(" ");
+        res << DB_TEXT(" INNER JOIN ") << _join.first.table() << DB_TEXT(" ON ") << 
+          _join.first.fullName() << DB_TEXT(" = ") << _join.second.fullName() << 
+          DB_TEXT(" ");
       
-      if (_where != _T("True"))
-        res << _T(" WHERE ") << _where;
+      if (_where != DB_TEXT("True"))
+        res << DB_TEXT(" WHERE ") << _where;
       if (_groupBy.size() > 0)
-        res << _T(" GROUP BY ") << _groupBy.join(_T(","));
+        res << DB_TEXT(" GROUP BY ") << _groupBy.join(DB_TEXT(","));
       if (_having.length())
-        res << _T(" HAVING ") << _having;
+        res << DB_TEXT(" HAVING ") << _having;
       if (_orderBy.size() > 0)
-        res << _T(" ORDER BY ") << _orderBy.join(_T(","));
+        res << DB_TEXT(" ORDER BY ") << _orderBy.join(DB_TEXT(","));
       if (_limit) 
-        res << _T(" LIMIT ") << string(detail::to_string(_limit));
+        res << DB_TEXT(" LIMIT ") << string(detail::to_string(_limit));
       if (_offset) 
-        res << _T(" OFFSET ") << string(detail::to_string(_offset));
+        res << DB_TEXT(" OFFSET ") << string(detail::to_string(_offset));
 
       string ret(res.str());
       detail::replace_all(ret, _delim1+_delim1, _delim1);
@@ -3420,20 +2329,20 @@ namespace db
     ///
     virtual operator string() const
     {
-      string res = _T("DELETE FROM ");
-      res += _sources.join(_T(","));
-      if (_where != _T("True"))
-        res += _T(" WHERE ") + _where;
+      string res = DB_TEXT("DELETE FROM ");
+      res += _sources.join(DB_TEXT(","));
+      if (_where != DB_TEXT("True"))
+        res += DB_TEXT(" WHERE ") + _where;
       if (_groupBy.size() > 0)
-        res += _T(" GROUP BY ") + _groupBy.join(_T(","));
+        res += DB_TEXT(" GROUP BY ") + _groupBy.join(DB_TEXT(","));
       if (_having.length())
-        res += _T(" HAVING ") + _having;
+        res += DB_TEXT(" HAVING ") + _having;
       if (_orderBy.size() > 0)
-        res += _T(" ORDER BY ") + _orderBy.join(_T(","));
+        res += DB_TEXT(" ORDER BY ") + _orderBy.join(DB_TEXT(","));
       if (_limit) 
-        res += _T(" LIMIT ") + string(detail::to_string(_limit));
+        res += DB_TEXT(" LIMIT ") + string(detail::to_string(_limit));
       if (_offset) 
-        res += _T(" OFFSET ") + string(detail::to_string(_offset));
+        res += DB_TEXT(" OFFSET ") + string(detail::to_string(_offset));
 
       detail::replace_all(res, _delim1+_delim1, _delim1);
       if (_delim1!=_delim2)
@@ -3558,14 +2467,14 @@ namespace db
     {
       string sV(v->str());
       if (sV.length()==0)
-        sV = _T("NULL");
+        sV = DB_TEXT("NULL");
       else
         switch(v->get_type()) 
       {
         case e_string:
         case e_date_time:
-          sV = _T("'") + sV;
-          sV += _T("'");
+          sV = DB_TEXT("'") + sV;
+          sV += DB_TEXT("'");
           break;
       }
       detail::front_back_delim(t, _delim1, _delim2);
@@ -3592,11 +2501,11 @@ namespace db
       case e_blob:
       case e_string:
       case e_date_time:
-        detail::erase_all<string>(v, _T("'"));
-        detail::erase_all<string>(v, _T("`"));
-        detail::erase_all<string>(v, _T("´"));
-        v = _T("'") + v;
-        v += _T("'");
+        detail::erase_all<string>(v, DB_TEXT("'"));
+        detail::erase_all<string>(v, DB_TEXT("`"));
+        detail::erase_all<string>(v, DB_TEXT("´"));
+        v = DB_TEXT("'") + v;
+        v += DB_TEXT("'");
         break;
       }
       detail::front_back_delim(t, _delim1, _delim2);
@@ -3639,16 +2548,16 @@ namespace db
     ///
     string str() const 
     {       
-      string res = _T("INSERT INTO ");
+      string res = DB_TEXT("INSERT INTO ");
       res += _source;
 
       if (_values.size() > 0)
       {
-        res += _T(" (");
-        res += _values.join_fields(_T(","));
-        res += _T(") VALUES (");
-        res += _values.join_values(_T(","));
-        res += _T(")");
+        res += DB_TEXT(" (");
+        res += _values.join_fields(DB_TEXT(","));
+        res += DB_TEXT(") VALUES (");
+        res += _values.join_values(DB_TEXT(","));
+        res += DB_TEXT(")");
       }
       return res;
     }
@@ -3677,19 +2586,19 @@ namespace db
 
     /// @brief     upd
     ///
-    /// <BR>qualifier : table(t), _where(_T("True"))
+    /// <BR>qualifier : table(t), _where(DB_TEXT("True"))
     /// <BR>access    public  
     /// @return    
     /// @param     t as const string &
     ///
     /// @date      20:2:2009   11:15
     ///
-    upd(const string& t) : table(t), _where(_T("True")) 
+    upd(const string& t) : table(t), _where(DB_TEXT("True")) 
     { }
 
     /// @brief     upd
     ///
-    /// <BR>qualifier : table(t), _where(_T("True")), _delim1(d), _delim2(d)
+    /// <BR>qualifier : table(t), _where(DB_TEXT("True")), _delim1(d), _delim2(d)
     /// <BR>access    public  
     /// @return    
     /// @param     t as const string &
@@ -3698,12 +2607,12 @@ namespace db
     /// @date      20:2:2009   11:15
     ///
     upd(const string& t, const string& d) : table(t), 
-      _where(_T("True")), _delim1(d), _delim2(d) 
+      _where(DB_TEXT("True")), _delim1(d), _delim2(d) 
     { }
 
     /// @brief     upd
     ///
-    /// <BR>qualifier : table(t), _where(_T("True")), _delim1(d1), _delim2(d2)
+    /// <BR>qualifier : table(t), _where(DB_TEXT("True")), _delim1(d1), _delim2(d2)
     /// <BR>access    public  
     /// @return    
     /// @param     t as const string &
@@ -3713,7 +2622,7 @@ namespace db
     /// @date      20:2:2009   11:15
     ///
     upd(const string& t, const string& d1, const string& d2) : table(t), 
-      _where(_T("True")), _delim1(d1), _delim2(d2) 
+      _where(DB_TEXT("True")), _delim1(d1), _delim2(d2) 
     { }
 
     /// @brief     where
@@ -3816,13 +2725,13 @@ namespace db
     ///
     string str() const 
     {
-      string q = _T("UPDATE ") + table + _T(" SET ");
+      string q = DB_TEXT("UPDATE ") + table + DB_TEXT(" SET ");
       split sets;
       for (size_t i = 0; i < fields.size(); i++)
-        sets.push_back(fields[i] + _T("=") + values[i]);
-      q += sets.join(_T(","));
+        sets.push_back(fields[i] + DB_TEXT("=") + values[i]);
+      q += sets.join(DB_TEXT(","));
       if (_where.length())
-        q += _T(" WHERE ") + _where;
+        q += DB_TEXT(" WHERE ") + _where;
       return q;
     }
   };
@@ -3922,7 +2831,7 @@ namespace db
     inline void throw_error(int status) 
     {
       string err(boost::str(
-        format(_T("%d=status code : %s")) % 
+        format(DB_TEXT("%d=status code : %s")) % 
           status % sqlite3_errmsg(_db)));
       switch(status) 
       {
@@ -3930,7 +2839,7 @@ namespace db
       case SQLITE_INTERNAL: throw exception::internal_error(err);
       case SQLITE_NOMEM: throw exception::memory_error(err);
       case SQLITE_FULL: throw exception::insertion_error(err);
-      default: throw exception::unknown_error(_T("compile failed: ") + err);
+      default: throw exception::unknown_error(DB_TEXT("compile failed: ") + err);
       }
     } 
 
@@ -4614,7 +3523,7 @@ inline db::expr::like db::field::Like(const string& s)
 { return expr::like(*this, s); }
 
 inline db::expr::in::in(const db::field & fld, const db::sel& s) : 
-  oper(fld, _T("in"), _T("(") + s.str() + _T(")")) 
+  oper(fld, DB_TEXT("in"), DB_TEXT("(") + s.str() + DB_TEXT(")")) 
 {
 }
 

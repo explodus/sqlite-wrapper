@@ -10,6 +10,11 @@ SET( sqlite_wrapper_header_top
 	${SQLITE_WRAPPER_INCLUDE_DIR}/db.hpp
 	)
 
+SET( sqlite_wrapper_header_detail
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/time.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/tools.hpp
+	)
+
 SET( sqlite3_header_top
 	${SQLITE_WRAPPER_INCLUDE_DIR}/sqlite/sqlite3.h
 	${SQLITE_WRAPPER_INCLUDE_DIR}/sqlite/sqlite3ext.h
@@ -17,7 +22,14 @@ SET( sqlite3_header_top
 
 SOURCE_GROUP( "Header Files" FILES
 	${sqlite_wrapper_header_top}
+	)
+
+SOURCE_GROUP( "Header Files\\sqlite3" FILES
 	${sqlite3_header_top}
+	)
+
+SOURCE_GROUP( "Header Files\\detail" FILES
+	${sqlite_wrapper_header_detail}
 	)
 
 SET( sqlite_wrapper_source_top
@@ -35,6 +47,7 @@ SOURCE_GROUP( "Source Files" FILES
 
 SET( sqlite_wrapper_header
 	${sqlite_wrapper_header_top}
+	${sqlite_wrapper_header_detail}
 	)
 
 SET( sqlite_wrapper_header
@@ -55,6 +68,7 @@ ENDFOREACH()
 
 SET( sqlite_wrapper_header
 	${sqlite_wrapper_header_top}
+	${sqlite_wrapper_header_detail}
 	${sqlite3_header_top}
 	)
 
