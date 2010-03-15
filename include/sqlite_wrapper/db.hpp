@@ -967,9 +967,9 @@ namespace db
 
   ///dynamic parameter class*/
   class param 
-#ifndef BOOST_NO_STD_LOCALE
-    : sigb::trackable
-#endif // _DEBUG
+//#ifndef BOOST_NO_STD_LOCALE
+//    : sigb::trackable
+//#endif // _DEBUG
   {
     string _data;
     param_types _type;

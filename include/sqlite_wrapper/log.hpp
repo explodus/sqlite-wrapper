@@ -89,9 +89,9 @@ namespace db { namespace log {
 					db::ostringstream s_cr;
 					s_cr 
 						<< DB_TEXT("CREATE TABLE IF NOT EXISTS ") 
-						<< DB_TEXT("log(id as integer autoincrement")
-						<< DB_TEXT(", date_time as text")
-						<< DB_TEXT(", msg as text);");
+						<< DB_TEXT("log(id integer PRIMARY KEY AUTOINCREMENT")
+						<< DB_TEXT(", date_time text")
+						<< DB_TEXT(", msg text);");
 					db_.execute_ptr(s_cr.str());
 				}
 			}
