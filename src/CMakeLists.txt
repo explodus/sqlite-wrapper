@@ -8,6 +8,7 @@
 SET( sqlite_wrapper_header_top
 	${SQLITE_WRAPPER_INCLUDE_DIR}/config.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/db.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/log.hpp
 	)
 
 SET( sqlite_wrapper_header_detail
