@@ -53,7 +53,7 @@ namespace db { namespace log {
 		class basic : private boost::noncopyable
 		{
 		public:
-			typename db::ostream& output_stream() 
+			db::ostream& output_stream() 
 			{ return db::cout; }
 
 			typedef boost::shared_ptr< basic > ptr;
@@ -185,7 +185,8 @@ namespace db { namespace log {
 			static void do_format(
 				OutputStream& stream
 				, size_t indent
-				, const db::string& data)
+				, const db::string& data
+				,	db::log::level lvl = db::log::log_undef)
 			{
 				for (size_t i(0); i<indent; ++i)
 					stream << DB_TEXT(' ');
@@ -202,7 +203,8 @@ namespace db { namespace log {
 			static void do_format(
 				  OutputStream& stream
 				, size_t indent
-				, const T& data)
+				, const T& data
+				,	db::log::level lvl = db::log::log_undef)
 			{
 				for (size_t i(0); i<indent; ++i)
 					stream << DB_TEXT(' ');

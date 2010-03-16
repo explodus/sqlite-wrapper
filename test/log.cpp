@@ -17,12 +17,12 @@
 
 typedef db::log::base
 <
-  db::log::provider::basic<db::log::buffer::file<db::ofstream> >
+  db::log::provider::basic<db::log::buffer::basic >
 , db::log::format::basic 
 > 
 log_type;
 
-log_type log_instance
+log_type instance
 (
 	boost::make_shared
 	<
@@ -33,14 +33,17 @@ log_type log_instance
 		<
 			db::log::buffer::basic
 		>
-		(
-			DB_TEXT("log.log")
-		)
+		( )
 	)
 );
 
 int main( int argc, char **argv )
 {
+	// set to debug level
+	db::log::global_level = db::log::log_debug;
+
+	db::log::scope<log_type> scope_(instance, DB_TEXT("main()"));
+
 
 }
 
