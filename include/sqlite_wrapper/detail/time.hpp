@@ -27,9 +27,39 @@
 
 #include <sqlite_wrapper/config.hpp>
 
+namespace db { namespace detail {
+
+	/// @todo need documentation
+	///
+	/// <BR>qualifier
+	/// <BR>access    public 
+	/// 
+	/// @return       db::string
+	/// @param        _tm as const tm *
+	///
+	/// @date         16.3.2010 21:26
+	/// 
+	inline string to_sql_string(const tm* _tm) 
+	{
+		ostringstream ss;
+		if (!_tm)
+			return ss.str();
+		ss << std::setw(2) << std::setfill(DB_TEXT('0'))
+			<< _tm->tm_mday << DB_TEXT(".")
+			<< std::setw(2) << std::setfill(DB_TEXT('0')) 
+			<< _tm->tm_mon
+			<< DB_TEXT(".") << 1900+_tm->tm_year << DB_TEXT(" ")
+			<< _tm->tm_hour << DB_TEXT(":") << _tm->tm_min << DB_TEXT(":")
+			<< _tm->tm_sec;
+		return ss.str();
+	}
+
+} }
+
 #ifndef BOOST_NO_STD_LOCALE
 
 #include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 namespace db { namespace detail 
 {
@@ -52,6 +82,22 @@ namespace db { namespace detail
 			<< std::setw(2) << std::setfill(DB_TEXT('0')) 
 			<< ymd.day;
 		return ss.str();
+	}
+
+	/// @todo need documentation
+	///
+	/// <BR>qualifier
+	/// <BR>access    public 
+	/// 
+	/// @return       db::string
+	/// @param        t as boost::posix_time::ptime &
+	///
+	/// @date         16.3.2010 21:20
+	/// 
+	inline string to_sql_string(boost::posix_time::ptime& t) 
+	{
+		tm pt_tm = boost::posix_time::to_tm(t);
+		return to_sql_string(&pt_tm);
 	}
 
 } }
@@ -665,19 +711,9 @@ namespace db
 		///
 		inline string to_sql_string(const time_t_ce& d) 
 		{
-		tm* _tm(0);
-		_tm = time::localtime_ce(&d);
-		ostringstream ss;
-		if (!_tm)
-			return ss.str();
-		ss << std::setw(2) << std::setfill(DB_TEXT('0'))
-			<< _tm->tm_mday << DB_TEXT(".")
-			<< std::setw(2) << std::setfill(DB_TEXT('0')) 
-			<< _tm->tm_mon
-			<< DB_TEXT(".") << _tm->tm_year << DB_TEXT(" ")
-			<< _tm->tm_hour << DB_TEXT(":") << _tm->tm_min << DB_TEXT(":")
-			<< _tm->tm_sec;
-		return ss.str();
+			tm* _tm(0);
+			_tm = time::localtime_ce(&d);
+			return to_sql_string(_tm);
 		}
 
 		/// @todo need documentation
