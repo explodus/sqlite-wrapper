@@ -50,17 +50,19 @@ namespace db { namespace log {
 	namespace buffer
 	{
 		/// Simplest buffer.
-		template<typename T = db::ostream>
 		class basic : private boost::noncopyable
 		{
 		public:
-			typename T& output_stream() 
+			typename db::ostream& output_stream() 
 			{ return db::cout; }
 
 			typedef boost::shared_ptr< basic > ptr;
 		};
 
 		/// Simplest file buffer.
+		///
+		/// @tparam T normally as db::ostream
+		///
 		template<typename T = db::ostream>
 		class file : private boost::noncopyable
 		{
