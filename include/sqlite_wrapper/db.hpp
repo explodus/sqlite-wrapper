@@ -45,452 +45,193 @@
 
 #include "detail/time.hpp"
 #include "detail/tools.hpp"
+#include "detail/param.hpp"
+#include "detail/exception.hpp"
+#include "detail/field.hpp"
 
 namespace db
 {
-  /// @enum  db::param_types
-  /// @brief Parameter Typen 
-  enum param_types
-  {
-    e_null,       //!< \a null type
-    e_bool,       //!< \a boolean type
-    e_int,        //!< \a integer type
-    e_unsigned,   //!< \a unsigned integer type
-    e_long,       //!< \a long type
-    e_float,      //!< \a float type
-    e_double,     //!< \a double type
-    e_char,       //!< \a char type
-    e_string,     //!< \a std::string type
-    e_blob,       //!< \a blob type (big string)
-    e_date_time   //!< \a boost::gregorian::date type
-  }; 
+	namespace expr
+	{
+		class base;
+		class connective;
+		class in;
+		class and;
+		class or;
+		class not;
+		class not_eq;
+		class eq;
+		class lt;
+		class lt_eq;
+		class gt;
+		class gt_eq;
+		class like;
+	}
 
-  inline param_types tp(const bool&)
-  { return e_bool; }
-  inline param_types tp(const int&)
-  { return e_int; }
-  inline param_types tp(const unsigned&)
-  { return e_unsigned; }
-  inline param_types tp(const long&)
-  { return e_long; }
-  inline param_types tp(const float&)
-  { return e_float; }
-  inline param_types tp(const double&)
-  { return e_double; }
-  inline param_types tp(const char&)
-  { return e_char; }
-  inline param_types tp(const std::string&, bool blob=false)
-  { return blob?e_blob:e_string; }
-  inline param_types tp(const std::wstring&, bool blob=false)
-  { return blob?e_blob:e_string; }
-#ifndef BOOST_NO_STD_LOCALE
-  inline param_types tp(const boost::gregorian::date &)
-  { return e_date_time; } 
-#else
-  inline param_types tp(const time_t_ce &)
-  { return e_date_time; } 
-#endif
-
-	/// @brief Parameter Extras
-  enum field_extra
-  {
-    e_nullExtra         = 0,  //!< null extra
-    eFixedField         = 2,  //!< Feld mit fester Größe (numerischer Typ)
-    eVariableField      = 4,  //!< variables Feld (textlicher Typ)
-    eAutoIncrField      = 8,  //!< automatisch erhöhendes Feld
-    eUpdatableField     = 16, //!< veränderbares Feld
-    eRequiredField      = 32, //!< benötigtes Feld
-    eZeroLengthAllowed  = 64  //!< Nulllänge erlaubt
-  };
-
-  class split;
-  class param;
   class row;
   class query;
   class base;
-  namespace expr
-  {
-    class base;
-    class connective;
-    class in;
-    class and;
-    class or;
-    class not;
-    class not_eq;
-    class eq;
-    class lt;
-    class lt_eq;
-    class gt;
-    class gt_eq;
-    class like;
-  }
-  class sel;
+	class sel;
   class del;
   class ins;
   class upd;
   class field;
 
-  namespace exception
-  {
-    /// exception basis interface
-    class base
-    {
-    private:
-      string _msg; 
-    public:
-      base(const string& msg)  : _msg(msg) 
-      { }
-      base(const base& _That)  : _msg(_That._msg) 
-      { }
-      virtual ~base() {}
-
-      virtual base& operator=(const base& _That)
-      {
-        _msg = _That._msg;
-        return *this;
-      }
-
-      const TCHAR* what() { return _msg.c_str(); }
-
-#ifdef _UNICODE
-      virtual void report() { std::wcout << _msg << L"\n"; }
-#else
-      virtual void report() { std::cout << _msg << "\n"; }
-#endif // _UNICODE
-
-      friend ostream &operator<<(ostream &os, base &e) {
-        os << e._msg;
-        return os;
-      } 
-    };
-
-    /// exception thrown when a record is not found
-    class not_found : public base {
-    public:
-      not_found(const string& s=DB_TEXT("")) : base(DB_TEXT("NotFound: ")+s){}
-    };
-    
-		/// exception thrown when database cannot be accessed
-    class db_error : public base {
-    public:
-      db_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Database Error: ")+m){}
-    };
-    
-		/// exception thrown when SQL statement cannot be executed
-    class sql_error : public base {
-    public:
-      sql_error(const string& m=DB_TEXT("")) : base(DB_TEXT("SQL Error: ")+m){}
-    };
-    
-		/// exception thrown when Param handling get failed
-    class param_error : public base {
-    public:
-      param_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Param Error: ")+m){}
-    };
-    
-		/// exception thrown when backend produces internal error
-    class internal_error : public base {
-    public:
-      internal_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Internal Error: ")+m){}
-    };
-    
-		/// exception thrown when backend cannot allocate memory
-    class memory_error : public base {
-    public:
-      memory_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Allocation failed: ")+m){}
-    };
-    
-		/// exception thrown when database (disk) is full
-    class insertion_error : public base {
-    public:
-      insertion_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Database full: ")+m){}
-    };
-    
-		/// exception thrown when none of other exceptions match
-    class unknown_error : public base {
-      // handles the rest
-    public:
-      unknown_error(const string& m=DB_TEXT("")) : base(DB_TEXT("Unknown Error: ")+m){}
-    };
-  }
-
-  /// splitmap basis
-  class split_map : public std::map<string, string> 
-  {
-  public:
-    /// empty splitmap
-    split_map() {}
-    /// from map
-    split_map(std::map<string, string>& data) 
-      : std::map<string, string>(data) {}
-
-    /// gibt Text zurück mit eingefügtem Abgrenzer
-    string join_fields(string delim) const
-    {
-      string res;
-      for (const_iterator i = begin(); i != end(); i++)
-      {
-        if (i != begin())
-          res += delim;
-        res += i->first;
-      }
-      return res; 
-    }
-
-    string join_values(string delim) const
-    {
-      string res;
-      for (const_iterator i = begin(); i != end(); i++)
-      {
-        if (i != begin())
-          res += delim;
-        if(i->second.length()!=0)
-          res += i->second;
-        else
-          res += DB_TEXT("NULL");
-      }
-      return res; 
-    }
-  };
-
 	/// fieldtype interface
-  class field 
-  {
-  public:
-    typedef std::vector< std::pair<string, string> > Values;
-  protected:
-    string _name, _table, _sourcename;
-    param_types _type;
-    unsigned _extra;
-    Values _values;
-    long _length;
-  public:
-    /// @brief     field
+	class field 
+	{
+	public:
+		typedef std::vector< std::pair<string, string> > Values;
+	protected:
+		string _name, _table, _sourcename;
+		param_types _type;
+		unsigned _extra;
+		Values _values;
+		long _length;
+	public:
+		/// @brief     field
 		/// @todo need documentation
-    ///
-    /// <BR>qualifier : _name(n), _type(t), _extra(e_nullExtra), _length(-1)
-    /// <BR>access    public  
-    /// @return    
-    /// @param     n as const string & 
-    /// @param     t as const param_types & 
-    ///
-    /// @date      20:2:2009   11:03
-    ///
-    explicit field(const string& n, 
-      const param_types& t=e_long)
-      : _name(n), _type(t), _extra(e_nullExtra), _length(-1) {}
+		///
+		/// <BR>qualifier : _name(n), _type(t), _extra(e_nullExtra), _length(-1)
+		/// <BR>access    public  
+		/// @return    
+		/// @param     n as const string & 
+		/// @param     t as const param_types & 
+		///
+		/// @date      20:2:2009   11:03
+		///
+		explicit field(const string& n, 
+			const param_types& t=e_long)
+			: _name(n), _type(t), _extra(e_nullExtra), _length(-1) {}
 
-    /// @brief     field
-    ///
-    /// <BR>qualifier : _name(n), _type(tp(val)), _extra(e_nullExtra), _length(-1)
-    /// <BR>access    public  
-    /// @return    
-    /// @param     n as const string & 
-    /// @param     val as const T & 
-    ///
-    /// @date      20:2:2009   11:03
-    ///
-    template<typename T>
-    explicit field(const string& n, const T& val)
-      : _name(n), _type(tp(val)), _extra(e_nullExtra), _length(-1) 
-    {
-      _values.push_back(Values::value_type(n, detail::to_string(val))); 
-    }
+		/// @brief     field
+		///
+		/// <BR>qualifier : _name(n), _type(tp(val)), _extra(e_nullExtra), _length(-1)
+		/// <BR>access    public  
+		/// @return    
+		/// @param     n as const string & 
+		/// @param     val as const T & 
+		///
+		/// @date      20:2:2009   11:03
+		///
+		template<typename T>
+		explicit field(const string& n, const T& val)
+			: _name(n), _type(tp(val)), _extra(e_nullExtra), _length(-1) 
+		{
+			_values.push_back(Values::value_type(n, detail::to_string(val))); 
+		}
 
-    /// @brief     field
-    ///
-    /// <BR>qualifier : _name(n_tbl.first), _type(t), _table(n_tbl.second), 
-    ///              _values(vals), _extra(e_nullExtra), _length(-1)
-    /// <BR>access    public  
-    /// @return    
-    /// @param     n_tbl as const string_pair & 
-    /// @param     t as const param_types & 
-    /// @param     vals as const Values & 
-    ///
-    /// @date      6:8:2009   12:57
-    ///
-    explicit field(const string_pair& n_tbl,
-      const param_types& t=e_long, 
-      const Values& vals = Values())
-      : _name(n_tbl.first), _type(t), _table(n_tbl.second), _values(vals), 
-      _extra(e_nullExtra), _length(-1) {}
+		/// @brief     field
+		///
+		/// <BR>qualifier : _name(n_tbl.first), _type(t), _table(n_tbl.second), 
+		///              _values(vals), _extra(e_nullExtra), _length(-1)
+		/// <BR>access    public  
+		/// @return    
+		/// @param     n_tbl as const string_pair & 
+		/// @param     t as const param_types & 
+		/// @param     vals as const Values & 
+		///
+		/// @date      6:8:2009   12:57
+		///
+		explicit field(const string_pair& n_tbl,
+			const param_types& t=e_long, 
+			const Values& vals = Values())
+			: _name(n_tbl.first), _type(t), _table(n_tbl.second), _values(vals), 
+			_extra(e_nullExtra), _length(-1) {}
 
-    /// @brief     field
-    ///
-    /// <BR>qualifier : _name(f._name), _type(f._type), _table(f._table), 
-    ///              _values(f._values), _extra(f._extra), _length(f._length)
-    /// <BR>access    public  
-    /// @return    
-    /// @param     f as const field &
-    ///
-    /// @date      6:8:2009   10:56
-    ///
-    field(const field& f)
-      : _name(f._name), _type(f._type), _table(f._table), _values(f._values), 
-      _extra(f._extra), _length(f._length) {}
-    
-    /// @brief     field
-    ///
-    /// <BR>qualifier : _type(e_long), _extra(e_nullExtra), _length(-1)
-    /// <BR>access    public  
-    /// @return    
-    ///
-    /// @date      6:8:2009   11:30
-    ///
-    field() : _type(e_long), _extra(e_nullExtra), _length(-1) {}
+		/// @brief     field
+		///
+		/// <BR>qualifier : _name(f._name), _type(f._type), _table(f._table), 
+		///              _values(f._values), _extra(f._extra), _length(f._length)
+		/// <BR>access    public  
+		/// @return    
+		/// @param     f as const field &
+		///
+		/// @date      6:8:2009   10:56
+		///
+		field(const field& f)
+			: _name(f._name), _type(f._type), _table(f._table), _values(f._values), 
+			_extra(f._extra), _length(f._length) {}
 
-    string fullName() const { 
-      if (table().length()>0) 
-        return  table() + DB_TEXT(".") + name(); 
-      else
-        return  name(); }
+		/// @brief     field
+		///
+		/// <BR>qualifier : _type(e_long), _extra(e_nullExtra), _length(-1)
+		/// <BR>access    public  
+		/// @return    
+		///
+		/// @date      6:8:2009   11:30
+		///
+		field() : _type(e_long), _extra(e_nullExtra), _length(-1) {}
 
-    ~field() {}
+		string fullName() const { 
+			if (table().length()>0) 
+				return  table() + DB_TEXT(".") + name(); 
+			else
+				return  name(); }
 
-    string      name()        const { return _name; }
-    string      sourcename()  const { return _sourcename; }
-    param_types type()        const { return _type; }
-    string      table()       const { return _table; }
-    const long& length()      const { return _length; }
+		~field() {}
 
-    field&      set_type(param_types type) { _type = type; return *this; }
-    void        set_table(const string& table) { _table = table; }
-    void        set_sourcename(const string& sourcename) 
-    {_sourcename = sourcename;}
-    void        set_length(const long& len) { _length = len; }
-    bool        has_extra(field_extra extra) const 
-    { return ((_extra&extra)==1); }
-    void        add_extra(field_extra extra) { 
-      if(!(_extra&extra)) 
-        _extra |= extra; 
-    }
-    void        remove_extra(field_extra extra) { 
-      if(_extra&extra) 
-        _extra &= ~extra; 
-    }
+		string      name()        const { return _name; }
+		string      sourcename()  const { return _sourcename; }
+		param_types type()        const { return _type; }
+		string      table()       const { return _table; }
+		const long& length()      const { return _length; }
 
-    /// @brief     values
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    Values&
-    ///
-    /// @date      20:2:2009   14:26
-    ///
-    Values& values() { return _values; }
+		field&      set_type(param_types type) { _type = type; return *this; }
+		void        set_table(const string& table) { _table = table; }
+		void        set_sourcename(const string& sourcename) 
+		{_sourcename = sourcename;}
+		void        set_length(const long& len) { _length = len; }
+		bool        has_extra(field_extra extra) const 
+		{ return ((_extra&extra)==1); }
+		void        add_extra(field_extra extra) { 
+			if(!(_extra&extra)) 
+				_extra |= extra; 
+		}
+		void        remove_extra(field_extra extra) { 
+			if(_extra&extra) 
+				_extra &= ~extra; 
+		}
 
 		/// @brief     values
-    ///
-    /// <BR>qualifier const
-    /// <BR>access    public  
-    /// @return    const Values&
-    ///
-    /// @date      20:2:2009   14:26
-    ///
-    const Values& values() const { return _values; }
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return    Values&
+		///
+		/// @date      20:2:2009   14:26
+		///
+		Values& values() { return _values; }
 
-    inline expr::in In(const string& set) const;
+		/// @brief     values
+		///
+		/// <BR>qualifier const
+		/// <BR>access    public  
+		/// @return    const Values&
+		///
+		/// @date      20:2:2009   14:26
+		///
+		const Values& values() const { return _values; }
 
-    inline expr::in In(const sel& sel) const;
+		expr::in In(const string& set) const;
 
-    inline expr::like Like(const string& s);
+		expr::in In(const sel& sel) const;
 
-    bool operator==(const field & fd) const {
-      return fd.fullName() == fullName();
-    }
-    bool operator!=(const field & fd) const {
-      return ! (*this == fd);
-    }
-  };
-  typedef boost::detail::allocator::partial_std_allocator_wrapper<
-    boost::detail::quick_allocator<field > > alloc_field; 
+		expr::like Like(const string& s);
 
-  typedef std::pair<field, field> field_pair;
+		bool operator==(const field & fd) const 
+		{
+			return fd.fullName() == fullName();
+		}
+		bool operator!=(const field & fd) const 
+		{
+			return ! (*this == fd);
+		}
+	};
+	typedef boost::detail::allocator::partial_std_allocator_wrapper<
+		boost::detail::quick_allocator<field > > alloc_field; 
 
-  ///split basis
-  class split : public std::vector<string> 
-  {
-  public:
-    ///empty split
-    split() {}
-
-    ///from string vector
-    split(std::vector<string> data) 
-      : std::vector<string>(data) {}
-
-    ///from string. split to parts using delimeter
-    split(string s, string delim=DB_TEXT(" "))
-    {
-      if (s.length()==0)
-        return;
-      TCHAR *ptr(&*s.begin());
-      int len(delim.length());
-      std::vector<TCHAR*> pointers;
-      pointers.push_back(ptr);
-      while((ptr = _tcsstr(ptr, delim.c_str()))) 
-      {
-        *ptr = DB_TEXT('\0');
-        ptr += len;
-        pointers.push_back(ptr);
-      }
-      for (std::vector<TCHAR*>::iterator i(pointers.begin()), 
-        e(pointers.end()); i != e; ++i)
-        push_back(string(*i));
-    }
-
-		/// @todo to englisch
-		/// @brief        Gibt eine Teilmenge von Texten zurück
-		///								Indexe können negativ sein. 
-		///								Aktueller Index is dann berechnet vom Ende von split.
-    ///
-    /// <BR>qualifier const
-    /// <BR>access    public  
-    /// @return       db::split
-    /// @param        start as int - Startindex
-    /// @param        end as int - Endindex
-    ///
-    /// @author       Torsten Schroeder
-    /// @author       schroeder@ipe-chemnitz.de / explodus@gmx.de
-    /// @date         12.3.2010 8:30
-    ///
-    split slice(int start, int end) const
-    {
-      std::vector<string> data;
-      if (start < 0)
-        start = start+size();
-      if (end < 0)
-        end = end+size();
-      if (start >= static_cast<int>(size()))
-        start = size()-1;
-      if (end >= static_cast<int>(size()))
-        end = size()-1;
-      if (start >= end)
-        return data;
-      for (int i = start; i < end; i++)
-        data.push_back(this->operator[](i));
-      return data; 
-    }
-
-    ///gibt Text zurück mit eingefügtem Abgrenzer
-    string join(string delim) const
-    {
-      string res;
-      for (const_iterator i = begin(); i != end(); i++)
-      {
-        if (i != begin())
-          res += delim;
-        res += *i;
-      }
-      return res; 
-    }
-    ///Fügt Ausdrücke ans Ende eines anderen split an
-    split & extend(const split & s)
-    {
-      for (size_t i = 0; i < s.size(); i++)
-        push_back(s[i]);
-      return *this; 
-    }
-  }; 
+	typedef std::pair<field, field> field_pair;
 
   namespace expr
   {

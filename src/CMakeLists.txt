@@ -14,6 +14,9 @@ SET( sqlite_wrapper_header_top
 SET( sqlite_wrapper_header_detail
 	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/time.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/tools.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/param.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/exception.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/field.hpp
 	)
 
 SET( sqlite3_header_top

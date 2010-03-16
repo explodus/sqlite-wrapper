@@ -291,4 +291,131 @@ namespace db { namespace detail
 
 } }
 
+namespace db 
+{
+	/// splitmap basis
+	class split_map : public std::map<string, string> 
+	{
+	public:
+		/// empty splitmap
+		split_map() {}
+		/// from map
+		split_map(std::map<string, string>& data) 
+			: std::map<string, string>(data) {}
+
+		/// gibt Text zurück mit eingefügtem Abgrenzer
+		string join_fields(string delim) const
+		{
+			string res;
+			for (const_iterator i = begin(); i != end(); i++)
+			{
+				if (i != begin())
+					res += delim;
+				res += i->first;
+			}
+			return res; 
+		}
+
+		string join_values(string delim) const
+		{
+			string res;
+			for (const_iterator i = begin(); i != end(); i++)
+			{
+				if (i != begin())
+					res += delim;
+				if(i->second.length()!=0)
+					res += i->second;
+				else
+					res += DB_TEXT("NULL");
+			}
+			return res; 
+		}
+	};
+
+	///split basis
+	class split : public std::vector<string> 
+	{
+	public:
+		///empty split
+		split() {}
+
+		///from string vector
+		split(std::vector<string> data) 
+			: std::vector<string>(data) {}
+
+		///from string. split to parts using delimeter
+		split(string s, string delim=DB_TEXT(" "))
+		{
+			if (s.length()==0)
+				return;
+			TCHAR *ptr(&*s.begin());
+			int len(delim.length());
+			std::vector<TCHAR*> pointers;
+			pointers.push_back(ptr);
+			while((ptr = _tcsstr(ptr, delim.c_str()))) 
+			{
+				*ptr = DB_TEXT('\0');
+				ptr += len;
+				pointers.push_back(ptr);
+			}
+			for (std::vector<TCHAR*>::iterator i(pointers.begin()), 
+				e(pointers.end()); i != e; ++i)
+				push_back(string(*i));
+		}
+
+		/// @todo to englisch
+		/// @brief        Gibt eine Teilmenge von Texten zurück
+		///								Indexe können negativ sein. 
+		///								Aktueller Index is dann berechnet vom Ende von split.
+		///
+		/// <BR>qualifier const
+		/// <BR>access    public  
+		/// @return       db::split
+		/// @param        start as int - Startindex
+		/// @param        end as int - Endindex
+		///
+		/// @author       Torsten Schroeder
+		/// @author       schroeder@ipe-chemnitz.de / explodus@gmx.de
+		/// @date         12.3.2010 8:30
+		///
+		split slice(int start, int end) const
+		{
+			std::vector<string> data;
+			if (start < 0)
+				start = start+size();
+			if (end < 0)
+				end = end+size();
+			if (start >= static_cast<int>(size()))
+				start = size()-1;
+			if (end >= static_cast<int>(size()))
+				end = size()-1;
+			if (start >= end)
+				return data;
+			for (int i = start; i < end; i++)
+				data.push_back(this->operator[](i));
+			return data; 
+		}
+
+		///gibt Text zurück mit eingefügtem Abgrenzer
+		string join(string delim) const
+		{
+			string res;
+			for (const_iterator i = begin(); i != end(); i++)
+			{
+				if (i != begin())
+					res += delim;
+				res += *i;
+			}
+			return res; 
+		}
+		///Fügt Ausdrücke ans Ende eines anderen split an
+		split & extend(const split & s)
+		{
+			for (size_t i = 0; i < s.size(); i++)
+				push_back(s[i]);
+			return *this; 
+		}
+	}; 
+}
+
 #endif // DB_DETAIL_HPP_INCLUDED
