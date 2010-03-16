@@ -33,6 +33,20 @@
 
 namespace db { namespace log {
 
+	/// @brief Logging level definitions.
+	enum level
+	{
+		log_undef    =0, //!< undefined level
+		log_critical,    //!< critical conditions
+		log_error,       //!< error conditions
+		log_warning,     //!< warning conditions
+		log_notice,      //!< normal, but significant, condition
+		log_info,        //!< informational
+		log_debug        //!< debug level messages
+	};
+
+	extern level global_level;
+
 	namespace buffer
 	{
 		/// Simplest buffer.
@@ -88,9 +102,10 @@ namespace db { namespace log {
 				{
 					db::ostringstream s_cr;
 					s_cr 
-						<< DB_TEXT("CREATE TABLE IF NOT EXISTS ") 
-						<< DB_TEXT("log(id integer PRIMARY KEY AUTOINCREMENT")
+						<< DB_TEXT("create table if not exists ") 
+						<< DB_TEXT("log(id integer primary key autoincrement")
 						<< DB_TEXT(", date_time text")
+						<< DB_TEXT(", level integer")
 						<< DB_TEXT(", msg text);");
 					db_.execute_ptr(s_cr.str());
 				}
@@ -235,11 +250,13 @@ namespace db { namespace log {
 			static void do_format(
 				  Database& db_
 				, size_t indent
-				, const T& data)
+				, const T& data
+				,	db::log::level lvl = db::log::log_undef)
 			{
 				db_.execute_ptr((
 					  db::ins(DB_TEXT("log"))
 					% db::field(DB_TEXT("date_time"), get_akt_time())
+					% db::field(DB_TEXT("level"), static_cast<unsigned>(lvl))
 					% db::field(DB_TEXT("msg"), db::detail::to_string(data))));
 			}
 
@@ -257,22 +274,6 @@ namespace db { namespace log {
 
 	}
 
-	/*! @enum LogLevel
-	Logging level definitions.
-	*/
-	enum level
-	{
-		log_undef    =0, //!< undefined level
-		log_critical,    //!< critical conditions
-		log_error,       //!< error conditions
-		log_warning,     //!< warning conditions
-		log_notice,      //!< normal, but significant, condition
-		log_info,        //!< informational
-		log_debug        //!< debug level messages
-	};
-
-	extern level global_level;
-
 	/// Provides logging functionality.
 	/// The log class template provides logging functionality.
 	template 
@@ -284,6 +285,7 @@ namespace db { namespace log {
 	{
 		/// Construct a log.
 		base() : boost::noncopyable()
+			, last_level_(db::log::log_undef)
 		{ }
 
 	public:
@@ -298,7 +300,9 @@ namespace db { namespace log {
 
 		/// Construct a log.
 		base(const provider_ptr_type& io_provider)
-			: boost::noncopyable() , provider_(io_provider)
+			: boost::noncopyable()
+			, provider_(io_provider)
+			, last_level_(db::log::log_undef)
 		{
 		}
 
@@ -324,19 +328,28 @@ namespace db { namespace log {
 			provider_->decrease_indent();
 		}
 
+		base& operator << (const level& data)
+		{
+			last_level_ = data;
+			return *this;
+		}
+
 		template <typename T>
 		base& operator << (const T& data)
 		{
 			formatter_type::do_format(
 				  provider_->get_buffer()->output_stream()
 				, provider_->indent()
-				, data);
+				, data
+				, last_level_);
 			return *this;
 		}
 
 	private:
 		/// The provider of output streams utilized by the log.
 		provider_ptr_type provider_;
+
+		level last_level_;
 	};
 
 	/// 
@@ -359,14 +372,23 @@ namespace db { namespace log {
 			, last_level_(lvl)
 		{
 			if (last_level_ <= global_level)
-				base_ << 
+				base_ << last_level_ << 
 					log_type::formatter_type::decorate_message(msg); 
 		}
 
 		bool operator()(const db::string& msg) const
 		{
 			if (last_level_ <= global_level)
-				base_ << log_type::formatter_type::decorate_message(msg);
+				base_ << last_level_ << 
+					log_type::formatter_type::decorate_message(msg);
+			return true;
+		}
+
+		bool operator()(const level& lvl, const db::string& msg) const
+		{
+			if (lvl <= global_level)
+				base_ << lvl << 
+					log_type::formatter_type::decorate_message(msg);
 			return true;
 		}
 	};
@@ -393,6 +415,7 @@ namespace db { namespace log {
 		///								log_scope will use to display its content
 		/// @param        scope_message as const db::string & - The scope's
 		///								message. It usually includes scope name.
+		/// @param        lvl as const level
 		///
 		/// @date         15.3.2010 10:51
 		///
@@ -407,7 +430,7 @@ namespace db { namespace log {
 		{
 			if (last_level_ <= global_level)
 			{
-				log_ << 
+				log_ << last_level_ <<
 					log_type::formatter_type::decorate_scope_open(message_);
 				log_.increase_indent();
 			}
@@ -426,7 +449,7 @@ namespace db { namespace log {
 			if (last_level_ <= global_level)
 			{
 				log_.decrease_indent();
-				log_ << 
+				log_ << last_level_ <<
 					log_type::formatter_type::decorate_scope_close(message_);
 			}
 		}

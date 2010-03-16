@@ -1455,10 +1455,10 @@ namespace db
     bool operator== (const param& v) const 
     { return (!(*this) && (!v) && _data == v._data); }
 
-#ifndef BOOST_NO_STD_LOCALE
-    typedef boost::signal2<void, const string&, bool&> type_signal_external_check; 
-    type_signal_external_check signal_external_check;
-#endif // BOOST_NO_STD_LOCALE
+//#ifndef BOOST_NO_STD_LOCALE
+//    typedef boost::signal2<void, const string&, bool&> type_signal_external_check; 
+//    type_signal_external_check signal_external_check;
+//#endif // BOOST_NO_STD_LOCALE
   };
   typedef boost::detail::allocator::partial_std_allocator_wrapper<
     boost::detail::quick_allocator<param > > alloc_param; 
@@ -2941,24 +2941,24 @@ namespace db
     ///
     sqlite3* get_db_ptr() {return _db;}
 
-#ifndef BOOST_NO_STD_LOCALE
-    typedef boost::signal2<bool, unsigned, unsigned> type_signal_progress; 
-
-    /// @brief     Sig_Progress
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    type_signal_progress&
-    ///
-    /// @date      20:2:2009   14:16
-    ///
-    type_signal_progress& Sig_Progress() { return sig_progress; }
-
-#endif // BOOST_NO_STD_LOCALE
+//#ifndef BOOST_NO_STD_LOCALE
+//    typedef boost::signal2<bool, unsigned, unsigned> type_signal_progress; 
+//
+//    /// @brief     Sig_Progress
+//    ///
+//    /// <BR>qualifier
+//    /// <BR>access    public  
+//    /// @return    type_signal_progress&
+//    ///
+//    /// @date      20:2:2009   14:16
+//    ///
+//    type_signal_progress& Sig_Progress() { return sig_progress; }
+//
+//#endif // BOOST_NO_STD_LOCALE
   protected:
-#ifndef BOOST_NO_STD_LOCALE
-    type_signal_progress sig_progress;
-#endif // BOOST_NO_STD_LOCALE
+//#ifndef BOOST_NO_STD_LOCALE
+//    type_signal_progress sig_progress;
+//#endif // BOOST_NO_STD_LOCALE
   };
   typedef boost::shared_ptr<base> base_ptr;
 
