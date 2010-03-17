@@ -4,3 +4,7 @@ if(MSVC)
 	set(CMAKE_CXX_FLAGS_RELEASE_INIT        "/MT /O2 /Ob2 /D NDEBUG")
 	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO_INIT "/MT /Zi /O2 /Ob1 /D NDEBUG")
 endif()
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+       set(CMAKE_CXX_FLAGS_INIT "-pedantic-errors -Wall -Wextra -Wconversion -Wfloat-equal -Wredundant-decls -Wstrict-null-sentinel -Winit-self -Woverloaded-virtual -Wnon-virtual-dtor -Wctor-dtor-privacy -Wsign-promo -Wstrict-aliasing=1")
+endif()

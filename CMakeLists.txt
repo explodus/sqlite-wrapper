@@ -35,11 +35,6 @@ ENDIF()
 ADD_DEFINITIONS(-D BOOST_FILESYSTEM_NO_DEPRECATED)
  
 IF (CMAKE_COMPILER_IS_GNUCXX)
-	#CHECK_CXX_COMPILER_FLAG(
-	#	"-std=c++0x"
-	#	SQLITE_WRAPPER_HAVE_VARIADIC_TEMPLATES
-	#)
- 
 	IF(UNIX)
 		SET (SQLITE_WRAPPER_STRING_IS_UTF8 true)
 	ENDIF()
@@ -50,12 +45,7 @@ IF (CMAKE_COMPILER_IS_GNUCXX)
 	)
  
 	OPTION (ENABLE_DEBUG_WARNINGS "Enable -Wpadded and -Weffc++" OFF)
- 
-	ADD_DEFINITIONS ("-pedantic-errors -Wall -Wextra -Wconversion"
-	"-Wfloat-equal -Wredundant-decls -Wstrict-null-sentinel -Winit-self"
-	"-Woverloaded-virtual -Wnon-virtual-dtor -Wctor-dtor-privacy"
-	"-Wsign-promo -Wstrict-aliasing=1 ")
- 
+  
 	IF(ENABLE_DEBUG_WARNINGS)
 		SET (CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG}" -Wpadded -Weffc++")
 	ENDIF()
