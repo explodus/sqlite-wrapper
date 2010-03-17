@@ -79,7 +79,7 @@ namespace db { namespace log {
 			{
 			}
 
-			typename T& output_stream() 
+			T& output_stream() 
 			{ return of_; }
 
 			typedef boost::shared_ptr< file > ptr;
@@ -113,7 +113,7 @@ namespace db { namespace log {
 				}
 			}
 
-			typename T& output_stream() 
+			T& output_stream() 
 			{ return db_; }
 
 			typedef boost::shared_ptr< database > ptr;
