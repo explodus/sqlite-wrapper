@@ -133,7 +133,7 @@ namespace db
 			///
 			a2w(
 				  const char* psz
-				, unsigned nCodePage = CP_UTF8 ) : 
+				, unsigned nCodePage = 65001 /*CP_UTF8*/ ) : 
 			empty_(0)
 			{
 				init( psz, nCodePage );
@@ -193,7 +193,7 @@ namespace db
 			///
 			w2a(
 				  const wchar_t* psz
-				, unsigned nCodePage = CP_ACP ) : 
+				, unsigned nCodePage = 0 /*CP_ACP*/ ) : 
 				empty_(0)
 			{
 				init( psz, nCodePage );
