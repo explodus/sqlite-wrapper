@@ -34,6 +34,8 @@
 #define _SQLITE3_H_
 #include <stdarg.h>     /* Needed for the definition of va_list */
 
+#include <boost/cstdint.hpp>
+
 /*
 ** Make sure we can call this stuff from C++.
 */
