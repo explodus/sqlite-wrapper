@@ -20257,7 +20257,7 @@ SQLITE_PRIVATE int sqlite3OSTrace = 0;
 #elif (defined(__GNUC__) && defined(__ppc__))
 
   __inline__ sqlite_uint64 sqlite3Hwtime(void){
-      unsigned long long retval;
+      sqlite3_uint64 retval;
       unsigned long junk;
       __asm__ __volatile__ ("\n\
           1:      mftbu   %1\n\
@@ -21793,7 +21793,7 @@ SQLITE_PRIVATE int sqlite3OSTrace = 0;
 #elif (defined(__GNUC__) && defined(__ppc__))
 
   __inline__ sqlite_uint64 sqlite3Hwtime(void){
-      unsigned long long retval;
+      sqlite3_uint64 retval;
       unsigned long junk;
       __asm__ __volatile__ ("\n\
           1:      mftbu   %1\n\
@@ -22403,7 +22403,7 @@ struct unixLockInfo {
   int locktype;                   /* One of SHARED_LOCK, RESERVED_LOCK etc. */
   int nRef;                       /* Number of pointers to this structure */
 #if defined(SQLITE_ENABLE_LOCKING_STYLE)
-  unsigned long long sharedByte;  /* for AFP simulated shared lock */
+  sqlite3_uint64 sharedByte;  /* for AFP simulated shared lock */
 #endif
   struct unixLockInfo *pNext;     /* List of all unixLockInfo objects */
   struct unixLockInfo *pPrev;     /*    .... doubly linked */
@@ -24042,9 +24042,9 @@ struct afpLockingContext {
 
 struct ByteRangeLockPB2
 {
-  unsigned long long offset;        /* offset to first byte to lock */
-  unsigned long long length;        /* nbr of bytes to lock */
-  unsigned long long retRangeStart; /* nbr of 1st byte locked if successful */
+  sqlite3_uint64 offset;        /* offset to first byte to lock */
+  sqlite3_uint64 length;        /* nbr of bytes to lock */
+  sqlite3_uint64 retRangeStart; /* nbr of 1st byte locked if successful */
   unsigned char unLockFlag;         /* 1 = unlock, 0 = lock */
   unsigned char startEndFlag;       /* 1=rel to end of fork, 0=rel to start */
   int fd;                           /* file desc to assoc this lock with */
@@ -24061,8 +24061,8 @@ struct ByteRangeLockPB2
 static int afpSetLock(
   const char *path,              /* Name of the file to be locked or unlocked */
   unixFile *pFile,               /* Open file descriptor on path */
-  unsigned long long offset,     /* First byte to be locked */
-  unsigned long long length,     /* Number of bytes to lock */
+  sqlite3_uint64 offset,     /* First byte to be locked */
+  sqlite3_uint64 length,     /* Number of bytes to lock */
   int setLockFlag                /* True to set lock.  False to clear lock */
 ){
   struct ByteRangeLockPB2 pb;
@@ -24437,7 +24437,7 @@ static int afpUnlock(sqlite3_file *id, int locktype) {
     ** OS call only when all threads in this same process have released
     ** the lock.
     */
-    unsigned long long sharedLockByte = SHARED_FIRST+pLock->sharedByte;
+    sqlite3_uint64 sharedLockByte = SHARED_FIRST+pLock->sharedByte;
     pLock->cnt--;
     if( pLock->cnt==0 ){
       SimulateIOErrorBenign(1);
@@ -27655,7 +27655,7 @@ SQLITE_PRIVATE int sqlite3OSTrace = 0;
 #elif (defined(__GNUC__) && defined(__ppc__))
 
   __inline__ sqlite_uint64 sqlite3Hwtime(void){
-      unsigned long long retval;
+      sqlite3_uint64 retval;
       unsigned long junk;
       __asm__ __volatile__ ("\n\
           1:      mftbu   %1\n\
@@ -52899,7 +52899,7 @@ static void registerTrace(FILE *out, int iReg, Mem *p){
 #elif (defined(__GNUC__) && defined(__ppc__))
 
   __inline__ sqlite_uint64 sqlite3Hwtime(void){
-      unsigned long long retval;
+      sqlite3_uint64 retval;
       unsigned long junk;
       __asm__ __volatile__ ("\n\
           1:      mftbu   %1\n\
