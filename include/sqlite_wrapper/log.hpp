@@ -283,6 +283,9 @@ namespace db { namespace log {
 	template 
 	<
 		  typename Provider = provider::basic
+			<
+				db::log::buffer::basic 
+			>
 		, typename Format = format::basic
 	>
 	class base : private boost::noncopyable
