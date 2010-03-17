@@ -90,11 +90,11 @@ namespace db { namespace detail
 	/// <BR>access    public 
 	/// 
 	/// @return       db::string
-	/// @param        t as boost::posix_time::ptime &
+	/// @param        t as const boost::posix_time::ptime &
 	///
 	/// @date         16.3.2010 21:20
 	/// 
-	inline string to_sql_string(boost::posix_time::ptime& t) 
+	inline string to_sql_string(const boost::posix_time::ptime& t) 
 	{
 		tm pt_tm = boost::posix_time::to_tm(t);
 		return to_sql_string(&pt_tm);
