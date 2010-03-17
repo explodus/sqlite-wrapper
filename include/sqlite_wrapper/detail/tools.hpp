@@ -147,8 +147,10 @@ namespace db { namespace detail
 	///
 	/// @date         9.3.2010 9:16
 	///
+	/// @todo alte definiton mit typename vor der rückgabe
+	/// @todo nochmal checken ob das mit vc geht
 	template<typename T> 
-	inline typename T to_type(const string& a) 
+	inline T to_type(const string& a) 
 	{ istringstream ost(a); T ret; ost >> ret; return ret; }   
 
 	/// @brief        to_string
