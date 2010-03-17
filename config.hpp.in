@@ -106,6 +106,7 @@ namespace db
 	
 	typedef std::basic_ostringstream<char_type> ostringstream;
 	typedef std::basic_istringstream<char_type> istringstream;
+	typedef std::basic_stringstream<char_type>  stringstream;
 	typedef boost::basic_format<char_type > format;
 
 	typedef std::pair<string, string> string_pair;
@@ -131,8 +132,8 @@ namespace db
 			/// @date         12.3.2010 14:16
 			///
 			a2w(
-				_In_opt_ const char* psz
-				, _In_opt_ unsigned nCodePage = CP_UTF8 ) throw(...) : 
+				  const char* psz
+				, unsigned nCodePage = CP_UTF8 ) throw(...) : 
 			empty_(0)
 			{
 				init( psz, nCodePage );
@@ -164,8 +165,8 @@ namespace db
 			/// @date         12.3.2010 14:39
 			///
 			inline void init(
-				_In_opt_ const char* psz
-				, _In_ UINT nConvertCodePage) throw(...);
+				  const char* psz
+				, UINT nConvertCodePage) throw(...);
 
 		public:
 			const wchar_t* empty_;
@@ -191,8 +192,8 @@ namespace db
 			/// @date         12.3.2010 14:16
 			///
 			w2a(
-				  _In_opt_ const wchar_t* psz
-				, _In_opt_ unsigned nCodePage = CP_ACP ) throw(...) : 
+				  const wchar_t* psz
+				, unsigned nCodePage = CP_ACP ) throw(...) : 
 				empty_(0)
 			{
 				init( psz, nCodePage );
@@ -224,8 +225,8 @@ namespace db
 			/// @date         12.3.2010 14:39
 			///
 			inline void init(
-				  _In_opt_ const wchar_t* psz
-				, _In_ UINT nConvertCodePage) throw(...);
+				  const wchar_t* psz
+				, UINT nConvertCodePage) throw(...);
 
 		public:
 			const char* empty_;

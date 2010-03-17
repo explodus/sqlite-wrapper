@@ -890,8 +890,8 @@ namespace db
       _type = e_char;
       _data = dat;
     } 
-    ///gesetzt als const TCHAR*
-    void set(const TCHAR* dat)
+    ///gesetzt als const db::char_type*
+    void set(const db::char_type* dat)
     { 
       _type = e_string;
       _data = dat;
@@ -1072,7 +1072,7 @@ namespace db
     ///
     /// @date      11:3:2009   13:57
     ///
-    TCHAR get_char() const 
+    db::char_type get_char() const 
     {
       if (_data.length()==0)
         return DB_TEXT(' ');
@@ -3207,11 +3207,13 @@ inline db::expr::not operator!(const db::expr::base &exp)
 /// <BR>access    public  
 /// @return    db::expr::in
 /// @param     fld as const db::field &
-/// @param     f2 as const TCHAR *
+/// @param     f2 as const db::char_type *
 ///
 /// @date      20:2:2009   14:23
 ///
-inline db::expr::in operator<<(const db::field& fld, const TCHAR* f2)
+inline db::expr::in operator<<(
+	  const db::field& fld
+	, const db::char_type* f2)
 { return db::expr::in(fld,f2); }
 
 /// @brief     overload from the global << operator
@@ -3397,8 +3399,8 @@ inline void db::query::execute(const string& cmd)
 }
 
 inline void db::detail::w2a::init(
-	  _In_opt_ const wchar_t* psz
-	, _In_ UINT nConvertCodePage) throw(...)
+	  const wchar_t* psz
+	, UINT nConvertCodePage) throw(...)
 {
 	if (psz == NULL)
 	{
@@ -3406,62 +3408,66 @@ inline void db::detail::w2a::init(
 		return;
 	}
 
-	int nLengthW(lstrlenW( psz )+1);		 
-	int nLengthA(nLengthW*4);
+	int lenW(lstrlenW( psz )+1);		 
+	int lenA(lenW*4);
 
-	sz_.resize(nLengthA);
+	sz_.resize(lenA);
 
-	bool bFailed(0 == ::WideCharToMultiByte( 
-		nConvertCodePage
+#if defined (WIN32) || defined (WIN64)
+	bool failed(0 == ::WideCharToMultiByte( 
+		  nConvertCodePage
 		, 0
 		, psz
-		, nLengthW
+		, lenW
 		, &*sz_.begin()
-		, nLengthA
+		, lenA
 		, NULL
 		, NULL));
 
-	if (bFailed)
+	if (failed)
 	{
 		if (GetLastError()==ERROR_INSUFFICIENT_BUFFER)
 		{
-			nLengthA = ::WideCharToMultiByte( 
+			lenA = ::WideCharToMultiByte( 
 				nConvertCodePage
 				, 0
 				, psz
-				, nLengthW
+				, lenW
 				, NULL
 				, 0
 				, NULL
 				, NULL);
 
-			sz_.resize(nLengthA);
+			sz_.resize(lenA);
 
-			bFailed=(0 == ::WideCharToMultiByte(
+			failed=(0 == ::WideCharToMultiByte(
 				nConvertCodePage
 				, 0
 				, psz
-				, nLengthW
+				, lenW
 				, &*sz_.begin()
-				, nLengthA
+				, lenA
 				, NULL
 				, NULL));
 		}			
 	}
 
-	if (bFailed)
+	if (failed)
 	{
-		std::basic_stringstream<db::char_type> err;
+		db::stringstream err;
 		err << DB_TEXT("Lasterror was ") 
 			<< GetLastError() 
 			<< DB_TEXT("\n");
 		throw db::exception::unknown_error(err.str());
 	}
+#else
+	/// @todo linux conversion...
+#endif
 }
 
 inline void db::detail::a2w::init(
-	  _In_opt_ const char* psz
-	, _In_ UINT nCodePage) throw(...)
+	  const char* psz
+	, UINT nCodePage) throw(...)
 {
 	if (psz == NULL)
 	{
@@ -3469,51 +3475,55 @@ inline void db::detail::a2w::init(
 		return;
 	}
 
-	int nLengthA(lstrlenA( psz )+1);		 
-	int nLengthW(nLengthA);
+	int lenA(lstrlenA( psz )+1);		 
+	int lenW(lenA);
 
-	sz_.resize(nLengthW);
+	sz_.resize(lenW);
 
-	bool bFailed(0 == ::MultiByteToWideChar(
+#if defined (WIN32) || defined (WIN64)
+	bool failed(0 == ::MultiByteToWideChar(
 		  nCodePage
 		, 0
 		, psz
-		, nLengthA
+		, lenA
 		, &*sz_.begin()
-		, nLengthW));
+		, lenW));
 
-	if (bFailed)
+	if (failed)
 	{
 		if (GetLastError()==ERROR_INSUFFICIENT_BUFFER)
 		{
-			nLengthW = ::MultiByteToWideChar(
+			lenW = ::MultiByteToWideChar(
 				  nCodePage
 				, 0
 				, psz
-				, nLengthA
+				, lenA
 				, NULL
 				, 0);
 
-			sz_.resize(nLengthW);
+			sz_.resize(lenW);
 
-			bFailed=(0 == ::MultiByteToWideChar(
+			failed=(0 == ::MultiByteToWideChar(
 				  nCodePage
 				, 0
 				, psz
-				, nLengthA
+				, lenA
 				, &*sz_.begin()
-				, nLengthW));
+				, lenW));
 		}			
 	}
 
-	if (bFailed)
+	if (failed)
 	{
-		std::basic_stringstream<db::char_type> err;
+		db::stringstream err;
 		err << DB_TEXT("Lasterror was ") 
 			<< GetLastError() 
 			<< DB_TEXT("\n");
 		throw db::exception::unknown_error(err.str());
 	}
+#else
+	/// @todo linux conversion...
+#endif
 }
 
 #endif // db_h__

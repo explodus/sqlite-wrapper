@@ -31,10 +31,6 @@
 #include <ATLComTime.h>
 #endif
 
-#ifdef _MSC_VER
-#include <tchar.h>
-#endif // _MSC_VER
-
 namespace db { namespace detail 
 {
 	/// @brief     replace_all
@@ -348,9 +344,9 @@ namespace db
 		{
 			if (s.length()==0)
 				return;
-			TCHAR *ptr(&*s.begin());
+			db::char_type *ptr(&*s.begin());
 			int len(delim.length());
-			std::vector<TCHAR*> pointers;
+			std::vector<db::char_type*> pointers;
 			pointers.push_back(ptr);
 			while((ptr = _tcsstr(ptr, delim.c_str()))) 
 			{
@@ -358,7 +354,7 @@ namespace db
 				ptr += len;
 				pointers.push_back(ptr);
 			}
-			for (std::vector<TCHAR*>::iterator i(pointers.begin()), 
+			for (std::vector<db::char_type*>::iterator i(pointers.begin()), 
 				e(pointers.end()); i != e; ++i)
 				push_back(string(*i));
 		}

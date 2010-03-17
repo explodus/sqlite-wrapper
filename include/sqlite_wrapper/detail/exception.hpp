@@ -41,11 +41,11 @@ namespace db { namespace exception
 		{ }
 		virtual ~base() {}
 
-		virtual base& operator=(const base& _That)
-		{
-			_msg = _That._msg;
-			return *this;
-		}
+		//virtual base& operator=(const base& _That)
+		//{
+		//	_msg = _That._msg;
+		//	return *this;
+		//}
 
 		/// @brief        what
 		///
