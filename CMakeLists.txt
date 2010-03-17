@@ -15,7 +15,11 @@ INCLUDE (CheckCXXCompilerFlag)
 INCLUDE (CheckCXXSourceCompiles)
 INCLUDE (CheckCXXSourceRuns)
 INCLUDE (FindPkgConfig)
- 
+
+IF (MSVC)
+    ADD_DEFINITIONS( /W4 )
+ENDIF ()
+
 IF (MSVC)
 	OPTION (ENABLE_NARROW_STRING "Build sqlite_wrapper with std::string instead of std::wstring" OFF)
 ELSE ()

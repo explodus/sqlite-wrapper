@@ -1333,7 +1333,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:21
     ///
-    param* operator[] (const string& field_title)
+    param* operator[] (const string& /*field_title*/)
     { return (NULL); }
 
     /// @brief     const begin iterator

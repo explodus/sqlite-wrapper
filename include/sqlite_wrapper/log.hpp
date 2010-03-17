@@ -193,6 +193,8 @@ namespace db { namespace log {
 				
 				stream << get_akt_time();
 				stream << DB_TEXT(" - ");
+				stream << lvl;
+				stream << DB_TEXT(" - ");
 				// Push data.
 				stream << data.c_str();
 				// Push delimiter (end of line).
@@ -210,6 +212,8 @@ namespace db { namespace log {
 					stream << DB_TEXT(' ');
 
 				stream << get_akt_time();
+				stream << DB_TEXT(" - ");
+				stream << lvl;
 				stream << DB_TEXT(" - ");
 				// Push data.
 				stream << data;
