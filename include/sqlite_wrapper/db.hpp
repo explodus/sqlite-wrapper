@@ -59,7 +59,7 @@ namespace db
 		class and_;
 		class or_;
 		class not_;
-		class not_eq;
+		class not_eq_;
 		class eq;
 		class lt;
 		class lt_eq;
