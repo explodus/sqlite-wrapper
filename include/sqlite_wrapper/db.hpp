@@ -3337,7 +3337,12 @@ inline void db::query::execute(const string& cmd)
       {
       case SQLITE_BUSY: 
       case SQLITE_LOCKED: 
+				/// @todo portabel machen
+#if defined (WIN32) || defined (WIN64)
         Sleep(250); 
+#else
+				sleep(250); 
+#endif
         break;
       default: 
         _base.throw_error(rc);
@@ -3408,12 +3413,12 @@ void db::detail::w2a::init(
 		return;
 	}
 
+#if defined (WIN32) || defined (WIN64)
 	int lenW(lstrlenW( psz )+1);		 
 	int lenA(lenW*4);
 
 	sz_.resize(lenA);
 
-#if defined (WIN32) || defined (WIN64)
 	bool failed(0 == ::WideCharToMultiByte( 
 		  nConvertCodePage
 		, 0
@@ -3475,12 +3480,12 @@ inline void db::detail::a2w::init(
 		return;
 	}
 
+#if defined (WIN32) || defined (WIN64)
 	int lenA(lstrlenA( psz )+1);		 
 	int lenW(lenA);
 
 	sz_.resize(lenW);
 
-#if defined (WIN32) || defined (WIN64)
 	bool failed(0 == ::MultiByteToWideChar(
 		  nCodePage
 		, 0
