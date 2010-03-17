@@ -1325,6 +1325,7 @@ namespace db
     { return *(begin()+field_num); }
 
     /// @brief     operator[]
+		/// @todo			 need an implementation
     ///
     /// <BR>qualifier
     /// <BR>access    public  
@@ -1333,8 +1334,11 @@ namespace db
     ///
     /// @date      20:2:2009   9:21
     ///
-    param* operator[] (const string& /*field_title*/)
-    { return (NULL); }
+    param* operator[] (const string& field_title)
+    { 
+			UNREFERENCED_PARAMETER(field_title); 
+			return (0); 
+		}
 
     /// @brief     const begin iterator
     ///
@@ -1537,7 +1541,7 @@ namespace db
       if (iField<_field.size())
         return &_field[iField];
       else
-        return NULL;
+        return 0;
     }
 
     ///begin iterator
@@ -2521,7 +2525,7 @@ namespace db
       }
     	~progress_handler()
       {
-        sqlite3_progress_handler(_db, 0, NULL, NULL); 
+        sqlite3_progress_handler(_db, 0, 0, 0); 
       }
     };
     
@@ -2531,13 +2535,13 @@ namespace db
   public:
     /// @brief     base
     ///
-    /// <BR>qualifier : _db(NULL)
+    /// <BR>qualifier : _db(0)
     /// <BR>access    public  
     /// @return    
     ///
     /// @date      20:2:2009   14:14
     ///
-    base() : _db(NULL)
+    base() : _db(0)
     {}
 
     /// @brief     ~base
@@ -2615,7 +2619,7 @@ namespace db
     ///
     void begin() 
     {
-      int rc(sqlite3_exec(_db, "BEGIN;", NULL, NULL, NULL)); 
+      int rc(sqlite3_exec(_db, "BEGIN;", 0, 0, 0)); 
       if (rc != SQLITE_OK)
         throw_error(rc);
     }
@@ -2630,7 +2634,7 @@ namespace db
     ///
     void commit() 
     {
-      int rc(sqlite3_exec(_db, "COMMIT;", NULL, NULL, NULL)); 
+      int rc(sqlite3_exec(_db, "COMMIT;", 0, 0, 0)); 
       if (rc != SQLITE_OK)
         throw_error(rc);
     }
@@ -2645,7 +2649,7 @@ namespace db
     ///
     void rollback() 
     {
-      int rc(sqlite3_exec(_db, "ROLLBACK;", NULL, NULL, NULL)); 
+      int rc(sqlite3_exec(_db, "ROLLBACK;", 0, 0, 0)); 
       if (rc != SQLITE_OK)
         throw_error(rc);
     }
@@ -3323,15 +3327,15 @@ inline void db::query::execute(const string& cmd)
     rc = sqlite3_prepare16_v2(_db, 
       reinterpret_cast<const wchar_t*>(cmd.c_str()), 
       cmd.length()*sizeof(wchar_t), 
-      &_stm, NULL);
+      &_stm, 0);
 #else
     rc = sqlite3_prepare_v2(_db, 
       reinterpret_cast<const char*>(cmd.c_str()), 
       cmd.length()*sizeof(char), 
-      &_stm, NULL);
+      &_stm, 0);
 #endif // _UNICODE
 
-    if (rc != SQLITE_OK || _stm == NULL) 
+    if (rc != SQLITE_OK || _stm == 0) 
     {
       switch(rc) 
       {
@@ -3400,14 +3404,14 @@ inline void db::query::execute(const string& cmd)
     _data.back().fill(_stm);
   }
   sqlite3_finalize(_stm);
-  _stm = NULL; 
+  _stm = 0; 
 }
 
 void db::detail::w2a::init(
 	  const wchar_t* psz
 	, unsigned nConvertCodePage)
 {
-	if (psz == NULL)
+	if (psz == 0)
 	{
 		sz_.clear();
 		return;
@@ -3426,8 +3430,8 @@ void db::detail::w2a::init(
 		, lenW
 		, &*sz_.begin()
 		, lenA
-		, NULL
-		, NULL));
+		, 0
+		, 0));
 
 	if (failed)
 	{
@@ -3438,10 +3442,10 @@ void db::detail::w2a::init(
 				, 0
 				, psz
 				, lenW
-				, NULL
 				, 0
-				, NULL
-				, NULL);
+				, 0
+				, 0
+				, 0);
 
 			sz_.resize(lenA);
 
@@ -3452,8 +3456,8 @@ void db::detail::w2a::init(
 				, lenW
 				, &*sz_.begin()
 				, lenA
-				, NULL
-				, NULL));
+				, 0
+				, 0));
 		}			
 	}
 
@@ -3474,7 +3478,7 @@ inline void db::detail::a2w::init(
 	  const char* psz
 	, unsigned nCodePage)
 {
-	if (psz == NULL)
+	if (psz == 0)
 	{
 		sz_.clear();
 		return;
@@ -3503,7 +3507,7 @@ inline void db::detail::a2w::init(
 				, 0
 				, psz
 				, lenA
-				, NULL
+				, 0
 				, 0);
 
 			sz_.resize(lenW);

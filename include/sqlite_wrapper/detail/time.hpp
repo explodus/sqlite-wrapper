@@ -251,7 +251,7 @@ namespace db
 			// Convert system time to file time
 			//
 			if(!SystemTimeToFileTime(&st1970, &ft1970))
-			{ st = NULL; return; }
+			{ st = 0; return; }
 
 			// convert hundreds of nanosecs to secs: 1 sec = 1e7 100ns
 			// Gives number of seconds since 1/1/1601 (UTC)
@@ -271,7 +271,7 @@ namespace db
 
 			// convert to a SYSTEMTIME
 			if(!FileTimeToSystemTime(&ft, st))
-			{ st = NULL; return; }
+			{ st = 0; return; }
 
 			return;
 		}
@@ -573,7 +573,7 @@ namespace db
 
 			// If tloc is not NULL, the return value is also 
 			// stored in the location to which tloc points
-			if(tloc != NULL)
+			if(tloc != 0)
 			{
 				if(IsBadWritePtr(tloc, sizeof(time_t_ce)))
 					return TIME_FAILURE;
