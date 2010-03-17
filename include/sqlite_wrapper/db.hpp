@@ -56,9 +56,9 @@ namespace db
 		class base;
 		class connective;
 		class in;
-		class and;
-		class or;
-		class not;
+		class and_;
+		class or_;
+		class not_;
 		class not_eq;
 		class eq;
 		class lt;
@@ -339,7 +339,7 @@ namespace db
       }
     };  
 
-    class and : public connective 
+    class and_ : public connective 
     {
     public:
       /// @brief     connects 2 expressions with the AND operator
@@ -352,8 +352,8 @@ namespace db
       ///
       /// @date      18:2:2009   11:22
       ///
-      explicit and(const base & e1_, const base & e2_) : 
-      connective(DB_TEXT("and"), e1_, e2_) {}
+      explicit and_(const base & e1_, const base & e2_) : 
+				connective(DB_TEXT("and"), e1_, e2_) {}
 
       /// @brief     str
       ///
@@ -373,7 +373,7 @@ namespace db
       }
     };
 
-    class or : public connective 
+    class or_ : public connective 
     {
     public:
       /// @brief     connects 2 expressions with the OR operator
@@ -386,7 +386,7 @@ namespace db
       ///
       /// @date      18:2:2009   11:22
       ///
-      explicit or(const base & e1_, const base & e2_) 
+      explicit or_(const base & e1_, const base & e2_) 
         : connective(DB_TEXT("or"), e1_, e2_) {}
 
       /// @brief     str
@@ -407,7 +407,7 @@ namespace db
       }
     };
 
-    class not : public base 
+    class not_ : public base 
     {
     private:
       const base & exp;
@@ -421,7 +421,7 @@ namespace db
       ///
       /// @date      18:2:2009   11:23
       ///
-      explicit not(const base & _exp) : exp(_exp) {}
+      explicit not_(const base & _exp) : exp(_exp) {}
 
       /// @brief     str
       ///
@@ -551,9 +551,9 @@ namespace db
     };
 
     ///<> not equal operator
-    class not_eq : public oper {
+    class not_eq_ : public oper {
     public:
-      /// @brief     not_eq
+      /// @brief     not_eq_
       ///
       /// <BR>qualifier : oper(fld, DB_TEXT("<>"), d)
       /// <BR>access    public  
@@ -564,7 +564,7 @@ namespace db
       /// @date      20:2:2009   13:03
       ///
       template<typename T>
-      explicit not_eq(const field & fld, const T& d)
+      explicit not_eq_(const field & fld, const T& d)
         : oper(fld, DB_TEXT("<>"), d) 
       {}
     };
@@ -1913,7 +1913,7 @@ namespace db
     ///
     virtual sel & where(const expr::base & w)
     { 
-      _where = expr::and(expr::raw(_where), w).str();	
+      _where = expr::and_(expr::raw(_where), w).str();	
       return *this;
     }
 
@@ -1928,7 +1928,7 @@ namespace db
     ///
     virtual sel & where(string w)
     { 
-      _where = expr::and(expr::raw(_where), expr::raw(w)).str();
+      _where = expr::and_(expr::raw(_where), expr::raw(w)).str();
       return *this;
     }
 
@@ -2377,7 +2377,7 @@ namespace db
     ///
     upd& where(const expr::base& e)
     {
-      _where = expr::and(expr::raw(_where), e).str();
+      _where = expr::and_(expr::raw(_where), e).str();
       return *this;
     }
 
@@ -3097,13 +3097,13 @@ namespace db
 } // namespace db
 
 ///overload from the global && operator
-inline db::expr::and operator&&(const db::expr::base& o1, 
+inline db::expr::and_ operator&&(const db::expr::base& o1, 
                                 const db::expr::base& o2)
-{ return db::expr::and(o1,o2); }
+{ return db::expr::and_(o1,o2); }
 ///overload from the global || operator
-inline db::expr::or operator||(const db::expr::base& o1, 
+inline db::expr::or_ operator||(const db::expr::base& o1, 
                                const db::expr::base& o2)
-{ return db::expr::or(o1,o2); }
+{ return db::expr::or_(o1,o2); }
 
 /// @brief     overload from the global == operator
 ///
@@ -3179,15 +3179,15 @@ inline db::expr::lt_eq operator<=(const db::field& fld, const T& o2)
 ///
 /// <BR>qualifier
 /// <BR>access    public  
-/// @return    db::expr::not_eq
+/// @return    db::expr::not_eq_
 /// @param     fld as const db::field &
 /// @param     f2 as const T &
 ///
 /// @date      20:2:2009   14:22
 ///
 template<typename T>
-inline db::expr::not_eq operator!=(const db::field& fld, const T& f2)
-{ return db::expr::not_eq(fld, f2); }
+inline db::expr::not_eq_ operator!=(const db::field& fld, const T& f2)
+{ return db::expr::not_eq_(fld, f2); }
 
 /// @brief     overload from the global ! operator
 ///
@@ -3198,8 +3198,8 @@ inline db::expr::not_eq operator!=(const db::field& fld, const T& f2)
 ///
 /// @date      20:2:2009   14:23
 ///
-inline db::expr::not operator!(const db::expr::base &exp)
-{ return db::expr::not(exp); }
+inline db::expr::not_ operator!(const db::expr::base &exp)
+{ return db::expr::not_(exp); }
 
 /// @brief     overload from the global << operator
 ///
@@ -3398,7 +3398,7 @@ inline void db::query::execute(const string& cmd)
   _stm = NULL; 
 }
 
-inline void db::detail::w2a::init(
+void db::detail::w2a::init(
 	  const wchar_t* psz
 	, unsigned nConvertCodePage)
 {
