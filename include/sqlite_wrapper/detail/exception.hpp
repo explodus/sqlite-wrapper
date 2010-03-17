@@ -51,13 +51,13 @@ namespace db { namespace exception
 		///
 		/// <BR>qualifier
 		/// <BR>access    public  
-		/// @return       const TCHAR*
+		/// @return       const db::char_type*
 		///
 		/// @author       T. Schroeder
 		/// @author       explodus@gmx.de
 		/// @date         16.3.2010 16:24
 		///
-		const TCHAR* what() 
+		const db::char_type* what() 
 		{ return _msg.c_str(); }
 
 		/// @brief        report
