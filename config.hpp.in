@@ -123,7 +123,7 @@ namespace db
 		public:
 			/// @brief        constructor
 			///
-			/// <BR>qualifier throw(...) : empty_(0)
+			/// <BR>qualifier throw() : empty_(0)
 			/// <BR>access    private  
 			/// @return       
 			/// @param        psz as _In_opt_ LPCWSTR
@@ -133,7 +133,7 @@ namespace db
 			///
 			a2w(
 				  const char* psz
-				, unsigned nCodePage = CP_UTF8 ) throw(...) : 
+				, unsigned nCodePage = CP_UTF8 ) throw() : 
 			empty_(0)
 			{
 				init( psz, nCodePage );
@@ -156,17 +156,17 @@ namespace db
 		private:
 			/// @brief        init
 			///
-			/// <BR>qualifier throw(...)
+			/// <BR>qualifier throw()
 			/// <BR>access    private  
 			/// @return       void
 			/// @param        psz as _In_opt_ const char *
-			/// @param        nConvertCodePage as _In_ UINT
+			/// @param        nConvertCodePage as unsigned
 			///
 			/// @date         12.3.2010 14:39
 			///
 			inline void init(
 				  const char* psz
-				, UINT nConvertCodePage) throw(...);
+				, unsigned nConvertCodePage) throw();
 
 		public:
 			const wchar_t* empty_;
@@ -183,7 +183,7 @@ namespace db
 		public:
 			/// @brief        constructor
 			///
-			/// <BR>qualifier throw(...) : empty_(0)
+			/// <BR>qualifier throw() : empty_(0)
 			/// <BR>access    private  
 			/// @return       
 			/// @param        psz as const wchar_t*
@@ -193,7 +193,7 @@ namespace db
 			///
 			w2a(
 				  const wchar_t* psz
-				, unsigned nCodePage = CP_ACP ) throw(...) : 
+				, unsigned nCodePage = CP_ACP ) throw() : 
 				empty_(0)
 			{
 				init( psz, nCodePage );
@@ -216,7 +216,7 @@ namespace db
 		private:
 			/// @brief        init
 			///
-			/// <BR>qualifier throw(...)
+			/// <BR>qualifier throw()
 			/// <BR>access    private  
 			/// @return       void
 			/// @param        psz as _In_opt_ const wchar_t *
@@ -226,7 +226,7 @@ namespace db
 			///
 			inline void init(
 				  const wchar_t* psz
-				, UINT nConvertCodePage) throw(...);
+				, UINT nConvertCodePage) throw();
 
 		public:
 			const char* empty_;

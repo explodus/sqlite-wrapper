@@ -3400,7 +3400,7 @@ inline void db::query::execute(const string& cmd)
 
 inline void db::detail::w2a::init(
 	  const wchar_t* psz
-	, UINT nConvertCodePage) throw(...)
+	, unsigned nConvertCodePage) throw()
 {
 	if (psz == NULL)
 	{
@@ -3467,7 +3467,7 @@ inline void db::detail::w2a::init(
 
 inline void db::detail::a2w::init(
 	  const char* psz
-	, UINT nCodePage) throw(...)
+	, unsigned nCodePage) throw()
 {
 	if (psz == NULL)
 	{
