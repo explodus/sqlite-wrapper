@@ -34,7 +34,7 @@
 #define _SQLITE3_H_
 #include <stdarg.h>     /* Needed for the definition of va_list */
 
-#ifdef SQLITE_WRAPPER_HAVE_ATLEAST_UINT64
+#if defined(SQLITE_WRAPPER_HAVE_ATLEAST_UINT64) && !defined(SQLITE_WRAPPER_WINDOWS_PLATFORM)
 #include <stdint.h>
 #endif // SQLITE_WRAPPER_HAVE_ATLEAST_UINT64
 
@@ -249,12 +249,12 @@ typedef struct sqlite3 sqlite3;
 #ifdef SQLITE_INT64_TYPE
   typedef SQLITE_INT64_TYPE sqlite_int64;
   typedef unsigned SQLITE_INT64_TYPE sqlite_uint64;
-#elif defined(SQLITE_WRAPPER_HAVE_ATLEAST_UINT64)
-	typedef int64_t sqlite_int64;
-	typedef uint64_t sqlite_uint64;
 #elif defined(_MSC_VER) || defined(__BORLANDC__)
   typedef __int64 sqlite_int64;
   typedef unsigned __int64 sqlite_uint64;
+#elif defined(SQLITE_WRAPPER_HAVE_ATLEAST_UINT64)
+	typedef int64_t sqlite_int64;
+	typedef uint64_t sqlite_uint64;
 #else
   typedef long long int sqlite_int64;
   typedef unsigned long long int sqlite_uint64;
