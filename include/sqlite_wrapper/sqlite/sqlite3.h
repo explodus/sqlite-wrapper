@@ -34,7 +34,9 @@
 #define _SQLITE3_H_
 #include <stdarg.h>     /* Needed for the definition of va_list */
 
-#include <boost/cstdint.hpp>
+#ifdef SQLITE_WRAPPER_HAVE_ATLEAST_UINT64
+#include <stdint.h>
+#endif // SQLITE_WRAPPER_HAVE_ATLEAST_UINT64
 
 /*
 ** Make sure we can call this stuff from C++.
@@ -248,8 +250,8 @@ typedef struct sqlite3 sqlite3;
   typedef SQLITE_INT64_TYPE sqlite_int64;
   typedef unsigned SQLITE_INT64_TYPE sqlite_uint64;
 #elif defined(SQLITE_WRAPPER_HAVE_ATLEAST_UINT64)
-	typedef boost::int_least64_t sqlite_int64;
-	typedef boost::uint_least64_t sqlite_uint64;
+	typedef int64_t sqlite_int64;
+	typedef uint64_t sqlite_uint64;
 #elif defined(_MSC_VER) || defined(__BORLANDC__)
   typedef __int64 sqlite_int64;
   typedef unsigned __int64 sqlite_uint64;

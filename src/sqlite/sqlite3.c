@@ -78,6 +78,10 @@
 #include "config.h"
 #endif
 
+#ifdef SQLITE_WRAPPER_HAVE_ATLEAST_UINT64
+#include <stdint.h>
+#endif // SQLITE_WRAPPER_HAVE_ATLEAST_UINT64
+
 /************** Include sqliteLimit.h in the middle of sqliteInt.h ***********/
 /************** Begin file sqliteLimit.h *************************************/
 /*
@@ -764,14 +768,17 @@ typedef struct sqlite3 sqlite3;
 ** between 0 and +18446744073709551615 inclusive.
 */
 #ifdef SQLITE_INT64_TYPE
-  typedef SQLITE_INT64_TYPE sqlite_int64;
-  typedef unsigned SQLITE_INT64_TYPE sqlite_uint64;
+typedef SQLITE_INT64_TYPE sqlite_int64;
+typedef unsigned SQLITE_INT64_TYPE sqlite_uint64;
+#elif defined(SQLITE_WRAPPER_HAVE_ATLEAST_UINT64)
+typedef int64_t sqlite_int64;
+typedef uint64_t sqlite_uint64;
 #elif defined(_MSC_VER) || defined(__BORLANDC__)
-  typedef __int64 sqlite_int64;
-  typedef unsigned __int64 sqlite_uint64;
+typedef __int64 sqlite_int64;
+typedef unsigned __int64 sqlite_uint64;
 #else
-  typedef long long int sqlite_int64;
-  typedef unsigned long long int sqlite_uint64;
+typedef long long int sqlite_int64;
+typedef unsigned long long int sqlite_uint64;
 #endif
 typedef sqlite_int64 sqlite3_int64;
 typedef sqlite_uint64 sqlite3_uint64;
