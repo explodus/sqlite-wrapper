@@ -138,7 +138,6 @@ namespace db { namespace detail
 	inline string to_string(const T& a) 
 	{ ostringstream ost; ost << a; return ost.str(); }   
 
-
 	/// @todo need documentation
 	/// @brief        to_type
 	///

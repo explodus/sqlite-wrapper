@@ -1209,7 +1209,7 @@ namespace db
     template<> 
     inline string to_string(const db::param& a) 
     { return a.str(); } 
-  }
+	}
 
   ///table rows interface
   class row
