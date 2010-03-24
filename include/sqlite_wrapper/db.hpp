@@ -905,7 +905,7 @@ namespace db
 
 #ifndef BOOST_NO_STD_LOCALE
     ///gesetzt als boost::gregorian::date
-    void set(const boost::gregorian::date& dat)
+		void set(const boost::gregorian::date& dat)
     { 
       _type = e_date_time;
       _data = detail::to_sql_string(dat);

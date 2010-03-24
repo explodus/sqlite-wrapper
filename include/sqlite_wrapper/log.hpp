@@ -246,7 +246,7 @@ namespace db { namespace log {
 			{
 #ifndef BOOST_NO_STD_LOCALE
 				return db::detail::to_sql_string(
-					boost::gregorian::day_clock::local_day());
+					boost::posix_time::second_clock::local_time());
 #else
 				return db::detail::to_sql_string(db::time::time_ce(0));
 #endif
