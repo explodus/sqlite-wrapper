@@ -27,6 +27,7 @@
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/make_shared.hpp>
 
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/db.hpp>
@@ -106,7 +107,8 @@ namespace db { namespace log {
 					s_cr 
 						<< DB_TEXT("create table if not exists ") 
 						<< DB_TEXT("log(id integer primary key autoincrement")
-						<< DB_TEXT(", date_time text")
+						<< DB_TEXT(", date_real real")
+						<< DB_TEXT(", date_text text")
 						<< DB_TEXT(", level integer")
 						<< DB_TEXT(", msg text);");
 					db_.execute_ptr(s_cr.str());
@@ -242,16 +244,6 @@ namespace db { namespace log {
 			database();
 			~database();
 
-			static db::string get_akt_time()
-			{
-#ifndef BOOST_NO_STD_LOCALE
-				return db::detail::to_sql_string(
-					boost::posix_time::second_clock::local_time());
-#else
-				return db::detail::to_sql_string(db::time::time_ce(0));
-#endif
-			}
-
 		public:
 
 			template <typename Database, typename T>
@@ -261,9 +253,25 @@ namespace db { namespace log {
 				, const T& data
 				,	db::log::level lvl = db::log::log_undef)
 			{
+#ifndef BOOST_NO_STD_LOCALE
+				static boost::posix_time::ptime time_t_epoch(
+					boost::gregorian::date(1970, 1, 1));
+				boost::posix_time::ptime local_time
+					(boost::posix_time::second_clock::local_time());
+				string local_time_string(db::detail::to_sql_string(local_time));
+				double local_time_double(
+					boost::posix_time::time_duration(
+						local_time - time_t_epoch).total_seconds());
+#else
+				time_t_ce local_time(db::time::time_ce(0));
+				string local_time_string(db::detail::to_sql_string(local_time));
+				double local_time_double(local_time);
+#endif
+
 				db_.execute_ptr((
 					  db::ins(DB_TEXT("log"))
-					% db::field(DB_TEXT("date_time"), get_akt_time())
+					% db::field(DB_TEXT("date_real"), local_time_double)
+					% db::field(DB_TEXT("date_text"), local_time_string)
 					% db::field(DB_TEXT("level"), static_cast<unsigned>(lvl))
 					% db::field(DB_TEXT("msg"), db::detail::to_string(data))));
 			}
@@ -312,7 +320,9 @@ namespace db { namespace log {
 		/// Construct a log.
 		base(const provider_ptr_type& io_provider)
 			: boost::noncopyable()
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
 			, provider_(io_provider)
+#endif
 			, last_level_(db::log::log_undef)
 		{
 		}
@@ -331,28 +341,38 @@ namespace db { namespace log {
 
 		void increase_indent()
 		{
-			provider_->increase_indent();
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+			if (provider_)
+				provider_->increase_indent();
+#endif
 		}
 
 		void decrease_indent()
 		{
-			provider_->decrease_indent();
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+			if (provider_)
+				provider_->decrease_indent();
+#endif
 		}
 
 		base& operator << (const level& data)
 		{
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
 			last_level_ = data;
+#endif
 			return *this;
 		}
 
 		template <typename T>
 		base& operator << (const T& data)
 		{
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
 			formatter_type::do_format(
 				  provider_->get_buffer()->output_stream()
 				, provider_->indent()
 				, data
 				, last_level_);
+#endif
 			return *this;
 		}
 
@@ -382,24 +402,30 @@ namespace db { namespace log {
 			, base_(_base)
 			, last_level_(lvl)
 		{
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
 			if (last_level_ <= global_level)
 				base_ << last_level_ << 
 					log_type::formatter_type::decorate_message(msg); 
+#endif
 		}
 
 		bool operator()(const db::string& msg) const
 		{
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
 			if (last_level_ <= global_level)
 				base_ << last_level_ << 
 					log_type::formatter_type::decorate_message(msg);
+#endif
 			return true;
 		}
 
 		bool operator()(const level& lvl, const db::string& msg) const
 		{
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
 			if (lvl <= global_level)
 				base_ << lvl << 
 					log_type::formatter_type::decorate_message(msg);
+#endif
 			return true;
 		}
 	};
@@ -435,16 +461,20 @@ namespace db { namespace log {
 			, const db::string& scope_message
 			, const level lvl = db::log::log_debug)
 			: boost::noncopyable()
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
 			, log_(scope_log)
 			, message_(scope_message)
 			, last_level_(lvl)
+#endif
 		{
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
 			if (last_level_ <= global_level)
 			{
 				log_ << last_level_ <<
 					log_type::formatter_type::decorate_scope_open(message_);
 				log_.increase_indent();
 			}
+#endif
 		}
 
 		/// @brief Puts closing statement and decreases indentation level
@@ -457,12 +487,14 @@ namespace db { namespace log {
 		///
 		~scope()
 		{
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
 			if (last_level_ <= global_level)
 			{
 				log_.decrease_indent();
 				log_ << last_level_ <<
 					log_type::formatter_type::decorate_scope_close(message_);
 			}
+#endif
 		}
 
 	private:
@@ -474,6 +506,30 @@ namespace db { namespace log {
 
 		level last_level_;
 	};
+
+	namespace singleton { namespace db
+	{
+		typedef ::db::log::buffer::database<::db::base> buffer_type;
+
+		typedef ::db::log::base
+		<
+			::db::log::provider::basic<buffer_type>
+		, ::db::log::format::database 
+		> 
+		log_type;
+
+		typedef ::db::log::scope<log_type> log_scope;
+		typedef ::db::log::message<log_type> log_msg;
+
+		static log_type& get_log(const string& name = DB_TEXT("log.db"))
+		{
+			static log_type ret
+				( boost::make_shared<log_type::provider_type >
+				( boost::make_shared<buffer_type >(name)));
+			return ret;
+		}
+
+	} }
 
 } }
 

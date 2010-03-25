@@ -29,6 +29,10 @@
 #define SQLITE_WRAPPER_DARWIN_PLATFORM
 #endif
 #endif
+
+#ifndef SQLITE_WRAPPER_USE
+	#define SQLITE_WRAPPER_USE 1
+#endif
  
 #ifdef __GNUC__
 #cmakedefine SQLITE_WRAPPER_HAVE_GCC_VISIBILITY
