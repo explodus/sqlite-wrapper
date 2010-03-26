@@ -521,7 +521,7 @@ namespace db { namespace log {
 		typedef ::db::log::scope<log_type> log_scope;
 		typedef ::db::log::message<log_type> log_msg;
 
-		static log_type& get_log(const string& name = DB_TEXT("log.db"))
+		log_type& SQLITE_WRAPPER_DLLAPI get_log(const string& name = DB_TEXT("log.db"))
 		{
 			static log_type ret
 				( boost::make_shared<log_type::provider_type >

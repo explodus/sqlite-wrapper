@@ -86,7 +86,16 @@ SET (sqlite_wrapper_files ${sqlite_wrapper_source} ${sqlite_wrapper_header} )
 
 SET( sqlite_wrapper_files_string ${files_string} PARENT_SCOPE )
 
-ADD_LIBRARY (sqlite_wrapper STATIC ${sqlite_wrapper_files})
+ADD_LIBRARY (sqlite_wrapper_static STATIC ${sqlite_wrapper_files})
+ADD_LIBRARY (sqlite_wrapper SHARED ${sqlite_wrapper_files})
+
+SET_TARGET_PROPERTIES(sqlite_wrapper_static PROPERTIES OUTPUT_NAME "sqlite_wrapper")
+SET_TARGET_PROPERTIES(sqlite_wrapper_static PROPERTIES PREFIX "lib")
+ 
+TARGET_LINK_LIBRARIES (
+	sqlite_wrapper_static
+	${Boost_LIBRARIES}
+)
 
 IF (NOT MSVC)
 	TARGET_LINK_LIBRARIES (
@@ -95,4 +104,13 @@ IF (NOT MSVC)
 	)
 ENDIF ()
 
-INSTALL (TARGETS sqlite_wrapper DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+#INSTALL (TARGETS sqlite_wrapper RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+#INSTALL (TARGETS sqlite_wrapper LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+#INSTALL (TARGETS sqlite_wrapper DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+INSTALL (TARGETS sqlite_wrapper sqlite_wrapper_static
+    RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+    LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
+    
+#INSTALL (TARGETS sqlite_wrapper_static DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

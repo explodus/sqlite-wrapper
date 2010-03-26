@@ -33,6 +33,9 @@
 #ifndef SQLITE_WRAPPER_USE
 	#define SQLITE_WRAPPER_USE 1
 #endif
+
+#define SQLITE_WRAPPER_VERSION_MAJOR @SQLITE_WRAPPER_VERSION_MAJOR@
+#define SQLITE_WRAPPER__VERSION_MINOR @SQLITE_WRAPPER_VERSION_MINOR@
  
 #ifdef __GNUC__
 #cmakedefine SQLITE_WRAPPER_HAVE_GCC_VISIBILITY
@@ -78,6 +81,15 @@
 		#define _tcsstr strstr
 	#endif // _UNICODE
 #endif
+
+//#if defined (WIN32) || defined (WIN64)
+//#   ifdef sqlite_wrapper_EXPORTS
+//#       define SQLITE_WRAPPER_DLLAPI  __declspec( dllexport )
+//#   else
+//#       define SQLITE_WRAPPER_DLLAPI  __declspec( dllimport )
+//#   endif
+//#endif
+#define SQLITE_WRAPPER_DLLAPI
 
 namespace db
 {

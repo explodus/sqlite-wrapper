@@ -1,7 +1,7 @@
 IF(MSVC)
 	MACRO (ADD_SQLITE_WRAPPER_TEST name)
 		ADD_EXECUTABLE (sqlite_wrapper_${name}_test ${name}.cpp)
-		TARGET_LINK_LIBRARIES (sqlite_wrapper_${name}_test sqlite_wrapper)
+		TARGET_LINK_LIBRARIES (sqlite_wrapper_${name}_test sqlite_wrapper_static)
 		ADD_CUSTOM_COMMAND(
 			TARGET sqlite_wrapper_${name}_test
 			POST_BUILD
@@ -12,7 +12,7 @@ IF(MSVC)
 ELSE(MSVC)
 	MACRO (ADD_SQLITE_WRAPPER_TEST name)
 		ADD_EXECUTABLE (sqlite_wrapper_${name}_test ${name}.cpp)
-		TARGET_LINK_LIBRARIES (sqlite_wrapper_${name}_test sqlite_wrapper)
+		TARGET_LINK_LIBRARIES (sqlite_wrapper_${name}_test sqlite_wrapper_static)
 		ADD_CUSTOM_COMMAND(
 			TARGET sqlite_wrapper_${name}_test
 			POST_BUILD
