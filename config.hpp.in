@@ -82,14 +82,17 @@
 	#endif // _UNICODE
 #endif
 
-//#if defined (WIN32) || defined (WIN64)
-//#   ifdef sqlite_wrapper_EXPORTS
-//#       define SQLITE_WRAPPER_DLLAPI  __declspec( dllexport )
-//#   else
-//#       define SQLITE_WRAPPER_DLLAPI  __declspec( dllimport )
-//#   endif
-//#endif
-#define SQLITE_WRAPPER_DLLAPI
+#ifdef SQLITE_WRAPPER_SHARED
+#	if defined (WIN32) || defined (WIN64)
+#	   ifdef sqlite_wrapper_EXPORTS
+#	       define SQLITE_WRAPPER_DLLAPI  __declspec( dllexport )
+#	   else
+#	       define SQLITE_WRAPPER_DLLAPI  __declspec( dllimport )
+#	   endif
+#	endif
+#else
+#	define SQLITE_WRAPPER_DLLAPI
+#endif
 
 namespace db
 {
@@ -129,12 +132,12 @@ namespace db
 	typedef std::vector<string> string_vec;
  
 	/// defintion of db::cout
-	extern ostream &cout;
+	SQLITE_WRAPPER_DLLAPI extern ostream &cout;
 	
 	namespace detail
 	{
 		/// char to wchar_t conversion class
-		class a2w
+		class SQLITE_WRAPPER_DLLAPI a2w
 		{
 		public:
 			/// @brief        constructor
@@ -194,7 +197,7 @@ namespace db
 		};
 
 		/// wchar_t to char conversion class
-		class w2a
+		class SQLITE_WRAPPER_DLLAPI w2a
 		{
 		public:
 			/// @brief        constructor

@@ -27,3 +27,12 @@
 
 ///
 db::log::level db::log::global_level(db::log::log_error);
+
+db::log::singleton::db::log_type& 
+db::log::singleton::db::get_log(const string& name/* = DB_TEXT("log.db")*/)
+{
+	static log_type ret
+		( boost::make_shared<log_type::provider_type >
+		( boost::make_shared<buffer_type >(name)));
+	return ret;
+}
