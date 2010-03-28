@@ -37,6 +37,19 @@ log_type instance
 	)
 );
 
+void sub_sub_scope()
+{
+	db::log::scope<log_type> scope_(instance, DB_TEXT("sub_sub_scope()"));
+
+}
+
+void sub_scope()
+{
+	db::log::scope<log_type> scope_(instance, DB_TEXT("sub_scope()"));
+
+	sub_sub_scope();
+}
+
 int main( int argc, char **argv )
 {
 	// set to debug level
@@ -44,6 +57,6 @@ int main( int argc, char **argv )
 
 	db::log::scope<log_type> scope_(instance, DB_TEXT("main()"));
 
-
+	sub_scope();
 }
 
