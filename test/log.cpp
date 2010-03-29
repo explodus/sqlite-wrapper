@@ -15,17 +15,25 @@
 
 #include <boost/make_shared.hpp>
 
-using namespace db::log::singleton::basic;
-
 void sub_sub_scope()
 {
-	log_scope scope_(get_log(), DB_TEXT("sub_sub_scope()"));
+	db::log::singleton::basic::log_scope scope_(
+		  db::log::singleton::basic::get_log()
+		, DB_TEXT("sub_sub_scope()"));
 
+	throw std::exception("test");
 }
 
 void sub_scope()
 {
-	log_scope scope_(get_log(), DB_TEXT("sub_scope()"));
+	db::log::singleton::basic::log_scope scope_(
+		  db::log::singleton::basic::get_log()
+		, DB_TEXT("sub_scope()"));
+
+	db::log::singleton::basic::log_msg msg(
+		  db::log::singleton::basic::get_log()
+		, DB_TEXT("some usefull information")
+		, db::log::log_info);
 
 	sub_sub_scope();
 }
@@ -35,8 +43,21 @@ int main( int argc, char **argv )
 	// set to debug level
 	db::log::global_level = db::log::log_debug;
 	
-	log_scope scope_(get_log(), DB_TEXT("main()"));
+	db::log::singleton::basic::log_scope scope_(
+		  db::log::singleton::basic::get_log()
+		, DB_TEXT("main()"));
 
-	sub_scope();
+	try
+	{
+		sub_scope();
+	}
+	catch (std::exception &e)
+	{
+		db::log::singleton::basic::log_msg msg(
+			  db::log::singleton::basic::get_log()
+			, db::string(DB_TEXT("exception: "))
+			+ static_cast<const wchar_t*>(db::detail::a2w(e.what()))
+			, db::log::log_error);
+	}
 }
 

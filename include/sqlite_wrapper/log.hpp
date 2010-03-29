@@ -64,10 +64,10 @@ namespace db { namespace log {
 		///
 		/// @tparam T normally as db::ostream
 		///
-		template<typename T = db::ostream>
+		template<typename T = db::ofstream>
 		class file : private boost::noncopyable
 		{
-			db::ofstream of_;
+			T of_;
 
 		public:
 			file(const db::string& name) : 
@@ -80,7 +80,7 @@ namespace db { namespace log {
 			{
 			}
 
-			T& output_stream() 
+			db::ostream& output_stream() 
 			{ return of_; }
 
 			typedef boost::shared_ptr< file > ptr;
@@ -182,6 +182,33 @@ namespace db { namespace log {
 #endif
 			}
 
+			static db::string to_string(db::log::level lvl)
+			{
+				switch (lvl)
+				{
+				case log_critical:
+					return DB_TEXT("critical");
+					break;
+				case log_error:
+					return DB_TEXT("error");
+					break;
+				case log_warning:
+					return DB_TEXT("warning");
+					break;
+				case log_notice:
+					return DB_TEXT("notice");
+					break;
+				case log_info:
+					return DB_TEXT("info");
+					break;
+				case log_debug:
+					return DB_TEXT("debug");
+					break;
+				default:
+					return DB_TEXT("undef");
+				}
+			}
+
 		public:
 			template <typename OutputStream>
 			static void do_format(
@@ -195,7 +222,7 @@ namespace db { namespace log {
 				
 				stream << get_akt_time();
 				stream << DB_TEXT(" - ");
-				stream << lvl;
+				stream << to_string(lvl);
 				stream << DB_TEXT(" - ");
 				// Push data.
 				stream << data.c_str();
@@ -215,7 +242,7 @@ namespace db { namespace log {
 
 				stream << get_akt_time();
 				stream << DB_TEXT(" - ");
-				stream << lvl;
+				stream << to_string(lvl);
 				stream << DB_TEXT(" - ");
 				// Push data.
 				stream << data;
@@ -531,8 +558,7 @@ namespace db { namespace log {
 			/// @return       log_type&
 			/// @param        name as const string &
 			///
-			/// @author       Torsten Schroeder
-			/// @author       explodus@gmx.de
+			/// @author       T. Schroeder (explodus@gmx.de)
 			/// @date         27.3.2010 8:56
 			/// 
 			extern SQLITE_WRAPPER_DLLAPI log_type& 
@@ -552,7 +578,44 @@ namespace db { namespace log {
 			typedef ::db::log::scope<log_type> log_scope;
 			typedef ::db::log::message<log_type> log_msg;
 
+			/// @brief        get_log
+			///
+			/// <BR>qualifier
+			/// <BR>access    public  
+			/// @return       log_type&
+			///
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         29.3.2010 11:37
+			///
 			extern SQLITE_WRAPPER_DLLAPI log_type& get_log();
+		}
+
+		namespace io
+		{
+			typedef ::db::log::buffer::file<::db::ofstream> buffer_type;
+
+			typedef ::db::log::base
+			<
+				  ::db::log::provider::basic<buffer_type>
+				, ::db::log::format::basic 
+			> 
+			log_type;
+
+			typedef ::db::log::scope<log_type> log_scope;
+			typedef ::db::log::message<log_type> log_msg;
+
+			/// @brief        get_log
+			///
+			/// <BR>qualifier
+			/// <BR>access    public  
+			/// @return       log_type&
+			/// @param        name as const string &
+			///
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         29.3.2010 11:45
+			///
+			extern SQLITE_WRAPPER_DLLAPI log_type& 
+			get_log(const string& name = DB_TEXT("log.txt"));
 		}
 	}
 
