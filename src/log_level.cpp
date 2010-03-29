@@ -36,3 +36,12 @@ db::log::singleton::db::get_log(const string& name/* = DB_TEXT("log.db")*/)
 		( boost::make_shared<buffer_type >(name)));
 	return ret;
 }
+
+db::log::singleton::basic::log_type& 
+db::log::singleton::basic::get_log()
+{
+	static log_type ret
+		( boost::make_shared<log_type::provider_type >
+		( boost::make_shared<buffer_type >()));
+	return ret;
+}

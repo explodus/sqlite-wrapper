@@ -15,37 +15,17 @@
 
 #include <boost/make_shared.hpp>
 
-typedef db::log::base
-<
-  db::log::provider::basic<db::log::buffer::basic >
-, db::log::format::basic 
-> 
-log_type;
-
-log_type instance
-(
-	boost::make_shared
-	<
-		log_type::provider_type
-	>
-	(
-		boost::make_shared
-		<
-			db::log::buffer::basic
-		>
-		( )
-	)
-);
+using namespace db::log::singleton::basic;
 
 void sub_sub_scope()
 {
-	db::log::scope<log_type> scope_(instance, DB_TEXT("sub_sub_scope()"));
+	log_scope scope_(get_log(), DB_TEXT("sub_sub_scope()"));
 
 }
 
 void sub_scope()
 {
-	db::log::scope<log_type> scope_(instance, DB_TEXT("sub_scope()"));
+	log_scope scope_(get_log(), DB_TEXT("sub_scope()"));
 
 	sub_sub_scope();
 }
@@ -54,8 +34,8 @@ int main( int argc, char **argv )
 {
 	// set to debug level
 	db::log::global_level = db::log::log_debug;
-
-	db::log::scope<log_type> scope_(instance, DB_TEXT("main()"));
+	
+	log_scope scope_(get_log(), DB_TEXT("main()"));
 
 	sub_scope();
 }

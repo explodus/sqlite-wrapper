@@ -507,35 +507,54 @@ namespace db { namespace log {
 		level last_level_;
 	};
 
-	namespace singleton { namespace db
-	{
-		typedef ::db::log::buffer::database<::db::base> buffer_type;
+	namespace singleton 
+	{ 
+		namespace db
+		{
+			typedef ::db::log::buffer::database<::db::base> buffer_type;
 
-		typedef ::db::log::base
-		<
-			::db::log::provider::basic<buffer_type>
-		, ::db::log::format::database 
-		> 
-		log_type;
+			typedef ::db::log::base
+			<
+					::db::log::provider::basic<buffer_type>
+				, ::db::log::format::database 
+			> 
+			log_type;
 
-		typedef ::db::log::scope<log_type> log_scope;
-		typedef ::db::log::message<log_type> log_msg;
+			typedef ::db::log::scope<log_type> log_scope;
+			typedef ::db::log::message<log_type> log_msg;
 
-		/// @brief        get_log
-		///
-		/// <BR>qualifier
-		/// <BR>access    public 
-		/// 
-		/// @return       log_type&
-		/// @param        name as const string &
-		///
-		/// @author       Torsten Schroeder
-		/// @author       explodus@gmx.de
-		/// @date         27.3.2010 8:56
-		/// 
-		extern SQLITE_WRAPPER_DLLAPI log_type& get_log(const string& name = DB_TEXT("log.db"));
+			/// @brief        get_log
+			///
+			/// <BR>qualifier
+			/// <BR>access    public 
+			/// 
+			/// @return       log_type&
+			/// @param        name as const string &
+			///
+			/// @author       Torsten Schroeder
+			/// @author       explodus@gmx.de
+			/// @date         27.3.2010 8:56
+			/// 
+			extern SQLITE_WRAPPER_DLLAPI log_type& 
+			get_log(const string& name = DB_TEXT("log.db"));
+		} 
 
-	} }
+		namespace basic
+		{
+			typedef ::db::log::buffer::basic buffer_type;
+			typedef ::db::log::base
+			<
+				  ::db::log::provider::basic<buffer_type >
+				, ::db::log::format::basic 
+			> 
+			log_type;
+
+			typedef ::db::log::scope<log_type> log_scope;
+			typedef ::db::log::message<log_type> log_msg;
+
+			extern SQLITE_WRAPPER_DLLAPI log_type& get_log();
+		}
+	}
 
 } }
 
