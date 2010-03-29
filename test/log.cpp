@@ -4,8 +4,7 @@
 ///  
 /// @author T. Schroeder (explodus@gmx.de)
 ///  
-/// @brief description what this file is for  
-///	@brief interface of the db class 
+/// @brief holds the testcase to an example of basic log
 ///  
 /// This file is part of the sqlite-wrapper project
 ///
