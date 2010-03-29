@@ -192,7 +192,7 @@ IF( DOXYGEN_FOUND )
 		${CMAKE_SOURCE_DIR}/doc/Doxyfile.in
 		${CMAKE_BINARY_DIR}/Doxyfile
 		)
- 
+
 	SET( doc_files
 		${CMAKE_BINARY_DIR}/Doxyfile 
 		${CMAKE_SOURCE_DIR}/doc/sqlite_wrapper.hpp
