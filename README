@@ -1,0 +1,14 @@
+== Description
+   sqlite-wrapper attempts to create a simple private cpp wrapper around sqlite
+ 
+== Constants
+VERSION
+   The current version of this library, returned as a String.
+ 
+== Warranty
+   This package is provided "as is" and without any express or
+   implied warranties, including, without limitation, the implied
+   warranties of merchantability and fitness for a particular purpose
+ 
+== Licence
+  This software is released under the BSD Licence
