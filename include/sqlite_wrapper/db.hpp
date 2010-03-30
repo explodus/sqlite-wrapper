@@ -707,7 +707,7 @@ namespace db
   }
 
   ///dynamic parameter class*/
-  class param 
+  class SQLITE_WRAPPER_DLLAPI param 
 //#ifndef BOOST_NO_STD_LOCALE
 //    : sigb::trackable
 //#endif // _DEBUG
@@ -725,8 +725,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:36
     ///
-    param() : _type(e_null), _is_changed(false)
-    { _data = DB_TEXT(""); }
+    param();
   public:
     /// @brief     param
     ///
@@ -737,8 +736,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:36
     ///
-    param(unsigned col) : _col(col), _type(e_null), _is_changed(false)
-    { _data = DB_TEXT(""); }
+    param(unsigned col);
 
     /// @brief     ~param
     ///
@@ -748,8 +746,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:35
     ///
-    ~param() 
-    {}
+    ~param();
 
     /// @brief     copy constructor
     ///
@@ -760,9 +757,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:35
     ///
-    param(const param& Param) : _col(Param._col), _type(Param._type), 
-      _is_changed(false), _data(Param._data) 
-    { }               
+    param(const param& Param);               
 
     ///
     /// <BR>qualifier const 
@@ -771,7 +766,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:35
     ///
-    param_types get_type() const { return _type; }
+    param_types get_type() const;
 
     /// @brief     set_type
     ///
@@ -782,7 +777,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:35
     ///
-    void set_type(param_types Type) { _type = Type; }
+    void set_type(param_types Type);
 
     /// @brief     is param changed?
     ///
@@ -792,7 +787,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:35
     ///
-    bool& is_changed() { return _is_changed; }
+    bool& is_changed();
 
     ///
     /// <BR>qualifier
@@ -802,121 +797,33 @@ namespace db
     ///
     /// @date      20:2:2009   14:34
     ///
-    void set(sqlite3_stmt* stm)
-    {
-      if (!stm)
-      {
-        set_null();
-        return;
-      }
-
-      switch(sqlite3_column_type(stm, _col)) 
-      {
-      case SQLITE_INTEGER:
-        set(sqlite3_column_int(stm, _col));
-        break;
-      case SQLITE_FLOAT:
-        set(sqlite3_column_double(stm, _col));
-        break;
-      case SQLITE_TEXT:
-#ifdef _UNICODE
-        set(reinterpret_cast<const wchar_t*>(
-          sqlite3_column_text16(stm, _col)));
-#else
-        set(reinterpret_cast<const char*>(
-          sqlite3_column_text(stm, _col)));
-#endif // _UNICODE
-        break;
-      case SQLITE_BLOB:
-        {
-#ifdef _UNICODE
-          std::string blob(reinterpret_cast<const char*>(
-            sqlite3_column_blob(stm, _col)));
-					std::wstring wblob = detail::a2w(blob.c_str());
-          set(wblob);
-#else
-          set(reinterpret_cast<const char*>(
-            sqlite3_column_blob(stm, _col)));
-#endif // _UNICODE
-        }
-        break;
-      case SQLITE_NULL:
-        set_null();
-        break;
-      default:
-        set_null();
-      } 
-    }
+    void set(sqlite3_stmt* stm);
 
     ///gesetzt als bool
-    void set(bool dat)
-    { 
-      _type = e_bool;
-      _data = dat ? DB_TEXT("TRUE") : DB_TEXT("FALSE");
-    } 
+    void set(bool dat); 
     ///gesetzt als int
-    void set(int dat)
-    { 
-      _type = e_int;
-      _data = boost::str(format(DB_TEXT("%d")) % dat);
-    } 
+    void set(int dat); 
     ///gesetzt als unsigned
-    void set(unsigned dat)
-    { 
-      _type = e_unsigned;
-      _data = boost::str(format(DB_TEXT("%d")) % dat);
-    } 
+    void set(unsigned dat); 
     ///gesetzt als long
-    void set(long dat)
-    { 
-      _type = e_long;
-      _data = boost::str(format(DB_TEXT("%ld")) % dat);
-    } 
+    void set(long dat); 
     ///gesetzt als float
-    void set(float dat)
-    { 
-      _type = e_float;
-      _data = boost::str(format(DB_TEXT("%f")) % dat);
-    } 
+    void set(float dat); 
     ///gesetzt als double
-    void set(double dat)
-    { 
-      _type = e_double;
-      _data = boost::str(format(DB_TEXT("%f")) % dat);
-    } 
+    void set(double dat); 
     ///gesetzt als char
-    void set(char dat)
-    { 
-      _type = e_char;
-      _data = dat;
-    } 
+    void set(char dat); 
     ///gesetzt als const db::char_type*
-    void set(const db::char_type* dat)
-    { 
-      _type = e_string;
-      _data = dat;
-    } 
+    void set(const db::char_type* dat); 
     ///gesetzt als const string&
-    void set(const string& dat, bool isBlob=false)
-    { 
-      _type = isBlob?e_blob:e_string;
-      _data = dat;
-    } 
+    void set(const string& dat, bool isBlob=false); 
 
 #ifndef BOOST_NO_STD_LOCALE
     ///gesetzt als boost::gregorian::date
-		void set(const boost::gregorian::date& dat)
-    { 
-      _type = e_date_time;
-      _data = detail::to_sql_string(dat);
-    } 
+		void set(const boost::gregorian::date& dat); 
 #else
     ///gesetzt als time_t_ce
-    void set(const time_t_ce& dat)
-    { 
-      _type = e_date_time;
-      _data = detail::to_sql_string(dat);
-    } 
+    void set(const time_t_ce& dat); 
 #endif
 
     /// @brief     set_null
@@ -927,7 +834,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:39
     ///
-    void set_null() { _type=e_null; _data = DB_TEXT(""); }
+    void set_null();
 
     /// @brief     set_with_old_type
     ///
@@ -938,12 +845,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:40
     ///
-    void set_with_old_type(const string& data)
-    {
-      param_types ty(get_type());
-      set(data);
-      set_type(ty);
-    }
+    void set_with_old_type(const string& data);
 
     /// @brief     set_with_old_type
     ///
@@ -954,12 +856,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:40
     ///
-    void set_with_old_type(const param& data)
-    {
-      param_types ty(get_type());
-      set(data.str());
-      set_type(ty);
-    }
+    void set_with_old_type(const param& data);
 
     /// @brief     set_with_old_type
     ///
@@ -970,14 +867,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:40
     ///
-    void set_with_old_type(const param* data)
-    {
-      if (!data)
-        return;
-      param_types ty(get_type());
-      set(data->str());
-      set_type(ty);
-    }
+    void set_with_old_type(const param* data);
 
     /// @brief     is_null
     ///
@@ -987,7 +877,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:33
     ///
-    bool is_null() const { return _type==e_null ? true : false; }
+    bool is_null() const;
 
     ///
     /// <BR>qualifier const
@@ -996,13 +886,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:40
     ///
-    bool get_bool() const
-    {
-      if (_type == e_bool)
-        return _data == DB_TEXT("TRUE") ? true : false;
-      else
-        return false; 
-    } 
+    bool get_bool() const; 
 
 
     ///
@@ -1012,10 +896,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:40
     ///
-    int get_int() const
-    {
-      return detail::to_type<int>(_data);
-    }
+    int get_int() const;
 
     ///
     /// <BR>qualifier const
@@ -1024,10 +905,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:42
     ///
-    unsigned get_unsigned() const
-    {
-      return detail::to_type<unsigned>(_data);
-    }
+    unsigned get_unsigned() const;
 
     ///
     /// <BR>qualifier const
@@ -1036,10 +914,7 @@ namespace db
     ///
     /// @date      11:3:2009   13:56
     ///
-    long get_long() const
-    {
-      return detail::to_type<long>(_data);
-    }
+    long get_long() const;
 
     ///
     /// <BR>qualifier const
@@ -1048,10 +923,7 @@ namespace db
     ///
     /// @date      11:3:2009   13:56
     ///
-    float get_float() const
-    {
-      return detail::to_type<float>(_data);
-    }
+    float get_float() const;
 
     ///
     /// <BR>qualifier const
@@ -1060,10 +932,7 @@ namespace db
     ///
     /// @date      11:3:2009   13:57
     ///
-    double get_double() const
-    {
-      return detail::to_type<double>(_data);
-    }
+    double get_double() const;
 
     ///
     /// <BR>qualifier const
@@ -1072,16 +941,9 @@ namespace db
     ///
     /// @date      11:3:2009   13:57
     ///
-    db::char_type get_char() const 
-    {
-      if (_data.length()==0)
-        return DB_TEXT(' ');
-      else
-        return _data[0];
-    }
+    db::char_type get_char() const;
 
-    operator string() const
-    { return _data; }
+    operator string() const;
 
     ///
     /// <BR>qualifier const
@@ -1090,8 +952,7 @@ namespace db
     ///
     /// @date      18:2:2009   11:33
     ///
-    string& str()
-    { return _data; }
+    string& str();
 
     ///
     /// <BR>qualifier const
@@ -1100,15 +961,12 @@ namespace db
     ///
     /// @date      18:2:2009   11:33
     ///
-    const string& str() const
-    { return _data; }
+    const string& str() const;
 
 #ifdef _UNICODE
-    const wchar_t* c_str() const
-    { return _data.c_str(); }
+    const wchar_t* c_str() const;
 #else
-    const char* c_str() const
-    { return _data.c_str(); }
+    const char* c_str() const;
 #endif // _UNICODE
 
 #ifndef BOOST_NO_STD_LOCALE
@@ -1119,17 +977,7 @@ namespace db
     ///
     /// @date      18:2:2009   11:34
     ///
-    boost::gregorian::date get_date_time() const
-    {
-#ifdef _UNICODE
-			std::string data = detail::w2a(_data.c_str());
-      return boost::date_time::parse_date<
-        boost::gregorian::date>(data);
-#else
-      return boost::date_time::parse_date<
-        boost::gregorian::date>(_data);
-#endif // _UNICODE
-    }
+    boost::gregorian::date get_date_time() const;
 #else
     ///
     /// <BR>qualifier const
@@ -1139,8 +987,7 @@ namespace db
     ///
     /// @date      19:3:2009   10:36
     ///
-    time_t_ce get_date_time(const time_t_ce* tmp = 0) const
-    { return detail::from_sql_string(_data, tmp); }
+    time_t_ce get_date_time(const time_t_ce* tmp = 0) const;
 #endif
 
 #ifdef _MFC_VER
@@ -1152,8 +999,7 @@ namespace db
     ///
     /// @date      19:3:2009   10:36
     ///
-    COleDateTime get_date_time(const COleDateTime* tmp = 0) const
-    { return detail::from_sql_string(_data, tmp); }
+    COleDateTime get_date_time(const COleDateTime* tmp = 0) const;
 #endif // _MFCVER
 
     /// @brief     operator=
@@ -1165,13 +1011,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:24
     ///
-    const param& operator=( const param &v )
-    {
-      _data = v._data;
-      _type = v._type;
-      _is_changed = v._is_changed;
-      return *this; 
-    }
+    const param& operator=( const param &v );
 
     /// @brief     operator!
     ///
@@ -1181,8 +1021,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:27
     ///
-    bool operator!() const 
-    { return !this->is_null(); }
+    bool operator!() const;
 
     /// @brief     operator==
     ///
@@ -1193,8 +1032,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:24
     ///
-    bool operator== (const param& v) const 
-    { return (!(*this) && (!v) && _data == v._data); }
+    bool operator== (const param& v) const;
 
 //#ifndef BOOST_NO_STD_LOCALE
 //    typedef boost::signal2<void, const string&, bool&> type_signal_external_check; 
@@ -1212,7 +1050,7 @@ namespace db
 	}
 
   ///table rows interface
-  class row
+  class SQLITE_WRAPPER_DLLAPI row
   {
   protected:
     typedef std::vector<param, alloc_param > data_type;
@@ -1431,7 +1269,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:18
     ///
-    inline void fill(sqlite3_stmt* stm);
+    void fill(sqlite3_stmt* stm);
 
   };
   typedef boost::detail::allocator::partial_std_allocator_wrapper<

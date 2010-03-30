@@ -39,7 +39,7 @@ db::query::query( const query& q ) : _base(q._base), _stm(q._stm)
 	std::copy(q.fbegin(), q.fend(), std::back_inserter(_field));
 }
 
-inline void db::query::execute(const string& cmd)
+void db::query::execute(const string& cmd)
 {
 	if (_stm) { sqlite3_finalize(_stm); _stm = 0; }
 	sqlite3* _db(_base.get_db_ptr());
@@ -133,13 +133,13 @@ inline void db::query::execute(const string& cmd)
 	_stm = 0; 
 }
 
-const row& db::query::getRow( size_type row_num ) const
+const db::row& db::query::getRow( size_type row_num ) const
 {
 	const value_type& pValue(*(begin()+row_num));
 	return pValue;
 }
 
-row& db::query::getRow( size_type row_num )
+db::row& db::query::getRow( size_type row_num )
 {
 	value_type& pValue(*(begin()+row_num));
 	return pValue;
@@ -173,7 +173,7 @@ db::string db::query::getTitleOf( unsigned iField ) const
 		return DB_TEXT("");
 }
 
-const field* db::query::getFieldInfo( unsigned iField ) const
+const db::field* db::query::getFieldInfo( unsigned iField ) const
 {
 	if (iField<_field.size())
 		return &_field[iField];

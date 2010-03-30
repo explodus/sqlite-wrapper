@@ -41,13 +41,13 @@ db::row::~row()
 
 }
 
-const param& db::row::value( size_type field_num ) const
+const db::param& db::row::value( size_type field_num ) const
 {
 	const value_type& pValue(*(begin()+field_num));
 	return pValue;
 }
 
-param& db::row::value( size_type field_num )
+db::param& db::row::value( size_type field_num )
 {
 	value_type& pValue(*(begin()+field_num));
 	return pValue;
@@ -63,7 +63,7 @@ db::row::reference db::row::operator[]( size_type field_num )
 	return *(begin()+field_num);
 }
 
-param* db::row::operator[]( const string& field_title )
+db::param* db::row::operator[]( const string& field_title )
 {
 	UNREFERENCED_PARAMETER(field_title); 
 	return (0);
