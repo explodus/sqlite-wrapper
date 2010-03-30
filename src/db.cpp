@@ -129,7 +129,7 @@ db::query& db::base::execute(const string& cmd)
 	return it->second;
 }
 
-db::query_ptr db::base::execute_ptr(const string& cmd)
+db::query_ptr db::base::execute_ptr(const db::string& cmd)
 {
 	progress_handler progress(_db, this);
 	db::query_ptr ret(new query(*this));

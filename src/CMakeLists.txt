@@ -17,6 +17,7 @@ SET( sqlite_wrapper_header_detail
 	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/param.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/exception.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/field.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/expr.hpp
 	)
 
 SET( sqlite3_header_top
@@ -50,6 +51,7 @@ SET( sqlite_wrapper_source_top
 	${CMAKE_SOURCE_DIR}/src/expr.cpp
 	${CMAKE_SOURCE_DIR}/src/exception.cpp
 	${CMAKE_SOURCE_DIR}/src/split.cpp
+	${CMAKE_SOURCE_DIR}/src/field.cpp
 	)
 
 SET( sqlite3_source_top
