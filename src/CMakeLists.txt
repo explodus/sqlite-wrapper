@@ -39,6 +39,17 @@ SOURCE_GROUP( "Header Files\\detail" FILES
 SET( sqlite_wrapper_source_top
 	${CMAKE_SOURCE_DIR}/src/cout.cpp
 	${CMAKE_SOURCE_DIR}/src/log_level.cpp
+	${CMAKE_SOURCE_DIR}/src/db.cpp
+	${CMAKE_SOURCE_DIR}/src/query.cpp
+	${CMAKE_SOURCE_DIR}/src/row.cpp
+	${CMAKE_SOURCE_DIR}/src/param.cpp
+	${CMAKE_SOURCE_DIR}/src/sel.cpp
+	${CMAKE_SOURCE_DIR}/src/upd.cpp
+	${CMAKE_SOURCE_DIR}/src/del.cpp
+	${CMAKE_SOURCE_DIR}/src/ins.cpp
+	${CMAKE_SOURCE_DIR}/src/expr.cpp
+	${CMAKE_SOURCE_DIR}/src/exception.cpp
+	${CMAKE_SOURCE_DIR}/src/split.cpp
 	)
 
 SET( sqlite3_source_top

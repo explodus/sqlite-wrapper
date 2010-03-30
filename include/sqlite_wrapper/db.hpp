@@ -1240,9 +1240,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:24
     ///
-    row(query* query_, unsigned row_) : _query(query_), _row(row_)
-    {
-    }
+    row(query* query_, unsigned row_);
 
     /// @brief     row
     ///
@@ -1253,11 +1251,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:23
     ///
-    row(const row& r) : _query(r._query), _row(r._row)
-    {
-      _data.reserve(r.size());
-      std::copy(r.begin(), r.end(), std::back_inserter(_data));
-    }
+    row(const row& r);
 
     /// @brief     ~row
     ///
@@ -1267,7 +1261,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:23
     ///
-    ~row() {}
+    ~row();
 
 
     /// @brief     get a value by number
@@ -1279,11 +1273,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:23
     ///
-    const param& value(size_type field_num) const
-    { 
-      const value_type& pValue(*(begin()+field_num));
-      return pValue; 
-    }
+    const param& value(size_type field_num) const;
 
     /// @brief     get a value by number
     ///
@@ -1294,11 +1284,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:23
     ///
-    param& value(size_type field_num)
-    { 
-      value_type& pValue(*(begin()+field_num));
-      return pValue; 
-    }
+    param& value(size_type field_num);
 
     /// @brief     get a value by number
     ///
@@ -1309,8 +1295,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:22
     ///
-    const_reference operator[] (size_type field_num) const
-    { return *(begin()+field_num); }
+    const_reference operator[] (size_type field_num) const;
 
     /// @brief     get a value by number
     ///
@@ -1321,8 +1306,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:21
     ///
-    reference operator[] (size_type field_num)
-    { return *(begin()+field_num); }
+    reference operator[] (size_type field_num);
 
     /// @brief     operator[]
 		/// @todo			 need an implementation
@@ -1334,11 +1318,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:21
     ///
-    param* operator[] (const string& field_title)
-    { 
-			UNREFERENCED_PARAMETER(field_title); 
-			return (0); 
-		}
+    param* operator[] (const string& field_title);
 
     /// @brief     const begin iterator
     ///
@@ -1348,7 +1328,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:21
     ///
-    const_iterator begin() const          { return _data.begin(); }
+    const_iterator begin() const;
 
     /// @brief     const end iterator
     ///
@@ -1358,7 +1338,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:21
     ///
-    const_iterator end() const            { return _data.end(); }
+    const_iterator end() const;
 
     /// @brief     begin iterator
     ///
@@ -1368,7 +1348,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:21
     ///
-    iterator begin()                      { return _data.begin(); }
+    iterator begin();
 
     /// @brief     end iterator
     ///
@@ -1378,7 +1358,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:20
     ///
-    iterator end()                        { return _data.end(); }
+    iterator end();
 
     /// @brief     begin reverse iterator
     ///
@@ -1388,7 +1368,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:20
     ///
-    reverse_iterator rbegin()             { return _data.rbegin(); }
+    reverse_iterator rbegin();
 
     /// @brief     end reverse iterator
     ///
@@ -1398,7 +1378,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:20
     ///
-    reverse_iterator rend()               { return _data.rend(); }
+    reverse_iterator rend();
 
     /// @brief     container size
     ///
@@ -1408,7 +1388,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:20
     ///
-    size_type size() const                { return _data.size(); }
+    size_type size() const;
 
     /// @brief     returns true if the container is empty
     ///
@@ -1418,7 +1398,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:19
     ///
-    bool empty() const                    { return _data.empty(); }
+    bool empty() const;
 
     /// @brief     operator==
     ///
@@ -1429,7 +1409,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:19
     ///
-    bool operator==(const row& t) const { return _data == t._data; }
+    bool operator==(const row& t) const;
 
     /// @brief     push a param to the container
     ///
@@ -1440,7 +1420,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:18
     ///
-    void push_back(const value_type& v)  { _data.push_back(v); }
+    void push_back(const value_type& v);
 
     /// @brief     fill
     ///
@@ -1458,7 +1438,7 @@ namespace db
     boost::detail::quick_allocator<row > > alloc_row; 
 
   ///cursor interface
-  class query
+  class SQLITE_WRAPPER_DLLAPI query
   {
   protected:
     typedef row _value_type;
@@ -1483,96 +1463,55 @@ namespace db
     typedef field_type::iterator fiterator;
     typedef field_type::const_iterator const_fiterator;
 
-    query(base& base_) : _base(base_), _stm(0)
-    {
+    query(base& base_);
 
-    }
-
-    query(const query& q) : _base(q._base), _stm(q._stm)
-    {
-      _data.reserve(q._data.size());
-      std::copy(q.begin(), q.end(), std::back_inserter(_data));
-
-      _field.reserve(q._field.size());
-      std::copy(q.fbegin(), q.fend(), std::back_inserter(_field));
-    }
+    query(const query& q);
 
     ~query() {}
 
     inline void execute(const string& cmd);
 
     ///get a row by number
-    const row& getRow(size_type row_num) const 
-    { 
-      const value_type& pValue(*(begin()+row_num));
-      return pValue; 
-    }
-    row& getRow(size_type row_num) 
-    { 
-      value_type& pValue(*(begin()+row_num));
-      return pValue; 
-    }
+    const row& getRow(size_type row_num) const;
+    row& getRow(size_type row_num);
 
     ///get a row by number
-    const_reference operator[] (size_type row_num) const 
-    { return *(begin()+row_num); }
-    reference operator[] (size_type row_num) 
-    { return *(begin()+row_num); }
+    const_reference operator[] (size_type row_num) const;
+    reference operator[] (size_type row_num);
 
     ///get id from field title
-    int getIdOf(const string& sField) const  
-    { 
-      field_type::const_iterator iTB(_field.begin());
-      field_type::const_iterator iTE(_field.end());
-      for (iTB;iTB!=iTE;++iTB)
-        if (iTB->name()==sField)
-          return (int)(iTB-_field.begin());
-      return -1;
-    }
-    string getTitleOf(unsigned iField) const  
-    { 
-      if (iField<_field.size())
-        return _field[iField].name();
-      else
-        return DB_TEXT("");
-    }
-    const field* getFieldInfo(unsigned iField) const  
-    { 
-      if (iField<_field.size())
-        return &_field[iField];
-      else
-        return 0;
-    }
+    int getIdOf(const string& sField) const;
+    string getTitleOf(unsigned iField) const;
+    const field* getFieldInfo(unsigned iField) const;
 
     ///begin iterator
-    const_iterator begin() const { return _data.begin(); }
+    const_iterator begin() const;
     ///end iterator
-    const_iterator end() const   { return _data.end(); }
+    const_iterator end() const;
     ///begin iterator
-    iterator begin()             { return _data.begin(); }
+    iterator begin();
     ///end iterator
-    iterator end()               { return _data.end(); }
+    iterator end();
     ///begin iterator
-    const_fiterator fbegin() const { return _field.begin(); }
+    const_fiterator fbegin() const;
     ///end iterator
-    const_fiterator fend() const   { return _field.end(); }
+    const_fiterator fend() const;
     ///begin iterator
-    fiterator fbegin()             { return _field.begin(); }
+    fiterator fbegin();
     ///end iterator
-    fiterator fend()               { return _field.end(); }
+    fiterator fend();
     ///container size
-    size_type size() const         { return _data.size(); }
+    size_type size() const;
     ///is container empty?
-    bool empty() const             { return _data.empty(); }
-    bool f_empty() const           { return _field.empty(); }
+    bool empty() const;
+    bool f_empty() const;
 
-    bool operator==(const query& t) const 
-    { return  _data == t._data; }
+    bool operator==(const query& t) const;
 
     ///push a row to the row container
-    void push_back(const value_type& v)  { _data.push_back(v); }
+    void push_back(const value_type& v);
     ///push a field title to the field container
-    void push_back(const fvalue_type& v)  { _field.push_back(v); }
+    void push_back(const fvalue_type& v);
   };
 
   typedef boost::shared_ptr<query> query_ptr;
@@ -2482,7 +2421,7 @@ namespace db
   };
 
   ///datenbank interface
-  class base
+  class SQLITE_WRAPPER_DLLAPI base
   {
     sqlite3* _db;
 
@@ -2497,40 +2436,30 @@ namespace db
       ///
       /// @date      20:2:2009   14:13
       ///
-      static int xProgressCallback(void* db_)
-      {
-        if (!db_)
-          return 1;
-        base* base_(reinterpret_cast<base*> (db_));
-
-        if (!base_)
-          return 1;
-
-        //if (!base_->Sig_Progress().connected())
-        //  return 1;
-
-        //if (base_->Sig_Progress()(0,0))
-        //  return 0;
-        //else
-
-        return 0;
-      } 
+      static int xProgressCallback(void* db_); 
 
       sqlite3* _db;
     public:
-      progress_handler(sqlite3* db_, base* base_) : _db(db_)
-      {
-        sqlite3_progress_handler(_db, 4, 
-          progress_handler::xProgressCallback, base_);
-      }
-    	~progress_handler()
-      {
-        sqlite3_progress_handler(_db, 0, 0, 0); 
-      }
+      progress_handler(sqlite3* db_, base* base_);
+    	~progress_handler();
     };
     
     typedef std::map<string, query> type_last_queries; 
     type_last_queries _last_queries; 
+
+	protected:
+		friend class query;
+
+		/// @brief     throw_error
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return    void
+		/// @param     status as int
+		///
+		/// @date      20:2:2009   14:13
+		///
+		void throw_error(int status); 
 
   public:
     /// @brief     base
@@ -2541,8 +2470,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:14
     ///
-    base() : _db(0)
-    {}
+    base();
 
     /// @brief     ~base
     ///
@@ -2552,41 +2480,13 @@ namespace db
     ///
     /// @date      20:2:2009   14:14
     ///
-    ~base()
-    {
-      if (_db) 
-        sqlite3_close(_db);
-    }
+    ~base();
 
     enum feature
     {
       e_transact,
       e_blob
     };
-
-    /// @brief     throw_error
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    void
-    /// @param     status as int
-    ///
-    /// @date      20:2:2009   14:13
-    ///
-    inline void throw_error(int status) 
-    {
-      string err(boost::str(
-        format(DB_TEXT("%d=status code : %s")) % 
-          status % sqlite3_errmsg(_db)));
-      switch(status) 
-      {
-      case SQLITE_ERROR: throw exception::sql_error(err);
-      case SQLITE_INTERNAL: throw exception::internal_error(err);
-      case SQLITE_NOMEM: throw exception::memory_error(err);
-      case SQLITE_FULL: throw exception::insertion_error(err);
-      default: throw exception::unknown_error(DB_TEXT("compile failed: ") + err);
-      }
-    } 
 
     /// @brief     open the specified db
     ///
@@ -2597,17 +2497,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:14
     ///
-    void connect(const std::string& file)
-    {
-      if (_db) 
-        sqlite3_close(_db);
-      int rc = sqlite3_open(file.c_str(), &_db); 
-      if (rc != SQLITE_OK)
-        throw_error(rc);
-      rc = sqlite3_errcode(_db);
-      if (rc != SQLITE_OK)
-        throw_error(rc);
-    }
+    void connect(const std::string& file);
 
     /// @brief     begins SQL transaction
     ///
@@ -2617,12 +2507,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:14
     ///
-    void begin() 
-    {
-      int rc(sqlite3_exec(_db, "BEGIN;", 0, 0, 0)); 
-      if (rc != SQLITE_OK)
-        throw_error(rc);
-    }
+    void begin();
 
     /// @brief     commits SQL transaction
     ///
@@ -2632,12 +2517,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:15
     ///
-    void commit() 
-    {
-      int rc(sqlite3_exec(_db, "COMMIT;", 0, 0, 0)); 
-      if (rc != SQLITE_OK)
-        throw_error(rc);
-    }
+    void commit();
 
     /// @brief     cancels active SQL transaction
     ///
@@ -2647,12 +2527,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:15
     ///
-    void rollback() 
-    {
-      int rc(sqlite3_exec(_db, "ROLLBACK;", 0, 0, 0)); 
-      if (rc != SQLITE_OK)
-        throw_error(rc);
-    }
+    void rollback();
 
     /// @brief     execute SQL statement
     ///
@@ -3272,139 +3147,6 @@ inline db::expr::like db::field::Like(const string& s)
 inline db::expr::in::in(const db::field & fld, const db::sel& s) : 
   oper(fld, DB_TEXT("in"), DB_TEXT("(") + s.str() + DB_TEXT(")")) 
 {
-}
-
-inline void db::row::fill(sqlite3_stmt* stm)
-{
-  if (!stm)
-    return;
-  if (!_query)
-    return;
-
-  _data.reserve(sqlite3_column_count(stm));
-  for (int i(0), sz(sqlite3_column_count(stm)); i < sz; ++i)
-  {
-    _data.push_back(param(i));
-    _data.back().set(stm);
-  } 
-}
-
-inline db::query& db::base::execute(const string& cmd)
-{
-  progress_handler progress(_db, this);
-
-  type_last_queries::iterator it(_last_queries.find(cmd));
-  if (it==_last_queries.end())
-  {
-    _last_queries.insert(type_last_queries::value_type(cmd, query(*this)));
-    it = _last_queries.find(cmd);
-  }
-
-  it->second.execute(cmd);
-  return it->second;
-}
-
-inline db::query_ptr db::base::execute_ptr(const string& cmd)
-{
-  progress_handler progress(_db, this);
-  db::query_ptr ret(new query(*this));
-  if (ret)
-    ret->execute(cmd);
-  return ret;
-}
-
-inline void db::query::execute(const string& cmd)
-{
-  if (_stm) { sqlite3_finalize(_stm); _stm = 0; }
-  sqlite3* _db(_base.get_db_ptr());
-
-  _data.clear();
-
-  int rc;
-  while (1) 
-  {
-#ifdef _UNICODE
-    rc = sqlite3_prepare16_v2(_db, 
-      reinterpret_cast<const wchar_t*>(cmd.c_str()), 
-      cmd.length()*sizeof(wchar_t), 
-      &_stm, 0);
-#else
-    rc = sqlite3_prepare_v2(_db, 
-      reinterpret_cast<const char*>(cmd.c_str()), 
-      cmd.length()*sizeof(char), 
-      &_stm, 0);
-#endif // _UNICODE
-
-    if (rc != SQLITE_OK || _stm == 0) 
-    {
-      switch(rc) 
-      {
-      case SQLITE_BUSY: 
-      case SQLITE_LOCKED: 
-				/// @todo portabel machen
-#if defined (WIN32) || defined (WIN64)
-        Sleep(250); 
-#else
-				sleep(250); 
-#endif
-        break;
-      default: 
-        _base.throw_error(rc);
-      }
-    }
-    else
-      break;
-  } 
-
-  if (rc != SQLITE_OK || !_stm)
-    return;
-
-  unsigned nRowCnt(0);
-  while ((rc = sqlite3_step(_stm)) == SQLITE_ROW) 
-  {
-    if (nRowCnt==0)
-    {
-      _field.reserve(sqlite3_column_count(_stm)); string tmp;
-      for (int i(0), sz(sqlite3_column_count(_stm)); i < sz; ++i)
-      {
-#ifdef _UNICODE
-        tmp = static_cast<const wchar_t*>(
-          sqlite3_column_origin_name16(_stm, i));
-#else
-        tmp = sqlite3_column_origin_name(_stm, i);
-#endif // _UNICODE
-
-        _field.push_back(db::field(tmp));
-
-        switch (sqlite3_column_type(_stm, i))
-        {
-        case SQLITE_NULL:
-          _field.back().set_type(db::e_null);
-          break;
-        case SQLITE_INTEGER:
-          _field.back().set_type(db::e_long);
-          break;
-        case SQLITE_FLOAT:
-          _field.back().set_type(db::e_double);
-          break;
-        case SQLITE_TEXT:
-          _field.back().set_type(db::e_string);
-          break;
-        case SQLITE_BLOB:
-          _field.back().set_type(db::e_blob);
-          break;
-        default:
-          _field.back().set_type(db::e_null);
-          break;
-        }
-      }
-    }
-    
-    _data.push_back(row(this, nRowCnt++));
-    _data.back().fill(_stm);
-  }
-  sqlite3_finalize(_stm);
-  _stm = 0; 
 }
 
 void db::detail::w2a::init(
