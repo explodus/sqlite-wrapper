@@ -54,10 +54,6 @@ namespace db
   class row;
   class query;
   class base;
-	class sel;
-  class del;
-  class ins;
-  class upd;
 
   ///dynamic parameter class*/
   class SQLITE_WRAPPER_DLLAPI param 

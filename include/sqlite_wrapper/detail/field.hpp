@@ -36,6 +36,10 @@ namespace db
 		class in;
 		class like;
 	}
+	class sel;
+	class del;
+	class ins;
+	class upd;
 
 	/// fieldtype interface
 	class field 
