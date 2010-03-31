@@ -23,8 +23,9 @@
 /// This file is part of the sqlite-wrapper project
 
 #include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
 #include <sqlite_wrapper/sqlite/sqlite3.h>
+#include <sqlite_wrapper/db.hpp>
+#include <sqlite_wrapper/detail/query.hpp>
 
 db::query::query( base& base_ ) : _base(&base_), _stm(0)
 {
@@ -38,6 +39,11 @@ db::query::query( const query& q ) : _base(q._base), _stm(q._stm)
 
 	_field.reserve(q._field.size());
 	std::copy(q.fbegin(), q.fend(), std::back_inserter(_field));
+}
+
+db::query::~query()
+{
+
 }
 
 void db::query::execute(const string& cmd)

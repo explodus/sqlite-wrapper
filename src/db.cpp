@@ -138,8 +138,3 @@ db::query_ptr db::base::execute_ptr(const db::string& cmd)
 		ret->execute(cmd);
 	return ret;
 }
-
-db::query::~query()
-{
-
-}

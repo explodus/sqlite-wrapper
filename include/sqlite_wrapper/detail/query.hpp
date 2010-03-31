@@ -26,6 +26,8 @@
 #define DB_QUERY_HPP_INCLUDED
 
 #include <sqlite_wrapper/config.hpp>
+#include <sqlite_wrapper/detail/field.hpp>
+#include <sqlite_wrapper/detail/row.hpp>
 
 namespace db
 {
@@ -59,56 +61,330 @@ namespace db
     typedef field_type::iterator fiterator;
     typedef field_type::const_iterator const_fiterator;
 		
+		/// @brief        query
+		///
+		/// <BR>qualifier : _base(0)*/, _stm(0)
+		/// <BR>access    public 
+		/// 
+		/// @return       
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         31.3.2010 21:54
+		/// 
 		query() : _base(0), _stm(0) {}
 
+    /// @brief        query
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       
+    /// @param        base_ as base &
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:55
+    /// 
     query(base& base_);
 
+    /// @brief        query
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       
+    /// @param        q as const query &
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:55
+    /// 
     query(const query& q);
 
+    /// @brief        ~query
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:55
+    /// 
     ~query();
 
+    /// @brief        execute
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       void
+    /// @param        cmd as const string &
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:55
+    /// 
     void execute(const string& cmd);
 
-    ///get a row by number
+    /// @brief        get a row by number
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       const row&
+    /// @param        row_num as size_type
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:55
+    /// 
     const row& getRow(size_type row_num) const;
+
+    /// @brief        get a row by number
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       row&
+    /// @param        row_num as size_type
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:55
+    /// 
     row& getRow(size_type row_num);
 
-    ///get a row by number
+    /// @brief        get a row by number
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       db::query::const_reference
+    /// @param        row_num as size_type
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     const_reference operator[] (size_type row_num) const;
+
+    /// @brief        get a row by number
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       db::query::reference
+    /// @param        row_num as size_type
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     reference operator[] (size_type row_num);
 
-    ///get id from field title
+    /// @brief        get id from field title
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       int
+    /// @param        sField as const string &
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     int getIdOf(const string& sField) const;
+
+    /// @brief        get id from field title
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       db::string
+    /// @param        iField as unsigned
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     string getTitleOf(unsigned iField) const;
+
+    /// @brief        getFieldInfo
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       const field*
+    /// @param        iField as unsigned
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     const field* getFieldInfo(unsigned iField) const;
 
-    ///begin iterator
+    /// @brief        begin iterator
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       db::query::const_iterator
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     const_iterator begin() const;
-    ///end iterator
+
+    /// @brief        end iterator
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       db::query::const_iterator
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     const_iterator end() const;
-    ///begin iterator
+
+    /// @brief        begin iterator
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       db::query::iterator
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:58
+    /// 
     iterator begin();
-    ///end iterator
+
+    /// @brief        end iterator
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       db::query::iterator
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:58
+    /// 
     iterator end();
-    ///begin iterator
+
+    /// @brief        begin iterator
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       db::query::const_fiterator
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     const_fiterator fbegin() const;
-    ///end iterator
+
+    /// @brief        end iterator
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       db::query::const_fiterator
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     const_fiterator fend() const;
-    ///begin iterator
+
+    /// @brief        begin iterator
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       db::query::fiterator
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     fiterator fbegin();
-    ///end iterator
+
+    /// @brief        end iterator
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       db::query::fiterator
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     fiterator fend();
-    ///container size
+
+    /// @brief        container size
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       db::query::size_type
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     size_type size() const;
-    ///is container empty?
+
+    /// @brief        is container empty?
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       bool
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     bool empty() const;
+
+    /// @brief        is container empty?
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       bool
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     bool f_empty() const;
 
+    /// @brief        operator==
+    ///
+    /// <BR>qualifier const
+    /// <BR>access    public 
+    /// 
+    /// @return       bool
+    /// @param        t as const query &
+    ///
+    /// @author       Torsten Schroeder
+    /// @author       schroeder@ipe-chemnitz.de / explodus@gmx.de
+    /// @date         31.3.2010 22:01
+    /// 
     bool operator==(const query& t) const;
 
-    ///push a row to the row container
+    /// @brief        push a row to the row container
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       void
+    /// @param        v as const value_type &
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     void push_back(const value_type& v);
-    ///push a field title to the field container
+
+    /// @brief        push a field title to the field container
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       void
+    /// @param        v as const fvalue_type &
+    ///
+		/// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         31.3.2010 21:57
+    /// 
     void push_back(const fvalue_type& v);
   };
 
