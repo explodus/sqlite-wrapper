@@ -24,6 +24,7 @@
 
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/db.hpp>
+#include <sqlite_wrapper/sqlite/sqlite3.h>
 
 int db::base::progress_handler::xProgressCallback( void* db_ )
 {
@@ -136,4 +137,9 @@ db::query_ptr db::base::execute_ptr(const db::string& cmd)
 	if (ret)
 		ret->execute(cmd);
 	return ret;
+}
+
+db::query::~query()
+{
+
 }

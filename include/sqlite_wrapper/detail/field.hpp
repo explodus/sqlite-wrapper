@@ -42,7 +42,7 @@ namespace db
 	class upd;
 
 	/// fieldtype interface
-	class field 
+	class SQLITE_WRAPPER_DLLAPI field 
 	{
 	public:
 		typedef std::vector< std::pair<string, string> > Values;
@@ -126,7 +126,7 @@ namespace db
 
 		string fullName() const;
 
-		~field() {}
+		~field();
 
 		string      name()        const;
 		string      sourcename()  const;
@@ -199,9 +199,9 @@ namespace db
 		bool operator!=(const field & fd) const;
 	};
 
-	typedef boost::detail::allocator::partial_std_allocator_wrapper<
-	boost::detail::quick_allocator<field > > alloc_field; 
-
+	//typedef boost::detail::allocator::partial_std_allocator_wrapper<
+	//	boost::detail::quick_allocator<field > > alloc_field; 
+	typedef std::allocator<field> alloc_field; 
 	typedef std::pair<field, field> field_pair;
 }
 

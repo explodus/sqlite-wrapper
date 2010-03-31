@@ -153,3 +153,7 @@ db::expr::like db::field::Like(const string& s)
 	return expr::like(*this, s); 
 }
 
+db::field::~field()
+{
+
+}

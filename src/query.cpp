@@ -24,8 +24,9 @@
 
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/db.hpp>
+#include <sqlite_wrapper/sqlite/sqlite3.h>
 
-db::query::query( base& base_ ) : _base(base_), _stm(0)
+db::query::query( base& base_ ) : _base(&base_), _stm(0)
 {
 
 }
@@ -42,7 +43,7 @@ db::query::query( const query& q ) : _base(q._base), _stm(q._stm)
 void db::query::execute(const string& cmd)
 {
 	if (_stm) { sqlite3_finalize(_stm); _stm = 0; }
-	sqlite3* _db(_base.get_db_ptr());
+	sqlite3* _db(_base->get_db_ptr());
 
 	_data.clear();
 
@@ -75,7 +76,7 @@ void db::query::execute(const string& cmd)
 #endif
 				break;
 			default: 
-				_base.throw_error(rc);
+				_base->throw_error(rc);
 			}
 		}
 		else

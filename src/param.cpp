@@ -24,19 +24,28 @@
 
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/db.hpp>
+#include <sqlite_wrapper/sqlite/sqlite3.h>
 
-db::param::param() : _type(e_null), _is_changed(false)
+db::param::param() : 
+	  _type(e_null)
+	, _is_changed(false)
 {
 	_data = DB_TEXT("");
 }
 
-db::param::param( unsigned col ) : _col(col), _type(e_null), _is_changed(false)
+db::param::param( unsigned col ) : 
+	  _col(col)
+	, _type(e_null)
+	, _is_changed(false)
 {
 	_data = DB_TEXT("");
 }
 
-db::param::param( const param& Param ) : _col(Param._col), _type(Param._type), 
-_is_changed(false), _data(Param._data)
+db::param::param( const param& Param ) : 
+	  _col(Param._col)
+	, _type(Param._type)
+	, _is_changed(false)
+	, _data(Param._data)
 {
 
 }

@@ -39,8 +39,6 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include "sqlite/sqlite3.h"
-
 #pragma warning( pop )
 
 #include <sqlite_wrapper/detail/time.hpp>
@@ -48,6 +46,9 @@
 #include <sqlite_wrapper/detail/exception.hpp>
 #include <sqlite_wrapper/detail/field.hpp>
 #include <sqlite_wrapper/detail/expr.hpp>
+
+struct sqlite3;
+struct sqlite3_stmt;
 
 namespace db
 {
@@ -66,16 +67,10 @@ namespace db
     bool _is_changed;
     unsigned _col; 
 
-    /// @brief     protected constructor
-    ///
-    /// <BR>qualifier : _type(e_null), _is_changed(false)
-    /// <BR>access    public  
-    /// @return    
-    ///
-    /// @date      20:2:2009   14:36
-    ///
-    param();
   public:
+		/// @todo correct this...
+		param();
+
     /// @brief     param
     ///
     /// <BR>qualifier : _col(col), _type(e_null), _is_changed(false)
@@ -388,8 +383,9 @@ namespace db
 //    type_signal_external_check signal_external_check;
 //#endif // BOOST_NO_STD_LOCALE
   };
-  typedef boost::detail::allocator::partial_std_allocator_wrapper<
-    boost::detail::quick_allocator<param > > alloc_param; 
+	//typedef boost::detail::allocator::partial_std_allocator_wrapper<
+	//	boost::detail::quick_allocator<param > > alloc_param; 
+	typedef std::allocator<param > alloc_param; 
 
   namespace detail
   {
@@ -416,6 +412,9 @@ namespace db
     typedef data_type::iterator iterator;
     typedef data_type::reverse_iterator reverse_iterator;
     typedef data_type::const_iterator const_iterator;
+
+		/// @todo correct this...
+		row() {}
 
     /// @brief     row
     ///
@@ -621,8 +620,10 @@ namespace db
     void fill(sqlite3_stmt* stm);
 
   };
-  typedef boost::detail::allocator::partial_std_allocator_wrapper<
-    boost::detail::quick_allocator<row > > alloc_row; 
+  
+	//typedef boost::detail::allocator::partial_std_allocator_wrapper<
+ //   boost::detail::quick_allocator<row > > alloc_row; 
+	typedef std::allocator<row> alloc_row; 
 
   ///cursor interface
   class SQLITE_WRAPPER_DLLAPI query
@@ -634,8 +635,10 @@ namespace db
     typedef std::vector<_fvalue_type, alloc_field > field_type;
 
     data_type _data;
+
     field_type _field;
-    base& _base;
+
+    base* _base;
     sqlite3_stmt* _stm; 
 
   public:
@@ -649,12 +652,14 @@ namespace db
     typedef data_type::const_iterator const_iterator;
     typedef field_type::iterator fiterator;
     typedef field_type::const_iterator const_fiterator;
+		
+		query() : _base(0), _stm(0) {}
 
     query(base& base_);
 
     query(const query& q);
 
-    ~query() {}
+    ~query();
 
     void execute(const string& cmd);
 
@@ -701,7 +706,7 @@ namespace db
     void push_back(const fvalue_type& v);
   };
 
-  typedef boost::shared_ptr<query> query_ptr;
+	typedef boost::shared_ptr<query> query_ptr;
 
   ///helper class, generates SELECT SQL statements
   class sel 
@@ -1612,7 +1617,7 @@ namespace db
   {
     sqlite3* _db;
 
-    class progress_handler
+    class SQLITE_WRAPPER_DLLAPI progress_handler
     {
       /// @brief     xProgressCallback
       ///
@@ -1632,7 +1637,7 @@ namespace db
     };
     
     typedef std::map<string, query> type_last_queries; 
-    type_last_queries _last_queries; 
+		type_last_queries _last_queries; 
 
 	protected:
 		friend class query;
