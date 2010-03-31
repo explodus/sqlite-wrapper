@@ -10,6 +10,7 @@
 ///
 
 #include <sqlite_wrapper/config.hpp>
+#include <sqlite_wrapper/db.hpp>
 #include <sqlite_wrapper/log.hpp>
 
 #include <boost/make_shared.hpp>
