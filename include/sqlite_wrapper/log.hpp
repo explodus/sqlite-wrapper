@@ -30,7 +30,6 @@
 #include <boost/make_shared.hpp>
 
 #include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
 
 namespace db { namespace log {
 

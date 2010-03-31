@@ -449,4 +449,88 @@ namespace db
 	}
 }
 
+/// @brief     overload from the global == operator
+///
+/// <BR>qualifier
+/// <BR>access    public  
+/// @return    db::expr::eq
+/// @param     fld as const db::field &
+/// @param     f2 as const T &
+///
+/// @date      20:2:2009   14:17
+///
+template<typename T>
+inline db::expr::eq operator==(const db::field& fld, const T& f2)
+{ return db::expr::eq(fld, f2); }
+
+/// @brief     overload from the global > operator
+///
+/// <BR>qualifier
+/// <BR>access    public  
+/// @return    db::expr::gt
+/// @param     fld as const db::field &
+/// @param     o2 as const T &
+///
+/// @date      20:2:2009   14:17
+///
+template<typename T>
+inline db::expr::gt operator>(const db::field& fld, const T& o2)
+{ return db::expr::gt(fld, o2); }
+
+/// @brief     overload from the global >= operator
+///
+/// <BR>qualifier
+/// <BR>access    public  
+/// @return    db::expr::gt_eq
+/// @param     fld as const db::field &
+/// @param     o2 as const T &
+///
+/// @date      20:2:2009   14:17
+///
+template<typename T>
+inline db::expr::gt_eq operator>=(const db::field& fld, const T& o2)
+{ return db::expr::gt_eq(fld, o2); }
+
+/// @brief     overload from the global < operator
+///
+/// <BR>qualifier
+/// <BR>access    public  
+/// @return    db::expr::lt
+/// @param     fld as const db::field &
+/// @param     o2 as const T &
+///
+/// @date      20:2:2009   14:21
+///
+template<typename T>
+inline db::expr::lt operator<(const db::field& fld, const T& o2)
+{ return db::expr::lt(fld, o2); }
+
+/// @brief     overload from the global <= operator
+///
+/// <BR>qualifier
+/// <BR>access    public  
+/// @return    db::expr::lt_eq
+/// @param     fld as const db::field &
+/// @param     o2 as const T &
+///
+/// @date      20:2:2009   14:22
+///
+template<typename T>
+inline db::expr::lt_eq operator<=(const db::field& fld, const T& o2)
+{ return db::expr::lt_eq(fld, o2); }
+
+/// @brief     overload from the global != operator
+///
+/// <BR>qualifier
+/// <BR>access    public  
+/// @return    db::expr::not_eq_
+/// @param     fld as const db::field &
+/// @param     f2 as const T &
+///
+/// @date      20:2:2009   14:22
+///
+template<typename T>
+inline db::expr::not_eq_ operator!=(const db::field& fld, const T& f2)
+{ return db::expr::not_eq_(fld, f2); }
+
 #endif

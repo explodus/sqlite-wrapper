@@ -18,6 +18,13 @@ SET( sqlite_wrapper_header_detail
 	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/exception.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/field.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/expr.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/row.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/query.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/sel.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/del.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/ins.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/upd.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/serialize.hpp
 	)
 
 SET( sqlite3_header_top
