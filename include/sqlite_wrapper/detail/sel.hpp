@@ -30,7 +30,7 @@
 namespace db
 {
   ///helper class, generates SELECT SQL statements
-  class sel 
+  class SQLITE_WRAPPER_DLLAPI sel 
   {
   protected:
     bool _distinct;
@@ -57,9 +57,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:03
     ///
-    sel() : _distinct(false), _limit(0), _offset(0), 
-      _where(DB_TEXT("True")), _delim1(DB_TEXT("")), _delim2(DB_TEXT(""))
-    {}
+    sel();
 
     /// @brief     sel
     ///
@@ -71,9 +69,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:03
     ///
-    sel(const string& tablename) : _distinct(false), _limit(0), _offset(0), 
-      _where(DB_TEXT("True")), _delim1(DB_TEXT("")), _delim2(DB_TEXT(""))
-    { source(tablename); }
+    sel(const string& tablename);
 
     /// @brief     sel
     ///
@@ -86,10 +82,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:03
     ///
-    sel(const string& tablename, const string& delim) : _distinct(false), 
-      _limit(0), _offset(0), _where(DB_TEXT("True")), _delim1(delim), 
-      _delim2(delim)
-    { source(tablename); }
+    sel(const string& tablename, const string& delim);
 
     /// @brief     sel
     ///
@@ -104,10 +97,7 @@ namespace db
     /// @date      20:2:2009   14:03
     ///
     sel(const string& tablename, const string& delim1, 
-      const string& delim2) : _distinct(false), 
-      _limit(0), _offset(0), _where(DB_TEXT("True")), _delim1(delim1), 
-      _delim2(delim2)
-    { source(tablename); }
+      const string& delim2);
 
     /// @brief     sel
     ///
@@ -117,13 +107,7 @@ namespace db
     /// @param     s as const sel &
     ///
     ///
-    sel(const sel& s) : _distinct(s._distinct), _limit(s._limit),
-      _offset(s._offset), _where(s._where), _having(s._having),
-      _delim1(s._delim1), _delim2(s._delim2), _results(s._results),
-      _sources(s._sources), _groupBy(s._groupBy), _orderBy(s._orderBy),
-      _join(s._join)
-    {
-    }
+    sel(const sel& s);
 
     /// @brief     ~sel
     ///
@@ -133,7 +117,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:03
     ///
-    virtual ~sel() {}
+    virtual ~sel();
 
     /// @brief     operator=
     ///
@@ -143,24 +127,7 @@ namespace db
     /// @param     s as const sel &
     ///
     ///
-    sel & operator=(const sel& s)
-    { 
-      _distinct = s._distinct;
-      _limit = s._limit;
-      _offset = s._offset;
-      _results = s._results;
-      _sources = s._sources;
-      _groupBy = s._groupBy;
-      _orderBy = s._orderBy;
-
-      _where = s._where; 
-      _having = s._having;
-      _delim1 = s._delim1;
-      _delim2 = s._delim2;
-      _join = s._join;
-
-      return *this; 
-    }
+    sel & operator=(const sel& s);
 
 		/// @brief     ,
     ///
@@ -171,8 +138,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & operator,(const string& s)
-    { return this->result(s); }
+    virtual sel & operator,(const string& s);
 
     /// @brief     operator%
     ///
@@ -183,8 +149,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & operator%(const expr::base& e)
-    { return this->where(e.str()); }
+    virtual sel & operator%(const expr::base& e);
 
     /// @brief     operator<
     ///
@@ -195,8 +160,7 @@ namespace db
     ///
     /// @date      6:8:2009   10:58
     ///
-    virtual sel & operator<(const field_pair& f)
-    { return this->join(f); }
+    virtual sel & operator<(const field_pair& f);
 
     /// @brief     distinct
     ///
@@ -207,11 +171,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & distinct(bool d) 
-    { 
-      _distinct = d; 
-      return *this;
-    }
+    virtual sel & distinct(bool d);
 
     /// @brief     limit
     ///
@@ -222,11 +182,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & limit(int value)
-    { 
-      _limit = value;	
-      return *this;
-    }
+    virtual sel & limit(int value);
 
     /// @brief     join
     ///
@@ -237,11 +193,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & join(const field_pair& f)
-    { 
-      _join = f;	
-      return *this;
-    }
+    virtual sel & join(const field_pair& f);
 
     /// @brief     offset
     ///
@@ -252,11 +204,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & offset(int value)
-    { 
-      _offset = value; 
-      return *this;
-    }
+    virtual sel & offset(int value);
 
     /// @brief     result_no_delim
     ///
@@ -268,13 +216,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & result_no_delim(string r, string alias=DB_TEXT(""))
-    { 
-      if (alias.length())
-        r += DB_TEXT(" AS ") + alias;
-      _results.push_back(r); 
-      return *this;
-    }
+    virtual sel & result_no_delim(string r, string alias=DB_TEXT(""));
 
     /// @brief     result
     ///
@@ -286,15 +228,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & result(string r, string alias=DB_TEXT(""))
-    { 
-      if (alias.length())
-        r += DB_TEXT(" AS ") + alias;
-      if (r!=DB_TEXT("*")) 
-        detail::front_back_delim(r, _delim1, _delim2);
-      _results.push_back(r); 
-      return *this;
-    }
+    virtual sel & result(string r, string alias=DB_TEXT(""));
 
     /// @brief     result_max
     ///
@@ -306,20 +240,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:02
     ///
-    virtual sel & result_max(string r, string alias=DB_TEXT(""))
-    { 
-      r = DB_TEXT("MAX(")+r;
-      r += DB_TEXT(")");
-      if (r!=DB_TEXT("*")) 
-        detail::front_back_delim(r, _delim1, _delim2);
-      if (alias.length())
-      {
-        detail::front_back_delim(alias, _delim1, _delim2);
-        r += DB_TEXT(" AS ") + alias;
-      }
-      _results.push_back(r); 
-      return *this;
-    }
+    virtual sel & result_max(string r, string alias=DB_TEXT(""));
 
     /// @brief     clear
     ///
@@ -329,12 +250,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:01
     ///
-    virtual sel & clear()
-    {
-      _results.clear();
-      _sources.clear();
-      return *this;
-    }
+    virtual sel & clear();
 
     /// @brief     source
     ///
@@ -346,17 +262,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:01
     ///
-    virtual sel & source(string s, string alias=DB_TEXT(""))
-    {
-      detail::front_back_delim(s, _delim1, _delim2);
-      if (alias.length())
-      {
-        detail::front_back_delim(alias, _delim1, _delim2);
-        s += DB_TEXT(" AS ") + alias;
-      }
-      _sources.push_back(s);
-      return *this;
-    }
+    virtual sel & source(string s, string alias=DB_TEXT(""));
 
     /// @brief     where
     ///
@@ -367,11 +273,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:01
     ///
-    virtual sel & where(const expr::base & w)
-    { 
-      _where = expr::and_(expr::raw(_where), w).str();	
-      return *this;
-    }
+    virtual sel & where(const expr::base & w);
 
     /// @brief     where
     ///
@@ -382,11 +284,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:01
     ///
-    virtual sel & where(string w)
-    { 
-      _where = expr::and_(expr::raw(_where), expr::raw(w)).str();
-      return *this;
-    }
+    virtual sel & where(string w);
 
     /// @brief     group_by
     ///
@@ -397,12 +295,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:01
     ///
-    virtual sel & group_by(string gb)
-    { 
-      detail::front_back_delim(gb, _delim1, _delim2);
-      _groupBy.push_back(gb);	
-      return *this;
-    }
+    virtual sel & group_by(string gb);
 
     /// @brief     having
     ///
@@ -413,11 +306,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:01
     ///
-    virtual sel & having(const expr::base & h)
-    { 
-      _having = h.str(); 
-      return *this;
-    }
+    virtual sel & having(const expr::base & h);
 
     /// @brief     having
     ///
@@ -428,11 +317,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:01
     ///
-    virtual sel & having(string h)
-    { 
-      _having = h;
-      return *this;
-    }
+    virtual sel & having(string h);
 
     /// @brief     order_by
     ///
@@ -444,15 +329,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:00
     ///
-    virtual sel & order_by(string ob, bool ascending=true)
-    { 
-      string value = ob;
-      detail::front_back_delim(value, _delim1, _delim2);
-      if (!ascending)
-        value += DB_TEXT(" DESC");
-      _orderBy.push_back(value); 
-      return *this;
-    }
+    virtual sel & order_by(string ob, bool ascending=true);
 
     /// @brief     operator string
     ///
@@ -462,42 +339,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:00
     ///
-    virtual operator string() const
-    {
-      ostringstream res;
-      res << DB_TEXT("SELECT ");
-      if (_distinct)
-        res << DB_TEXT("DISTINCT ");
-      res << _results.join(DB_TEXT(","));
-      res << DB_TEXT(" FROM ");
-      res << _sources.join(DB_TEXT(","));
-      
-      if (_join.first.table().length()!=0 && 
-          _join.second.table().length()!=0 && 
-          _sources.size()==1)
-        res << DB_TEXT(" INNER JOIN ") << _join.first.table() << DB_TEXT(" ON ") << 
-          _join.first.fullName() << DB_TEXT(" = ") << _join.second.fullName() << 
-          DB_TEXT(" ");
-      
-      if (_where != DB_TEXT("True"))
-        res << DB_TEXT(" WHERE ") << _where;
-      if (_groupBy.size() > 0)
-        res << DB_TEXT(" GROUP BY ") << _groupBy.join(DB_TEXT(","));
-      if (_having.length())
-        res << DB_TEXT(" HAVING ") << _having;
-      if (_orderBy.size() > 0)
-        res << DB_TEXT(" ORDER BY ") << _orderBy.join(DB_TEXT(","));
-      if (_limit) 
-        res << DB_TEXT(" LIMIT ") << string(detail::to_string(_limit));
-      if (_offset) 
-        res << DB_TEXT(" OFFSET ") << string(detail::to_string(_offset));
-
-      string ret(res.str());
-      detail::replace_all(ret, _delim1+_delim1, _delim1);
-      if (_delim1!=_delim2)
-        detail::replace_all(ret, _delim2+_delim2, _delim2);
-      return ret;
-    }
+    virtual operator string() const;
 
     /// @brief     str
     ///
@@ -507,7 +349,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:12
     ///
-    virtual string str() const { return this->operator string(); }
+    virtual string str() const;
   }; 
 
 }

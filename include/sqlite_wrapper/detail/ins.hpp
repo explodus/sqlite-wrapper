@@ -30,7 +30,7 @@
 namespace db
 {
   ///helper class, generates INSERT SQL statements
-  class ins 
+  class SQLITE_WRAPPER_DLLAPI ins 
   {
   protected:
     split_map _values;
@@ -48,8 +48,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:07
     ///
-    ins(const string& tab) : _source(tab) 
-    {}
+    ins(const string& tab);
 
     /// @brief     ins
     ///
@@ -61,9 +60,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:07
     ///
-    ins(const string& tab, const string& delim) : _source(tab), 
-      _delim1(delim), _delim2(delim) 
-    {}
+    ins(const string& tab, const string& delim);
 
     /// @brief     ins
     ///
@@ -76,9 +73,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:07
     ///
-    ins(const string& tab, const string& delim1, const string& delim2) : 
-      _source(tab), _delim1(delim1), _delim2(delim2) 
-    {}
+    ins(const string& tab, const string& delim1, const string& delim2);
     
     /// @brief     ~ins
     ///
@@ -88,7 +83,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:07
     ///
-    ~ins() {}
+    ~ins();
     
     /// @brief     clear_values
     ///
@@ -98,11 +93,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:07
     ///
-    ins & clear_values()
-    {
-      _values.clear();
-      return *this;
-    }
+    ins & clear_values();
 
     /// @brief     operator%
     ///
@@ -113,13 +104,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:07
     ///
-    ins & operator%(const db::field& f)
-    { 
-      if (f.values().size()==1)
-        return values(f.name(), f.values().begin()->second, f.type());
-      else
-        return *this;
-    }
+    ins & operator%(const db::field& f);
 
     /// @brief     values
     ///
@@ -131,24 +116,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:07
     ///
-    ins & values(string t, param* v)
-    {
-      string sV(v->str());
-      if (sV.length()==0)
-        sV = DB_TEXT("NULL");
-      else
-        switch(v->get_type()) 
-      {
-        case e_string:
-        case e_date_time:
-          sV = DB_TEXT("'") + sV;
-          sV += DB_TEXT("'");
-          break;
-      }
-      detail::front_back_delim(t, _delim1, _delim2);
-      _values.insert(std::pair<string, string>(t, sV));
-      return *this;
-    }
+    ins & values(string t, param* v);
 
     /// @brief     values
     ///
@@ -161,25 +129,7 @@ namespace db
     ///
     /// @date      20:2:2009   9:07
     ///
-    ins & values(string t, string v, param_types p=e_int)
-    {
-      switch(p) 
-      {
-      case e_char:
-      case e_blob:
-      case e_string:
-      case e_date_time:
-        detail::erase_all<string>(v, DB_TEXT("'"));
-        detail::erase_all<string>(v, DB_TEXT("`"));
-        detail::erase_all<string>(v, DB_TEXT("´"));
-        v = DB_TEXT("'") + v;
-        v += DB_TEXT("'");
-        break;
-      }
-      detail::front_back_delim(t, _delim1, _delim2);
-      _values.insert(std::pair<string, string>(t, v));
-      return *this;
-    }
+    ins & values(string t, string v, param_types p=e_int);
 
     /// @brief     values
     ///
@@ -203,8 +153,7 @@ namespace db
     ///
     /// @date      20:2:2009   11:04
     ///
-    operator string() const
-    { return str(); }
+    operator string() const;
 
     /// @brief     str
     ///
@@ -214,21 +163,7 @@ namespace db
     ///
     /// @date      20:2:2009   11:05
     ///
-    string str() const 
-    {       
-      string res = DB_TEXT("INSERT INTO ");
-      res += _source;
-
-      if (_values.size() > 0)
-      {
-        res += DB_TEXT(" (");
-        res += _values.join_fields(DB_TEXT(","));
-        res += DB_TEXT(") VALUES (");
-        res += _values.join_values(DB_TEXT(","));
-        res += DB_TEXT(")");
-      }
-      return res;
-    }
+    string str() const;
   }; 
 
 }

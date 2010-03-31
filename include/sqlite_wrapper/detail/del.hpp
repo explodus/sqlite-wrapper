@@ -31,10 +31,10 @@
 namespace db
 {
   ///helper class, generates DELETE SQL statements
-  class del : public sel
+  class SQLITE_WRAPPER_DLLAPI del : public sel
   {
   public:
-    del(const string& tablename) : sel(tablename) { }
+    del(const string& tablename);
 
     /// @brief     operator string
     ///
@@ -44,28 +44,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:12
     ///
-    virtual operator string() const
-    {
-      string res = DB_TEXT("DELETE FROM ");
-      res += _sources.join(DB_TEXT(","));
-      if (_where != DB_TEXT("True"))
-        res += DB_TEXT(" WHERE ") + _where;
-      if (_groupBy.size() > 0)
-        res += DB_TEXT(" GROUP BY ") + _groupBy.join(DB_TEXT(","));
-      if (_having.length())
-        res += DB_TEXT(" HAVING ") + _having;
-      if (_orderBy.size() > 0)
-        res += DB_TEXT(" ORDER BY ") + _orderBy.join(DB_TEXT(","));
-      if (_limit) 
-        res += DB_TEXT(" LIMIT ") + string(detail::to_string(_limit));
-      if (_offset) 
-        res += DB_TEXT(" OFFSET ") + string(detail::to_string(_offset));
-
-      detail::replace_all(res, _delim1+_delim1, _delim1);
-      if (_delim1!=_delim2)
-        detail::replace_all(res, _delim2+_delim2, _delim2);
-      return res;
-    }
+    virtual operator string() const;
 
     /// @brief     ~del
     ///
@@ -75,7 +54,7 @@ namespace db
     ///
     /// @date      20:2:2009   14:12
     ///
-    virtual ~del() {}
+    virtual ~del();
   };
 
 }

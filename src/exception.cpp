@@ -25,3 +25,76 @@
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/db.hpp>
 
+
+db::exception::base::base( const string& msg ) : _msg(msg)
+{
+
+}
+
+db::exception::base::base( const base& _That ) : _msg(_That._msg)
+{
+
+}
+
+db::exception::base::~base()
+{
+
+}
+
+const db::char_type* db::exception::base::what()
+{
+	return _msg.c_str();
+}
+
+void db::exception::base::report()
+{
+	db::cout << _msg << DB_TEXT("\n");
+}
+
+db::exception::not_found::not_found( const string& s/*=DB_TEXT("")*/ ) : 
+	base(DB_TEXT("NotFound: ")+s)
+{
+
+}
+
+db::exception::db_error::db_error( const string& m/*=DB_TEXT("")*/ ) : 
+	base(DB_TEXT("Database Error: ")+m)
+{
+
+}
+
+db::exception::sql_error::sql_error( const string& m/*=DB_TEXT("")*/ ) : 
+	base(DB_TEXT("SQL Error: ")+m)
+{
+
+}
+
+db::exception::param_error::param_error( const string& m/*=DB_TEXT("")*/ ) : 
+	base(DB_TEXT("Param Error: ")+m)
+{
+
+}
+
+db::exception::internal_error::internal_error( const string& m/*=DB_TEXT("")*/ ) : 
+	base(DB_TEXT("Internal Error: ")+m)
+{
+
+}
+
+db::exception::memory_error::memory_error( const string& m/*=DB_TEXT("")*/ ) : 
+	base(DB_TEXT("Allocation failed: ")+m)
+{
+
+}
+
+db::exception::insertion_error::insertion_error( const string& m/*=DB_TEXT("")*/ ) : 
+	base(DB_TEXT("Database full: ")+m)
+{
+
+}
+
+db::exception::unknown_error::unknown_error( const string& m/*=DB_TEXT("")*/ ) : 
+	base(DB_TEXT("Unknown Error: ")+m)
+{
+
+}
