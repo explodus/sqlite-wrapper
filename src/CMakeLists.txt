@@ -83,7 +83,8 @@ SET( sqlite_wrapper_source
 	${sqlite_wrapper_source_top}
 	)
 
-SET (sqlite_wrapper_files ${sqlite_wrapper_source} ${sqlite_wrapper_header} )
+#SET (sqlite_wrapper_files ${sqlite_wrapper_source} ${sqlite_wrapper_header} )
+SET (sqlite_wrapper_files ${sqlite_wrapper_header} ${sqlite_wrapper_header_detail} )
 
 SET( files_string "" )
 

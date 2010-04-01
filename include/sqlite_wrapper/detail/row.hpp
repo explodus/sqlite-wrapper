@@ -26,6 +26,7 @@
 #define DB_ROW_HPP_INCLUDED
 
 #include <sqlite_wrapper/config.hpp>
+#include <sqlite_wrapper/detail/param.hpp>
 
 namespace db
 {
@@ -85,7 +86,6 @@ namespace db
     /// @date      20:2:2009   9:23
     ///
     ~row();
-
 
     /// @brief     get a value by number
     ///

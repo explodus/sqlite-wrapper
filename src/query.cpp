@@ -27,6 +27,11 @@
 #include <sqlite_wrapper/db.hpp>
 #include <sqlite_wrapper/detail/query.hpp>
 
+db::query::query() : _base(0), _stm(0)
+{
+
+}
+
 db::query::query( base& base_ ) : _base(&base_), _stm(0)
 {
 

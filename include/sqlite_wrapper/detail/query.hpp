@@ -63,15 +63,11 @@ namespace db
 		
 		/// @brief        query
 		///
-		/// <BR>qualifier : _base(0)*/, _stm(0)
-		/// <BR>access    public 
-		/// 
 		/// @return       
 		///
 		/// @author       T. Schroeder (explodus@gmx.de)
 		/// @date         31.3.2010 21:54
-		/// 
-		query() : _base(0), _stm(0) {}
+		query();
 
     /// @brief        query
     ///

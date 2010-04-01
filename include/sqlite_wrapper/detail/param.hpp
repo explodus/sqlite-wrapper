@@ -26,6 +26,8 @@
 #define DB_PARAM_HPP_INCLUDED
 
 #include <sqlite_wrapper/config.hpp>
+#include <sqlite_wrapper/detail/tools.hpp>
+#include <boost/date_time.hpp>
 
 struct sqlite3;
 struct sqlite3_stmt;

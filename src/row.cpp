@@ -23,10 +23,11 @@
 /// This file is part of the sqlite-wrapper project
 
 #include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
+#include <sqlite_wrapper/detail/row.hpp>
+#include <sqlite_wrapper/detail/query.hpp>
 #include <sqlite_wrapper/sqlite/sqlite3.h>
 
-db::row::row( query* query_, unsigned row_ ) : _query(query_), _row(row_)
+db::row::row( db::query* query_, unsigned row_ ) : _query(query_), _row(row_)
 {
 
 }
