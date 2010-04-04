@@ -51,7 +51,7 @@ namespace db
 			///
 			virtual string str() const;
 
-			/// @brief     operator string
+			/// @brief     string operator 
 			///
 			/// <BR>qualifier const
 			/// <BR>access    virtual public  
@@ -171,8 +171,6 @@ namespace db
 			///
 			explicit or_(const base & e1_, const base & e2_);
 
-			/// @brief     str
-			///
 			/// <BR>qualifier const
 			/// <BR>access    public  
 			/// @return    db::string
@@ -198,8 +196,6 @@ namespace db
 			///
 			explicit not_(const base & _exp);
 
-			/// @brief     str
-			///
 			/// <BR>qualifier const
 			/// <BR>access    virtual public  
 			/// @return    db::string
@@ -219,8 +215,7 @@ namespace db
 			string data;
 			bool escape;
 
-			/// @brief 
-			/// @todo need documentation
+			/// @brief as an example, e_string got escaped
 			///
 			/// <BR>qualifier
 			/// <BR>access    protected  
@@ -244,6 +239,16 @@ namespace db
 			///
 			explicit oper(const field & fld, const string& o, const string& d);
 
+			/// <BR>qualifier : _field(fld)*/, op(o)*/, data(DB_TEXT("0"))*/, escape(check_escape(_field.type()))
+			/// <BR>access    protected 
+			/// 
+			/// @return       
+			/// @param        fld as const field &
+			/// @param        o as const string &
+			/// @param        d as const T &
+			///
+			/// @date         4.4.2010 21:16
+			/// 
 			template<typename T>
 			explicit oper(const field & fld, const string& o, const T& d) 
 				: _field(fld), op(o), data(DB_TEXT("0")), 
@@ -267,8 +272,6 @@ namespace db
 			explicit oper(const field & fld, const string& o, const field &f2);
 
 		public:
-			/// @brief     str
-			///
 			/// <BR>qualifier const
 			/// <BR>access    virtual public  
 			/// @return    db::string
@@ -300,7 +303,7 @@ namespace db
 		///<> not equal operator
 		class not_eq_ : public oper {
 		public:
-			/// @brief     not_eq_
+			/// @brief     !=, not equal constructor
 			///
 			/// <BR>qualifier : oper(fld, DB_TEXT("<>"), d)
 			/// <BR>access    public  
@@ -357,7 +360,7 @@ namespace db
 		///lower then operator
 		class lt : public oper {
 		public:
-			/// @brief     lt
+			/// @brief     <, lower then constructor
 			///
 			/// <BR>qualifier : oper(fld, DB_TEXT("<"), d)
 			/// <BR>access    public  
@@ -376,7 +379,7 @@ namespace db
 		///lower then or equal operator
 		class lt_eq : public oper {
 		public:
-			/// @brief     lt_eq
+			/// @brief     <=, lower then or equal constructor
 			///
 			/// <BR>qualifier : oper(fld, DB_TEXT("<="), d)
 			/// <BR>access    public  
@@ -395,7 +398,7 @@ namespace db
 		///like operator
 		class like : public oper {
 		public:
-			/// @brief     like
+			/// @brief     like constructor
 			///
 			/// <BR>qualifier : oper(fld, DB_TEXT("LIKE"), d)
 			/// <BR>access    public  
@@ -411,7 +414,7 @@ namespace db
 		///in Operator
 		class in : public oper {
 		public:
-			/// @brief     in
+			/// @brief     in constructor
 			///
 			/// <BR>qualifier : oper(fld, DB_TEXT("IN"), DB_TEXT("(")+set+DB_TEXT(")"))
 			/// <BR>access    public  
@@ -423,7 +426,7 @@ namespace db
 			///
 			explicit in(const field & fld, const string& set);
 
-			/// @brief     in
+			/// @brief     in constructor
 			///
 			/// <BR>qualifier
 			/// <BR>access    public  
@@ -435,8 +438,6 @@ namespace db
 			///
 			explicit in(const field & fld, const sel& s);
 
-			/// @brief     str
-			///
 			/// <BR>qualifier const
 			/// <BR>access    virtual public  
 			/// @return    db::string

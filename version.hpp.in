@@ -1,0 +1,23 @@
+///	@file version.hpp
+///  
+///	@date 3.4.2010 14:21
+///  
+/// @author T. Schroeder (explodus@gmx.de)
+///  
+/// @brief 
+///  
+/// This file is part of the sqlite_wrapper project
+///
+
+#ifndef SQLITE_WRAPPER_VERSION_HPP_INCLUDED
+#define SQLITE_WRAPPER_VERSION_HPP_INCLUDED
+
+#include <sqlite_wrapper/config.hpp>
+
+/// @brief current version number
+#define SQLITE_WRAPPER_VERSION @SQLITE_WRAPPER_VERSION_MAJOR@.@SQLITE_WRAPPER_VERSION_MINOR@
+
+/// @brief current version number as string representation
+#define SQLITE_WRAPPER_VERSION_STRING DB_TEXT("@SQLITE_WRAPPER_VERSION_MAJOR@.@SQLITE_WRAPPER_VERSION_MINOR@")
+
+#endif

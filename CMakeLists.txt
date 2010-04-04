@@ -103,7 +103,7 @@ FILE(WRITE ${pkgfile}
 	"\n"
 	"Name: sqlite_wrapper\n"
 	"Description: a sqlite wrapper\n"
-	"Version: 1.0\n"
+	"Version: ${SQLITE_WRAPPER_VERSION_MAJOR}.${SQLITE_WRAPPER_VERSION_MINOR}\n"
 	"Requires:\n"
 	"Libs: -L\${libdir} -lsqlite_wrapper\n"
 	"Cflags: -I\${includedir}/sqlite_wrapper")
@@ -166,6 +166,11 @@ CHECK_CXX_SOURCE_COMPILES(
 CONFIGURE_FILE(
 	${CMAKE_SOURCE_DIR}/config.hpp.in
 	${CMAKE_SOURCE_DIR}/include/sqlite_wrapper/config.hpp
+)
+
+CONFIGURE_FILE(
+	${CMAKE_SOURCE_DIR}/version.hpp.in
+	${CMAKE_SOURCE_DIR}/include/sqlite_wrapper/version.hpp
 )
  
 SET( SQLITE_WRAPPER_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/sqlite_wrapper )

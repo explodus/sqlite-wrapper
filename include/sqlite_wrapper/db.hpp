@@ -30,9 +30,9 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#pragma warning( push, 1 )
+#include <sqlite_wrapper/config.hpp>
 
-#include "config.hpp"
+#pragma warning( push, 1 )
 
 #include <boost/detail/allocator_utilities.hpp>
 #include <boost/detail/quick_allocator.hpp> 
