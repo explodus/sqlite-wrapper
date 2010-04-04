@@ -1,4 +1,4 @@
-///	@file		include/sqlite_wrapper/detail/exception.hpp
+///	@file		sqlite_wrapper/detail/exception.hpp
 ///	@date		15.3.2010 8:45
 ///	file base	tools
 ///	file ext	hpp
@@ -45,8 +45,6 @@ namespace db { namespace exception
 		//	return *this;
 		//}
 
-		/// @brief        what
-		///
 		/// <BR>qualifier
 		/// <BR>access    public  
 		/// @return       const db::char_type*
@@ -90,49 +88,57 @@ namespace db { namespace exception
 	};
 
 	/// exception thrown when a record is not found
-	class not_found : public base {
+	class not_found : public base 
+	{
 	public:
 		not_found(const string& s=DB_TEXT(""));
 	};
 
 	/// exception thrown when database cannot be accessed
-	class db_error : public base {
+	class db_error : public base 
+	{
 	public:
 		db_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when SQL statement cannot be executed
-	class sql_error : public base {
+	class sql_error : public base 
+	{
 	public:
 		sql_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when Param handling get failed
-	class param_error : public base {
+	class param_error : public base 
+	{
 	public:
 		param_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when backend produces internal error
-	class internal_error : public base {
+	class internal_error : public base 
+	{
 	public:
 		internal_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when backend cannot allocate memory
-	class memory_error : public base {
+	class memory_error : public base 
+	{
 	public:
 		memory_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when database (disk) is full
-	class insertion_error : public base {
+	class insertion_error : public base 
+	{
 	public:
 		insertion_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when none of other exceptions match
-	class unknown_error : public base {
+	class unknown_error : public base 
+	{
 		// handles the rest
 	public:
 		unknown_error(const string& m=DB_TEXT(""));
