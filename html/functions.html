@@ -76,6 +76,7 @@ window.onload = initDynSections;
       <li><a href="functions_func.html"><span>Functions</span></a></li>
       <li><a href="functions_vars.html"><span>Variables</span></a></li>
       <li><a href="functions_type.html"><span>Typedefs</span></a></li>
+      <li><a href="functions_rela.html"><span>Related&nbsp;Functions</span></a></li>
     </ul>
   </div>
   <div class="tabs">
@@ -93,6 +94,7 @@ window.onload = initDynSections;
       <li><a href="#index_l"><span>l</span></a></li>
       <li><a href="#index_o"><span>o</span></a></li>
       <li><a href="#index_p"><span>p</span></a></li>
+      <li><a href="#index_q"><span>q</span></a></li>
       <li><a href="#index_r"><span>r</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
       <li><a href="#index_t"><span>t</span></a></li>
@@ -119,9 +121,10 @@ Here is a list of all documented class members with links to the class documenta
 , <a class="el" href="classdb_1_1log_1_1base.html#a7655145c229fef4f8f0d926155ee43b2">db::log::base&lt; Provider, Format &gt;</a>
 </li>
 <li>begin()
-: <a class="el" href="classdb_1_1query.html#ac6b7b0eb991d0e4b63cb0d1be1254c41">db::query</a>
+: <a class="el" href="classdb_1_1query.html#af04189ba182927ae38e06b0c391c7bd9">db::query</a>
 , <a class="el" href="classdb_1_1row.html#ab5c00c00a6dbf92c560a93455d73686b">db::row</a>
 , <a class="el" href="classdb_1_1base.html#acbdda74044dbbffba7e3dbaf939e5624">db::base</a>
+, <a class="el" href="classdb_1_1query.html#ac6b7b0eb991d0e4b63cb0d1be1254c41">db::query</a>
 </li>
 </ul>
 
@@ -167,11 +170,14 @@ Here is a list of all documented class members with links to the class documenta
 : <a class="el" href="classdb_1_1expr_1_1eq.html#a4b81ca39235214e0a374f4dcf5b3c701">db::expr::eq</a>
 </li>
 <li>execute()
-: <a class="el" href="classdb_1_1base.html#aeb357f98d617503b9d6658b0a7cd24f6">db::base</a>
+: <a class="el" href="classdb_1_1base.html#a042ad23a711c2c5baefdffa0775cfa99">db::base</a>
 , <a class="el" href="classdb_1_1query.html#abd3023e4cb57d7b2ec61d34ef32c7f1e">db::query</a>
 </li>
 <li>execute_ptr()
-: <a class="el" href="classdb_1_1base.html#a7f8d4ffcb3c985b7497de53711da06df">db::base</a>
+: <a class="el" href="classdb_1_1base.html#ab638ad3044335952bbc2810c9bdb2127">db::base</a>
+</li>
+<li>extend()
+: <a class="el" href="classdb_1_1split.html#ade59751f834fbbe73860bb4011610f31">db::split</a>
 </li>
 <li>extraTables
 : <a class="el" href="classdb_1_1expr_1_1base.html#a689c657a829e9f574300b1bac772e2aa">db::expr::base</a>
@@ -180,11 +186,14 @@ Here is a list of all documented class members with links to the class documenta
 
 
 <h3><a class="anchor" id="index_f">- f -</a></h3><ul>
+<li>f_empty()
+: <a class="el" href="classdb_1_1query.html#ae7b3aee17f6b23bf92f6dd6a89e8b429">db::query</a>
+</li>
 <li>fbegin()
 : <a class="el" href="classdb_1_1query.html#a991243f3583012bc919690f17b133836">db::query</a>
 </li>
 <li>fend()
-: <a class="el" href="classdb_1_1query.html#a77a501924192dc7e3154e5d9bca7d7cd">db::query</a>
+: <a class="el" href="classdb_1_1query.html#a5da867ee5e9bcb45f801384b686b5377">db::query</a>
 </li>
 <li>field()
 : <a class="el" href="classdb_1_1field.html#a7ca5d325a8ee3c6056ae45308b41652d">db::field</a>
@@ -232,11 +241,17 @@ Here is a list of all documented class members with links to the class documenta
 <li>getExtraTables()
 : <a class="el" href="classdb_1_1expr_1_1base.html#ac60b7f9172c42cb07713765df7c8052a">db::expr::base</a>
 </li>
+<li>getFieldInfo()
+: <a class="el" href="classdb_1_1query.html#aa754f9a8a73ae220c1a2af51727ee739">db::query</a>
+</li>
 <li>getIdOf()
 : <a class="el" href="classdb_1_1query.html#a2b9ae20086336a9573db2935ffe8b09b">db::query</a>
 </li>
 <li>getRow()
-: <a class="el" href="classdb_1_1query.html#aeb35a38d5d57da68a38e633c70eb3785">db::query</a>
+: <a class="el" href="classdb_1_1query.html#a540dc936bbea029850065651d70bcb27">db::query</a>
+</li>
+<li>getTitleOf()
+: <a class="el" href="classdb_1_1query.html#a834585c376cb3bcd70c9c97df59eaeb2">db::query</a>
 </li>
 <li>group_by()
 : <a class="el" href="classdb_1_1sel.html#a6b1c1370be90dd5eb25aae1d9ddd883e">db::sel</a>
@@ -278,7 +293,11 @@ Here is a list of all documented class members with links to the class documenta
 
 <h3><a class="anchor" id="index_j">- j -</a></h3><ul>
 <li>join()
-: <a class="el" href="classdb_1_1sel.html#ad748ca7b03d060eb59e45b92bba6f741">db::sel</a>
+: <a class="el" href="classdb_1_1split.html#a61598c8bebcc65aa114d7e6b85d0028d">db::split</a>
+, <a class="el" href="classdb_1_1sel.html#ad748ca7b03d060eb59e45b92bba6f741">db::sel</a>
+</li>
+<li>join_fields()
+: <a class="el" href="classdb_1_1split__map.html#ad3cc341bbef22a5836e94f0b1d249317">db::split_map</a>
 </li>
 </ul>
 
@@ -331,7 +350,6 @@ Here is a list of all documented class members with links to the class documenta
 </li>
 <li>operator%()
 : <a class="el" href="classdb_1_1sel.html#a683f2a8528c44915aeeb2cb2c02a1f8b">db::sel</a>
-, <a class="el" href="classdb_1_1upd.html#a982030f0ad583fcaca3de7e98ce77e29">db::upd</a>
 , <a class="el" href="classdb_1_1ins.html#a932bc974163d80fc9dd102ffd44261fa">db::ins</a>
 , <a class="el" href="classdb_1_1upd.html#a98ae07ff13cc7fc7e14808008d8c66af">db::upd</a>
 </li>
@@ -341,16 +359,22 @@ Here is a list of all documented class members with links to the class documenta
 <li>operator&lt;()
 : <a class="el" href="classdb_1_1sel.html#a8afb154fa90211aa4276292df8b6e5c2">db::sel</a>
 </li>
+<li>operator&lt;&lt;
+: <a class="el" href="classdb_1_1exception_1_1base.html#ae91e81ad6197f479a68702daf5e105f8">db::exception::base</a>
+</li>
 <li>operator=()
-: <a class="el" href="classdb_1_1param.html#a9949fa9375cd50e490346d254f10ca5e">db::param</a>
-, <a class="el" href="classdb_1_1sel.html#a3f9d11583a52bc5158f99a353b74a09e">db::sel</a>
+: <a class="el" href="classdb_1_1sel.html#a3f9d11583a52bc5158f99a353b74a09e">db::sel</a>
+, <a class="el" href="classdb_1_1param.html#a9949fa9375cd50e490346d254f10ca5e">db::param</a>
 </li>
 <li>operator==()
-: <a class="el" href="classdb_1_1row.html#a36046f580a827d7f341b2bbc4752ddc9">db::row</a>
+: <a class="el" href="classdb_1_1query.html#a4b4f7139068fe06b0da4dad8a148b89e">db::query</a>
+, <a class="el" href="classdb_1_1row.html#a36046f580a827d7f341b2bbc4752ddc9">db::row</a>
 , <a class="el" href="classdb_1_1param.html#a41bd9be26a79f0a50baf232e52da494b">db::param</a>
 </li>
 <li>operator[]()
 : <a class="el" href="classdb_1_1row.html#aec8c77b1746dcd15c1f679a6758d3faf">db::row</a>
+, <a class="el" href="classdb_1_1query.html#a92efbfb6d0bad5b24b1a0895b29cc5a0">db::query</a>
+, <a class="el" href="classdb_1_1row.html#a85748a824f77502fd00173a8499659c3">db::row</a>
 , <a class="el" href="classdb_1_1query.html#aab93c33e6352459b27d77c9e966fe5fb">db::query</a>
 </li>
 <li>order_by()
@@ -361,7 +385,7 @@ Here is a list of all documented class members with links to the class documenta
 
 <h3><a class="anchor" id="index_p">- p -</a></h3><ul>
 <li>param()
-: <a class="el" href="classdb_1_1param.html#aeacf6040ef760b7b5b53abdb6ce3a149">db::param</a>
+: <a class="el" href="classdb_1_1param.html#a326a04480d42456e54ac7c90f0f929e6">db::param</a>
 </li>
 <li>provider_ptr_type
 : <a class="el" href="classdb_1_1log_1_1base.html#aa380916c92bbb696b20b13ccb79ec49a">db::log::base&lt; Provider, Format &gt;</a>
@@ -376,12 +400,22 @@ Here is a list of all documented class members with links to the class documenta
 </ul>
 
 
+<h3><a class="anchor" id="index_q">- q -</a></h3><ul>
+<li>query()
+: <a class="el" href="classdb_1_1query.html#ae69393581766cdde3d85c3275980be39">db::query</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_r">- r -</a></h3><ul>
 <li>rbegin()
 : <a class="el" href="classdb_1_1row.html#af548aea1cad71b66ef9a710733816159">db::row</a>
 </li>
 <li>rend()
 : <a class="el" href="classdb_1_1row.html#a39587a854f6c6d3b0c78c035a65ff716">db::row</a>
+</li>
+<li>report()
+: <a class="el" href="classdb_1_1exception_1_1base.html#aa6b8267407d34c05c312945b9ab314f0">db::exception::base</a>
 </li>
 <li>result()
 : <a class="el" href="classdb_1_1sel.html#a715e65c2ad605e8d62706801dabdd3dd">db::sel</a>
@@ -423,21 +457,29 @@ Here is a list of all documented class members with links to the class documenta
 : <a class="el" href="classdb_1_1param.html#aa1ebb6827a843ed78ee29c2e6974215a">db::param</a>
 </li>
 <li>size()
-: <a class="el" href="classdb_1_1query.html#a355b15fc1d1aeb89b8a29e2a4b0a3154">db::query</a>
-, <a class="el" href="classdb_1_1row.html#adb777bf797d96c2aa2dd4286c2e1120f">db::row</a>
+: <a class="el" href="classdb_1_1row.html#adb777bf797d96c2aa2dd4286c2e1120f">db::row</a>
+, <a class="el" href="classdb_1_1query.html#a355b15fc1d1aeb89b8a29e2a4b0a3154">db::query</a>
+</li>
+<li>slice()
+: <a class="el" href="classdb_1_1split.html#a7aee20e0e9972a4eb0373f863c356fe0">db::split</a>
 </li>
 <li>source()
 : <a class="el" href="classdb_1_1sel.html#a9cacf70fd3820fd86c12cd253e32dcdd">db::sel</a>
 </li>
+<li>split()
+: <a class="el" href="classdb_1_1split.html#a5ece9fb442a745f95403552c28a52ceb">db::split</a>
+</li>
+<li>split_map()
+: <a class="el" href="classdb_1_1split__map.html#a4f81db3917e6477617194f159643dcf2">db::split_map</a>
+</li>
 <li>str()
-: <a class="el" href="classdb_1_1param.html#a66a7cbc5eaeb5d9c70f808304beaf786">db::param</a>
+: <a class="el" href="classdb_1_1expr_1_1base.html#aa44ea1ee8e44ece8ec2facb14c64456f">db::expr::base</a>
 , <a class="el" href="classdb_1_1expr_1_1in.html#a253a74a45e376713b4115d9803a8f41b">db::expr::in</a>
-, <a class="el" href="classdb_1_1expr_1_1base.html#aa44ea1ee8e44ece8ec2facb14c64456f">db::expr::base</a>
+, <a class="el" href="classdb_1_1upd.html#ab3bf59ecf95b65fa25439e1e8d6fbaf5">db::upd</a>
+, <a class="el" href="classdb_1_1param.html#aec4a40712d4715bf8c7132d8b02b70cc">db::param</a>
+, <a class="el" href="classdb_1_1sel.html#a732971616dc4429f60ee6f0cc580fe05">db::sel</a>
 , <a class="el" href="classdb_1_1expr_1_1oper.html#aedb58a87bb3785571d4cd2c012d7965c">db::expr::oper</a>
 , <a class="el" href="classdb_1_1ins.html#a7ed9cc3fc6a1c3c31bdab1361e477471">db::ins</a>
-, <a class="el" href="classdb_1_1param.html#aec4a40712d4715bf8c7132d8b02b70cc">db::param</a>
-, <a class="el" href="classdb_1_1upd.html#ab3bf59ecf95b65fa25439e1e8d6fbaf5">db::upd</a>
-, <a class="el" href="classdb_1_1sel.html#a732971616dc4429f60ee6f0cc580fe05">db::sel</a>
 </li>
 </ul>
 
@@ -472,18 +514,21 @@ Here is a list of all documented class members with links to the class documenta
 <li>w2a()
 : <a class="el" href="classdb_1_1detail_1_1w2a.html#ac5753d6ff1b87fc5689881ce2fbcb6c8">db::detail::w2a</a>
 </li>
+<li>what()
+: <a class="el" href="classdb_1_1exception_1_1base.html#a203f22bf3a50f17800e019d526b21310">db::exception::base</a>
+</li>
 <li>where()
-: <a class="el" href="classdb_1_1upd.html#ae1b592682cf66f339d863a5e0f05ee42">db::upd</a>
-, <a class="el" href="classdb_1_1sel.html#a3a0f169277c8187805d7e6dfccf88610">db::sel</a>
+: <a class="el" href="classdb_1_1sel.html#a3a0f169277c8187805d7e6dfccf88610">db::sel</a>
+, <a class="el" href="classdb_1_1upd.html#ae1b592682cf66f339d863a5e0f05ee42">db::upd</a>
 </li>
 </ul>
 
 
 <h3><a class="anchor" id="index_0x7e">- ~ -</a></h3><ul>
 <li>~base()
-: <a class="el" href="classdb_1_1expr_1_1base.html#a484c4ea40870731844ca189d6e7a3259">db::expr::base</a>
-, <a class="el" href="classdb_1_1base.html#a288d06d068941c97739cf56879fdf2a2">db::base</a>
+: <a class="el" href="classdb_1_1base.html#a288d06d068941c97739cf56879fdf2a2">db::base</a>
 , <a class="el" href="classdb_1_1log_1_1base.html#a30ee1ca7981261d7cbe5a8920f43bf81">db::log::base&lt; Provider, Format &gt;</a>
+, <a class="el" href="classdb_1_1expr_1_1base.html#a484c4ea40870731844ca189d6e7a3259">db::expr::base</a>
 </li>
 <li>~del()
 : <a class="el" href="classdb_1_1del.html#ae14834a21d6f451f4a115e284835cae8">db::del</a>
@@ -493,6 +538,9 @@ Here is a list of all documented class members with links to the class documenta
 </li>
 <li>~param()
 : <a class="el" href="classdb_1_1param.html#a2a6ede88ce9e209be29d48ba806cf02d">db::param</a>
+</li>
+<li>~query()
+: <a class="el" href="classdb_1_1query.html#a3cc66c7c56f3334ddb79efa3ea94ea0c">db::query</a>
 </li>
 <li>~row()
 : <a class="el" href="classdb_1_1row.html#ab49a7d72bf93170636f1f3df5596c7d6">db::row</a>
@@ -509,6 +557,6 @@ Here is a list of all documented class members with links to the class documenta
 </ul>
 </div>
 <hr class="footer"/><address style="text-align: right;"><small>
-Generated on Mon Mar 29 15:17:06 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
+Generated on Sun Apr 4 21:21:11 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
 </body>
 </html>

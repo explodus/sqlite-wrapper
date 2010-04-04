@@ -91,21 +91,22 @@ window.onload = initDynSections;
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">commits SQL transaction  <a href="#a81585ba05fbcf548731fbe61853b6308"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1base.html#a986fcd43b00da854672ccd57309ae6cb">connect</a> (const std::string &amp;file)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">open the specified db  <a href="#a986fcd43b00da854672ccd57309ae6cb"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdb_1_1query.html">query</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1base.html#aeb357f98d617503b9d6658b0a7cd24f6">execute</a> (const string &amp;cmd)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">execute SQL statement  <a href="#aeb357f98d617503b9d6658b0a7cd24f6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">query_ptr&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1base.html#a7f8d4ffcb3c985b7497de53711da06df">execute_ptr</a> (const string &amp;cmd)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">execute  <a href="#a7f8d4ffcb3c985b7497de53711da06df"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdb_1_1query.html">query</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1base.html#a042ad23a711c2c5baefdffa0775cfa99">execute</a> (const string &amp;cmd)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">execute SQL statement  <a href="#a042ad23a711c2c5baefdffa0775cfa99"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">query_ptr&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1base.html#ab638ad3044335952bbc2810c9bdb2127">execute_ptr</a> (const string &amp;cmd)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">execute  <a href="#ab638ad3044335952bbc2810c9bdb2127"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">sqlite3 *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1base.html#a40a2e6f658f12e81979f477034cff2ad">get_db_ptr</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">get_db_ptr  <a href="#a40a2e6f658f12e81979f477034cff2ad"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1base.html#ae170528df76ab2cc6a4cb47fdfb6d0bd">rollback</a> ()</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">cancels active SQL transaction  <a href="#ae170528df76ab2cc6a4cb47fdfb6d0bd"></a><br/></td></tr>
+<tr><td colspan="2"><h2>Protected Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1base.html#a66d992a19efa01b7d6d93a86fa31209a">throw_error</a> (int status)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">throw_error  <a href="#a66d992a19efa01b7d6d93a86fa31209a"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>datenbank interface </p>
 
-<p>Definition at line <a class="el" href="db_8hpp_source.html#l02483">2483</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
+<p>Definition at line <a class="el" href="db_8hpp_source.html#l00058">58</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aac00f71bde85a46b5e68de796231603f"></a><!-- doxytag: member="db::base::base" ref="aac00f71bde85a46b5e68de796231603f" args="()" -->
 <div class="memitem">
@@ -116,7 +117,7 @@ window.onload = initDynSections;
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -129,8 +130,6 @@ access public </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 14:14 </dd></dl>
 
-<p>Definition at line <a class="el" href="db_8hpp_source.html#l02542">2542</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a288d06d068941c97739cf56879fdf2a2"></a><!-- doxytag: member="db::base::~base" ref="a288d06d068941c97739cf56879fdf2a2" args="()" -->
@@ -142,7 +141,7 @@ access public </p>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -154,8 +153,6 @@ qualifier <br/>
 access public </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 14:14 </dd></dl>
-
-<p>Definition at line <a class="el" href="db_8hpp_source.html#l02553">2553</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
 
 </div>
 </div>
@@ -169,7 +166,7 @@ access public </p>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -182,8 +179,6 @@ access public </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>void</dd></dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 14:14 </dd></dl>
 
-<p>Definition at line <a class="el" href="db_8hpp_source.html#l02618">2618</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
-
 </div>
 </div>
 <a class="anchor" id="a81585ba05fbcf548731fbe61853b6308"></a><!-- doxytag: member="db::base::commit" ref="a81585ba05fbcf548731fbe61853b6308" args="()" -->
@@ -195,7 +190,7 @@ access public </p>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -207,8 +202,6 @@ qualifier <br/>
 access public </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>void</dd></dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 14:15 </dd></dl>
-
-<p>Definition at line <a class="el" href="db_8hpp_source.html#l02633">2633</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
 
 </div>
 </div>
@@ -222,7 +215,7 @@ access public </p>
           <td class="paramtype">const std::string &amp;&nbsp;</td>
           <td class="paramname"> <em>file</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -241,21 +234,19 @@ access public </p>
 </dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 14:14 </dd></dl>
 
-<p>Definition at line <a class="el" href="db_8hpp_source.html#l02598">2598</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="aeb357f98d617503b9d6658b0a7cd24f6"></a><!-- doxytag: member="db::base::execute" ref="aeb357f98d617503b9d6658b0a7cd24f6" args="(const string &amp;cmd)" -->
+<a class="anchor" id="a042ad23a711c2c5baefdffa0775cfa99"></a><!-- doxytag: member="db::base::execute" ref="a042ad23a711c2c5baefdffa0775cfa99" args="(const string &amp;cmd)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classdb_1_1query.html">db::query</a> &amp; db::base::execute </td>
+          <td class="memname"><a class="el" href="classdb_1_1query.html">query</a>&amp; db::base::execute </td>
           <td>(</td>
           <td class="paramtype">const string &amp;&nbsp;</td>
           <td class="paramname"> <em>cmd</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -274,21 +265,19 @@ access public </p>
 </dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 14:15 </dd></dl>
 
-<p>Definition at line <a class="el" href="db_8hpp_source.html#l03292">3292</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
-
 </div>
 </div>
-<a class="anchor" id="a7f8d4ffcb3c985b7497de53711da06df"></a><!-- doxytag: member="db::base::execute_ptr" ref="a7f8d4ffcb3c985b7497de53711da06df" args="(const string &amp;cmd)" -->
+<a class="anchor" id="ab638ad3044335952bbc2810c9bdb2127"></a><!-- doxytag: member="db::base::execute_ptr" ref="ab638ad3044335952bbc2810c9bdb2127" args="(const string &amp;cmd)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">db::query_ptr db::base::execute_ptr </td>
+          <td class="memname">query_ptr db::base::execute_ptr </td>
           <td>(</td>
           <td class="paramtype">const string &amp;&nbsp;</td>
           <td class="paramname"> <em>cmd</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -306,8 +295,6 @@ access public </p>
   </dd>
 </dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>13:7:2009 13:14 </dd></dl>
-
-<p>Definition at line <a class="el" href="db_8hpp_source.html#l03307">3307</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
 
 </div>
 </div>
@@ -333,9 +320,7 @@ access public </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>sqlite3*</dd></dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 14:16 </dd></dl>
 
-<p>Definition at line <a class="el" href="db_8hpp_source.html#l02685">2685</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
-
-<p>Referenced by <a class="el" href="db_8hpp_source.html#l03316">db::query::execute()</a>.</p>
+<p>Definition at line <a class="el" href="db_8hpp_source.html#l00196">196</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
 
 </div>
 </div>
@@ -348,7 +333,7 @@ access public </p>
           <td>(</td>
           <td class="paramname"></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td></td>
         </tr>
       </table>
 </div>
@@ -360,8 +345,6 @@ qualifier <br/>
 access public </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>void</dd></dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 14:15 </dd></dl>
-
-<p>Definition at line <a class="el" href="db_8hpp_source.html#l02648">2648</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
 
 </div>
 </div>
@@ -375,7 +358,7 @@ access public </p>
           <td class="paramtype">int&nbsp;</td>
           <td class="paramname"> <em>status</em></td>
           <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
+          <td><code> [protected]</code></td>
         </tr>
       </table>
 </div>
@@ -394,14 +377,10 @@ access public </p>
 </dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 14:13 </dd></dl>
 
-<p>Definition at line <a class="el" href="db_8hpp_source.html#l02574">2574</a> of file <a class="el" href="db_8hpp_source.html">db.hpp</a>.</p>
-
-<p>Referenced by <a class="el" href="db_8hpp_source.html#l03316">db::query::execute()</a>.</p>
-
 </div>
 </div>
 </div>
 <hr class="footer"/><address style="text-align: right;"><small>
-Generated on Mon Mar 29 15:17:06 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
+Generated on Sun Apr 4 21:21:11 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
 </body>
 </html>
