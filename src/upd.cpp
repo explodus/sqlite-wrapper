@@ -25,7 +25,6 @@
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/db.hpp>
 
-
 db::upd::~upd()
 {
 

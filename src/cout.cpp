@@ -9,10 +9,7 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
-
-#include <iostream>
+#include <sqlite_wrapper/cout.hpp>
 
 ///
 db::ostream& db::cout

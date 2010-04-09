@@ -8,7 +8,9 @@
 SET( sqlite_wrapper_header_top
 	${SQLITE_WRAPPER_INCLUDE_DIR}/config.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/version.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/cout.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/db.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/log.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/log.hpp
 	)
 
@@ -84,7 +86,6 @@ SET( sqlite_wrapper_source
 	${sqlite_wrapper_source_top}
 	)
 
-#SET (sqlite_wrapper_files ${sqlite_wrapper_source} ${sqlite_wrapper_header} )
 SET (sqlite_wrapper_files ${sqlite_wrapper_header} ${sqlite_wrapper_header_detail} )
 
 SET( files_string "" )
@@ -110,6 +111,3 @@ SET( sqlite_wrapper_files_string ${files_string} PARENT_SCOPE )
 
 ADD_SUBDIRECTORY (shared)
 ADD_SUBDIRECTORY (static)
-
-#MAKE_SQLITE_WRAPPER_LIBRARY(sqlite_wrapper SHARED)
-#MAKE_SQLITE_WRAPPER_LIBRARY(sqlite_wrapper_static STATIC)

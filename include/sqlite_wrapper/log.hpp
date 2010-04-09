@@ -25,11 +25,11 @@
 #ifndef DB_LOG_HPP_INCLUDED
 #define DB_LOG_HPP_INCLUDED
 
+#include <sqlite_wrapper/config.hpp>
+#include <sqlite_wrapper/cout.hpp>
+
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
-
-#include <sqlite_wrapper/config.hpp>
 
 namespace db { namespace log {
 
@@ -45,7 +45,8 @@ namespace db { namespace log {
 		log_debug        //!< debug level messages
 	};
 
-	extern level global_level;
+	SQLITE_WRAPPER_DLLAPI extern level global_level();
+	SQLITE_WRAPPER_DLLAPI extern void  global_level(level lvl);
 
 	namespace buffer
 	{
@@ -429,7 +430,7 @@ namespace db { namespace log {
 			, last_level_(lvl)
 		{
 #if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
-			if (last_level_ <= global_level)
+			if (last_level_ <= global_level())
 				base_ << last_level_ << 
 					log_type::formatter_type::decorate_message(msg); 
 #endif
@@ -438,7 +439,7 @@ namespace db { namespace log {
 		bool operator()(const db::string& msg) const
 		{
 #if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
-			if (last_level_ <= global_level)
+			if (last_level_ <= global_level())
 				base_ << last_level_ << 
 					log_type::formatter_type::decorate_message(msg);
 #endif
@@ -448,7 +449,7 @@ namespace db { namespace log {
 		bool operator()(const level& lvl, const db::string& msg) const
 		{
 #if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
-			if (lvl <= global_level)
+			if (lvl <= global_level())
 				base_ << lvl << 
 					log_type::formatter_type::decorate_message(msg);
 #endif
@@ -494,7 +495,7 @@ namespace db { namespace log {
 #endif
 		{
 #if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
-			if (last_level_ <= global_level)
+			if (last_level_ <= global_level())
 			{
 				log_ << last_level_ <<
 					log_type::formatter_type::decorate_scope_open(message_);
@@ -514,7 +515,7 @@ namespace db { namespace log {
 		~scope()
 		{
 #if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
-			if (last_level_ <= global_level)
+			if (last_level_ <= global_level())
 			{
 				log_.decrease_indent();
 				log_ << last_level_ <<
@@ -524,6 +525,7 @@ namespace db { namespace log {
 		}
 
 	private:
+#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
 		/// The log associated with the scope.
 		log_type& log_;
 
@@ -531,6 +533,7 @@ namespace db { namespace log {
 		db::string message_;
 
 		level last_level_;
+#endif
 	};
 
 	namespace singleton 
@@ -538,11 +541,13 @@ namespace db { namespace log {
 		namespace db
 		{
 			typedef ::db::log::buffer::database<::db::base> buffer_type;
+			typedef ::db::log::provider::basic<buffer_type> provider_type;
+			typedef ::db::log::format::database format_type;
 
 			typedef ::db::log::base
 			<
-					::db::log::provider::basic<buffer_type>
-				, ::db::log::format::database 
+					provider_type
+				, format_type
 			> 
 			log_type;
 
@@ -560,17 +565,20 @@ namespace db { namespace log {
 			/// @author       T. Schroeder (explodus@gmx.de)
 			/// @date         27.3.2010 8:56
 			/// 
-			extern SQLITE_WRAPPER_DLLAPI log_type& 
+			SQLITE_WRAPPER_DLLAPI extern log_type& 
 			get_log(const string& name = DB_TEXT("log.db"));
 		} 
 
 		namespace basic
 		{
 			typedef ::db::log::buffer::basic buffer_type;
+			typedef ::db::log::provider::basic<buffer_type > provider_type;
+			typedef ::db::log::format::basic format_type;
+
 			typedef ::db::log::base
 			<
-				  ::db::log::provider::basic<buffer_type >
-				, ::db::log::format::basic 
+				  provider_type
+				, format_type
 			> 
 			log_type;
 
@@ -586,17 +594,19 @@ namespace db { namespace log {
 			/// @author       T. Schroeder (explodus@gmx.de)
 			/// @date         29.3.2010 11:37
 			///
-			extern SQLITE_WRAPPER_DLLAPI log_type& get_log();
+			SQLITE_WRAPPER_DLLAPI extern log_type& get_log();
 		}
 
 		namespace io
 		{
 			typedef ::db::log::buffer::file<::db::ofstream> buffer_type;
+			typedef ::db::log::provider::basic<buffer_type> provider_type;
+			typedef ::db::log::format::basic format_type;
 
 			typedef ::db::log::base
 			<
-				  ::db::log::provider::basic<buffer_type>
-				, ::db::log::format::basic 
+				  provider_type
+				, format_type
 			> 
 			log_type;
 
@@ -613,7 +623,7 @@ namespace db { namespace log {
 			/// @author       T. Schroeder (explodus@gmx.de)
 			/// @date         29.3.2010 11:45
 			///
-			extern SQLITE_WRAPPER_DLLAPI log_type& 
+			SQLITE_WRAPPER_DLLAPI extern log_type& 
 			get_log(const string& name = DB_TEXT("log.txt"));
 		}
 	}

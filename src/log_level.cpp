@@ -26,14 +26,27 @@
 #include <sqlite_wrapper/db.hpp>
 #include <sqlite_wrapper/log.hpp>
 
+#include <boost/make_shared.hpp>
+
 ///
-db::log::level db::log::global_level(db::log::log_error);
+static db::log::level _global_level(db::log::log_error);
+
+db::log::level db::log::global_level()
+{
+	return _global_level;
+}
+
+void db::log::global_level(db::log::level lvl)
+{
+	_global_level = lvl;
+}
+
 
 db::log::singleton::db::log_type& 
 db::log::singleton::db::get_log(const string& name/* = DB_TEXT("log.db")*/)
 {
 	static log_type ret
-		( boost::make_shared<log_type::provider_type >
+		( boost::make_shared<provider_type >
 		( boost::make_shared<buffer_type >(name)));
 	return ret;
 }
@@ -42,8 +55,13 @@ db::log::singleton::basic::log_type&
 db::log::singleton::basic::get_log()
 {
 	static log_type ret
-		( boost::make_shared<log_type::provider_type >
-		( boost::make_shared<buffer_type >()));
+		( boost::shared_ptr<provider_type >
+			( new provider_type
+				( boost::shared_ptr<buffer_type >
+					(new buffer_type)
+				)
+			)
+		);
 	return ret;
 }
 
@@ -51,7 +69,7 @@ db::log::singleton::io::log_type&
 db::log::singleton::io::get_log(const string& name/* = DB_TEXT("log.txt")*/)
 {
 	static log_type ret
-		( boost::make_shared<log_type::provider_type >
+		( boost::make_shared<provider_type >
 		( boost::make_shared<buffer_type >(name)));
 	return ret;
 }

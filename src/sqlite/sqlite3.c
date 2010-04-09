@@ -1,4 +1,4 @@
-/******************************************************************************
+﻿/******************************************************************************
 ** This file is an amalgamation of many separate C source files from SQLite
 ** version 3.6.23.  By combining all the individual C code files into this 
 ** single large file, the entire code can be compiled as a one translation
@@ -17,6 +17,11 @@
 ** language. The code for the "sqlite3" command-line shell is also in a
 ** separate file. This file contains only code for the core SQLite library.
 */
+
+#ifndef SQLITE_WRAPPER_STATIC
+#	include <sqlite_wrapper/private_assemblies.hpp>
+#endif
+
 #define SQLITE_CORE 1
 #define SQLITE_AMALGAMATION 1
 #ifndef SQLITE_PRIVATE

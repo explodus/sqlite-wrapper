@@ -10,6 +10,7 @@
 ///
 
 #include <sqlite_wrapper/config.hpp>
+#include <sqlite_wrapper/cout.hpp>
 #include <sqlite_wrapper/db.hpp>
 #include <sqlite_wrapper/log.hpp>
 
@@ -41,7 +42,7 @@ void sub_scope()
 int main( int argc, char **argv )
 {
 	// set to debug level
-	db::log::global_level = db::log::log_debug;
+	db::log::global_level(db::log::log_debug);
 	
 	db::log::singleton::basic::log_scope scope_(
 		  db::log::singleton::basic::get_log()

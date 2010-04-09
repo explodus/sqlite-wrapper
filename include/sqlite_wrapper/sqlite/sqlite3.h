@@ -32,6 +32,9 @@
 */
 #ifndef _SQLITE3_H_
 #define _SQLITE3_H_
+
+#include <sqlite_wrapper/config.hpp>
+
 #include <stdarg.h>     /* Needed for the definition of va_list */
 
 #if defined(SQLITE_WRAPPER_HAVE_ATLEAST_UINT64) && !defined(SQLITE_WRAPPER_WINDOWS_PLATFORM)

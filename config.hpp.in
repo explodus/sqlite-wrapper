@@ -11,6 +11,7 @@
 #ifndef SQLITE_WRAPPER_CONFIG_HPP_INCLUDED
 #define SQLITE_WRAPPER_CONFIG_HPP_INCLUDED
 
+
 #cmakedefine SQLITE_WRAPPER_HAVE_VARIADIC_TEMPLATES
 #cmakedefine SQLITE_WRAPPER_HAVE_POSIX
 #cmakedefine SQLITE_WRAPPER_HAVE_ATLEAST_UINT64
@@ -30,9 +31,9 @@
 #endif
 #endif
 
-#ifndef SQLITE_WRAPPER_USE
-	#define SQLITE_WRAPPER_USE 1
-#endif
+//#ifndef SQLITE_WRAPPER_USE
+//	#define SQLITE_WRAPPER_USE 1
+//#endif
 
 #define SQLITE_WRAPPER_VERSION_MAJOR @SQLITE_WRAPPER_VERSION_MAJOR@
 #define SQLITE_WRAPPER__VERSION_MINOR @SQLITE_WRAPPER_VERSION_MINOR@
@@ -40,7 +41,11 @@
 #ifdef __GNUC__
 #cmakedefine SQLITE_WRAPPER_HAVE_GCC_VISIBILITY
 #endif
- 
+
+#ifndef SQLITE_WRAPPER_STATIC
+#	include <sqlite_wrapper/private_assemblies.hpp>
+#endif
+
 #include <string>
 #include <vector>
 #include <map>
@@ -130,10 +135,7 @@ namespace db
 
 	typedef std::pair<string, string> string_pair;
 	typedef std::vector<string> string_vec;
- 
-	/// defintion of db::cout
-	SQLITE_WRAPPER_DLLAPI extern ostream &cout;
-	
+ 	
 	namespace detail
 	{
 		/// char to wchar_t conversion class

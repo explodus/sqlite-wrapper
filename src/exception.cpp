@@ -23,6 +23,7 @@
 /// This file is part of the sqlite-wrapper project
 
 #include <sqlite_wrapper/config.hpp>
+#include <sqlite_wrapper/cout.hpp>
 #include <sqlite_wrapper/db.hpp>
 
 

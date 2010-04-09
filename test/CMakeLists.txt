@@ -1,7 +1,8 @@
 IF(MSVC)
 	MACRO (ADD_SQLITE_WRAPPER_TEST name)
+		ADD_DEFINITIONS( -DSQLITE_WRAPPER_USE=1 )
 		ADD_EXECUTABLE (sqlite_wrapper_${name}_test ${name}.cpp)
-		TARGET_LINK_LIBRARIES (sqlite_wrapper_${name}_test sqlite_wrapper_static)
+		TARGET_LINK_LIBRARIES (sqlite_wrapper_${name}_test sqlite_wrapper)
 		ADD_CUSTOM_COMMAND(
 			TARGET sqlite_wrapper_${name}_test
 			POST_BUILD
@@ -19,6 +20,7 @@ ELSE(MSVC)
 			COMMAND ${CMAKE_COMMAND} -E echo "${CMAKE_BINARY_DIR}/bin/sqlite_wrapper_${name}_test${CMAKE_EXECUTABLE_SUFFIX} --result_code=no --report_level=no"
 			COMMAND ${CMAKE_COMMAND} -E time "${CMAKE_BINARY_DIR}/bin/sqlite_wrapper_${name}_test${CMAKE_EXECUTABLE_SUFFIX}"
 		)
+
 	ENDMACRO ()
 ENDIF()
 
