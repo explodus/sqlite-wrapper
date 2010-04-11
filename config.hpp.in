@@ -113,15 +113,15 @@ namespace db
 	#define DB_TEXT(x) L ## x
 #endif
 
-	///
+	/*! Creates a type name for db::string */ 
 	typedef std::basic_string<char_type > string;
 	
-	/// 
+	/*! Creates a type name for db::ostream */ 
 	typedef std::basic_ostream<char_type> ostream;
-	///
+	/*! Creates a type name for db::istream */ 
 	typedef std::basic_istream<char_type> istream;
 	
-	///
+	/*! Creates a type name for db::ofstream */ 
 	typedef std::basic_ofstream
 	<
 	  char_type
@@ -129,7 +129,7 @@ namespace db
 	> 
 	ofstream;
 	
-	///
+	/*! Creates a type name for db::ifstream */ 
 	typedef std::basic_ifstream
 	<
 	  char_type
@@ -137,18 +137,18 @@ namespace db
 	> 
 	ifstream;
 	
-	///
+	/*! Creates a type name for db::ostringstream */ 
 	typedef std::basic_ostringstream<char_type> ostringstream;
-	///
+	/*! Creates a type name for db::istringstream */ 
 	typedef std::basic_istringstream<char_type> istringstream;
-	///
+	/*! Creates a type name for db::stringstream */ 
 	typedef std::basic_stringstream<char_type>  stringstream;
-	///
+	/*! Creates a type name for db::format */ 
 	typedef boost::basic_format<char_type > format;
 
-	///
+	/*! Creates a type name for db::string_pair */ 
 	typedef std::pair<string, string> string_pair;
-	///
+	/*! Creates a type name for db::string_vec */ 
 	typedef std::vector<string> string_vec;
 }
  
