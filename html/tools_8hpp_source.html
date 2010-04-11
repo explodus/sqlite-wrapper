@@ -130,7 +130,7 @@ window.onload = initDynSections;
 <a name="l00083"></a>00083   <span class="keyword">template</span>&lt;<span class="keyword">typename</span> S&gt;
 <a name="l00084"></a>00084   <span class="keyword">inline</span> <span class="keyword">typename</span> S::size_type erase_all(S&amp; s, <span class="keyword">const</span> S&amp; from)
 <a name="l00085"></a>00085   {
-<a name="l00086"></a>00086     <span class="keywordflow">return</span> replace_all&lt;S&gt;(s, from, DB_TEXT(<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00086"></a>00086     <span class="keywordflow">return</span> replace_all&lt;S&gt;(s, from, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&quot;</span>));
 <a name="l00087"></a>00087   }
 <a name="l00088"></a>00088 
 <a name="l00101"></a>00101   <span class="keyword">template</span>&lt;<span class="keyword">typename</span> S&gt;
@@ -145,7 +145,7 @@ window.onload = initDynSections;
 <a name="l00121"></a>00121   <span class="keyword">inline</span> S erase_all_copy(<span class="keyword">const</span> S&amp; s, <span class="keyword">const</span> S&amp; from)
 <a name="l00122"></a>00122   {
 <a name="l00123"></a>00123     S ret(s);
-<a name="l00124"></a>00124     replace_all&lt;S&gt;(ret, from, DB_TEXT(<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00124"></a>00124     replace_all&lt;S&gt;(ret, from, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&quot;</span>));
 <a name="l00125"></a>00125     <span class="keywordflow">return</span> ret;
 <a name="l00126"></a>00126   }
 <a name="l00127"></a>00127 
@@ -167,7 +167,7 @@ window.onload = initDynSections;
 <a name="l00170"></a>00170 
 <a name="l00178"></a>00178   <span class="keyword">template</span>&lt;&gt; 
 <a name="l00179"></a>00179   <span class="keyword">inline</span> <span class="keywordtype">string</span> to_string(<span class="keyword">const</span> <span class="keywordtype">bool</span>&amp; a) 
-<a name="l00180"></a>00180   { <span class="keywordflow">return</span> string(a?DB_TEXT(<span class="stringliteral">&quot;1&quot;</span>):DB_TEXT(<span class="stringliteral">&quot;0&quot;</span>)); } 
+<a name="l00180"></a>00180   { <span class="keywordflow">return</span> string(a?<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;1&quot;</span>):<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;0&quot;</span>)); } 
 <a name="l00181"></a>00181 
 <a name="l00191"></a>00191   <span class="keyword">template</span>&lt;&gt; 
 <a name="l00192"></a>00192   <span class="keyword">inline</span> <span class="keywordtype">string</span> to_string(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; a) 
@@ -190,12 +190,12 @@ window.onload = initDynSections;
 <a name="l00218"></a>00218   <span class="keyword">inline</span> <span class="keywordtype">string</span> to_sql_string(<span class="keyword">const</span> COleDateTime&amp; d) 
 <a name="l00219"></a>00219   {
 <a name="l00220"></a>00220     ostringstream ss;
-<a name="l00221"></a>00221     ss &lt;&lt; std::setw(2) &lt;&lt; std::setfill(DB_TEXT(<span class="charliteral">&#39;0&#39;</span>))
-<a name="l00222"></a>00222       &lt;&lt; d.GetDay() &lt;&lt; DB_TEXT(<span class="stringliteral">&quot;.&quot;</span>)
-<a name="l00223"></a>00223       &lt;&lt; std::setw(2) &lt;&lt; std::setfill(DB_TEXT(<span class="charliteral">&#39;0&#39;</span>)) 
+<a name="l00221"></a>00221     ss &lt;&lt; std::setw(2) &lt;&lt; std::setfill(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="charliteral">&#39;0&#39;</span>))
+<a name="l00222"></a>00222       &lt;&lt; d.GetDay() &lt;&lt; <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;.&quot;</span>)
+<a name="l00223"></a>00223       &lt;&lt; std::setw(2) &lt;&lt; std::setfill(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="charliteral">&#39;0&#39;</span>)) 
 <a name="l00224"></a>00224       &lt;&lt; d.GetMonth()
-<a name="l00225"></a>00225       &lt;&lt; DB_TEXT(<span class="stringliteral">&quot;.&quot;</span>) &lt;&lt; d.GetYear() &lt;&lt; DB_TEXT(<span class="stringliteral">&quot; &quot;</span>)
-<a name="l00226"></a>00226       &lt;&lt; d.GetHour() &lt;&lt; DB_TEXT(<span class="stringliteral">&quot;:&quot;</span>) &lt;&lt; d.GetMinute() &lt;&lt; DB_TEXT(<span class="stringliteral">&quot;:&quot;</span>)
+<a name="l00225"></a>00225       &lt;&lt; <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;.&quot;</span>) &lt;&lt; d.GetYear() &lt;&lt; <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot; &quot;</span>)
+<a name="l00226"></a>00226       &lt;&lt; d.GetHour() &lt;&lt; <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;:&quot;</span>) &lt;&lt; d.GetMinute() &lt;&lt; <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;:&quot;</span>)
 <a name="l00227"></a>00227       &lt;&lt; d.GetSecond();
 <a name="l00228"></a>00228     <span class="keywordflow">return</span> ss.str();
 <a name="l00229"></a>00229   }
@@ -206,7 +206,7 @@ window.onload = initDynSections;
 <a name="l00244"></a>00244     <a class="code" href="config_8hpp.html#ac830dd94a45984c0ad47afc38882bdbf">UNREFERENCED_PARAMETER</a>(tmp);
 <a name="l00245"></a>00245     COleDateTime ret;
 <a name="l00246"></a>00246     tm _tm = {0};
-<a name="l00247"></a>00247     <span class="keywordtype">int</span> err = _stscanf(s.c_str(), DB_TEXT(<span class="stringliteral">&quot;%d.%d.%d %d:%d:%d&quot;</span>), 
+<a name="l00247"></a>00247     <span class="keywordtype">int</span> err = _stscanf(s.c_str(), <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;%d.%d.%d %d:%d:%d&quot;</span>), 
 <a name="l00248"></a>00248       &amp;_tm.tm_mday, &amp;_tm.tm_mon, &amp;_tm.tm_year,
 <a name="l00249"></a>00249       &amp;_tm.tm_hour, &amp;_tm.tm_min, &amp;_tm.tm_sec);
 <a name="l00251"></a>00251     <a class="code" href="config_8hpp.html#ac830dd94a45984c0ad47afc38882bdbf">UNREFERENCED_PARAMETER</a>(err);
@@ -224,14 +224,14 @@ window.onload = initDynSections;
 <a name="l00275"></a>00275 
 <a name="l00276"></a>00276   <span class="keyword">inline</span> <span class="keywordtype">string</span> escape_sql(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; str)
 <a name="l00277"></a>00277   { 
-<a name="l00278"></a>00278     <span class="keywordflow">if</span> (str == DB_TEXT(<span class="stringliteral">&quot;NULL&quot;</span>))
+<a name="l00278"></a>00278     <span class="keywordflow">if</span> (str == <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;NULL&quot;</span>))
 <a name="l00279"></a>00279       <span class="keywordflow">return</span> str;
 <a name="l00280"></a>00280 
 <a name="l00281"></a>00281     <span class="keywordtype">string</span> ret(detail::replace_all_copy&lt;string&gt;(str, 
-<a name="l00282"></a>00282       DB_TEXT(<span class="stringliteral">&quot;\&#39;NULL\&#39;&quot;</span>), DB_TEXT(<span class="stringliteral">&quot;NULL&quot;</span>)));
-<a name="l00283"></a>00283     ret = detail::replace_all_copy&lt;string&gt;(str, DB_TEXT(<span class="stringliteral">&quot;&#39;&quot;</span>), 
-<a name="l00284"></a>00284       DB_TEXT(<span class="stringliteral">&quot;&#39;&#39;&quot;</span>));
-<a name="l00285"></a>00285     ret = DB_TEXT(<span class="stringliteral">&quot;&#39;&quot;</span>) + ret + DB_TEXT(<span class="stringliteral">&quot;&#39;&quot;</span>);
+<a name="l00282"></a>00282       <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;\&#39;NULL\&#39;&quot;</span>), <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;NULL&quot;</span>)));
+<a name="l00283"></a>00283     ret = detail::replace_all_copy&lt;string&gt;(str, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&quot;</span>), 
+<a name="l00284"></a>00284       <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&#39;&quot;</span>));
+<a name="l00285"></a>00285     ret = <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&quot;</span>) + ret + <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&quot;</span>);
 <a name="l00286"></a>00286     <span class="keywordflow">return</span> ret;
 <a name="l00287"></a>00287   }  
 <a name="l00288"></a>00288 
@@ -257,7 +257,7 @@ window.onload = initDynSections;
 <a name="l00314"></a>00314 
 <a name="l00316"></a>00316     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>(std::vector&lt;string&gt; data);
 <a name="l00317"></a>00317 
-<a name="l00319"></a>00319     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>(<span class="keywordtype">string</span> s, <span class="keywordtype">string</span> delim=DB_TEXT(<span class="stringliteral">&quot; &quot;</span>));
+<a name="l00319"></a>00319     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>(<span class="keywordtype">string</span> s, <span class="keywordtype">string</span> delim=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot; &quot;</span>));
 <a name="l00320"></a>00320 
 <a name="l00336"></a>00336     <a class="code" href="classdb_1_1split.html" title="split basis">split</a> slice(<span class="keywordtype">int</span> start, <span class="keywordtype">int</span> end) <span class="keyword">const</span>;
 <a name="l00337"></a>00337 
@@ -270,6 +270,6 @@ window.onload = initDynSections;
 <a name="l00346"></a>00346 <span class="preprocessor">#endif // DB_DETAIL_HPP_INCLUDED</span>
 </pre></div></div>
 <hr class="footer"/><address style="text-align: right;"><small>
-Generated on Sun Apr 4 21:54:11 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
+Generated on Sun Apr 11 13:40:23 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
 </body>
 </html>

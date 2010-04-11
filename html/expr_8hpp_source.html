@@ -183,7 +183,7 @@ window.onload = initDynSections;
 <a name="l00241"></a>00241 
 <a name="l00252"></a>00252       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
 <a name="l00253"></a>00253       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1oper.html#a48753e202440521e07b9509636195b84" title="string overload">oper</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; o, <span class="keyword">const</span> T&amp; d) 
-<a name="l00254"></a>00254         : _field(fld), op(o), data(DB_TEXT(<span class="stringliteral">&quot;0&quot;</span>)), 
+<a name="l00254"></a>00254         : _field(fld), op(o), data(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;0&quot;</span>)), 
 <a name="l00255"></a>00255         escape(<a class="code" href="classdb_1_1expr_1_1oper.html#a371752df8e9d8868798a148d8d392be4" title="as an example, e_string got escaped">check_escape</a>(_field.type())) 
 <a name="l00256"></a>00256       {
 <a name="l00257"></a>00257         data = detail::to_string(d);
@@ -200,7 +200,7 @@ window.onload = initDynSections;
 <a name="l00286"></a>00286     <span class="keyword">public</span>:
 <a name="l00297"></a>00297       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
 <a name="l00298"></a><a class="code" href="classdb_1_1expr_1_1eq.html#a4b81ca39235214e0a374f4dcf5b3c701">00298</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1eq.html#a4b81ca39235214e0a374f4dcf5b3c701" title="==, is equal operator">eq</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
-<a name="l00299"></a>00299         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, DB_TEXT(<span class="stringliteral">&quot;=&quot;</span>), d) 
+<a name="l00299"></a>00299         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;=&quot;</span>), d) 
 <a name="l00300"></a>00300       {}
 <a name="l00301"></a>00301     };
 <a name="l00302"></a>00302 
@@ -208,7 +208,7 @@ window.onload = initDynSections;
 <a name="l00305"></a>00305     <span class="keyword">public</span>:
 <a name="l00316"></a>00316       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
 <a name="l00317"></a>00317       <span class="keyword">explicit</span> not_eq_(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
-<a name="l00318"></a>00318         : oper(fld, DB_TEXT(<span class="stringliteral">&quot;&lt;&gt;&quot;</span>), d) 
+<a name="l00318"></a>00318         : oper(fld, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&lt;&gt;&quot;</span>), d) 
 <a name="l00319"></a>00319       {}
 <a name="l00320"></a>00320     };
 <a name="l00321"></a>00321 
@@ -216,7 +216,7 @@ window.onload = initDynSections;
 <a name="l00324"></a>00324     <span class="keyword">public</span>:
 <a name="l00335"></a>00335       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
 <a name="l00336"></a><a class="code" href="classdb_1_1expr_1_1gt.html#a2f97395a43e96a2044802935435f0407">00336</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1gt.html#a2f97395a43e96a2044802935435f0407" title="gt">gt</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
-<a name="l00337"></a>00337         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, DB_TEXT(<span class="stringliteral">&quot;&gt;&quot;</span>), d) 
+<a name="l00337"></a>00337         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&gt;&quot;</span>), d) 
 <a name="l00338"></a>00338       {}
 <a name="l00339"></a>00339     };
 <a name="l00340"></a>00340 
@@ -224,7 +224,7 @@ window.onload = initDynSections;
 <a name="l00343"></a>00343     <span class="keyword">public</span>:
 <a name="l00354"></a>00354       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
 <a name="l00355"></a><a class="code" href="classdb_1_1expr_1_1gt__eq.html#af34a49ff2f1b4800a97cc58b3bece6e0">00355</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1gt__eq.html#af34a49ff2f1b4800a97cc58b3bece6e0" title="gt_eq">gt_eq</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
-<a name="l00356"></a>00356         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, DB_TEXT(<span class="stringliteral">&quot;&gt;=&quot;</span>), d) 
+<a name="l00356"></a>00356         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&gt;=&quot;</span>), d) 
 <a name="l00357"></a>00357       {}
 <a name="l00358"></a>00358     };
 <a name="l00359"></a>00359 
@@ -232,7 +232,7 @@ window.onload = initDynSections;
 <a name="l00362"></a>00362     <span class="keyword">public</span>:
 <a name="l00373"></a>00373       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
 <a name="l00374"></a><a class="code" href="classdb_1_1expr_1_1lt.html#ae725636dd9447296d3a599bc386b06c8">00374</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1lt.html#ae725636dd9447296d3a599bc386b06c8" title="&amp;lt;, lower then constructor">lt</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
-<a name="l00375"></a>00375         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, DB_TEXT(<span class="stringliteral">&quot;&lt;&quot;</span>), d) 
+<a name="l00375"></a>00375         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&lt;&quot;</span>), d) 
 <a name="l00376"></a>00376       {}
 <a name="l00377"></a>00377     };
 <a name="l00378"></a>00378 
@@ -240,7 +240,7 @@ window.onload = initDynSections;
 <a name="l00381"></a>00381     <span class="keyword">public</span>:
 <a name="l00392"></a>00392       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
 <a name="l00393"></a><a class="code" href="classdb_1_1expr_1_1lt__eq.html#a1b064f9a79246850d1d6875396c2d0a6">00393</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1lt__eq.html#a1b064f9a79246850d1d6875396c2d0a6" title="&amp;lt;=, lower then or equal constructor">lt_eq</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
-<a name="l00394"></a>00394         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, DB_TEXT(<span class="stringliteral">&quot;&lt;=&quot;</span>), d) 
+<a name="l00394"></a>00394         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&lt;=&quot;</span>), d) 
 <a name="l00395"></a>00395       {}
 <a name="l00396"></a>00396     };
 <a name="l00397"></a>00397 
@@ -288,6 +288,6 @@ window.onload = initDynSections;
 <a name="l00537"></a>00537 <span class="preprocessor">#endif</span>
 </pre></div></div>
 <hr class="footer"/><address style="text-align: right;"><small>
-Generated on Sun Apr 4 21:54:11 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
+Generated on Sun Apr 11 13:40:23 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
 </body>
 </html>
