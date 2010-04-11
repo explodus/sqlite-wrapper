@@ -11,6 +11,7 @@
 
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/cout.hpp>
+#include <sqlite_wrapper/a2w.hpp>
 #include <sqlite_wrapper/db.hpp>
 #include <sqlite_wrapper/log.hpp>
 
@@ -36,29 +37,36 @@ void sub_scope()
 		, DB_TEXT("some usefull information")
 		, db::log::log_info);
 
-	sub_sub_scope();
-}
-
-int main( int argc, char **argv )
-{
-	// set to debug level
-	db::log::global_level(db::log::log_debug);
-	
-	db::log::singleton::basic::log_scope scope_(
-		  db::log::singleton::basic::get_log()
-		, DB_TEXT("main()"));
-
 	try
 	{
-		sub_scope();
+		sub_sub_scope();
 	}
 	catch (std::exception &e)
 	{
 		db::log::singleton::basic::log_msg msg(
-			  db::log::singleton::basic::get_log()
+			db::log::singleton::basic::get_log()
 			, db::string(DB_TEXT("exception: "))
 			+ static_cast<const wchar_t*>(db::detail::a2w(e.what()))
 			, db::log::log_error);
+	}
+}
+
+int main( int argc, char **argv )
+{
+	try
+	{
+		// set to debug level
+		db::log::global_level(db::log::log_debug);
+		
+		db::log::singleton::basic::log_scope scope_(
+				db::log::singleton::basic::get_log()
+			, DB_TEXT("main()"));
+
+		sub_scope();
+	}
+	catch (std::exception &e)
+	{
+		db::cout << e.what() << std::endl;
 	}
 }
 

@@ -13,13 +13,13 @@
 /// @ingroup sqlite_wrapper
 /// @section source Getting the source
 ///
-/// @verbatim git clone git://github.com/explodus/sqlite-wrapper.git sqlite-wrapper @endverbatim
+/// @verbatim git clone git://github.com/explodus/sqlite-wrapper.git sqlite_wrapper @endverbatim
 ///
 /// @section compile Compiling
 /// 
 /// @subsection Prerequesites
-/// 	- Cmake
-/// 	- Boost
+/// 	- CMake 2.6
+/// 	- Boost 1.38
 ///
 /// @section main_todo Todo
 ///
@@ -27,43 +27,38 @@
 ///
 /// @}
 
-/// @page sqlite_wrapper Db Wrapper around Sqlite
+/// @page update usage example of the wrapper
 /// @ingroup sqlite_wrapper
-///
-/// @todo somehow get the content from the mainpage in here
 ///
 /// only a simple example
 ///
 /// @code
 ///try
 ///{
-///	db::base_ptr _db(theApp.get_db());
+///	db::base_ptr _db(get_db());
 ///	
 ///	if (_db==0)
 ///		return;
 ///
-///	using db::field;
-///	using db::upd;
-///
 ///	double anl_id(db::detail::to_type<double>(db::string(_code)));
-///
-///	if (theApp.Term())
-///		theApp.Term()->Kenst(((*_q)[_sel]).value(0).str().c_str());
+///	db::string kenst(DB_TEXT("Blub"));
 ///
 ///	_db->execute_ptr(
-///		(upd(L"TermChange") % 
-///			field(L"KENST", ((*_q)[_sel]).value(0).str()) %
+///		(db::upd(L"TermChange") % 
+///			db::field(L"KENST", kenst) %
 ///			(
-///				field(L"ANL_ID", 0.0)==anl_id && 
-///				field(L"NR", 0)==_nr
+///				db::field(L"ANL_ID", 0.0) == anl_id && 
+///				db::field(L"NR", 0) == _nr
 ///			)
 ///		)
 ///	);
 ///}
 ///catch (db::exception::base& e)
 ///{
-///	CString err(e.what());
-///	tBox(err);
+///		db::log::singleton::basic::log_msg msg(
+///			db::log::singleton::basic::get_log()
+///		, e.what() 
+///		, db::log::log_error);
 ///	return;
 ///}
 /// @endcode

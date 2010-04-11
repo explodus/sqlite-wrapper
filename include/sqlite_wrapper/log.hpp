@@ -27,6 +27,8 @@
 
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/cout.hpp>
+#include <sqlite_wrapper/a2w.hpp>
+#include <sqlite_wrapper/w2a.hpp>
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
@@ -347,7 +349,7 @@ namespace db { namespace log {
 		/// Construct a log.
 		base(const provider_ptr_type& io_provider)
 			: boost::noncopyable()
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 			, provider_(io_provider)
 #endif
 			, last_level_(db::log::log_undef)
@@ -368,7 +370,7 @@ namespace db { namespace log {
 
 		void increase_indent()
 		{
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 			if (provider_)
 				provider_->increase_indent();
 #endif
@@ -376,7 +378,7 @@ namespace db { namespace log {
 
 		void decrease_indent()
 		{
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 			if (provider_)
 				provider_->decrease_indent();
 #endif
@@ -384,7 +386,7 @@ namespace db { namespace log {
 
 		base& operator << (const level& data)
 		{
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 			last_level_ = data;
 #endif
 			return *this;
@@ -393,7 +395,7 @@ namespace db { namespace log {
 		template <typename T>
 		base& operator << (const T& data)
 		{
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 			formatter_type::do_format(
 				  provider_->get_buffer()->output_stream()
 				, provider_->indent()
@@ -429,7 +431,7 @@ namespace db { namespace log {
 			, base_(_base)
 			, last_level_(lvl)
 		{
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 			if (last_level_ <= global_level())
 				base_ << last_level_ << 
 					log_type::formatter_type::decorate_message(msg); 
@@ -438,7 +440,7 @@ namespace db { namespace log {
 
 		bool operator()(const db::string& msg) const
 		{
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 			if (last_level_ <= global_level())
 				base_ << last_level_ << 
 					log_type::formatter_type::decorate_message(msg);
@@ -448,7 +450,7 @@ namespace db { namespace log {
 
 		bool operator()(const level& lvl, const db::string& msg) const
 		{
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 			if (lvl <= global_level())
 				base_ << lvl << 
 					log_type::formatter_type::decorate_message(msg);
@@ -488,13 +490,13 @@ namespace db { namespace log {
 			, const db::string& scope_message
 			, const level lvl = db::log::log_debug)
 			: boost::noncopyable()
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 			, log_(scope_log)
 			, message_(scope_message)
 			, last_level_(lvl)
 #endif
 		{
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 			if (last_level_ <= global_level())
 			{
 				log_ << last_level_ <<
@@ -514,7 +516,7 @@ namespace db { namespace log {
 		///
 		~scope()
 		{
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 			if (last_level_ <= global_level())
 			{
 				log_.decrease_indent();
@@ -525,7 +527,7 @@ namespace db { namespace log {
 		}
 
 	private:
-#if defined (SQLITE_WRAPPER_USE) && (SQLITE_WRAPPER_USE == 1)
+#if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
 		/// The log associated with the scope.
 		log_type& log_;
 

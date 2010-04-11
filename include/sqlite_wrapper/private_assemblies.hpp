@@ -8,8 +8,6 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#pragma once
-
 #ifndef DB_PRIVATE_ASSEMBLIES_HPP_INCLUDED
 #define DB_PRIVATE_ASSEMBLIES_HPP_INCLUDED
 
@@ -18,64 +16,66 @@
 #ifndef RC_INVOKED
 // Avoid problems with the resource compiler if included
 
+//never define this again... damn...
+//#define _USE_ANSI_CPP
+
 #ifndef _BIND_TO_CURRENT_VCLIBS_VERSION
-  #define _BIND_TO_CURRENT_VCLIBS_VERSION 0
+#	define _BIND_TO_CURRENT_VCLIBS_VERSION 0
 #endif
 #ifndef _BIND_TO_CURRENT_MFC_VERSION
-  #define _BIND_TO_CURRENT_MFC_VERSION 0
+#	define _BIND_TO_CURRENT_MFC_VERSION 0
 #else
-  #define _BIND_TO_CURRENT_MFC_VERSION 1
+#	define _BIND_TO_CURRENT_MFC_VERSION 1
 #endif
 #ifndef _BIND_TO_CURRENT_CRT_VERSION
-  #define _BIND_TO_CURRENT_CRT_VERSION 0
+#	define _BIND_TO_CURRENT_CRT_VERSION 0
 #else
-  #define _BIND_TO_CURRENT_CRT_VERSION 1
+#	define _BIND_TO_CURRENT_CRT_VERSION 1
 #endif
 
 #ifndef __OPENMP_ASSEMBLY_VERSION
-#define __OPENMP_ASSEMBLY_VERSION "9.0.21022.8"
+#	define __OPENMP_ASSEMBLY_VERSION "9.0.21022.8"
 #endif
 
 #ifndef __OPENMP_ASSEMBLY_NAME_PREFIX
-#define __OPENMP_ASSEMBLY_NAME_PREFIX "Microsoft.VC90"
+#	define __OPENMP_ASSEMBLY_NAME_PREFIX "Microsoft.VC90"
 #endif
 
 #define _VC_ASSEMBLY_PUBLICKEYTOKEN ""
-#define _USE_ANSI_CPP
 
 #ifndef __LIBRARIES_ASSEMBLY_NAME_PREFIX
-  #define __LIBRARIES_ASSEMBLY_NAME_PREFIX "Microsoft.VC90"
+#	define __LIBRARIES_ASSEMBLY_NAME_PREFIX "Microsoft.VC90"
 #endif
 
 #if _MSC_VER>1400
 #	ifndef _MFC_ASSEMBLY_VERSION
-#		if defined (_BIND_TO_CURRENT_MFC_VERSION) && (_BIND_TO_CURRENT_MFC_VERSION == 1)
-#			define _MFC_ASSEMBLY_VERSION "9.0.30411.0"
-#		elif defined (_BIND_TO_CURRENT_VCLIBS_VERSION) && (_BIND_TO_CURRENT_VCLIBS_VERSION == 1)
-#			define _MFC_ASSEMBLY_VERSION "9.0.30411.0"
-//#		else
-//#			define _MFC_ASSEMBLY_VERSION "9.0.21022.8"
+#		if defined(_BIND_TO_CURRENT_MFC_VERSION) && defined(_BIND_TO_CURRENT_MFC_VERSION) == 1
+#			define _MFC_ASSEMBLY_VERSION "9.0.30729.1"
+#		elif defined(_BIND_TO_CURRENT_VCLIBS_VERSION) && defined(_BIND_TO_CURRENT_VCLIBS_VERSION) == 1
+#			define _MFC_ASSEMBLY_VERSION "9.0.30729.1"
+#		else
+#			define _MFC_ASSEMBLY_VERSION "9.0.21022.8"
 #		endif
 #	endif
 #	ifndef _CRT_ASSEMBLY_VERSION
-#		if defined (_BIND_TO_CURRENT_CRT_VERSION) && (_BIND_TO_CURRENT_CRT_VERSION == 1)
-#			define _CRT_ASSEMBLY_VERSION "9.0.30411.0"
-#		elif defined (_BIND_TO_CURRENT_VCLIBS_VERSION) && (_BIND_TO_CURRENT_VCLIBS_VERSION == 1)
-#			define _CRT_ASSEMBLY_VERSION "9.0.30411.0"
-//#		else
-//#			define _CRT_ASSEMBLY_VERSION "9.0.21022.8"
+#		if defined(_BIND_TO_CURRENT_CRT_VERSION) && defined(_BIND_TO_CURRENT_CRT_VERSION) == 1
+#			define _CRT_ASSEMBLY_VERSION "9.0.30729.1"
+#		elif defined(_BIND_TO_CURRENT_VCLIBS_VERSION) && defined(_BIND_TO_CURRENT_VCLIBS_VERSION) == 1
+#			define _CRT_ASSEMBLY_VERSION "9.0.30729.1"
+#		else
+#			define _CRT_ASSEMBLY_VERSION "9.0.21022.8"
 #		endif
 #	endif
 #endif
 
 #if defined(_M_IX86)
-	#define MANIFEST_PROCESSORARCHITECTURE "x86"
+#	define MANIFEST_PROCESSORARCHITECTURE "x86"
 #elif defined(_M_AMD64)
-	#define MANIFEST_PROCESSORARCHITECTURE "amd64"
+#	define MANIFEST_PROCESSORARCHITECTURE "amd64"
 #elif defined(_M_IA64)
-	#define MANIFEST_PROCESSORARCHITECTURE "ia64"
+#	define MANIFEST_PROCESSORARCHITECTURE "ia64"
 #else
-	#error Unknown processor architecture.
+#	error Unknown processor architecture.
 #endif
 
 //This defines bock the creation in the header files
@@ -90,17 +90,18 @@
 // The next statements block the linker from including object files in the
 // CRT and the MFC, that would create manifest pragmas too.
 #ifdef __cplusplus
-extern "C" {            /* Assume C declarations for C++ */
+extern "C" 
+{ // Assume C declarations for C++
 #endif
 
-__declspec(selectany)		    int _forceCRTManifest;
-__declspec(selectany)		    int _forceMFCManifest;
-__declspec(selectany)	      int _forceAtlDllManifest;
+	__declspec(selectany)	int _forceCRTManifest;
+	__declspec(selectany)	int _forceMFCManifest;
+	__declspec(selectany)	int _forceAtlDllManifest;
 
-// The next symbols are used by the several versions of VC 9.0 
-__declspec(selectany)       int _forceCRTManifestRTM; 
-__declspec(selectany)       int _forceMFCManifestRTM; 
-__declspec(selectany)       int _forceMFCManifestCUR;    
+	// The next symbols are used by the several versions of VC 9.0 
+	__declspec(selectany)	int _forceCRTManifestRTM; 
+	__declspec(selectany)	int _forceMFCManifestRTM; 
+	__declspec(selectany)	int _forceMFCManifestCUR;    
 
 #ifdef __cplusplus
 }						/* __cplusplus */
@@ -126,14 +127,14 @@ __declspec(selectany)       int _forceMFCManifestCUR;
 #endif
 
 //Manifest for the CRT
-#pragma comment(linker,"/manifestdependency:\"type='win32' name='" __LIBRARIES_ASSEMBLY_NAME_PREFIX "." __LIBRARIES_SUB_VERSION "CRT' version='" _CRT_ASSEMBLY_VERSION "' processorArchitecture='" MANIFEST_PROCESSORARCHITECTURE "' \"")    
+#if defined (_BIND_TO_CURRENT_CRT_VERSION) && (_BIND_TO_CURRENT_CRT_VERSION == 1)
+#	pragma comment(linker,"/manifestdependency:\"type='win32' name='" __LIBRARIES_ASSEMBLY_NAME_PREFIX "." __LIBRARIES_SUB_VERSION "CRT' version='" _CRT_ASSEMBLY_VERSION "' processorArchitecture='" MANIFEST_PROCESSORARCHITECTURE "' \"")    
+#endif
 
 #if defined (_BIND_TO_CURRENT_MFC_VERSION) && (_BIND_TO_CURRENT_MFC_VERSION == 1)
 // Manifest for the MFC 
 #	pragma comment(linker,"/manifestdependency:\"type='win32' name='" __LIBRARIES_ASSEMBLY_NAME_PREFIX "." __LIBRARIES_SUB_VERSION "MFC' version='" _CRT_ASSEMBLY_VERSION "' processorArchitecture='" MANIFEST_PROCESSORARCHITECTURE "'\"")    
 #endif
-
- #include <crtdefs.h>
 
 #endif // RC_INVOKED
 

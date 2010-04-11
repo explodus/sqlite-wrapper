@@ -103,17 +103,25 @@ namespace db
 {
 #ifdef SQLITE_WRAPPER_NARROW_STRING
 	typedef char char_type;
+	/// Generic text macros to be used with string literals and character constants.
+	/// Will also allow symbolic constants that resolve to same.
 	#define DB_TEXT(x) x
-	typedef std::string string;
 #else
 	typedef wchar_t char_type;
+	/// Generic text macros to be used with string literals and character constants.
+	/// Will also allow symbolic constants that resolve to same.
 	#define DB_TEXT(x) L ## x
-	typedef std::wstring string;
 #endif
- 
+
+	///
+	typedef std::basic_string<char_type > string;
+	
+	/// 
 	typedef std::basic_ostream<char_type> ostream;
+	///
 	typedef std::basic_istream<char_type> istream;
 	
+	///
 	typedef std::basic_ofstream
 	<
 	  char_type
@@ -121,6 +129,7 @@ namespace db
 	> 
 	ofstream;
 	
+	///
 	typedef std::basic_ifstream
 	<
 	  char_type
@@ -128,136 +137,19 @@ namespace db
 	> 
 	ifstream;
 	
+	///
 	typedef std::basic_ostringstream<char_type> ostringstream;
+	///
 	typedef std::basic_istringstream<char_type> istringstream;
+	///
 	typedef std::basic_stringstream<char_type>  stringstream;
+	///
 	typedef boost::basic_format<char_type > format;
 
+	///
 	typedef std::pair<string, string> string_pair;
+	///
 	typedef std::vector<string> string_vec;
- 	
-	namespace detail
-	{
-		/// char to wchar_t conversion class
-		class SQLITE_WRAPPER_DLLAPI a2w
-		{
-		public:
-			/// @brief        constructor
-			///
-			/// <BR>qualifier throw() : empty_(0)
-			/// <BR>access    private  
-			/// @return       
-			/// @param        psz as _In_opt_ LPCWSTR
-			/// @param        nCodePage as unsigned
-			///
-			/// @date         12.3.2010 14:16
-			///
-			a2w(
-				  const char* psz
-				, unsigned nCodePage = 65001 /*CP_UTF8*/ ) : 
-			empty_(0)
-			{
-				init( psz, nCodePage );
-			}
-
-			/// <BR>qualifier const throw()
-			/// <BR>access    public  
-			/// @return       const wchar_t*
-			///
-			/// @date         12.3.2010 14:39
-			///
-			operator const wchar_t*() const throw()
-			{
-				if (sz_.size())
-					return( &*sz_.begin() );
-				else
-					return empty_;
-			}
-
-		private:
-			/// @brief        init
-			///
-			/// <BR>qualifier throw()
-			/// <BR>access    private  
-			/// @return       void
-			/// @param        psz as _In_opt_ const char *
-			/// @param        nConvertCodePage as unsigned
-			///
-			/// @date         12.3.2010 14:39
-			///
-			inline void init(
-				  const char* psz
-				, unsigned nConvertCodePage);
-
-		public:
-			const wchar_t* empty_;
-			std::vector<wchar_t> sz_;
-
-		private:
-			a2w( const a2w& ) throw();
-			a2w& operator=( const a2w& ) throw();
-		};
-
-		/// wchar_t to char conversion class
-		class SQLITE_WRAPPER_DLLAPI w2a
-		{
-		public:
-			/// @brief        constructor
-			///
-			/// <BR>qualifier throw() : empty_(0)
-			/// <BR>access    private  
-			/// @return       
-			/// @param        psz as const wchar_t*
-			/// @param        nCodePage as unsigned
-			///
-			/// @date         12.3.2010 14:16
-			///
-			w2a(
-				  const wchar_t* psz
-				, unsigned nCodePage = 0 /*CP_ACP*/ ) : 
-				empty_(0)
-			{
-				init( psz, nCodePage );
-			}
-
-			/// <BR>qualifier const throw()
-			/// <BR>access    public  
-			/// @return       const char*
-			///
-			/// @date         12.3.2010 14:39
-			///
-			operator const char*() const throw()
-			{
-				if (sz_.size())
-					return( &*sz_.begin() );
-				else
-					return empty_;
-			}
-
-		private:
-			/// @brief        init
-			///
-			/// <BR>qualifier throw()
-			/// <BR>access    private  
-			/// @return       void
-			/// @param        psz as _In_opt_ const wchar_t *
-			/// @param        nConvertCodePage as unsigned
-			///
-			/// @date         12.3.2010 14:39
-			///
-			inline void init(
-				  const wchar_t* psz
-				, unsigned nConvertCodePage);
-
-		public:
-			const char* empty_;
-			std::vector<char> sz_;
-
-		private:
-			w2a( const w2a& ) throw();
-			w2a& operator=( const w2a& ) throw();
-		};
-	}
 }
  
 #endif
