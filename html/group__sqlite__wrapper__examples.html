@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>sqlite_wrapper: db::log::provider::basic&lt; Buffer &gt; Class Template Reference</title>
+<title>sqlite_wrapper: examples</title>
 <link href="customtabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javaScript" src="search/search.js"></script>
@@ -58,38 +58,47 @@ window.onload = initDynSections;
       <li><a href="index.html"><span>Main&nbsp;Page</span></a></li>
       <li><a href="pages.html"><span>Related&nbsp;Pages</span></a></li>
       <li><a href="modules.html"><span>Modules</span></a></li>
-      <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
+      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-  <div class="tabs">
-    <ul>
-      <li><a href="annotated.html"><span>Class&nbsp;List</span></a></li>
-      <li><a href="classes.html"><span>Class&nbsp;Index</span></a></li>
-      <li><a href="hierarchy.html"><span>Class&nbsp;Hierarchy</span></a></li>
-      <li><a href="functions.html"><span>Class&nbsp;Members</span></a></li>
-    </ul>
-  </div>
-  <div class="navpath"><b>db</b>::<b>log</b>::<b>provider</b>::<a class="el" href="classdb_1_1log_1_1provider_1_1basic.html">basic</a>
-  </div>
 </div>
 <div class="contents">
-<h1>db::log::provider::basic&lt; Buffer &gt; Class Template Reference</h1><!-- doxytag: class="db::log::provider::basic" -->
-<p>Simplest universal provider.  
-<a href="#_details">More...</a></p>
-
-<p><a href="classdb_1_1log_1_1provider_1_1basic-members.html">List of all members.</a></p>
-<table border="0" cellpadding="0" cellspacing="0">
+<h1>examples</h1><table border="0" cellpadding="0" cellspacing="0">
 </table>
-<hr/><a name="_details"></a><h2>Detailed Description</h2>
-<h3>template&lt;typename Buffer&gt;<br/>
- class db::log::provider::basic&lt; Buffer &gt;</h3>
 
-<p>Simplest universal provider. </p>
 
-<p>Definition at line <a class="el" href="log_8hpp_source.html#l00131">131</a> of file <a class="el" href="log_8hpp_source.html">log.hpp</a>.</p>
-</div>
+<h3><a class="anchor" id="update">usage example of the wrapper</a></h3><p>only a simple example</p>
+<div class="fragment"><pre class="fragment"> <span class="keywordflow">try</span>
+ {
+  db::base_ptr _db(get_db());
+  
+  <span class="keywordflow">if</span> (_db==0)
+    <span class="keywordflow">return</span>;
+ 
+  <span class="keywordtype">double</span> anl_id(db::detail::to_type&lt;double&gt;(db::string(_code)));
+  db::string kenst(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;Blub&quot;</span>));
+ 
+  _db-&gt;execute_ptr(
+    (<a class="code" href="classdb_1_1upd.html" title="hilft beim anlegen von UPDATE-SQL Ausdrücken.">db::upd</a>(L<span class="stringliteral">&quot;TermChange&quot;</span>) % 
+      <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>(L<span class="stringliteral">&quot;KENST&quot;</span>, kenst) %
+      (
+        <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>(L<span class="stringliteral">&quot;ANL_ID&quot;</span>, 0.0) == anl_id &amp;&amp; 
+        <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>(L<span class="stringliteral">&quot;NR&quot;</span>, 0) == _nr
+      )
+    )
+  );
+ }
+ <span class="keywordflow">catch</span> (<a class="code" href="classdb_1_1exception_1_1base.html" title="exception basis interface">db::exception::base</a>&amp; e)
+ {
+    db::log::singleton::basic::log_msg msg(
+      db::log::singleton::basic::get_log()
+    , e.<a class="code" href="classdb_1_1exception_1_1base.html#a203f22bf3a50f17800e019d526b21310">what</a>() 
+    , db::log::log_error);
+  <span class="keywordflow">return</span>;
+ }
+</pre></div> </div>
 <hr class="footer"/><address style="text-align: right;"><small>
-Generated on Sun Apr 11 14:27:46 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
+Generated on Sun Apr 11 14:27:45 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
 </body>
 </html>
