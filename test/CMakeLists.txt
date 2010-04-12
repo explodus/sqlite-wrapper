@@ -33,7 +33,7 @@ MACRO( ADD_SQLITE_WRAPPER_QT4_TEST name )
 		GET_TARGET_PROPERTY( TEST_COMMAND sqlite_wrapper_${name}_test LOCATION )
 
 		ADD_CUSTOM_TARGET(
-			photo_test_qt4_${name}
+			sqlite_wrapper_test_qt4_${name}
 			COMMAND ${CMAKE_COMMAND} -E echo "${TEST_COMMAND}"
 			COMMAND ${CMAKE_COMMAND} -E time "${TEST_COMMAND} --result-code=no --report-level=no"
 			DEPENDS sqlite_wrapper_${name}_test
