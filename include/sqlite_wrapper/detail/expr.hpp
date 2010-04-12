@@ -35,7 +35,7 @@ namespace db
 	namespace expr
 	{
 		///expression base class
-		class base 
+		class SQLITE_WRAPPER_DLLAPI base 
 		{
 		protected:
 			split extraTables; //!< extra tables, to be joined
@@ -79,7 +79,7 @@ namespace db
 			virtual ~base();
 		}; 
 
-		class raw : public base 
+		class SQLITE_WRAPPER_DLLAPI raw : public base 
 		{
 			string expr;
 		public:
@@ -97,7 +97,7 @@ namespace db
 			virtual string str() const;
 		};
 
-		class connective : public base 
+		class SQLITE_WRAPPER_DLLAPI connective : public base 
 		{
 		private:
 			string op;
@@ -130,7 +130,7 @@ namespace db
 			virtual string str() const;
 		};  
 
-		class and_ : public connective 
+		class SQLITE_WRAPPER_DLLAPI and_ : public connective 
 		{
 		public:
 			/// @brief     connects 2 expressions with the AND operator
@@ -156,7 +156,7 @@ namespace db
 			virtual string str() const;
 		};
 
-		class or_ : public connective 
+		class SQLITE_WRAPPER_DLLAPI or_ : public connective 
 		{
 		public:
 			/// @brief     connects 2 expressions with the OR operator
@@ -180,7 +180,7 @@ namespace db
 			virtual string str() const;
 		};
 
-		class not_ : public base 
+		class SQLITE_WRAPPER_DLLAPI not_ : public base 
 		{
 		private:
 			const base & exp;
@@ -207,7 +207,7 @@ namespace db
 		};
 
 		///base class for operators in sql terms
-		class oper : public base 
+		class SQLITE_WRAPPER_DLLAPI oper : public base 
 		{
 		protected:
 			const field & _field;
@@ -282,7 +282,7 @@ namespace db
 		};
 
 		///==, is equal operator
-		class eq : public oper {
+		class SQLITE_WRAPPER_DLLAPI eq : public oper {
 		public:
 			/// @brief     ==, is equal operator
 			///
@@ -301,7 +301,7 @@ namespace db
 		};
 
 		///<> not equal operator
-		class not_eq_ : public oper {
+		class SQLITE_WRAPPER_DLLAPI not_eq_ : public oper {
 		public:
 			/// @brief     !=, not equal constructor
 			///
@@ -320,7 +320,7 @@ namespace db
 		};
 
 		///> greater then operator
-		class gt : public oper {
+		class SQLITE_WRAPPER_DLLAPI gt : public oper {
 		public:
 			/// @brief     gt
 			///
@@ -339,7 +339,7 @@ namespace db
 		};
 
 		///greater then or equal operator
-		class gt_eq : public oper {
+		class SQLITE_WRAPPER_DLLAPI gt_eq : public oper {
 		public:
 			/// @brief     gt_eq
 			///
@@ -358,7 +358,7 @@ namespace db
 		};
 
 		///lower then operator
-		class lt : public oper {
+		class SQLITE_WRAPPER_DLLAPI lt : public oper {
 		public:
 			/// @brief     <, lower then constructor
 			///
@@ -377,7 +377,7 @@ namespace db
 		};
 
 		///lower then or equal operator
-		class lt_eq : public oper {
+		class SQLITE_WRAPPER_DLLAPI lt_eq : public oper {
 		public:
 			/// @brief     <=, lower then or equal constructor
 			///
@@ -396,7 +396,7 @@ namespace db
 		};
 
 		///like operator
-		class like : public oper {
+		class SQLITE_WRAPPER_DLLAPI like : public oper {
 		public:
 			/// @brief     like constructor
 			///
@@ -412,7 +412,7 @@ namespace db
 		};
 
 		///in Operator
-		class in : public oper {
+		class SQLITE_WRAPPER_DLLAPI in : public oper {
 		public:
 			/// @brief     in constructor
 			///
