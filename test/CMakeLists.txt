@@ -26,9 +26,17 @@ ENDIF()
 
 MACRO( ADD_SQLITE_WRAPPER_QT4_TEST name )
 	IF( QT4_FOUND )
+		SET( sqlite_wrapper_${name}_test_header
+			${CMAKE_SOURCE_DIR}/test/${name}.hpp
+		)
+		SET( sqlite_wrapper_${name}_test_source
+			${CMAKE_SOURCE_DIR}/test/${name}.cpp
+		)
+		QT4_WRAP_CPP(sqlite_wrapper_${name}_test_moc_source ${sqlite_wrapper_${name}_test_header})
+
 		ADD_DEFINITIONS( -DSQLITE_WRAPPER_USE=1 -DSQLITE_WRAPPER_SHARED )
-		ADD_EXECUTABLE (sqlite_wrapper_${name}_test ${name}.cpp)
-		TARGET_LINK_LIBRARIES (sqlite_wrapper_${name}_test sqlite_wrapper sqlite_wrapper ${QT_LIBRARIES})
+		ADD_EXECUTABLE (sqlite_wrapper_${name}_test ${sqlite_wrapper_${name}_test_source} ${sqlite_wrapper_${name}_test_moc_source})
+		TARGET_LINK_LIBRARIES (sqlite_wrapper_${name}_test sqlite_wrapper ${QT_LIBRARIES})
 
 		GET_TARGET_PROPERTY( TEST_COMMAND sqlite_wrapper_${name}_test LOCATION )
 
