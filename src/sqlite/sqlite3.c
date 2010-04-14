@@ -43609,7 +43609,7 @@ static void assemblePage(
   }
   put2byte(&data[hdr+3], nCell);
   put2byte(&data[hdr+5], cellbody);
-  pPage->nFree -= (nCell*2 + nUsable - cellbody);
+  pPage->nFree -= (u16)(nCell*2 + nUsable - cellbody);
   pPage->nCell = (u16)nCell;
 }
 

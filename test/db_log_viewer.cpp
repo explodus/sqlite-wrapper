@@ -62,14 +62,19 @@ QVariant db_log_model::headerData(
 				tmp = tr("Message");
 				break;
 			default:
-				qCritical() << __FUNCTION__ << "Error: unknown column:" << section;
+				qCritical() 
+					<< __FUNCTION__ 
+					<< "Error: unknown column:" 
+					<< section;
 		}
 	}
 
 	return tmp;
 }
 
-QVariant db_log_model::data( const QModelIndex & index, int role /*= Qt::DisplayRole*/ ) const
+QVariant db_log_model::data( 
+	  const QModelIndex & index
+	, int role /*= Qt::DisplayRole*/ ) const
 {
 	static QVariant empty_tmp;
 
@@ -117,12 +122,32 @@ QVariant db_log_model::data( const QModelIndex & index, int role /*= Qt::Display
 			}
 			break;
 		default :
-			filled_tmp = db::to_qstring(_q->getRow(row).value(column).str());
+			filled_tmp = db::to_qstring(
+				_q->getRow(row).value(column).str());
 			break;
 		}
 		return filled_tmp;
 	}
-
+	else if (role == Qt::BackgroundColorRole) 
+	{
+		switch (_q->getRow(row).value(db_log_model::COLUMN_LEVEL).get_int())
+		{
+		case db::log::log_critical:
+			return qVariantFromValue(QColor(Qt::white));
+		case db::log::log_error:
+			return qVariantFromValue(QColor(Qt::red));
+		case db::log::log_warning:
+			return qVariantFromValue(QColor(Qt::darkRed));
+		case db::log::log_notice:
+			return qVariantFromValue(QColor(Qt::darkYellow));
+		case db::log::log_info:
+			return qVariantFromValue(QColor(Qt::yellow));
+		case db::log::log_debug:
+			return qVariantFromValue(QColor(Qt::lightGray));
+		default:
+			return qVariantFromValue(QColor(Qt::white));
+		}
+	}
 	
 	return empty_tmp;
 }
@@ -178,7 +203,7 @@ dialog::dialog()
 
 	sourceView = new QTreeView;
 	sourceView->setRootIsDecorated(false);
-	sourceView->setAlternatingRowColors(true);
+	sourceView->setAlternatingRowColors(false);
 
 	proxyView = new QTreeView;
 	proxyView->setRootIsDecorated(false);

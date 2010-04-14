@@ -12,7 +12,7 @@
 
 #include <sqlite_wrapper/config.hpp>
 
-int main( int argc, char **argv )
+int main( int /*argc*/, char ** /*argv*/ )
 {
 }
 

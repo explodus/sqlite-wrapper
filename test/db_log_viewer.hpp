@@ -81,7 +81,7 @@ public:
 		return createIndex(row, column);
 	}
 	
-	QModelIndex parent(const QModelIndex & index) const
+	QModelIndex parent(const QModelIndex & /*index*/) const
 	{ return QModelIndex(); }
 
 	Qt::ItemFlags flags(const QModelIndex & index) const

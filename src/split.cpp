@@ -81,11 +81,15 @@ db::split::split(db::string s, db::string delim/*=DB_TEXT(" ")*/)
 	int len(delim.length());
 	std::vector<db::char_type*> pointers;
 	pointers.push_back(ptr);
-	while((ptr = _tcsstr(ptr, delim.c_str()))) 
+	
+	ptr = _tcsstr(ptr, delim.c_str());
+	
+	while(ptr) 
 	{
 		*ptr = DB_TEXT('\0');
 		ptr += len;
 		pointers.push_back(ptr);
+		(ptr = _tcsstr(ptr, delim.c_str()));
 	}
 	for (std::vector<db::char_type*>::iterator i(pointers.begin()), 
 		e(pointers.end()); i != e; ++i)

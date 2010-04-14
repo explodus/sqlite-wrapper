@@ -278,7 +278,7 @@ namespace db { namespace log {
 			template <typename Database, typename T>
 			static void do_format(
 				  Database& db_
-				, size_t indent
+				, size_t /*indent*/
 				, const T& data
 				,	db::log::level lvl = db::log::log_undef)
 			{

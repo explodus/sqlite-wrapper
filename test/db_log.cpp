@@ -54,7 +54,7 @@ void sub_scope()
 	}
 }
 
-int main( int argc, char **argv )
+int main( int /*argc*/, char **argv )
 {
 	db::string db_name = db::detail::a2w(argv[0]);
 	db_name = db_name.substr(0, db_name.rfind(DB_TEXT("\\")));
