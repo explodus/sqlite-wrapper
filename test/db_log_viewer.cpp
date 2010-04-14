@@ -269,7 +269,7 @@ dialog::dialog()
 	setWindowTitle(tr("Basic Sort/Filter Model"));
 	resize(600, 800);
 
-	proxyView->sortByColumn(1, Qt::AscendingOrder);
+	proxyView->sortByColumn(0, Qt::DescendingOrder);
 	filterColumnComboBox->setCurrentIndex(3);
 
 	filterPatternLineEdit->setText("error");
@@ -303,7 +303,10 @@ void dialog::filterColumnChanged()
 
 void dialog::sortChanged()
 {
-	proxyModel->setSortCaseSensitivity(
-		sortCaseSensitivityCheckBox->isChecked() ? Qt::CaseSensitive
-		: Qt::CaseInsensitive);
+	proxyModel->setSortCaseSensitivity
+	(
+		  sortCaseSensitivityCheckBox->isChecked() 
+		? Qt::CaseSensitive
+		: Qt::CaseInsensitive
+	);
 }
