@@ -25,6 +25,7 @@ class QLabel;
 class QLineEdit;
 class QSortFilterProxyModel;
 class QTreeView;
+class QTableView;
 
 namespace db { namespace test
 {
@@ -53,7 +54,31 @@ namespace db { namespace test
 		virtual ~db_log_model() { }
 
 		db::query_ptr Q() const { return _q; }
-		void Q(db::query_ptr val) { _q = val; emit layoutChanged(); }
+		void Q(db::query_ptr val) 
+		{ 
+			if (!val)
+				return;
+
+			unsigned old_rows(0), new_rows(val->size());
+
+			if (_q && _q->size())
+				old_rows = _q->size();
+
+			_q = val; 
+
+			if (new_rows > old_rows)
+			{
+				beginInsertRows(QModelIndex(), old_rows, old_rows + new_rows - 1);
+				endInsertRows();
+			}
+			else if (new_rows < old_rows)
+			{
+				beginRemoveRows(QModelIndex(), new_rows, old_rows);
+				endRemoveRows();
+			}
+
+			emit rowsUpdated();
+		}
 
 		int columnCount(const QModelIndex & parent = QModelIndex()) const
 		{ UNREFERENCED_PARAMETER(parent); return COLUMN_LAST; }
@@ -93,6 +118,8 @@ namespace db { namespace test
 
 			return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
 		}
+	signals:
+		void rowsUpdated();
 	};
 
 	class dialog : public QWidget
@@ -118,8 +145,8 @@ namespace db { namespace test
 
 		QGroupBox *sourceGroupBox;
 		QGroupBox *proxyGroupBox;
-		QTreeView *sourceView;
-		QTreeView *proxyView;
+		QTableView *sourceView;
+		QTableView *proxyView;
 		QCheckBox *filterCaseSensitivityCheckBox;
 		QCheckBox *sortCaseSensitivityCheckBox;
 		QCheckBox *showAllCheckBox;

@@ -194,15 +194,15 @@ db::test::dialog::dialog() :
 	sourceGroupBox = new QGroupBox(tr("Database"));
 	proxyGroupBox = new QGroupBox(tr("Sorted/Filtered Database Lines"));
 
-	sourceView = new QTreeView;
-	sourceView->setRootIsDecorated(false);
-	sourceView->setAlternatingRowColors(false);
+	sourceView = new QTableView;
+	sourceView->verticalHeader()->setDefaultSectionSize(17);
+	//sourceView->verticalHeader()->setResizeMode (QHeaderView::ResizeMode::Interactive);
+	//sourceView->verticalHeader()->setResizeMode (QHeaderView::ResizeMode::ResizeToContents);
 
-	proxyView = new QTreeView;
-	proxyView->setRootIsDecorated(false);
-	proxyView->setAlternatingRowColors(true);
+	proxyView = new QTableView;
 	proxyView->setModel(proxyModel);
 	proxyView->setSortingEnabled(true);
+	proxyView->verticalHeader()->setResizeMode (QHeaderView::ResizeMode::ResizeToContents);
 
 	model = new db::test::db_log_model(this);
 	setSourceModel(model);
@@ -338,7 +338,7 @@ void db::test::dialog::refresh()
 				, L"level"
 				, L"msg")
 				.limit(showAllCheckBox->isChecked() ? 0 : 1000)
-				.order_by(L"date_real", false)
+				.order_by(L"id", false)
 			)
 		);
 	}
