@@ -21,6 +21,11 @@
 
 namespace db
 {
+	namespace test 
+	{
+		std::string log_db = "log.db";
+	}
+
 	namespace detail
 	{
 		inline QString internal_convert( std::string const &_s )
@@ -35,7 +40,7 @@ namespace db
 }
 
 
-QVariant db_log_model::headerData( 
+QVariant db::test::db_log_model::headerData( 
 	  int section
 	, Qt::Orientation orientation
 	, int role ) const
@@ -72,7 +77,7 @@ QVariant db_log_model::headerData(
 	return tmp;
 }
 
-QVariant db_log_model::data( 
+QVariant db::test::db_log_model::data( 
 	  const QModelIndex & index
 	, int role /*= Qt::DisplayRole*/ ) const
 {
@@ -158,48 +163,36 @@ int main( int argc, char **argv )
 	QStringList arguments = app.arguments();
 	QString app_path = app.applicationDirPath();
 
-	std::string log_db = app_path.toAscii();
-	log_db += "/log.db";
+	db::test::log_db = app_path.toAscii();
+	db::test::log_db += "/log.db";
 
-	dialog dlg;
-	db_log_model *model = new db_log_model(&dlg);
-
-	db::base_ptr db_; 
-	try
-	{
-		db_.reset(new db::base);
-		db_->connect(log_db.c_str());
-		model->Q(db_->execute_ptr(
-			(
-					db::sel(L"log")
-				, L"id"
-				, L"date_real"
-				, L"date_text"
-				, L"level"
-				, L"msg"
-			).limit(1000).order_by(L"date_real", false)
-		));
-	}
-	catch (db::exception::base& e)
-	{
-		db::log::singleton::basic::log_msg msg(
-			  db::log::singleton::basic::get_log()
-		  , e.what()
-			, db::log::log_error);
-	}
-
-	dlg.setSourceModel(model);
+	db::test::dialog dlg;
 	dlg.show();
 	return app.exec();
 }
 
-dialog::dialog()
+db::test::dialog::dialog() : 
+	  proxyModel(0)
+	, sourceGroupBox(0)
+	, proxyGroupBox(0)
+	, sourceView(0)
+	, proxyView(0)
+	, filterCaseSensitivityCheckBox(0)
+	, sortCaseSensitivityCheckBox(0)
+	, showAllCheckBox(0)
+	, filterPatternLabel(0)
+	, filterSyntaxLabel(0)
+	, filterColumnLabel(0)
+	, filterPatternLineEdit(0)
+	, filterSyntaxComboBox(0)
+	, filterColumnComboBox(0)
+	, model(0)
 {
 	proxyModel = new QSortFilterProxyModel;
 	proxyModel->setDynamicSortFilter(true);
 
-	sourceGroupBox = new QGroupBox(tr("Original Model"));
-	proxyGroupBox = new QGroupBox(tr("Sorted/Filtered Model"));
+	sourceGroupBox = new QGroupBox(tr("Database"));
+	proxyGroupBox = new QGroupBox(tr("Sorted/Filtered Database Lines"));
 
 	sourceView = new QTreeView;
 	sourceView->setRootIsDecorated(false);
@@ -211,8 +204,13 @@ dialog::dialog()
 	proxyView->setModel(proxyModel);
 	proxyView->setSortingEnabled(true);
 
+	model = new db::test::db_log_model(this);
+	setSourceModel(model);
+
 	sortCaseSensitivityCheckBox = new QCheckBox(tr("Case sensitive sorting"));
 	filterCaseSensitivityCheckBox = new QCheckBox(tr("Case sensitive filter"));
+
+	showAllCheckBox = new QCheckBox(tr("Show All Lines"));
 
 	filterPatternLineEdit = new QLineEdit;
 	filterPatternLabel = new QLabel(tr("&Filter pattern:"));
@@ -242,6 +240,8 @@ dialog::dialog()
 		this, SLOT(filterColumnChanged()));
 	connect(filterCaseSensitivityCheckBox, SIGNAL(toggled(bool)),
 		this, SLOT(filterRegExpChanged()));
+	connect(showAllCheckBox, SIGNAL(toggled(bool)),
+		this, SLOT(showAllChanged()));
 	connect(sortCaseSensitivityCheckBox, SIGNAL(toggled(bool)),
 		this, SLOT(sortChanged()));
 
@@ -250,15 +250,16 @@ dialog::dialog()
 	sourceGroupBox->setLayout(sourceLayout);
 
 	QGridLayout *proxyLayout = new QGridLayout;
-	proxyLayout->addWidget(proxyView, 0, 0, 1, 3);
+	proxyLayout->addWidget(proxyView, 0, 0, 1, 4);
 	proxyLayout->addWidget(filterPatternLabel, 1, 0);
-	proxyLayout->addWidget(filterPatternLineEdit, 1, 1, 1, 2);
+	proxyLayout->addWidget(filterPatternLineEdit, 1, 1, 1, 3);
 	proxyLayout->addWidget(filterSyntaxLabel, 2, 0);
-	proxyLayout->addWidget(filterSyntaxComboBox, 2, 1, 1, 2);
+	proxyLayout->addWidget(filterSyntaxComboBox, 2, 1, 1, 3);
 	proxyLayout->addWidget(filterColumnLabel, 3, 0);
-	proxyLayout->addWidget(filterColumnComboBox, 3, 1, 1, 2);
-	proxyLayout->addWidget(filterCaseSensitivityCheckBox, 4, 0, 1, 2);
-	proxyLayout->addWidget(sortCaseSensitivityCheckBox, 4, 2);
+	proxyLayout->addWidget(filterColumnComboBox, 3, 1, 1, 3);
+	proxyLayout->addWidget(filterCaseSensitivityCheckBox, 4, 0, 1, 3);
+	proxyLayout->addWidget(sortCaseSensitivityCheckBox, 4, 1);
+	proxyLayout->addWidget(showAllCheckBox, 4, 3);
 	proxyGroupBox->setLayout(proxyLayout);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -275,33 +276,37 @@ dialog::dialog()
 	filterPatternLineEdit->setText("error");
 	filterCaseSensitivityCheckBox->setChecked(true);
 	sortCaseSensitivityCheckBox->setChecked(true);
+	showAllCheckBox->setChecked(false);
+
+	refresh();
 }
 
-void dialog::setSourceModel(QAbstractItemModel *model)
+void db::test::dialog::setSourceModel(QAbstractItemModel *model)
 {
 	proxyModel->setSourceModel(model);
 	sourceView->setModel(model);
 }
 
-void dialog::filterRegExpChanged()
+void db::test::dialog::filterRegExpChanged()
 {
 	QRegExp::PatternSyntax syntax =
 		QRegExp::PatternSyntax(filterSyntaxComboBox->itemData(
 		filterSyntaxComboBox->currentIndex()).toInt());
 	Qt::CaseSensitivity caseSensitivity =
-		filterCaseSensitivityCheckBox->isChecked() ? Qt::CaseSensitive
+		filterCaseSensitivityCheckBox->isChecked() 
+		? Qt::CaseSensitive
 		: Qt::CaseInsensitive;
 
 	QRegExp regExp(filterPatternLineEdit->text(), caseSensitivity, syntax);
 	proxyModel->setFilterRegExp(regExp);
 }
 
-void dialog::filterColumnChanged()
+void db::test::dialog::filterColumnChanged()
 {
 	proxyModel->setFilterKeyColumn(filterColumnComboBox->currentIndex());
 }
 
-void dialog::sortChanged()
+void db::test::dialog::sortChanged()
 {
 	proxyModel->setSortCaseSensitivity
 	(
@@ -309,4 +314,39 @@ void dialog::sortChanged()
 		? Qt::CaseSensitive
 		: Qt::CaseInsensitive
 	);
+}
+
+void db::test::dialog::showAllChanged()
+{
+	refresh();
+}
+
+void db::test::dialog::refresh()
+{
+	try
+	{
+		db::base_ptr db_; 
+		db_.reset(new db::base);
+		db_->connect(db::test::log_db.c_str());
+		model->Q(
+			db_->execute_ptr(
+			(
+				  db::sel(L"log")
+				, L"id"
+				, L"date_real"
+				, L"date_text"
+				, L"level"
+				, L"msg")
+				.limit(showAllCheckBox->isChecked() ? 0 : 1000)
+				.order_by(L"date_real", false)
+			)
+		);
+	}
+	catch (db::exception::base& e)
+	{
+		db::log::singleton::basic::log_msg msg(
+			db::log::singleton::basic::get_log()
+			, e.what()
+			, db::log::log_error);
+	}
 }
