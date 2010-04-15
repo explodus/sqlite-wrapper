@@ -75,7 +75,7 @@ window.onload = initDynSections;
 </div>
 <div class="contents">
 <h1>db::upd Class Reference</h1><!-- doxytag: class="db::upd" -->
-<p>hilft beim anlegen von UPDATE-SQL Ausdrücken.  
+<p>helper class for generating update sql expressions  
 <a href="#_details">More...</a></p>
 
 <p><a href="classdb_1_1upd-members.html">List of all members.</a></p>
@@ -84,56 +84,47 @@ window.onload = initDynSections;
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1upd.html#a3fc2f935813f4e46b918a2f1a7470162">upd</a> (const string &amp;t, const string &amp;d1, const string &amp;d2)</td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">upd  <a href="#a3fc2f935813f4e46b918a2f1a7470162"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1upd.html#af7d98ad9384b0df6d5bb66a6d3bd5c60">upd</a> (const string &amp;t, const string &amp;d)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">upd  <a href="#af7d98ad9384b0df6d5bb66a6d3bd5c60"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1upd.html#a89539569559a82ce11a99fc5e2797c8d">upd</a> (const string &amp;t)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">upd  <a href="#a89539569559a82ce11a99fc5e2797c8d"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1upd.html#a2d703993121faf84587b74fb293a197f">~upd</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">~upd  <a href="#a2d703993121faf84587b74fb293a197f"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1upd.html#afb0ac8864bca50621ef75e94264a216a">operator string</a> () const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">operator string  <a href="#afb0ac8864bca50621ef75e94264a216a"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">string overload  <a href="#afb0ac8864bca50621ef75e94264a216a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdb_1_1upd.html">upd</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1upd.html#a982030f0ad583fcaca3de7e98ce77e29">operator%</a> (const <a class="el" href="classdb_1_1field.html">db::field</a> &amp;f)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">operator%  <a href="#a982030f0ad583fcaca3de7e98ce77e29"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">insert a new field with it name and the value  <a href="#a982030f0ad583fcaca3de7e98ce77e29"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdb_1_1upd.html">upd</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1upd.html#a98ae07ff13cc7fc7e14808008d8c66af">operator%</a> (const <a class="el" href="classdb_1_1expr_1_1base.html">expr::base</a> &amp;e)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">operator%  <a href="#a98ae07ff13cc7fc7e14808008d8c66af"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">insert a sql where expression through the operator % overload  <a href="#a98ae07ff13cc7fc7e14808008d8c66af"></a><br/></td></tr>
 <tr><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classdb_1_1upd.html">upd</a> &amp;&nbsp;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classdb_1_1upd.html#a64a6109a79ffb372870642711e9c413d">set</a> (const <a class="el" href="classdb_1_1field.html">field</a> &amp;f, const T &amp;val)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">set  <a href="#a64a6109a79ffb372870642711e9c413d"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">insert a new field with it name and the value  <a href="#a64a6109a79ffb372870642711e9c413d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdb_1_1upd.html">upd</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1upd.html#a243d595c34f5ac0ce4af8bc84d951b62">set</a> (const <a class="el" href="classdb_1_1field.html">field</a> &amp;f, const string &amp;val)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">set  <a href="#a243d595c34f5ac0ce4af8bc84d951b62"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">insert a new field with it name and the value  <a href="#a243d595c34f5ac0ce4af8bc84d951b62"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1upd.html#ab3bf59ecf95b65fa25439e1e8d6fbaf5">str</a> () const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">str  <a href="#ab3bf59ecf95b65fa25439e1e8d6fbaf5"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">same as the string operator overload, more stl like  <a href="#ab3bf59ecf95b65fa25439e1e8d6fbaf5"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdb_1_1upd.html">upd</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1upd.html#ae1b592682cf66f339d863a5e0f05ee42">where</a> (const <a class="el" href="classdb_1_1expr_1_1base.html">expr::base</a> &amp;e)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">where  <a href="#ae1b592682cf66f339d863a5e0f05ee42"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight"><br/>
+qualifier <br/>
+access public  <a href="#ae1b592682cf66f339d863a5e0f05ee42"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
-<p>hilft beim anlegen von UPDATE-SQL Ausdrücken. </p>
-
-<p>Definition at line <a class="el" href="upd_8hpp_source.html#l00033">33</a> of file <a class="el" href="upd_8hpp_source.html">upd.hpp</a>.</p>
+<p>helper class for generating update sql expressions </p>
+<p>an usage example:</p>
+<div class="fragment"><pre class="fragment">     <span class="keywordtype">void</span> generate_update_expression()
+     {
+      <span class="keyword">using</span> db::string;
+      <span class="keyword">using</span> <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">db::upd</a>;
+      <span class="keyword">using</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>;
+     
+      <span class="keywordtype">string</span> sql(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;UPDATE gps SET longitude=11.12345678,latidude=53.12345678 WHERE id = 1234&quot;</span>));
+     
+      <a class="code" href="classdb_1_1upd.html#a89539569559a82ce11a99fc5e2797c8d">upd</a> u((
+          <a class="code" href="classdb_1_1upd.html#a89539569559a82ce11a99fc5e2797c8d">upd</a>(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;gps&quot;</span>)) 
+        % field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;longitude&quot;</span>), 11.12345678)
+        % field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;latidude&quot;</span>), 53.12345678) 
+        % (field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;id&quot;</span>), 1) == 1234)));
+     
+      BOOST_CHECK(sql == <span class="keywordtype">string</span>(u));
+     }
+</pre></div> 
+<p>Definition at line <a class="el" href="upd_8hpp_source.html#l00055">55</a> of file <a class="el" href="upd_8hpp_source.html">upd.hpp</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a2d703993121faf84587b74fb293a197f"></a><!-- doxytag: member="db::upd::~upd" ref="a2d703993121faf84587b74fb293a197f" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">db::upd::~upd </td>
-          <td>(</td>
-          <td class="paramname"></td>
-          <td>&nbsp;)&nbsp;</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>~upd </p>
-<p><br/>
-qualifier <br/>
-access public </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 11:14 </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="a89539569559a82ce11a99fc5e2797c8d"></a><!-- doxytag: member="db::upd::upd" ref="a89539569559a82ce11a99fc5e2797c8d" args="(const string &amp;t)" -->
 <div class="memitem">
 <div class="memproto">
@@ -149,19 +140,18 @@ access public </p>
       </table>
 </div>
 <div class="memdoc">
-
-<p>upd </p>
 <p><br/>
-qualifier : table(t), _where(DB_TEXT("True")) <br/>
+qualifier <br/>
 access public </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>t</em>&nbsp;</td><td>as const string &amp;</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>t</em>&nbsp;</td><td>as const string &amp; - should contain a table name</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 11:15 </dd></dl>
+<dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>) </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>15.4.2010 13:52 </dd></dl>
 
 </div>
 </div>
@@ -189,20 +179,19 @@ access public </p>
       </table>
 </div>
 <div class="memdoc">
-
-<p>upd </p>
 <p><br/>
-qualifier : table(t), _where(DB_TEXT("True")), _delim1(d), _delim2(d) <br/>
+qualifier <br/>
 access public </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>t</em>&nbsp;</td><td>as const string &amp; </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>d</em>&nbsp;</td><td>as const string &amp;</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>t</em>&nbsp;</td><td>as const string &amp; - should contain a table name </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>d</em>&nbsp;</td><td>as const string &amp; - holds a front and back delimiter</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 11:15 </dd></dl>
+<dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>) </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>15.4.2010 13:53 </dd></dl>
 
 </div>
 </div>
@@ -239,18 +228,19 @@ access public </p>
 
 <p>upd </p>
 <p><br/>
-qualifier : table(t), _where(DB_TEXT("True")), _delim1(d1), _delim2(d2) <br/>
+qualifier <br/>
 access public </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>t</em>&nbsp;</td><td>as const string &amp; </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>d1</em>&nbsp;</td><td>as const string &amp; </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>d2</em>&nbsp;</td><td>as const string &amp;</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>t</em>&nbsp;</td><td>as const string &amp; - should contain a table name </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>d1</em>&nbsp;</td><td>as const string &amp; - the front delimiter </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>d2</em>&nbsp;</td><td>as const string &amp; - the back delimiter</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 11:15 </dd></dl>
+<dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>) </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>15.4.2010 13:54 </dd></dl>
 
 </div>
 </div>
@@ -270,12 +260,13 @@ access public </p>
 </div>
 <div class="memdoc">
 
-<p>operator string </p>
+<p>string overload </p>
 <p><br/>
 qualifier const <br/>
 access public </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd></dd></dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 11:15 </dd></dl>
+<dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>) </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>15.4.2010 13:59 </dd></dl>
 
 </div>
 </div>
@@ -295,7 +286,7 @@ access public </p>
 </div>
 <div class="memdoc">
 
-<p>operator% </p>
+<p>insert a new field with it name and the value </p>
 <p><br/>
 qualifier <br/>
 access public </p>
@@ -306,7 +297,8 @@ access public </p>
   </table>
   </dd>
 </dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 11:14 </dd></dl>
+<dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>) </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>15.4.2010 13:58 </dd></dl>
 
 </div>
 </div>
@@ -326,7 +318,7 @@ access public </p>
 </div>
 <div class="memdoc">
 
-<p>operator% </p>
+<p>insert a sql where expression through the operator % overload </p>
 <p><br/>
 qualifier <br/>
 access public </p>
@@ -337,7 +329,8 @@ access public </p>
   </table>
   </dd>
 </dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 11:14 </dd></dl>
+<dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>) </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>15.4.2010 13:55 </dd></dl>
 
 </div>
 </div>
@@ -368,7 +361,7 @@ template&lt;typename T &gt; </div>
 </div>
 <div class="memdoc">
 
-<p>set </p>
+<p>insert a new field with it name and the value </p>
 <p><br/>
 qualifier <br/>
 access public </p>
@@ -380,9 +373,10 @@ access public </p>
   </table>
   </dd>
 </dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 11:14 </dd></dl>
+<dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>) </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>15.4.2010 13:58 </dd></dl>
 
-<p>Definition at line <a class="el" href="upd_8hpp_source.html#l00144">144</a> of file <a class="el" href="upd_8hpp_source.html">upd.hpp</a>.</p>
+<p>Definition at line <a class="el" href="upd_8hpp_source.html#l00162">162</a> of file <a class="el" href="upd_8hpp_source.html">upd.hpp</a>.</p>
 
 </div>
 </div>
@@ -411,7 +405,7 @@ access public </p>
 </div>
 <div class="memdoc">
 
-<p>set </p>
+<p>insert a new field with it name and the value </p>
 <p><br/>
 qualifier <br/>
 access public </p>
@@ -423,7 +417,8 @@ access public </p>
   </table>
   </dd>
 </dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 11:14 </dd></dl>
+<dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>) </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>15.4.2010 13:56 </dd></dl>
 
 </div>
 </div>
@@ -442,12 +437,13 @@ access public </p>
 </div>
 <div class="memdoc">
 
-<p>str </p>
+<p>same as the string operator overload, more stl like </p>
 <p><br/>
 qualifier const <br/>
 access public </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>db::string</dd></dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 11:16 </dd></dl>
+<dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>) </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>15.4.2010 13:59 </dd></dl>
 
 </div>
 </div>
@@ -467,7 +463,6 @@ access public </p>
 </div>
 <div class="memdoc">
 
-<p>where </p>
 <p><br/>
 qualifier <br/>
 access public </p>
@@ -478,12 +473,13 @@ access public </p>
   </table>
   </dd>
 </dl>
-<dl class="date"><dt><b>Date:</b></dt><dd>20:2:2009 11:14 </dd></dl>
+<dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>) </dd></dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>15.4.2010 13:55 </dd></dl>
 
 </div>
 </div>
 </div>
 <hr class="footer"/><address style="text-align: right;"><small>
-Generated on Sun Apr 11 14:35:37 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
+Generated on Thu Apr 15 14:37:33 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
 </body>
 </html>

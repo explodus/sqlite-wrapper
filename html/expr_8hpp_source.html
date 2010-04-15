@@ -104,22 +104,22 @@ window.onload = initDynSections;
 <a name="l00034"></a>00034 
 <a name="l00035"></a>00035   <span class="keyword">namespace </span>expr
 <a name="l00036"></a>00036   {
-<a name="l00038"></a><a class="code" href="classdb_1_1expr_1_1base.html">00038</a>     <span class="keyword">class </span><a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">base</a> 
+<a name="l00038"></a><a class="code" href="classdb_1_1expr_1_1base.html">00038</a>     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">base</a> 
 <a name="l00039"></a>00039     {
 <a name="l00040"></a>00040     <span class="keyword">protected</span>:
-<a name="l00041"></a><a class="code" href="classdb_1_1expr_1_1base.html#a689c657a829e9f574300b1bac772e2aa">00041</a>       <a class="code" href="classdb_1_1split.html" title="split basis">split</a> <a class="code" href="classdb_1_1expr_1_1base.html#a689c657a829e9f574300b1bac772e2aa" title="extra tables, to be joined">extraTables</a>; 
+<a name="l00041"></a><a class="code" href="classdb_1_1expr_1_1base.html#a689c657a829e9f574300b1bac772e2aa">00041</a>       <a class="code" href="classdb_1_1split.html" title="split basis">split</a> extraTables; 
 <a name="l00042"></a>00042     <span class="keyword">public</span>:
 <a name="l00043"></a>00043 
-<a name="l00052"></a>00052       <span class="keyword">virtual</span> <span class="keywordtype">string</span> <a class="code" href="classdb_1_1expr_1_1base.html#aa44ea1ee8e44ece8ec2facb14c64456f" title="default expression is true">str</a>() <span class="keyword">const</span>;
+<a name="l00052"></a>00052       <span class="keyword">virtual</span> <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
 <a name="l00053"></a>00053 
-<a name="l00061"></a>00061       <span class="keyword">virtual</span> <a class="code" href="classdb_1_1expr_1_1base.html#aaa64a5187f0bc6f4f93406a7db0669d2" title="string operator">operator string</a>() <span class="keyword">const</span>;
+<a name="l00061"></a>00061       <span class="keyword">virtual</span> operator string() <span class="keyword">const</span>;
 <a name="l00062"></a>00062 
-<a name="l00069"></a>00069       <a class="code" href="classdb_1_1split.html" title="split basis">split</a> <a class="code" href="classdb_1_1expr_1_1base.html#ac60b7f9172c42cb07713765df7c8052a">getExtraTables</a>() <span class="keyword">const</span>;
+<a name="l00069"></a>00069       <a class="code" href="classdb_1_1split.html" title="split basis">split</a> getExtraTables() <span class="keyword">const</span>;
 <a name="l00070"></a>00070 
-<a name="l00079"></a>00079       <span class="keyword">virtual</span> <a class="code" href="classdb_1_1expr_1_1base.html#a484c4ea40870731844ca189d6e7a3259" title="default virtual destructor">~base</a>();
+<a name="l00079"></a>00079       <span class="keyword">virtual</span> ~<a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">base</a>();
 <a name="l00080"></a>00080     }; 
 <a name="l00081"></a>00081 
-<a name="l00082"></a>00082     <span class="keyword">class </span>raw : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">base</a> 
+<a name="l00082"></a>00082     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI raw : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">base</a> 
 <a name="l00083"></a>00083     {
 <a name="l00084"></a>00084       <span class="keywordtype">string</span> expr;
 <a name="l00085"></a>00085     <span class="keyword">public</span>:
@@ -128,7 +128,7 @@ window.onload = initDynSections;
 <a name="l00097"></a>00097       <span class="keyword">virtual</span> <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
 <a name="l00098"></a>00098     };
 <a name="l00099"></a>00099 
-<a name="l00100"></a>00100     <span class="keyword">class </span>connective : <span class="keyword">public</span> <a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a> 
+<a name="l00100"></a>00100     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI connective : <span class="keyword">public</span> <a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a> 
 <a name="l00101"></a>00101     {
 <a name="l00102"></a>00102     <span class="keyword">private</span>:
 <a name="l00103"></a>00103       <span class="keywordtype">string</span> op;
@@ -142,7 +142,7 @@ window.onload = initDynSections;
 <a name="l00130"></a>00130       <span class="keyword">virtual</span> <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
 <a name="l00131"></a>00131     };  
 <a name="l00132"></a>00132 
-<a name="l00133"></a>00133     <span class="keyword">class </span>and_ : <span class="keyword">public</span> connective 
+<a name="l00133"></a>00133     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI and_ : <span class="keyword">public</span> connective 
 <a name="l00134"></a>00134     {
 <a name="l00135"></a>00135     <span class="keyword">public</span>:
 <a name="l00146"></a>00146       <span class="keyword">explicit</span> and_(<span class="keyword">const</span> base &amp; e1_, <span class="keyword">const</span> base &amp; e2_);
@@ -150,7 +150,7 @@ window.onload = initDynSections;
 <a name="l00156"></a>00156       <span class="keyword">virtual</span> <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
 <a name="l00157"></a>00157     };
 <a name="l00158"></a>00158 
-<a name="l00159"></a>00159     <span class="keyword">class </span>or_ : <span class="keyword">public</span> connective 
+<a name="l00159"></a>00159     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI or_ : <span class="keyword">public</span> connective 
 <a name="l00160"></a>00160     {
 <a name="l00161"></a>00161     <span class="keyword">public</span>:
 <a name="l00172"></a>00172       <span class="keyword">explicit</span> or_(<span class="keyword">const</span> base &amp; e1_, <span class="keyword">const</span> base &amp; e2_);
@@ -158,7 +158,7 @@ window.onload = initDynSections;
 <a name="l00180"></a>00180       <span class="keyword">virtual</span> <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
 <a name="l00181"></a>00181     };
 <a name="l00182"></a>00182 
-<a name="l00183"></a>00183     <span class="keyword">class </span>not_ : <span class="keyword">public</span> base 
+<a name="l00183"></a>00183     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI not_ : <span class="keyword">public</span> base 
 <a name="l00184"></a>00184     {
 <a name="l00185"></a>00185     <span class="keyword">private</span>:
 <a name="l00186"></a>00186       <span class="keyword">const</span> base &amp; exp;
@@ -169,7 +169,7 @@ window.onload = initDynSections;
 <a name="l00206"></a>00206 
 <a name="l00207"></a>00207     };
 <a name="l00208"></a>00208 
-<a name="l00210"></a><a class="code" href="classdb_1_1expr_1_1oper.html">00210</a>     <span class="keyword">class </span><a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">base</a> 
+<a name="l00210"></a><a class="code" href="classdb_1_1expr_1_1oper.html">00210</a>     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">base</a> 
 <a name="l00211"></a>00211     {
 <a name="l00212"></a>00212     <span class="keyword">protected</span>:
 <a name="l00213"></a>00213       <span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; _field;
@@ -177,34 +177,34 @@ window.onload = initDynSections;
 <a name="l00215"></a>00215       <span class="keywordtype">string</span> data;
 <a name="l00216"></a>00216       <span class="keywordtype">bool</span> escape;
 <a name="l00217"></a>00217 
-<a name="l00227"></a>00227       <span class="keywordtype">bool</span> <a class="code" href="classdb_1_1expr_1_1oper.html#a371752df8e9d8868798a148d8d392be4" title="as an example, e_string got escaped">check_escape</a>(<span class="keyword">const</span> param_types&amp; type_);
+<a name="l00227"></a>00227       <span class="keywordtype">bool</span> check_escape(<span class="keyword">const</span> param_types&amp; type_);
 <a name="l00228"></a>00228 
-<a name="l00240"></a>00240       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1oper.html#a48753e202440521e07b9509636195b84" title="string overload">oper</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; o, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; d);
+<a name="l00240"></a>00240       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; o, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; d);
 <a name="l00241"></a>00241 
 <a name="l00252"></a>00252       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00253"></a>00253       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1oper.html#a48753e202440521e07b9509636195b84" title="string overload">oper</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; o, <span class="keyword">const</span> T&amp; d) 
+<a name="l00253"></a>00253       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; o, <span class="keyword">const</span> T&amp; d) 
 <a name="l00254"></a>00254         : _field(fld), op(o), data(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;0&quot;</span>)), 
-<a name="l00255"></a>00255         escape(<a class="code" href="classdb_1_1expr_1_1oper.html#a371752df8e9d8868798a148d8d392be4" title="as an example, e_string got escaped">check_escape</a>(_field.type())) 
+<a name="l00255"></a>00255         escape(check_escape(_field.type())) 
 <a name="l00256"></a>00256       {
 <a name="l00257"></a>00257         data = detail::to_string(d);
-<a name="l00258"></a>00258         <a class="code" href="classdb_1_1expr_1_1base.html#a689c657a829e9f574300b1bac772e2aa" title="extra tables, to be joined">extraTables</a>.push_back(fld.table());
+<a name="l00258"></a>00258         extraTables.push_back(fld.table());
 <a name="l00259"></a>00259       }
 <a name="l00260"></a>00260 
-<a name="l00272"></a>00272       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1oper.html#a48753e202440521e07b9509636195b84" title="string overload">oper</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; o, <span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp;f2);
+<a name="l00272"></a>00272       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; o, <span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp;f2);
 <a name="l00273"></a>00273 
 <a name="l00274"></a>00274     <span class="keyword">public</span>:
-<a name="l00281"></a>00281       <span class="keyword">virtual</span> <span class="keywordtype">string</span> <a class="code" href="classdb_1_1expr_1_1oper.html#aedb58a87bb3785571d4cd2c012d7965c">str</a>() <span class="keyword">const</span>;
+<a name="l00281"></a>00281       <span class="keyword">virtual</span> <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
 <a name="l00282"></a>00282     };
 <a name="l00283"></a>00283 
-<a name="l00285"></a><a class="code" href="classdb_1_1expr_1_1eq.html">00285</a>     <span class="keyword">class </span><a class="code" href="classdb_1_1expr_1_1eq.html" title="==, is equal operator">eq</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
+<a name="l00285"></a><a class="code" href="classdb_1_1expr_1_1eq.html">00285</a>     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1expr_1_1eq.html" title="==, is equal operator">eq</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
 <a name="l00286"></a>00286     <span class="keyword">public</span>:
 <a name="l00297"></a>00297       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00298"></a><a class="code" href="classdb_1_1expr_1_1eq.html#a4b81ca39235214e0a374f4dcf5b3c701">00298</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1eq.html#a4b81ca39235214e0a374f4dcf5b3c701" title="==, is equal operator">eq</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
+<a name="l00298"></a><a class="code" href="classdb_1_1expr_1_1eq.html#a4b81ca39235214e0a374f4dcf5b3c701">00298</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1eq.html" title="==, is equal operator">eq</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
 <a name="l00299"></a>00299         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;=&quot;</span>), d) 
 <a name="l00300"></a>00300       {}
 <a name="l00301"></a>00301     };
 <a name="l00302"></a>00302 
-<a name="l00304"></a>00304     <span class="keyword">class </span>not_eq_ : <span class="keyword">public</span> oper {
+<a name="l00304"></a>00304     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI not_eq_ : <span class="keyword">public</span> oper {
 <a name="l00305"></a>00305     <span class="keyword">public</span>:
 <a name="l00316"></a>00316       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
 <a name="l00317"></a>00317       <span class="keyword">explicit</span> not_eq_(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
@@ -212,50 +212,50 @@ window.onload = initDynSections;
 <a name="l00319"></a>00319       {}
 <a name="l00320"></a>00320     };
 <a name="l00321"></a>00321 
-<a name="l00323"></a><a class="code" href="classdb_1_1expr_1_1gt.html">00323</a>     <span class="keyword">class </span><a class="code" href="classdb_1_1expr_1_1gt.html" title="&amp;gt; greater then operator">gt</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
+<a name="l00323"></a><a class="code" href="classdb_1_1expr_1_1gt.html">00323</a>     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1expr_1_1gt.html" title="&amp;gt; greater then operator">gt</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
 <a name="l00324"></a>00324     <span class="keyword">public</span>:
 <a name="l00335"></a>00335       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00336"></a><a class="code" href="classdb_1_1expr_1_1gt.html#a2f97395a43e96a2044802935435f0407">00336</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1gt.html#a2f97395a43e96a2044802935435f0407" title="gt">gt</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
+<a name="l00336"></a><a class="code" href="classdb_1_1expr_1_1gt.html#a2f97395a43e96a2044802935435f0407">00336</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1gt.html" title="&amp;gt; greater then operator">gt</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
 <a name="l00337"></a>00337         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&gt;&quot;</span>), d) 
 <a name="l00338"></a>00338       {}
 <a name="l00339"></a>00339     };
 <a name="l00340"></a>00340 
-<a name="l00342"></a><a class="code" href="classdb_1_1expr_1_1gt__eq.html">00342</a>     <span class="keyword">class </span><a class="code" href="classdb_1_1expr_1_1gt__eq.html" title="greater then or equal operator">gt_eq</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
+<a name="l00342"></a><a class="code" href="classdb_1_1expr_1_1gt__eq.html">00342</a>     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1expr_1_1gt__eq.html" title="greater then or equal operator">gt_eq</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
 <a name="l00343"></a>00343     <span class="keyword">public</span>:
 <a name="l00354"></a>00354       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00355"></a><a class="code" href="classdb_1_1expr_1_1gt__eq.html#af34a49ff2f1b4800a97cc58b3bece6e0">00355</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1gt__eq.html#af34a49ff2f1b4800a97cc58b3bece6e0" title="gt_eq">gt_eq</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
+<a name="l00355"></a><a class="code" href="classdb_1_1expr_1_1gt__eq.html#af34a49ff2f1b4800a97cc58b3bece6e0">00355</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1gt__eq.html" title="greater then or equal operator">gt_eq</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
 <a name="l00356"></a>00356         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&gt;=&quot;</span>), d) 
 <a name="l00357"></a>00357       {}
 <a name="l00358"></a>00358     };
 <a name="l00359"></a>00359 
-<a name="l00361"></a><a class="code" href="classdb_1_1expr_1_1lt.html">00361</a>     <span class="keyword">class </span><a class="code" href="classdb_1_1expr_1_1lt.html" title="lower then operator">lt</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
+<a name="l00361"></a><a class="code" href="classdb_1_1expr_1_1lt.html">00361</a>     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1expr_1_1lt.html" title="lower then operator">lt</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
 <a name="l00362"></a>00362     <span class="keyword">public</span>:
 <a name="l00373"></a>00373       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00374"></a><a class="code" href="classdb_1_1expr_1_1lt.html#ae725636dd9447296d3a599bc386b06c8">00374</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1lt.html#ae725636dd9447296d3a599bc386b06c8" title="&amp;lt;, lower then constructor">lt</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
+<a name="l00374"></a><a class="code" href="classdb_1_1expr_1_1lt.html#ae725636dd9447296d3a599bc386b06c8">00374</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1lt.html" title="lower then operator">lt</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
 <a name="l00375"></a>00375         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&lt;&quot;</span>), d) 
 <a name="l00376"></a>00376       {}
 <a name="l00377"></a>00377     };
 <a name="l00378"></a>00378 
-<a name="l00380"></a><a class="code" href="classdb_1_1expr_1_1lt__eq.html">00380</a>     <span class="keyword">class </span><a class="code" href="classdb_1_1expr_1_1lt__eq.html" title="lower then or equal operator">lt_eq</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
+<a name="l00380"></a><a class="code" href="classdb_1_1expr_1_1lt__eq.html">00380</a>     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1expr_1_1lt__eq.html" title="lower then or equal operator">lt_eq</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
 <a name="l00381"></a>00381     <span class="keyword">public</span>:
 <a name="l00392"></a>00392       <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00393"></a><a class="code" href="classdb_1_1expr_1_1lt__eq.html#a1b064f9a79246850d1d6875396c2d0a6">00393</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1lt__eq.html#a1b064f9a79246850d1d6875396c2d0a6" title="&amp;lt;=, lower then or equal constructor">lt_eq</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
+<a name="l00393"></a><a class="code" href="classdb_1_1expr_1_1lt__eq.html#a1b064f9a79246850d1d6875396c2d0a6">00393</a>       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1lt__eq.html" title="lower then or equal operator">lt_eq</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> T&amp; d)
 <a name="l00394"></a>00394         : <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a>(fld, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&lt;=&quot;</span>), d) 
 <a name="l00395"></a>00395       {}
 <a name="l00396"></a>00396     };
 <a name="l00397"></a>00397 
-<a name="l00399"></a><a class="code" href="classdb_1_1expr_1_1like.html">00399</a>     <span class="keyword">class </span><a class="code" href="classdb_1_1expr_1_1like.html" title="like operator">like</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
+<a name="l00399"></a><a class="code" href="classdb_1_1expr_1_1like.html">00399</a>     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1expr_1_1like.html" title="like operator">like</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
 <a name="l00400"></a>00400     <span class="keyword">public</span>:
-<a name="l00411"></a>00411       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1like.html#a81e4485fec0292cb641cc840d03e25bb" title="like constructor">like</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; d);
+<a name="l00411"></a>00411       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1like.html" title="like operator">like</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; d);
 <a name="l00412"></a>00412     };
 <a name="l00413"></a>00413 
-<a name="l00415"></a><a class="code" href="classdb_1_1expr_1_1in.html">00415</a>     <span class="keyword">class </span><a class="code" href="classdb_1_1expr_1_1in.html" title="in Operator">in</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
+<a name="l00415"></a><a class="code" href="classdb_1_1expr_1_1in.html">00415</a>     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1expr_1_1in.html" title="in Operator">in</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1expr_1_1oper.html" title="base class for operators in sql terms">oper</a> {
 <a name="l00416"></a>00416     <span class="keyword">public</span>:
-<a name="l00427"></a>00427       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1in.html#a8ebc456dda9925e8275b4ebf0b2a5375" title="in constructor">in</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; <span class="keyword">set</span>);
+<a name="l00427"></a>00427       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1in.html" title="in Operator">in</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; <span class="keyword">set</span>);
 <a name="l00428"></a>00428 
-<a name="l00439"></a>00439       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1in.html#a8ebc456dda9925e8275b4ebf0b2a5375" title="in constructor">in</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>&amp; s);
+<a name="l00439"></a>00439       <span class="keyword">explicit</span> <a class="code" href="classdb_1_1expr_1_1in.html" title="in Operator">in</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fld, <span class="keyword">const</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>&amp; s);
 <a name="l00440"></a>00440 
-<a name="l00447"></a>00447       <span class="keyword">virtual</span> <span class="keywordtype">string</span> <a class="code" href="classdb_1_1expr_1_1in.html#a253a74a45e376713b4115d9803a8f41b">str</a>() <span class="keyword">const</span>;
+<a name="l00447"></a>00447       <span class="keyword">virtual</span> <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
 <a name="l00448"></a>00448 
 <a name="l00449"></a>00449     };
 <a name="l00450"></a>00450   }
@@ -288,6 +288,6 @@ window.onload = initDynSections;
 <a name="l00537"></a>00537 <span class="preprocessor">#endif</span>
 </pre></div></div>
 <hr class="footer"/><address style="text-align: right;"><small>
-Generated on Sun Apr 11 14:35:36 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
+Generated on Thu Apr 15 14:37:32 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
 </body>
 </html>
