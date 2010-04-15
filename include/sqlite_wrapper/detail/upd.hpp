@@ -29,8 +29,30 @@
 
 namespace db
 {
-  ///hilft beim anlegen von UPDATE-SQL Ausdrücken.
-  class SQLITE_WRAPPER_DLLAPI upd 
+	///	@brief helper class for generating update sql expressions
+	///
+	/// an usage example:
+	///
+	///@code
+	///void generate_update_expression()
+	///{
+	///	using db::string;
+	///	using db::upd;
+	///	using db::field;
+	///
+	///	string sql(DB_TEXT("UPDATE gps SET longitude=11.12345678,latidude=53.12345678 WHERE id = 1234"));
+	///
+	///	upd u((
+	///		  upd(DB_TEXT("gps")) 
+	///		% field(DB_TEXT("longitude"), 11.12345678)
+	///		% field(DB_TEXT("latidude"), 53.12345678) 
+	///		% (field(DB_TEXT("id"), 1) == 1234)));
+	///
+	///	BOOST_CHECK(sql == string(u));
+	///}
+	///@endcode
+	///
+	class SQLITE_WRAPPER_DLLAPI upd 
   {
     string _delim1;
     string _delim2;
@@ -39,128 +61,126 @@ namespace db
     split fields;
     split values;
   public:
-    /// @brief     ~upd
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    
-    ///
-    /// @date      20:2:2009   11:14
-    ///
     ~upd();
 
-    /// @brief     upd
-    ///
-    /// <BR>qualifier : table(t), _where(DB_TEXT("True"))
+    /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    
-    /// @param     t as const string &
+    /// @return       
+    /// @param        t as const string & - should contain a table name
     ///
-    /// @date      20:2:2009   11:15
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:52
     ///
     upd(const string& t);
 
-    /// @brief     upd
-    ///
-    /// <BR>qualifier : table(t), _where(DB_TEXT("True")), _delim1(d), _delim2(d)
+    /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    
-    /// @param     t as const string &
-    /// @param     d as const string &
+    /// @return       
+		/// @param        t as const string & - should contain a table name
+    /// @param        d as const string & - holds a front and back delimiter
     ///
-    /// @date      20:2:2009   11:15
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:53
     ///
     upd(const string& t, const string& d);
 
-    /// @brief     upd
+    /// @brief        upd
     ///
-    /// <BR>qualifier : table(t), _where(DB_TEXT("True")), _delim1(d1), _delim2(d2)
+    /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    
-    /// @param     t as const string &
-    /// @param     d1 as const string &
-    /// @param     d2 as const string &
+    /// @return       
+		/// @param        t as const string & - should contain a table name
+    /// @param        d1 as const string & - the front delimiter
+    /// @param        d2 as const string & - the back delimiter
     ///
-    /// @date      20:2:2009   11:15
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:54
     ///
     upd(const string& t, const string& d1, const string& d2);
 
-    /// @brief     where
+    /// @brief        
     ///
     /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    upd&
-    /// @param     e as const expr::base &
+    /// @return       upd&
+    /// @param        e as const expr::base &
     ///
-    /// @date      20:2:2009   11:14
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:55
     ///
     upd& where(const expr::base& e);
 
-    /// @brief     operator%
+    /// @brief        insert a sql where expression through the operator % overload 
     ///
     /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    upd &
-    /// @param     e as const expr::base &
+    /// @return       upd &
+    /// @param        e as const expr::base &
     ///
-    /// @date      20:2:2009   11:14
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:55
     ///
     upd & operator%(const expr::base& e);
 
-    /// @brief     operator%
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    upd &
-    /// @param     f as const db::field &
-    ///
-    /// @date      20:2:2009   11:14
-    ///
-    upd & operator%(const db::field& f);
+		/// @brief        insert a new field with it name and the value
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       upd &
+		/// @param        f as const db::field &
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         15.4.2010 13:58
+		///
+		upd & operator%(const db::field& f);
 
-    /// @brief     set
+    /// @brief        insert a new field with it name and the value
     ///
     /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    upd&
-    /// @param     f as const field &
-    /// @param     val as const string &
+    /// @return       upd&
+    /// @param        f as const field &
+    /// @param        val as const string &
     ///
-    /// @date      20:2:2009   11:14
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:56
     ///
     upd& set(const field& f, const string& val);
 
-    /// @brief     set
+		/// @brief        insert a new field with it name and the value
     ///
     /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    upd&
-    /// @param     f as const field &
-    /// @param     val as const T &
+    /// @return       upd&
+    /// @param        f as const field &
+    /// @param        val as const T &
     ///
-    /// @date      20:2:2009   11:14
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:58
     ///
     template<typename T>
     upd& set(const field& f, const T& val)
     { return set(f, detail::to_string(val)); }
 
-    /// @brief     operator string
+    /// @brief        string overload
     ///
     /// <BR>qualifier const
     /// <BR>access    public  
-    /// @return    
+    /// @return       
     ///
-    /// @date      20:2:2009   11:15
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:59
     ///
     operator string() const;
 
-    /// @brief     str
+    /// @brief        same as the string operator overload, more stl like 
     ///
     /// <BR>qualifier const
     /// <BR>access    public  
-    /// @return    db::string
+    /// @return       db::string
     ///
-    /// @date      20:2:2009   11:16
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:59
     ///
     string str() const;
   };

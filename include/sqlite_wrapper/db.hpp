@@ -61,14 +61,15 @@ namespace db
 
     class SQLITE_WRAPPER_DLLAPI progress_handler
     {
-      /// @brief     xProgressCallback
+			/// @brief        got called from sqlite, and calls the connected signal
       ///
       /// <BR>qualifier
       /// <BR>access    private static  
-      /// @return    int
-      /// @param     db_ as void *
+      /// @return       int
+      /// @param        db_ as void *
       ///
-      /// @date      20:2:2009   14:13
+      /// @author       T. Schroeder (explodus@gmx.de)
+      /// @date         15.4.2010 13:47
       ///
       static int xProgressCallback(void* db_); 
 
@@ -84,36 +85,20 @@ namespace db
 	protected:
 		friend class query;
 
-		/// @brief     throw_error
+		/// @brief        got called from db::query if a sqlite error was occured
 		///
 		/// <BR>qualifier
-		/// <BR>access    public  
-		/// @return    void
-		/// @param     status as int
+		/// <BR>access    protected  
+		/// @return       void
+		/// @param        status as int
 		///
-		/// @date      20:2:2009   14:13
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         15.4.2010 13:49
 		///
 		void throw_error(int status); 
 
   public:
-    /// @brief     base
-    ///
-    /// <BR>qualifier : _db(0)
-    /// <BR>access    public  
-    /// @return    
-    ///
-    /// @date      20:2:2009   14:14
-    ///
     base();
-
-    /// @brief     ~base
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    
-    ///
-    /// @date      20:2:2009   14:14
-    ///
     ~base();
 
     enum feature
@@ -122,77 +107,75 @@ namespace db
       e_blob
     };
 
-    /// @brief     open the specified db
+		/// @brief        open the specified db
     ///
     /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    void
-    /// @param     file as const std::string &
+    /// @return       void
+    /// @param        file as const std::string &
     ///
-    /// @date      20:2:2009   14:14
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:49
     ///
     void connect(const std::string& file);
 
-    /// @brief     begins SQL transaction
+    /// @brief				begins SQL transaction
     ///
-    /// <BR>qualifier 
+    /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    void
+    /// @return       void
     ///
-    /// @date      20:2:2009   14:14
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:49
     ///
     void begin();
 
-    /// @brief     commits SQL transaction
+    /// @brief        commits SQL transaction
     ///
-    /// <BR>qualifier 
+    /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    void
+    /// @return       void
     ///
-    /// @date      20:2:2009   14:15
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:50
     ///
     void commit();
 
-    /// @brief     cancels active SQL transaction
+    /// @brief        cancels active SQL transaction
     ///
-    /// <BR>qualifier 
+    /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    void
+    /// @return       void
     ///
-    /// @date      20:2:2009   14:15
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:50
     ///
     void rollback();
 
-    /// @brief     execute SQL statement
+    /// @brief        execute SQL statement
     ///
     /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    query&
-    /// @param     cmd as const string &
+    /// @return       query&
+    /// @param        cmd as const string &
     ///
-    /// @date      20:2:2009   14:15
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:50
     ///
     query& execute(const string& cmd);
 
-    /// @brief     execute
+    /// @brief        execute SQL statement
     ///
     /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    db::query_ptr
-    /// @param     cmd as const string &
+    /// @return       db::query_ptr
+    /// @param        cmd as const string &
     ///
-    /// @date      13:7:2009   13:14
+    /// @author       T. Schroeder (explodus@gmx.de)
+    /// @date         15.4.2010 13:51
     ///
     query_ptr execute_ptr(const string& cmd);
 
-    /// @brief     get_db_ptr
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    sqlite3*
-    ///
-    /// @date      20:2:2009   14:16
-    ///
     sqlite3* get_db_ptr() {return _db;}
 
 //#ifndef BOOST_NO_STD_LOCALE
