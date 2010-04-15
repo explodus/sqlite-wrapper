@@ -196,13 +196,11 @@ db::test::dialog::dialog() :
 
 	sourceView = new QTableView;
 	sourceView->verticalHeader()->setDefaultSectionSize(17);
-	//sourceView->verticalHeader()->setResizeMode (QHeaderView::ResizeMode::Interactive);
-	//sourceView->verticalHeader()->setResizeMode (QHeaderView::ResizeMode::ResizeToContents);
 
 	proxyView = new QTableView;
 	proxyView->setModel(proxyModel);
 	proxyView->setSortingEnabled(true);
-	proxyView->verticalHeader()->setResizeMode (QHeaderView::ResizeMode::ResizeToContents);
+	proxyView->verticalHeader()->setResizeMode (QHeaderView::ResizeToContents);
 
 	model = new db::test::db_log_model(this);
 	setSourceModel(model);
