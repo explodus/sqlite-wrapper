@@ -26,6 +26,7 @@
 #define DB_DEL_HPP_INCLUDED
 
 #include <sqlite_wrapper/config.hpp>
+
 #include <sqlite_wrapper/detail/sel.hpp>
 
 namespace db

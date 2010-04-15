@@ -27,6 +27,10 @@
 
 #include <sqlite_wrapper/config.hpp>
 
+#include <sqlite_wrapper/detail/tools.hpp>
+#include <sqlite_wrapper/detail/param.hpp>
+#include <sqlite_wrapper/detail/expr.hpp>
+
 namespace db
 {
 	///	@brief helper class for generating update sql expressions

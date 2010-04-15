@@ -23,8 +23,8 @@
 /// This file is part of the sqlite-wrapper project
 
 #include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
 
+#include <sqlite_wrapper/detail/sel.hpp>
 
 db::sel::sel() : _distinct(false), _limit(0), _offset(0), 
 _where(DB_TEXT("True")), _delim1(DB_TEXT("")), _delim2(DB_TEXT(""))

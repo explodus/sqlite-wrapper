@@ -23,8 +23,10 @@
 /// This file is part of the sqlite-wrapper project
 
 #include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
+
+#include <sqlite_wrapper/detail/expr.hpp>
 #include <sqlite_wrapper/detail/field.hpp>
+#include <sqlite_wrapper/detail/sel.hpp>
 
 
 db::string db::expr::base::str() const
@@ -200,7 +202,7 @@ db::expr::in operator<<(const db::field& fld, const db::string& f2)
 }
 
 db::expr::in::in(const db::field & fld, const db::sel& s) : 
-	oper(fld, DB_TEXT("in"), DB_TEXT("(") + s.str() + DB_TEXT(")")) 
+oper(fld, DB_TEXT("in"), DB_TEXT("(") + s.str() + DB_TEXT(")")) 
 {
 }
 
@@ -210,15 +212,16 @@ db::string db::expr::in::str() const
 }
 
 ///overload from the global && operator
-db::expr::and_ operator&&(const db::expr::base& o1, 
-																 const db::expr::base& o2)
+db::expr::and_ operator&&(
+													const db::expr::base& o1
+													, const db::expr::base& o2)
 { 
 	return db::expr::and_(o1,o2); 
 }
 
 ///overload from the global || operator
 db::expr::or_ operator||(const db::expr::base& o1, 
-																const db::expr::base& o2)
+												 const db::expr::base& o2)
 { 
 	return db::expr::or_(o1,o2); 
 }

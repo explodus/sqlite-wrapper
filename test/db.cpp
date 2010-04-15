@@ -11,7 +11,16 @@
 
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/a2w.hpp>
+#include <sqlite_wrapper/w2a.hpp>
 #include <sqlite_wrapper/db.hpp>
+
+#include <sqlite_wrapper/detail/field.hpp>
+
+#include <sqlite_wrapper/detail/sel.hpp>
+#include <sqlite_wrapper/detail/del.hpp>
+#include <sqlite_wrapper/detail/ins.hpp>
+#include <sqlite_wrapper/detail/upd.hpp>
+
 #include <sqlite_wrapper/detail/expr.hpp>
 
 #define BOOST_TEST_NO_MAIN
@@ -28,12 +37,39 @@ void generate_update_expression()
 	string sql(DB_TEXT("UPDATE gps SET longitude=11.12345678,latitude=53.12345678 WHERE id = 1234"));
 
 	upd u((
-		upd(DB_TEXT("gps")) 
+		  upd(DB_TEXT("gps")) 
 		% field(DB_TEXT("longitude"), 11.12345678)
 		% field(DB_TEXT("latitude"), 53.12345678) 
 		% (field(DB_TEXT("id"), 1) == 1234)));
 
-	BOOST_CHECK(sql == string(u));
+	BOOST_CHECK_MESSAGE( sql == string(u)
+		, "\n sql is: \"" 
+		<< db::detail::w2a(sql.c_str())
+		<< "\",\n upd is: \"" 
+		<< db::detail::w2a(string(u).c_str())
+		<< "\"" );
+}
+
+void generate_select_expression()
+{
+	using db::string;
+	using db::sel;
+	using db::field;
+
+	string sql(DB_TEXT("SELECT longitude,latitude FROM gps WHERE id = 1234"));
+
+	sel s(((
+		  sel(DB_TEXT("gps")) 
+		, DB_TEXT("longitude")
+		, DB_TEXT("latitude"))
+		% (field(DB_TEXT("id"), 1) == 1234)));
+
+	BOOST_CHECK_MESSAGE( sql == string(s)
+		, "\n sql is: \"" 
+		<< db::detail::w2a(sql.c_str())
+		<< "\",\n sel is: \"" 
+		<< db::detail::w2a(string(s).c_str())
+		<< "\"" );
 }
 
 test_suite* init_unit_test_suite( int /*argc*/, char* argv[] ) 
@@ -42,6 +78,8 @@ test_suite* init_unit_test_suite( int /*argc*/, char* argv[] )
 
 	framework::master_test_suite().
 		add( BOOST_TEST_CASE( &generate_update_expression )/*, 30*/ );
+	framework::master_test_suite().
+		add( BOOST_TEST_CASE( &generate_select_expression )/*, 30*/ );
 
 	return 0;
 }
