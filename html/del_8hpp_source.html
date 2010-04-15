@@ -96,25 +96,26 @@ window.onload = initDynSections;
 <a name="l00026"></a>00026 <span class="preprocessor"></span><span class="preprocessor">#define DB_DEL_HPP_INCLUDED</span>
 <a name="l00027"></a>00027 <span class="preprocessor"></span>
 <a name="l00028"></a>00028 <span class="preprocessor">#include &lt;<a class="code" href="config_8hpp.html" title="This file is part of the sqlite-wrapper project.">sqlite_wrapper/config.hpp</a>&gt;</span>
-<a name="l00029"></a>00029 <span class="preprocessor">#include &lt;<a class="code" href="sel_8hpp.html">sqlite_wrapper/detail/sel.hpp</a>&gt;</span>
-<a name="l00030"></a>00030 
-<a name="l00031"></a>00031 <span class="keyword">namespace </span>db
-<a name="l00032"></a>00032 {
-<a name="l00034"></a><a class="code" href="classdb_1_1del.html">00034</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1del.html" title="helper class, generates DELETE SQL statements">del</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>
-<a name="l00035"></a>00035   {
-<a name="l00036"></a>00036   <span class="keyword">public</span>:
-<a name="l00037"></a>00037     <a class="code" href="classdb_1_1del.html" title="helper class, generates DELETE SQL statements">del</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tablename);
-<a name="l00038"></a>00038 
-<a name="l00047"></a>00047     <span class="keyword">virtual</span> operator string() <span class="keyword">const</span>;
-<a name="l00048"></a>00048 
-<a name="l00057"></a>00057     <span class="keyword">virtual</span> ~<a class="code" href="classdb_1_1del.html" title="helper class, generates DELETE SQL statements">del</a>();
-<a name="l00058"></a>00058   };
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060 }
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062 <span class="preprocessor">#endif</span>
+<a name="l00029"></a>00029 
+<a name="l00030"></a>00030 <span class="preprocessor">#include &lt;<a class="code" href="sel_8hpp.html">sqlite_wrapper/detail/sel.hpp</a>&gt;</span>
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032 <span class="keyword">namespace </span>db
+<a name="l00033"></a>00033 {
+<a name="l00035"></a><a class="code" href="classdb_1_1del.html">00035</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1del.html" title="helper class, generates DELETE SQL statements">del</a> : <span class="keyword">public</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>
+<a name="l00036"></a>00036   {
+<a name="l00037"></a>00037   <span class="keyword">public</span>:
+<a name="l00038"></a>00038     <a class="code" href="classdb_1_1del.html" title="helper class, generates DELETE SQL statements">del</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tablename);
+<a name="l00039"></a>00039 
+<a name="l00048"></a>00048     <span class="keyword">virtual</span> operator string() <span class="keyword">const</span>;
+<a name="l00049"></a>00049 
+<a name="l00058"></a>00058     <span class="keyword">virtual</span> ~<a class="code" href="classdb_1_1del.html" title="helper class, generates DELETE SQL statements">del</a>();
+<a name="l00059"></a>00059   };
+<a name="l00060"></a>00060 
+<a name="l00061"></a>00061 }
+<a name="l00062"></a>00062 
+<a name="l00063"></a>00063 <span class="preprocessor">#endif</span>
 </pre></div></div>
 <hr class="footer"/><address style="text-align: right;"><small>
-Generated on Thu Apr 15 14:37:32 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
+Generated on Thu Apr 15 21:41:24 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
 </body>
 </html>

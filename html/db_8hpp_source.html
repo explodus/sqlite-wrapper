@@ -118,85 +118,82 @@ window.onload = initDynSections;
 <a name="l00048"></a>00048 <span class="preprocessor">#include &lt;sqlite_wrapper/detail/expr.hpp&gt;</span>
 <a name="l00049"></a>00049 <span class="preprocessor">#include &lt;<a class="code" href="row_8hpp.html">sqlite_wrapper/detail/row.hpp</a>&gt;</span>
 <a name="l00050"></a>00050 <span class="preprocessor">#include &lt;<a class="code" href="query_8hpp.html">sqlite_wrapper/detail/query.hpp</a>&gt;</span>
-<a name="l00051"></a>00051 <span class="preprocessor">#include &lt;<a class="code" href="del_8hpp.html">sqlite_wrapper/detail/del.hpp</a>&gt;</span>
-<a name="l00052"></a>00052 <span class="preprocessor">#include &lt;<a class="code" href="ins_8hpp.html">sqlite_wrapper/detail/ins.hpp</a>&gt;</span>
-<a name="l00053"></a>00053 <span class="preprocessor">#include &lt;<a class="code" href="upd_8hpp.html">sqlite_wrapper/detail/upd.hpp</a>&gt;</span>
-<a name="l00054"></a>00054 
-<a name="l00055"></a>00055 <span class="keyword">namespace </span>db
-<a name="l00056"></a>00056 {
-<a name="l00058"></a><a class="code" href="classdb_1_1base.html">00058</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a>
-<a name="l00059"></a>00059   {
-<a name="l00060"></a>00060     sqlite3* _db;
-<a name="l00061"></a>00061 
-<a name="l00062"></a>00062     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI progress_handler
-<a name="l00063"></a>00063     {
-<a name="l00074"></a>00074       <span class="keyword">static</span> <span class="keywordtype">int</span> xProgressCallback(<span class="keywordtype">void</span>* db_); 
-<a name="l00075"></a>00075 
-<a name="l00076"></a>00076       sqlite3* _db;
-<a name="l00077"></a>00077     <span class="keyword">public</span>:
-<a name="l00078"></a>00078       progress_handler(sqlite3* db_, <a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a>* base_);
-<a name="l00079"></a>00079       ~progress_handler();
-<a name="l00080"></a>00080     };
-<a name="l00081"></a>00081     
-<a name="l00082"></a>00082     <span class="keyword">typedef</span> std::map&lt;string, query&gt; type_last_queries; 
-<a name="l00083"></a>00083     type_last_queries _last_queries; 
+<a name="l00051"></a>00051 
+<a name="l00052"></a>00052 <span class="keyword">namespace </span>db
+<a name="l00053"></a>00053 {
+<a name="l00055"></a><a class="code" href="classdb_1_1base.html">00055</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a>
+<a name="l00056"></a>00056   {
+<a name="l00057"></a>00057     sqlite3* _db;
+<a name="l00058"></a>00058 
+<a name="l00059"></a>00059     <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI progress_handler
+<a name="l00060"></a>00060     {
+<a name="l00071"></a>00071       <span class="keyword">static</span> <span class="keywordtype">int</span> xProgressCallback(<span class="keywordtype">void</span>* db_); 
+<a name="l00072"></a>00072 
+<a name="l00073"></a>00073       sqlite3* _db;
+<a name="l00074"></a>00074     <span class="keyword">public</span>:
+<a name="l00075"></a>00075       progress_handler(sqlite3* db_, <a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a>* base_);
+<a name="l00076"></a>00076       ~progress_handler();
+<a name="l00077"></a>00077     };
+<a name="l00078"></a>00078     
+<a name="l00079"></a>00079     <span class="keyword">typedef</span> std::map&lt;string, query&gt; type_last_queries; 
+<a name="l00080"></a>00080     type_last_queries _last_queries; 
+<a name="l00081"></a>00081 
+<a name="l00082"></a>00082   <span class="keyword">protected</span>:
+<a name="l00083"></a>00083     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>;
 <a name="l00084"></a>00084 
-<a name="l00085"></a>00085   <span class="keyword">protected</span>:
-<a name="l00086"></a>00086     <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>;
-<a name="l00087"></a>00087 
-<a name="l00098"></a>00098     <span class="keywordtype">void</span> throw_error(<span class="keywordtype">int</span> status); 
-<a name="l00099"></a>00099 
-<a name="l00100"></a>00100   <span class="keyword">public</span>:
-<a name="l00101"></a>00101     <a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a>();
-<a name="l00102"></a>00102     ~<a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a>();
-<a name="l00103"></a>00103 
-<a name="l00104"></a>00104     <span class="keyword">enum</span> feature
-<a name="l00105"></a>00105     {
-<a name="l00106"></a>00106       e_transact,
-<a name="l00107"></a>00107       e_blob
-<a name="l00108"></a>00108     };
-<a name="l00109"></a>00109 
-<a name="l00120"></a>00120     <span class="keywordtype">void</span> connect(<span class="keyword">const</span> std::string&amp; file);
-<a name="l00121"></a>00121 
-<a name="l00131"></a>00131     <span class="keywordtype">void</span> begin();
-<a name="l00132"></a>00132 
-<a name="l00142"></a>00142     <span class="keywordtype">void</span> commit();
-<a name="l00143"></a>00143 
-<a name="l00153"></a>00153     <span class="keywordtype">void</span> rollback();
-<a name="l00154"></a>00154 
-<a name="l00165"></a>00165     <a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>&amp; execute(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; cmd);
-<a name="l00166"></a>00166 
-<a name="l00177"></a>00177     query_ptr execute_ptr(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; cmd);
-<a name="l00178"></a>00178 
-<a name="l00179"></a>00179     sqlite3* get_db_ptr() {<span class="keywordflow">return</span> _db;}
-<a name="l00180"></a>00180 
-<a name="l00181"></a>00181 <span class="comment">//#ifndef BOOST_NO_STD_LOCALE</span>
-<a name="l00182"></a>00182 <span class="comment">//    typedef boost::signal2&lt;bool, unsigned, unsigned&gt; type_signal_progress; </span>
-<a name="l00183"></a>00183 <span class="comment">//</span>
-<a name="l00184"></a>00184 <span class="comment">//    /// @brief     Sig_Progress</span>
-<a name="l00185"></a>00185 <span class="comment">//    ///</span>
-<a name="l00186"></a>00186 <span class="comment">//    /// &lt;BR&gt;qualifier</span>
-<a name="l00187"></a>00187 <span class="comment">//    /// &lt;BR&gt;access    public  </span>
-<a name="l00188"></a>00188 <span class="comment">//    /// @return    type_signal_progress&amp;</span>
-<a name="l00189"></a>00189 <span class="comment">//    ///</span>
-<a name="l00190"></a>00190 <span class="comment">//    /// @date      20:2:2009   14:16</span>
-<a name="l00191"></a>00191 <span class="comment">//    ///</span>
-<a name="l00192"></a>00192 <span class="comment">//    type_signal_progress&amp; Sig_Progress() { return sig_progress; }</span>
-<a name="l00193"></a>00193 <span class="comment">//</span>
-<a name="l00194"></a>00194 <span class="comment">//#endif // BOOST_NO_STD_LOCALE</span>
-<a name="l00195"></a>00195   <span class="keyword">protected</span>:
-<a name="l00196"></a>00196 <span class="comment">//#ifndef BOOST_NO_STD_LOCALE</span>
-<a name="l00197"></a>00197 <span class="comment">//    type_signal_progress sig_progress;</span>
-<a name="l00198"></a>00198 <span class="comment">//#endif // BOOST_NO_STD_LOCALE</span>
-<a name="l00199"></a>00199   };
-<a name="l00200"></a>00200   <span class="keyword">typedef</span> boost::shared_ptr&lt;base&gt; base_ptr;
+<a name="l00095"></a>00095     <span class="keywordtype">void</span> throw_error(<span class="keywordtype">int</span> status); 
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097   <span class="keyword">public</span>:
+<a name="l00098"></a>00098     <a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a>();
+<a name="l00099"></a>00099     ~<a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a>();
+<a name="l00100"></a>00100 
+<a name="l00101"></a>00101     <span class="keyword">enum</span> feature
+<a name="l00102"></a>00102     {
+<a name="l00103"></a>00103       e_transact,
+<a name="l00104"></a>00104       e_blob
+<a name="l00105"></a>00105     };
+<a name="l00106"></a>00106 
+<a name="l00117"></a>00117     <span class="keywordtype">void</span> connect(<span class="keyword">const</span> std::string&amp; file);
+<a name="l00118"></a>00118 
+<a name="l00128"></a>00128     <span class="keywordtype">void</span> begin();
+<a name="l00129"></a>00129 
+<a name="l00139"></a>00139     <span class="keywordtype">void</span> commit();
+<a name="l00140"></a>00140 
+<a name="l00150"></a>00150     <span class="keywordtype">void</span> rollback();
+<a name="l00151"></a>00151 
+<a name="l00162"></a>00162     <a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>&amp; execute(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; cmd);
+<a name="l00163"></a>00163 
+<a name="l00174"></a>00174     query_ptr execute_ptr(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; cmd);
+<a name="l00175"></a>00175 
+<a name="l00176"></a>00176     sqlite3* get_db_ptr() {<span class="keywordflow">return</span> _db;}
+<a name="l00177"></a>00177 
+<a name="l00178"></a>00178 <span class="comment">//#ifndef BOOST_NO_STD_LOCALE</span>
+<a name="l00179"></a>00179 <span class="comment">//    typedef boost::signal2&lt;bool, unsigned, unsigned&gt; type_signal_progress; </span>
+<a name="l00180"></a>00180 <span class="comment">//</span>
+<a name="l00181"></a>00181 <span class="comment">//    /// @brief     Sig_Progress</span>
+<a name="l00182"></a>00182 <span class="comment">//    ///</span>
+<a name="l00183"></a>00183 <span class="comment">//    /// &lt;BR&gt;qualifier</span>
+<a name="l00184"></a>00184 <span class="comment">//    /// &lt;BR&gt;access    public  </span>
+<a name="l00185"></a>00185 <span class="comment">//    /// @return    type_signal_progress&amp;</span>
+<a name="l00186"></a>00186 <span class="comment">//    ///</span>
+<a name="l00187"></a>00187 <span class="comment">//    /// @date      20:2:2009   14:16</span>
+<a name="l00188"></a>00188 <span class="comment">//    ///</span>
+<a name="l00189"></a>00189 <span class="comment">//    type_signal_progress&amp; Sig_Progress() { return sig_progress; }</span>
+<a name="l00190"></a>00190 <span class="comment">//</span>
+<a name="l00191"></a>00191 <span class="comment">//#endif // BOOST_NO_STD_LOCALE</span>
+<a name="l00192"></a>00192   <span class="keyword">protected</span>:
+<a name="l00193"></a>00193 <span class="comment">//#ifndef BOOST_NO_STD_LOCALE</span>
+<a name="l00194"></a>00194 <span class="comment">//    type_signal_progress sig_progress;</span>
+<a name="l00195"></a>00195 <span class="comment">//#endif // BOOST_NO_STD_LOCALE</span>
+<a name="l00196"></a>00196   };
+<a name="l00197"></a>00197   <span class="keyword">typedef</span> boost::shared_ptr&lt;base&gt; base_ptr;
+<a name="l00198"></a>00198 
+<a name="l00199"></a>00199 
+<a name="l00200"></a>00200 } <span class="comment">// namespace db</span>
 <a name="l00201"></a>00201 
-<a name="l00202"></a>00202 
-<a name="l00203"></a>00203 } <span class="comment">// namespace db</span>
-<a name="l00204"></a>00204 
-<a name="l00205"></a>00205 <span class="preprocessor">#endif // db_h__</span>
+<a name="l00202"></a>00202 <span class="preprocessor">#endif // db_h__</span>
 </pre></div></div>
 <hr class="footer"/><address style="text-align: right;"><small>
-Generated on Thu Apr 15 14:37:32 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
+Generated on Thu Apr 15 21:41:24 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
 </body>
 </html>

@@ -112,18 +112,18 @@ access public  <a href="#ae1b592682cf66f339d863a5e0f05ee42"></a><br/></td></tr>
       <span class="keyword">using</span> <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">db::upd</a>;
       <span class="keyword">using</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>;
      
-      <span class="keywordtype">string</span> sql(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;UPDATE gps SET longitude=11.12345678,latidude=53.12345678 WHERE id = 1234&quot;</span>));
+      <span class="keywordtype">string</span> sql(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;UPDATE gps SET longitude=11.12345678,latitude=53.12345678 WHERE id = 1234&quot;</span>));
      
       <a class="code" href="classdb_1_1upd.html#a89539569559a82ce11a99fc5e2797c8d">upd</a> u((
           <a class="code" href="classdb_1_1upd.html#a89539569559a82ce11a99fc5e2797c8d">upd</a>(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;gps&quot;</span>)) 
         % field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;longitude&quot;</span>), 11.12345678)
-        % field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;latidude&quot;</span>), 53.12345678) 
+        % field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;latitude&quot;</span>), 53.12345678) 
         % (field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;id&quot;</span>), 1) == 1234)));
      
       BOOST_CHECK(sql == <span class="keywordtype">string</span>(u));
      }
 </pre></div> 
-<p>Definition at line <a class="el" href="upd_8hpp_source.html#l00055">55</a> of file <a class="el" href="upd_8hpp_source.html">upd.hpp</a>.</p>
+<p>Definition at line <a class="el" href="upd_8hpp_source.html#l00059">59</a> of file <a class="el" href="upd_8hpp_source.html">upd.hpp</a>.</p>
 <hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a89539569559a82ce11a99fc5e2797c8d"></a><!-- doxytag: member="db::upd::upd" ref="a89539569559a82ce11a99fc5e2797c8d" args="(const string &amp;t)" -->
 <div class="memitem">
@@ -376,7 +376,7 @@ access public </p>
 <dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>) </dd></dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>15.4.2010 13:58 </dd></dl>
 
-<p>Definition at line <a class="el" href="upd_8hpp_source.html#l00162">162</a> of file <a class="el" href="upd_8hpp_source.html">upd.hpp</a>.</p>
+<p>Definition at line <a class="el" href="upd_8hpp_source.html#l00166">166</a> of file <a class="el" href="upd_8hpp_source.html">upd.hpp</a>.</p>
 
 </div>
 </div>
@@ -480,6 +480,6 @@ access public </p>
 </div>
 </div>
 <hr class="footer"/><address style="text-align: right;"><small>
-Generated on Thu Apr 15 14:37:33 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
+Generated on Thu Apr 15 21:41:24 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
 </body>
 </html>
