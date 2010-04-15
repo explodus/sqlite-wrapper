@@ -40,12 +40,12 @@ namespace db
 	///	using db::upd;
 	///	using db::field;
 	///
-	///	string sql(DB_TEXT("UPDATE gps SET longitude=11.12345678,latidude=53.12345678 WHERE id = 1234"));
+	///	string sql(DB_TEXT("UPDATE gps SET longitude=11.12345678,latitude=53.12345678 WHERE id = 1234"));
 	///
 	///	upd u((
 	///		  upd(DB_TEXT("gps")) 
 	///		% field(DB_TEXT("longitude"), 11.12345678)
-	///		% field(DB_TEXT("latidude"), 53.12345678) 
+	///		% field(DB_TEXT("latitude"), 53.12345678) 
 	///		% (field(DB_TEXT("id"), 1) == 1234)));
 	///
 	///	BOOST_CHECK(sql == string(u));
