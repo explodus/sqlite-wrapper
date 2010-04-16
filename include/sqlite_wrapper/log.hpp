@@ -29,6 +29,7 @@
 #include <sqlite_wrapper/cout.hpp>
 #include <sqlite_wrapper/a2w.hpp>
 #include <sqlite_wrapper/w2a.hpp>
+#include <sqlite_wrapper/detail/ins.hpp>
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
