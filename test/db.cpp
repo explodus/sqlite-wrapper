@@ -28,7 +28,7 @@ void generate_update_expression()
 	string sql(DB_TEXT("UPDATE gps SET longitude=11.12345678,latitude=53.12345678 WHERE id = 1234"));
 
 	upd u((
-		upd(DB_TEXT("gps")) 
+		  upd(DB_TEXT("gps")) 
 		% field(DB_TEXT("longitude"), 11.12345678)
 		% field(DB_TEXT("latitude"), 53.12345678) 
 		% (field(DB_TEXT("id"), 1) == 1234)));
