@@ -27,9 +27,38 @@
 
 #include <sqlite_wrapper/config.hpp>
 
+#include <sqlite_wrapper/detail/tools.hpp>
+#include <sqlite_wrapper/detail/param.hpp>
+#include <sqlite_wrapper/detail/expr.hpp>
+
 namespace db
 {
-  ///helper class, generates SELECT SQL statements
+  /// @brief helper class, generates SELECT SQL statements
+	///
+	/// @code
+	/// void generate_select_expression()
+	/// {
+	///	 using db::string;
+	///	 using db::sel;
+	///	 using db::field;
+	///
+	///	 string sql(DB_TEXT("SELECT longitude,latitude FROM gps WHERE id = 1234"));
+	///
+	///	 sel s(((
+	/// 		  sel(DB_TEXT("gps")) 
+	/// 		, DB_TEXT("longitude")
+	/// 		, DB_TEXT("latitude"))
+	/// 		% (field(DB_TEXT("id"), 1) == 1234)));
+	/// 
+	/// 	BOOST_CHECK_MESSAGE( sql == string(s)
+	/// 		, "\n sql is: \"" 
+	/// 		<< db::detail::w2a(sql.c_str())
+	/// 		<< "\",\n sel is: \"" 
+	/// 		<< db::detail::w2a(string(s).c_str())
+	/// 		<< "\"" );
+	/// }
+	/// @endcode
+	///
   class SQLITE_WRAPPER_DLLAPI sel 
   {
   protected:

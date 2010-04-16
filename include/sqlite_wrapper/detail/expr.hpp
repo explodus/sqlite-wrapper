@@ -27,6 +27,7 @@
 
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/detail/tools.hpp>
+#include <sqlite_wrapper/detail/field.hpp>
 
 namespace db
 {

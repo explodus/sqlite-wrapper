@@ -48,9 +48,6 @@
 #include <sqlite_wrapper/detail/expr.hpp>
 #include <sqlite_wrapper/detail/row.hpp>
 #include <sqlite_wrapper/detail/query.hpp>
-#include <sqlite_wrapper/detail/del.hpp>
-#include <sqlite_wrapper/detail/ins.hpp>
-#include <sqlite_wrapper/detail/upd.hpp>
 
 namespace db
 {

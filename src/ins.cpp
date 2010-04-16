@@ -23,8 +23,8 @@
 /// This file is part of the sqlite-wrapper project
 
 #include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
 
+#include <sqlite_wrapper/detail/ins.hpp>
 
 db::ins::ins( const string& tab ) : _source(tab)
 {
