@@ -90,6 +90,9 @@ namespace db { namespace log {
 		};
 
 		/// Simplest database buffer.
+		///
+		/// @tparam T normally as db::base
+		///
 		template<typename T = db::base>
 		class database : private boost::noncopyable
 		{
@@ -128,6 +131,9 @@ namespace db { namespace log {
 	namespace provider
 	{
 		/// Simplest universal provider.
+		///
+		/// @tparam Buffer should be buffer from db::log::buffer
+		///
 		template<typename Buffer>
 		class basic : private boost::noncopyable
 		{
@@ -320,8 +326,11 @@ namespace db { namespace log {
 
 	}
 
-	/// Provides logging functionality.
-	/// The log class template provides logging functionality.
+	/// @brief Provides logging functionality.
+	///
+	/// @tparam Provider should be a provider like  db::log::provider::basic
+	/// @tparam Format should be a format like  db::log::format::basic
+	///
 	template 
 	<
 		  typename Provider = provider::basic
@@ -413,7 +422,9 @@ namespace db { namespace log {
 		level last_level_;
 	};
 
-	/// 
+	/// constructs a message
+	///
+	/// @tparam Log should be a db::log::base
 	template <typename Log>
 	class message : private boost::noncopyable
 	{
@@ -461,10 +472,8 @@ namespace db { namespace log {
 	};
 
 	/// @brief Wraps scope into a pair of log statements.
-	/// The log_routine class wraps the scope of it's declaration
-	/// into the pair of log statements. 
-	/// This tool automatically increases indentation level for all
-	/// inner log messages.
+	/// The scope class wraps the scope of it's declaration into the pair of log statements. 
+	/// This tool automatically increases indentation level for all inner log messages.
 	template <typename Log>
 	class scope : private boost::noncopyable
 	{
@@ -473,7 +482,7 @@ namespace db { namespace log {
 		/// The log type.
 		typedef Log log_type;
 
-		/// @brief        This constructor creates scope statement
+		/// @brief        This constructor creates a scope statement
 		///
 		/// <BR>qualifier : boost::noncopyable() , log_(scope_log) , message(scope_message)
 		/// <BR>access    public  
@@ -557,7 +566,7 @@ namespace db { namespace log {
 			typedef ::db::log::scope<log_type> log_scope;
 			typedef ::db::log::message<log_type> log_msg;
 
-			/// @brief        get_log
+			/// @brief        get a log singleton for logging into a sqlite database
 			///
 			/// <BR>qualifier
 			/// <BR>access    public 
@@ -588,7 +597,7 @@ namespace db { namespace log {
 			typedef ::db::log::scope<log_type> log_scope;
 			typedef ::db::log::message<log_type> log_msg;
 
-			/// @brief        get_log
+			/// @brief        get a log singleton for logging in the db::cout ofstream
 			///
 			/// <BR>qualifier
 			/// <BR>access    public  
@@ -616,7 +625,7 @@ namespace db { namespace log {
 			typedef ::db::log::scope<log_type> log_scope;
 			typedef ::db::log::message<log_type> log_msg;
 
-			/// @brief        get_log
+			/// @brief        get a log singleton for logging into a file
 			///
 			/// <BR>qualifier
 			/// <BR>access    public  
