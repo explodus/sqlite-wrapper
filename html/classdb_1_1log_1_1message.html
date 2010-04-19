@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
-<title>sqlite_wrapper: db::exception::sql_error Class Reference</title>
+<title>sqlite_wrapper: db::log::message&lt; Log &gt; Class Template Reference</title>
 <link href="customtabs.css" rel="stylesheet" type="text/css"/>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javaScript" src="search/search.js"></script>
@@ -70,29 +70,29 @@ window.onload = initDynSections;
       <li><a href="functions.html"><span>Class&nbsp;Members</span></a></li>
     </ul>
   </div>
-  <div class="navpath"><b>db</b>::<b>exception</b>::<a class="el" href="classdb_1_1exception_1_1sql__error.html">sql_error</a>
+  <div class="navpath"><b>db</b>::<b>log</b>::<a class="el" href="classdb_1_1log_1_1message.html">message</a>
   </div>
 </div>
 <div class="contents">
-<h1>db::exception::sql_error Class Reference</h1><!-- doxytag: class="db::exception::sql_error" --><!-- doxytag: inherits="db::exception::base" -->
-<p>exception thrown when SQL statement cannot be executed  
-<a href="#_details">More...</a></p>
-<div class="dynheader">
-Inheritance diagram for db::exception::sql_error:</div>
-<div class="dynsection">
- <div class="center">
-  <img src="classdb_1_1exception_1_1sql__error.png" usemap="#db::exception::sql_error_map" alt=""/>
-  <map id="db::exception::sql_error_map" name="db::exception::sql_error_map">
-<area href="classdb_1_1exception_1_1base.html" alt="db::exception::base" shape="rect" coords="0,0,143,24"/>
-</map>
- </div>
-</div>
-
-<p><a href="classdb_1_1exception_1_1sql__error-members.html">List of all members.</a></p>
+<h1>db::log::message&lt; Log &gt; Class Template Reference</h1><!-- doxytag: class="db::log::message" -->
+<p><a href="classdb_1_1log_1_1message-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
+<tr><td colspan="2"><h2>Public Types</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8cee756c4cfbedc815211cd6538c114"></a><!-- doxytag: member="db::log::message::log_type" ref="ab8cee756c4cfbedc815211cd6538c114" args="" -->
+typedef Log&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1log_1_1message.html#ab8cee756c4cfbedc815211cd6538c114">log_type</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">The log type. <br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
-<p>exception thrown when SQL statement cannot be executed </p>
+<h3>template&lt;typename Log&gt;<br/>
+ class db::log::message&lt; Log &gt;</h3>
+
+<p>constructs a message</p>
+<dl><dt><b>Template Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>Log</em>&nbsp;</td><td>should be a <a class="el" href="classdb_1_1log_1_1base.html" title="Provides logging functionality.">db::log::base</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 </div>
 <hr class="footer"/><address style="text-align: right;"><small>Generated for sqlite_wrapper</small></address>
 </body>

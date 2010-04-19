@@ -78,19 +78,19 @@ window.onload = initDynSections;
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Classes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1log_1_1base.html">db::log::base&lt; Provider, Format &gt;</a></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Provides logging functionality.  <a href="classdb_1_1log_1_1base.html#_details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1log_1_1buffer_1_1basic.html">db::log::buffer::basic</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Simplest buffer.  <a href="classdb_1_1log_1_1buffer_1_1basic.html#_details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1log_1_1buffer_1_1database.html">db::log::buffer::database&lt; T &gt;</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Simplest database buffer.  <a href="classdb_1_1log_1_1buffer_1_1database.html#_details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1log_1_1buffer_1_1file.html">db::log::buffer::file&lt; T &gt;</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1log_1_1format_1_1basic.html">db::log::format::basic</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Simplest formatter.  <a href="classdb_1_1log_1_1format_1_1basic.html#_details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1log_1_1format_1_1database.html">db::log::format::database</a></td></tr>
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Simplest formatter.  <a href="classdb_1_1log_1_1format_1_1database.html#_details">More...</a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1log_1_1message.html">db::log::message&lt; Log &gt;</a></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1log_1_1provider_1_1basic.html">db::log::provider::basic&lt; Buffer &gt;</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Simplest universal provider.  <a href="classdb_1_1log_1_1provider_1_1basic.html#_details">More...</a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">class &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1log_1_1scope.html">db::log::scope&lt; Log &gt;</a></td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Wraps scope into a pair of log statements. The log_routine class wraps the scope of it's declaration into the pair of log statements. This tool automatically increases indentation level for all inner log messages.  <a href="classdb_1_1log_1_1scope.html#_details">More...</a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Wraps scope into a pair of log statements. The scope class wraps the scope of it's declaration into the pair of log statements. This tool automatically increases indentation level for all inner log messages.  <a href="classdb_1_1log_1_1scope.html#_details">More...</a><br/></td></tr>
 <tr><td colspan="2"><h2>Enumerations</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">enum &nbsp;</td><td class="memItemRight" valign="bottom"><b>level</b> { <br/>
 &nbsp;&nbsp;<a class="el" href="namespacedb_1_1log.html#a10daf54ac7febe8121dfd4b1b484042ba5f71cbb9fdc164500a753614f10efe52">db::log::log_undef</a> = 0, 
@@ -107,11 +107,11 @@ window.onload = initDynSections;
 <br/></td></tr>
 <tr><td colspan="2"><h2>Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">SQLITE_WRAPPER_DLLAPI log_type &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedb_1_1log_1_1singleton_1_1io.html#ac991d279b52f7690833d3a9d74f1deab">db::log::singleton::io::get_log</a> (const string &amp;name=DB_TEXT(&quot;log.txt&quot;))</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">get_log  <a href="#ac991d279b52f7690833d3a9d74f1deab"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">get a log singleton for logging into a file  <a href="#ac991d279b52f7690833d3a9d74f1deab"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">SQLITE_WRAPPER_DLLAPI log_type &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedb_1_1log_1_1singleton_1_1basic.html#aac650ab7abe0217131029a37e93554fe">db::log::singleton::basic::get_log</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">get_log  <a href="#aac650ab7abe0217131029a37e93554fe"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">get a log singleton for logging in the db::cout ofstream  <a href="#aac650ab7abe0217131029a37e93554fe"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">SQLITE_WRAPPER_DLLAPI log_type &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedb_1_1log_1_1singleton_1_1db.html#a3b82327c00acaf42d0d17d7514bdea64">db::log::singleton::db::get_log</a> (const string &amp;name=DB_TEXT(&quot;log.db&quot;))</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">get_log  <a href="#a3b82327c00acaf42d0d17d7514bdea64"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">get a log singleton for logging into a sqlite database  <a href="#a3b82327c00acaf42d0d17d7514bdea64"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>interface of the log class </p>
@@ -119,10 +119,7 @@ window.onload = initDynSections;
 <dl class="author"><dt><b>Author:</b></dt><dd>T. Schroeder (<a href="mailto:explodus@gmx.de">explodus@gmx.de</a>)</dd></dl>
 <p>This software is released under the BSD Licence</p>
 <p>Using : This code may be used in compiled form in any way you desire. This file may be redistributed unmodified by any means PROVIDING it is not sold for profit without the authors written consent, and providing that this notice and the authors name is included. This file is provided 'as is' with no expressed or implied warranty. The author accepts no liability if it causes any damage to your computer. Expect Bugs : Please let me know of any bugs/mods/improvements. and I will try to fix/incorporate them into this file. Enjoy! </p>
-
-<p>Definition in file <a class="el" href="log_8hpp_source.html">log.hpp</a>.</p>
 </div>
-<hr class="footer"/><address style="text-align: right;"><small>
-Generated on Thu Apr 15 21:41:24 2010 for sqlite_wrapper by&nbsp;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.6.3</small></address>
+<hr class="footer"/><address style="text-align: right;"><small>Generated for sqlite_wrapper</small></address>
 </body>
 </html>
