@@ -1,4 +1,7 @@
 build
 include/sqlite_wrapper/config.hpp
 include/sqlite_wrapper/version.hpp
+src/sqlite/sqlite3.c
+src/sqlite/sqlite3.h
+src/sqlite/sqlite3ext.h
 *~

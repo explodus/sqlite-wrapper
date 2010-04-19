@@ -25,7 +25,7 @@
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/detail/row.hpp>
 #include <sqlite_wrapper/detail/query.hpp>
-#include <sqlite_wrapper/sqlite/sqlite3.h>
+#include "sqlite/sqlite3.h"
 
 db::row::row( db::query* query_, unsigned row_ ) : _query(query_), _row(row_)
 {

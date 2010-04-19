@@ -26,7 +26,7 @@
 #include <sqlite_wrapper/db.hpp>
 #include <sqlite_wrapper/a2w.hpp>
 #include <sqlite_wrapper/w2a.hpp>
-#include <sqlite_wrapper/sqlite/sqlite3.h>
+#include "sqlite/sqlite3.h"
 
 db::param::param() : 
 	  _type(e_null)

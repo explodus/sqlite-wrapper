@@ -180,6 +180,19 @@ CONFIGURE_FILE(
 	${CMAKE_SOURCE_DIR}/version.hpp.in
 	${CMAKE_SOURCE_DIR}/include/sqlite_wrapper/version.hpp
 )
+
+CONFIGURE_FILE(
+	${CMAKE_SOURCE_DIR}/sqlite3.c.in
+	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3.c
+)
+CONFIGURE_FILE(
+	${CMAKE_SOURCE_DIR}/sqlite3.h.in
+	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3.h
+)
+CONFIGURE_FILE(
+	${CMAKE_SOURCE_DIR}/sqlite3ext.h.in
+	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3ext.h
+)
  
 SET( SQLITE_WRAPPER_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/sqlite_wrapper )
   

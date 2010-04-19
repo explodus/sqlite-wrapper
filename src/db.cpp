@@ -24,7 +24,7 @@
 
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/db.hpp>
-#include <sqlite_wrapper/sqlite/sqlite3.h>
+#include "sqlite/sqlite3.h"
 
 int db::base::progress_handler::xProgressCallback( void* db_ )
 {

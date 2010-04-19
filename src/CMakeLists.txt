@@ -32,17 +32,8 @@ SET( sqlite_wrapper_header_detail
 	${SQLITE_WRAPPER_INCLUDE_DIR}/detail/serialize.hpp
 	)
 
-SET( sqlite3_header_top
-	${SQLITE_WRAPPER_INCLUDE_DIR}/sqlite/sqlite3.h
-	${SQLITE_WRAPPER_INCLUDE_DIR}/sqlite/sqlite3ext.h
-	)
-
 SOURCE_GROUP( "Header Files" FILES
 	${sqlite_wrapper_header_top}
-	)
-
-SOURCE_GROUP( "Header Files\\sqlite3" FILES
-	${sqlite3_header_top}
 	)
 
 SOURCE_GROUP( "Header Files\\detail" FILES
@@ -70,6 +61,8 @@ SET( sqlite_wrapper_source_top
 
 SET( sqlite3_source_top
 	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3.c
+	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3.h
+	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3ext.h
 	)
 
 SOURCE_GROUP( "Source Files" FILES
