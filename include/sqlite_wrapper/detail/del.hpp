@@ -31,29 +31,59 @@
 
 namespace db
 {
-  ///helper class, generates DELETE SQL statements
+  /// @brief helper class, generates DELETE SQL statements
+	///
+	/// an usage example:
+	///
+	/// @code
+	///
+	/// db::string sql(DB_TEXT("DELETE FROM gps WHERE id = 1234"));
+	///
+	/// db::del d(DB_TEXT("gps")); 
+	/// d.where((db::field(DB_TEXT("id"), 1) == 1234));
+	///
+	/// BOOST_CHECK_MESSAGE( sql == db::string(d)
+	/// 	, "\n sql is: \"" 
+	/// 	<< db::detail::w2a(sql.c_str())
+	/// 	<< "\",\n sel is: \"" 
+	/// 	<< db::detail::w2a(db::string(d).c_str())
+	/// 	<< "\"" );
+	///
+	/// @endcode
+	///
   class SQLITE_WRAPPER_DLLAPI del : public sel
   {
   public:
+    /// @brief        constructor
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public  
+    /// @return       
+    /// @param        tablename as const string &
+    ///
+    /// @date         20.4.2010 10:07
+		/// @ingroup			constructors
+    ///
     del(const string& tablename);
 
-    /// @brief     operator string
+		/// @brief        db::string overload
     ///
     /// <BR>qualifier const
     /// <BR>access    virtual public  
-    /// @return    
+    /// @return       db::string
     ///
-    /// @date      20:2:2009   14:12
+    /// @date         20.4.2010 10:09
+		/// @ingroup			operators
     ///
     virtual operator string() const;
 
-    /// @brief     ~del
+    /// @brief        destructor
     ///
     /// <BR>qualifier
-    /// <BR>access    virtual public  
-    /// @return    
+    /// <BR>access    public  
+    /// @return       
     ///
-    /// @date      20:2:2009   14:12
+    /// @date         20.4.2010 10:09
     ///
     virtual ~del();
   };

@@ -72,8 +72,8 @@ namespace db
     /// @return       
     /// @param        t as const string & - should contain a table name
     ///
-    /// @author       T. Schroeder (explodus@gmx.de)
     /// @date         15.4.2010 13:52
+		/// @ingroup			constructors
     ///
     upd(const string& t);
 
@@ -83,8 +83,8 @@ namespace db
 		/// @param        t as const string & - should contain a table name
     /// @param        d as const string & - holds a front and back delimiter
     ///
-    /// @author       T. Schroeder (explodus@gmx.de)
     /// @date         15.4.2010 13:53
+		/// @ingroup			constructors
     ///
     upd(const string& t, const string& d);
 
@@ -97,8 +97,8 @@ namespace db
     /// @param        d1 as const string & - the front delimiter
     /// @param        d2 as const string & - the back delimiter
     ///
-    /// @author       T. Schroeder (explodus@gmx.de)
     /// @date         15.4.2010 13:54
+		/// @ingroup			constructors
     ///
     upd(const string& t, const string& d1, const string& d2);
 
@@ -109,7 +109,6 @@ namespace db
     /// @return       upd&
     /// @param        e as const expr::base &
     ///
-    /// @author       T. Schroeder (explodus@gmx.de)
     /// @date         15.4.2010 13:55
     ///
     upd& where(const expr::base& e);
@@ -121,7 +120,6 @@ namespace db
     /// @return       upd &
     /// @param        e as const expr::base &
     ///
-    /// @author       T. Schroeder (explodus@gmx.de)
     /// @date         15.4.2010 13:55
     ///
     upd & operator%(const expr::base& e);
@@ -133,7 +131,6 @@ namespace db
 		/// @return       upd &
 		/// @param        f as const db::field &
 		///
-		/// @author       T. Schroeder (explodus@gmx.de)
 		/// @date         15.4.2010 13:58
 		///
 		upd & operator%(const db::field& f);
@@ -146,7 +143,6 @@ namespace db
     /// @param        f as const field &
     /// @param        val as const string &
     ///
-    /// @author       T. Schroeder (explodus@gmx.de)
     /// @date         15.4.2010 13:56
     ///
     upd& set(const field& f, const string& val);
@@ -159,7 +155,6 @@ namespace db
     /// @param        f as const field &
     /// @param        val as const T &
     ///
-    /// @author       T. Schroeder (explodus@gmx.de)
     /// @date         15.4.2010 13:58
     ///
     template<typename T>
@@ -170,10 +165,10 @@ namespace db
     ///
     /// <BR>qualifier const
     /// <BR>access    public  
-    /// @return       
+    /// @return       db::string
     ///
-    /// @author       T. Schroeder (explodus@gmx.de)
     /// @date         15.4.2010 13:59
+		/// @ingroup			operators
     ///
     operator string() const;
 
@@ -183,7 +178,6 @@ namespace db
     /// <BR>access    public  
     /// @return       db::string
     ///
-    /// @author       T. Schroeder (explodus@gmx.de)
     /// @date         15.4.2010 13:59
     ///
     string str() const;

@@ -77,117 +77,127 @@ namespace db
     field_pair _join;
 
   public:
-    /// @brief     sel
+		/// @defgroup constructors summary of all constructors
+		/// @defgroup operators summary of all operator overloads
+
+    /// @brief        constructor
     ///
-    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(DB_TEXT("True")), 
-    ///              _delim1(DB_TEXT("")), _delim2(DB_TEXT(""))
+    /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    
+    /// @return       
     ///
-    /// @date      20:2:2009   14:03
+    /// @date         20.4.2010 10:38
+		/// @ingroup			constructors
     ///
     sel();
 
-    /// @brief     sel
+    /// @brief        constructor
     ///
-    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(DB_TEXT("True")), 
-    ///              _delim1(DB_TEXT("")), _delim2(DB_TEXT(""))
+    /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    
-    /// @param     tablename as const string & 
+    /// @return       
+    /// @param        tablename as const string &
     ///
-    /// @date      20:2:2009   14:03
+    /// @date         20.4.2010 10:38
+		/// @ingroup			constructors
     ///
     sel(const string& tablename);
 
-    /// @brief     sel
+    /// @brief        constructor
     ///
-    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(DB_TEXT("True")), 
-    ///              _delim1(delim), _delim2(delim)
+    /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    
-    /// @param     tablename as const string &
-    /// @param     delim as const string &
+    /// @return       
+    /// @param        tablename as const string &
+    /// @param        delim as const string &
     ///
-    /// @date      20:2:2009   14:03
+    /// @date         20.4.2010 10:39
+		/// @ingroup			constructors
     ///
     sel(const string& tablename, const string& delim);
 
-    /// @brief     sel
+    /// @brief        constructor
     ///
-    /// <BR>qualifier : _distinct(false), _limit(0), _offset(0), _where(DB_TEXT("True")), 
-    ///              _delim1(delim1), _delim2(delim2)
+    /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    
-    /// @param     tablename as const string &
-    /// @param     delim1 as const string &
-    /// @param     delim2 as const string &
+    /// @return       
+    /// @param        tablename as const string &
+    /// @param        delim1 as const string &
+    /// @param        delim2 as const string &
     ///
-    /// @date      20:2:2009   14:03
+    /// @date         20.4.2010 10:39
+		/// @ingroup			constructors
     ///
     sel(const string& tablename, const string& delim1, 
       const string& delim2);
 
-    /// @brief     sel
+    /// @brief        copy constructor
     ///
-    /// <BR>qualifier : _distinct(s._distinct), _limit(s._limit), _offset(s._offset), _where(s._where), _having(s._having), _delim1(s._delim1), _delim2(s._delim2), _results(s._results), _sources(s._sources), _groupBy(s._groupBy), _orderBy(s._orderBy)
+    /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    
-    /// @param     s as const sel &
+    /// @return       
+    /// @param        s as const sel &
     ///
+    /// @date         20.4.2010 10:39
+		/// @ingroup			constructors
     ///
     sel(const sel& s);
 
-    /// @brief     ~sel
+    /// @brief        destructor
     ///
     /// <BR>qualifier
-    /// <BR>access    virtualpublic  
-    /// @return    
+    /// <BR>access    public  
+    /// @return       
     ///
-    /// @date      20:2:2009   14:03
+    /// @date         20.4.2010 10:41
     ///
     virtual ~sel();
 
-    /// @brief     operator=
-    ///
-    /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    sel &
-    /// @param     s as const sel &
-    ///
-    ///
-    sel & operator=(const sel& s);
+		/// @brief        simple copy operator
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       sel & - itself
+		/// @param        s as const sel &
+		///
+		/// @date         20.4.2010 10:54
+		/// @ingroup			operators
+		///
+		sel & operator=(const sel& s);
 
-		/// @brief     ,
-    ///
+    /// @brief        adds a column name
+		///
     /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    sel &
-    /// @param     s as const string &
+    /// @return       sel & - itself
+    /// @param        s as const string & - column name
     ///
-    /// @date      20:2:2009   14:02
-    ///
+    /// @date         20.4.2010 10:51
+		/// @ingroup			operators
+		///
     virtual sel & operator,(const string& s);
 
-    /// @brief     operator%
+    /// @brief        adds a where expression
     ///
     /// <BR>qualifier
     /// <BR>access    public  
-    /// @return    sel &
-    /// @param     e as const expr::base &
+    /// @return       sel & - itself
+    /// @param        e as const expr::base & - where expression
     ///
-    /// @date      20:2:2009   14:02
+    /// @date         20.4.2010 10:53
+		/// @ingroup			operators
     ///
     virtual sel & operator%(const expr::base& e);
 
-    /// @brief     operator<
+    /// @brief        joins two fields
     ///
     /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    sel &
-    /// @param     f as const field_pair &
+    /// <BR>access    virtual public  
+    /// @return       sel & - itself
+    /// @param        f as const field_pair &
     ///
-    /// @date      6:8:2009   10:58
+    /// @date         20.4.2010 10:56
+		/// @ingroup			operators
     ///
     virtual sel & operator<(const field_pair& f);
 
@@ -360,24 +370,25 @@ namespace db
     ///
     virtual sel & order_by(string ob, bool ascending=true);
 
-    /// @brief     operator string
-    ///
-    /// <BR>qualifier const
-    /// <BR>access    virtual public  
-    /// @return    
-    ///
-    /// @date      20:2:2009   14:00
-    ///
-    virtual operator string() const;
+		/// @brief        db::string overload
+		///
+		/// <BR>qualifier const
+		/// <BR>access    virtual public  
+		/// @return       
+		///
+		/// @date         20.4.2010 10:57
+		/// @ingroup			operators
+		///
+		virtual operator string() const;
 
-    /// @brief     str
-    ///
-    /// <BR>qualifier const
-    /// <BR>access    virtual public  
-    /// @return    db::string
-    ///
-    /// @date      20:2:2009   14:12
-    ///
+		/// @brief        same as the string operator overload, more stl like 
+		///
+		/// <BR>qualifier const
+		/// <BR>access    public  
+		/// @return       db::string
+		///
+		/// @date         15.4.2010 13:59
+		///
     virtual string str() const;
   }; 
 

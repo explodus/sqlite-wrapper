@@ -72,6 +72,21 @@ void generate_select_expression()
 		<< "\"" );
 }
 
+void generate_delete_expression()
+{
+	db::string sql(DB_TEXT("DELETE FROM gps WHERE id = 1234"));
+
+	db::del d(DB_TEXT("gps")); 
+	d.where((db::field(DB_TEXT("id"), 1) == 1234));
+
+	BOOST_CHECK_MESSAGE( sql == db::string(d)
+		, "\n sql is: \"" 
+		<< db::detail::w2a(sql.c_str())
+		<< "\",\n sel is: \"" 
+		<< db::detail::w2a(db::string(d).c_str())
+		<< "\"" );
+}
+
 test_suite* init_unit_test_suite( int /*argc*/, char* argv[] ) 
 {
 	argv = argv; // only for a warning
@@ -80,6 +95,8 @@ test_suite* init_unit_test_suite( int /*argc*/, char* argv[] )
 		add( BOOST_TEST_CASE( &generate_update_expression )/*, 30*/ );
 	framework::master_test_suite().
 		add( BOOST_TEST_CASE( &generate_select_expression )/*, 30*/ );
+	framework::master_test_suite().
+		add( BOOST_TEST_CASE( &generate_delete_expression )/*, 30*/ );
 
 	return 0;
 }
