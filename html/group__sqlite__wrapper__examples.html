@@ -97,6 +97,73 @@ window.onload = initDynSections;
     , db::log::log_error);
   <span class="keywordflow">return</span>;
  }
+</pre></div><p>insert example</p>
+<div class="fragment"><pre class="fragment"> db::string sql(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;INSERT INTO gps (id,latitude,longitude) VALUES (1234,11.1234,53.1234)&quot;</span>));
+
+ <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">db::ins</a> i((
+  <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">db::ins</a>(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;gps&quot;</span>)) 
+  % <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;id&quot;</span>), 1234) 
+  % <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;longitude&quot;</span>), 53.1234) 
+  % <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;latitude&quot;</span>), 11.1234)
+  )); 
+
+ BOOST_CHECK_MESSAGE( sql == db::string(i)
+  , <span class="stringliteral">&quot;\n sql is: \&quot;&quot;</span> 
+  &lt;&lt; <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">db::detail::w2a</a>(sql.c_str())
+  &lt;&lt; <span class="stringliteral">&quot;\&quot;,\n ins is: \&quot;&quot;</span> 
+  &lt;&lt; <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">db::detail::w2a</a>(db::string(i).c_str())
+  &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span> );
+</pre></div><p>select example</p>
+<div class="fragment"><pre class="fragment"> <span class="keywordtype">void</span> generate_select_expression()
+ {
+   <span class="keyword">using</span> db::string;
+   <span class="keyword">using</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">db::sel</a>;
+   <span class="keyword">using</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>;
+
+   <span class="keywordtype">string</span> sql(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;SELECT longitude,latitude FROM gps WHERE id = 1234&quot;</span>));
+
+   sel s(((
+      sel(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;gps&quot;</span>)) 
+    , <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;longitude&quot;</span>)
+    , <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;latitude&quot;</span>))
+    % (field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;id&quot;</span>), 1) == 1234)));
+ 
+  BOOST_CHECK_MESSAGE( sql == <span class="keywordtype">string</span>(s)
+    , <span class="stringliteral">&quot;\n sql is: \&quot;&quot;</span> 
+    &lt;&lt; <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">db::detail::w2a</a>(sql.c_str())
+    &lt;&lt; <span class="stringliteral">&quot;\&quot;,\n sel is: \&quot;&quot;</span> 
+    &lt;&lt; <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">db::detail::w2a</a>(<span class="keywordtype">string</span>(s).c_str())
+    &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span> );
+ }
+</pre></div><p>update example</p>
+<div class="fragment"><pre class="fragment"><span class="keywordtype">void</span> generate_update_expression()
+{
+  <span class="keyword">using</span> db::string;
+  <span class="keyword">using</span> <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">db::upd</a>;
+  <span class="keyword">using</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>;
+
+  <span class="keywordtype">string</span> sql(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;UPDATE gps SET longitude=11.12345678,latitude=53.12345678 WHERE id = 1234&quot;</span>));
+
+  upd u((
+      upd(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;gps&quot;</span>)) 
+    % field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;longitude&quot;</span>), 11.12345678)
+    % field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;latitude&quot;</span>), 53.12345678) 
+    % (field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;id&quot;</span>), 1) == 1234)));
+
+  BOOST_CHECK(sql == <span class="keywordtype">string</span>(u));
+}
+</pre></div><p>delete example</p>
+<div class="fragment"><pre class="fragment"> db::string sql(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;DELETE FROM gps WHERE id = 1234&quot;</span>));
+
+ <a class="code" href="classdb_1_1del.html" title="helper class, generates DELETE SQL statements">db::del</a> d(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;gps&quot;</span>)); 
+ d.where((<a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;id&quot;</span>), 1) == 1234));
+
+ BOOST_CHECK_MESSAGE( sql == db::string(d)
+  , <span class="stringliteral">&quot;\n sql is: \&quot;&quot;</span> 
+  &lt;&lt; <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">db::detail::w2a</a>(sql.c_str())
+  &lt;&lt; <span class="stringliteral">&quot;\&quot;,\n sel is: \&quot;&quot;</span> 
+  &lt;&lt; <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">db::detail::w2a</a>(db::string(d).c_str())
+  &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span> );
 </pre></div> </div>
 <hr class="footer"/><address style="text-align: right;"><small>Generated for sqlite_wrapper</small></address>
 </body>
