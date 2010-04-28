@@ -18,7 +18,7 @@ namespace db
 {
 	class sel;
 	
-	typedef boost::variant<db::string, int, double> types;
+	typedef boost::variant<int, db::string, double> types;
 
 	///
 	class SQLITE_WRAPPER_DLLAPI table
@@ -37,9 +37,12 @@ namespace db
 
 #	define TABLE_MEMBER(name) \
 	public: \
-		inline const db::types& ##name() const \
+		template<typename T> \
+		inline const typename T & get_##name() const \
+		{ return boost::get<T>(_##name); } \
+		inline const db::types & get_##name() const \
 		{ return _##name; } \
-		inline void ##name(const db::types& val) \
+		inline void set_##name(const db::types& val) \
 		{ _##name = val; } \
 	private: \
 		db::types _##name

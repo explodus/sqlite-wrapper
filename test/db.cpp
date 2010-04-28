@@ -108,7 +108,7 @@ void generate_insert_expression()
 		<< "\"" );
 }
 
-void test_table_class()
+namespace 
 {
 	class gps : public db::table
 	{
@@ -122,7 +122,10 @@ void test_table_class()
 		TABLE_MEMBER(longitude);
 		TABLE_MEMBER(latitude);
 	};
+}
 
+void test_table_class()
+{
 	gps gps_;
 
 }
