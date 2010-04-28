@@ -36,6 +36,7 @@ namespace db
   /// @brief helper class, generates SELECT SQL statements
 	///
 	/// @code
+	///
 	/// void generate_select_expression()
 	/// {
 	///	 using db::string;
@@ -57,6 +58,7 @@ namespace db
 	/// 		<< db::detail::w2a(string(s).c_str())
 	/// 		<< "\"" );
 	/// }
+	///
 	/// @endcode
 	///
   class SQLITE_WRAPPER_DLLAPI sel 

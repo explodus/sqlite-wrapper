@@ -82,8 +82,27 @@ void generate_delete_expression()
 	BOOST_CHECK_MESSAGE( sql == db::string(d)
 		, "\n sql is: \"" 
 		<< db::detail::w2a(sql.c_str())
-		<< "\",\n sel is: \"" 
+		<< "\",\n del is: \"" 
 		<< db::detail::w2a(db::string(d).c_str())
+		<< "\"" );
+}
+
+void generate_insert_expression()
+{
+	db::string sql(DB_TEXT("INSERT INTO gps (id,latitude,longitude) VALUES (1234,11.1234,53.1234)"));
+
+	db::ins i((
+		  db::ins(DB_TEXT("gps")) 
+		% db::field(DB_TEXT("id"), 1234) 
+		% db::field(DB_TEXT("longitude"), 53.1234) 
+		% db::field(DB_TEXT("latitude"), 11.1234)
+	)); 
+
+	BOOST_CHECK_MESSAGE( sql == db::string(i)
+		, "\n sql is: \"" 
+		<< db::detail::w2a(sql.c_str())
+		<< "\",\n ins is: \"" 
+		<< db::detail::w2a(db::string(i).c_str())
 		<< "\"" );
 }
 
@@ -92,9 +111,14 @@ test_suite* init_unit_test_suite( int /*argc*/, char* argv[] )
 	argv = argv; // only for a warning
 
 	framework::master_test_suite().
+		add( BOOST_TEST_CASE( &generate_insert_expression )/*, 30*/ );
+
+	framework::master_test_suite().
 		add( BOOST_TEST_CASE( &generate_update_expression )/*, 30*/ );
+
 	framework::master_test_suite().
 		add( BOOST_TEST_CASE( &generate_select_expression )/*, 30*/ );
+
 	framework::master_test_suite().
 		add( BOOST_TEST_CASE( &generate_delete_expression )/*, 30*/ );
 

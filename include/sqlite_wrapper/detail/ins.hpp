@@ -33,7 +33,28 @@
 
 namespace db
 {
-  ///helper class, generates INSERT SQL statements
+  /// @brief helper class, generates INSERT SQL statements
+	///
+	/// @code
+	///
+	/// db::string sql(DB_TEXT("INSERT INTO gps (id,latitude,longitude) VALUES (1234,11.1234,53.1234)"));
+	///
+	/// db::ins i((
+	/// 	db::ins(DB_TEXT("gps")) 
+	/// 	% db::field(DB_TEXT("id"), 1234) 
+	/// 	% db::field(DB_TEXT("longitude"), 53.1234) 
+	/// 	% db::field(DB_TEXT("latitude"), 11.1234)
+	/// 	)); 
+	///
+	/// BOOST_CHECK_MESSAGE( sql == db::string(i)
+	/// 	, "\n sql is: \"" 
+	/// 	<< db::detail::w2a(sql.c_str())
+	/// 	<< "\",\n ins is: \"" 
+	/// 	<< db::detail::w2a(db::string(i).c_str())
+	/// 	<< "\"" );
+	///
+	/// @endcode
+	///
   class SQLITE_WRAPPER_DLLAPI ins 
   {
   protected:
@@ -43,50 +64,54 @@ namespace db
     string    _delim2;
 
   public:
-    /// @brief     ins
-    ///
-    /// <BR>qualifier : _source(tab)
-    /// <BR>access    public  
-    /// @return    
-    /// @param     tab as const string &
-    ///
-    /// @date      20:2:2009   9:07
-    ///
-    ins(const string& tab);
+		///
+		/// <BR>qualifier
+		/// <BR>access    public 
+		/// 
+		/// @return       
+		/// @param        tab as const string &
+		///
+		/// @date         20.4.2010 20:37
+		/// @ingroup			constructors
+		/// 
+		ins(const string& tab);
 
-    /// @brief     ins
-    ///
-    /// <BR>qualifier : _source(tab), _delim1(delim), _delim2(delim)
-    /// <BR>access    public  
-    /// @return    
-    /// @param     tab as const string &
-    /// @param     delim as const string &
-    ///
-    /// @date      20:2:2009   9:07
-    ///
-    ins(const string& tab, const string& delim);
-
-    /// @brief     ins
-    ///
-    /// <BR>qualifier : _source(tab), _delim1(delim1), _delim2(delim2)
-    /// <BR>access    public  
-    /// @return    
-    /// @param     tab as const string &
-    /// @param     delim1 as const string &
-    /// @param     delim2 as const string &
-    ///
-    /// @date      20:2:2009   9:07
-    ///
-    ins(const string& tab, const string& delim1, const string& delim2);
-    
-    /// @brief     ~ins
     ///
     /// <BR>qualifier
-    /// <BR>access    public  
-    /// @return    
+    /// <BR>access    public 
+    /// 
+    /// @return       
+    /// @param        tab as const string &
+    /// @param        delim as const string &
     ///
-    /// @date      20:2:2009   9:07
+    /// @date         20.4.2010 20:37
+		/// @ingroup			constructors
+    /// 
+    ins(const string& tab, const string& delim);
+
     ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       
+    /// @param        tab as const string &
+    /// @param        delim1 as const string &
+    /// @param        delim2 as const string &
+    ///
+    /// @date         20.4.2010 20:38
+		/// @ingroup			constructors
+    /// 
+    ins(const string& tab, const string& delim1, const string& delim2);
+    
+    /// @brief        destructor
+    ///
+    /// <BR>qualifier
+    /// <BR>access    public 
+    /// 
+    /// @return       
+    ///
+    /// @date         20.4.2010 20:39
+    /// 
     ~ins();
     
     /// @brief     clear_values
