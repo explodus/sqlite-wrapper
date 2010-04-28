@@ -23,6 +23,8 @@
 
 #include <sqlite_wrapper/detail/expr.hpp>
 
+#include <sqlite_wrapper/table.hpp>
+
 #define BOOST_TEST_NO_MAIN
 #include <boost/test/included/unit_test.hpp>
 
@@ -106,6 +108,25 @@ void generate_insert_expression()
 		<< "\"" );
 }
 
+void test_table_class()
+{
+	class gps : public db::table
+	{
+	public:
+		gps() : table(DB_TEXT("gps"))
+		{
+
+		}
+
+		TABLE_MEMBER(id);
+		TABLE_MEMBER(longitude);
+		TABLE_MEMBER(latitude);
+	};
+
+	gps gps_;
+
+}
+
 test_suite* init_unit_test_suite( int /*argc*/, char* argv[] ) 
 {
 	argv = argv; // only for a warning
@@ -121,6 +142,8 @@ test_suite* init_unit_test_suite( int /*argc*/, char* argv[] )
 
 	framework::master_test_suite().
 		add( BOOST_TEST_CASE( &generate_delete_expression )/*, 30*/ );
+	framework::master_test_suite().
+		add( BOOST_TEST_CASE( &test_table_class )/*, 30*/ );
 
 	return 0;
 }

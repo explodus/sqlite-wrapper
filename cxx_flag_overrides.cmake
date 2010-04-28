@@ -56,9 +56,6 @@ IF(MSVC) # adds a static build in release and debug
 	    CMAKE_MODULE_LINKER_FLAGS_RELEASESTATIC
 	    CMAKE_SHARED_LINKER_FLAGS_RELEASESTATIC )
 
-#	SET( CMAKE_BUILD_TYPE "" CACHE STRING
-#	    "Choose the type of build, options are: None Debug Release RelWithDebInfo DebugStatic ReleaseStatic." )
-
 	SET( CMAKE_CONFIGURATION_TYPES 
 		"Debug;Release;MinSizeRel;RelWithDebInfo;DebugStatic;ReleaseStatic" CACHE STRING 
 		"Debug;Release;MinSizeRel;RelWithDebInfo;DebugStatic;ReleaseStatic" FORCE)
