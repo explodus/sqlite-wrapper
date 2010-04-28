@@ -14,6 +14,7 @@ SET( sqlite_wrapper_header_top
 	${SQLITE_WRAPPER_INCLUDE_DIR}/log.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/a2w.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/w2a.hpp
+	${SQLITE_WRAPPER_INCLUDE_DIR}/table.hpp
 	)
 
 SET( sqlite_wrapper_header_detail
@@ -42,6 +43,7 @@ SOURCE_GROUP( "Header Files\\detail" FILES
 
 SET( sqlite_wrapper_source_top
 	${CMAKE_SOURCE_DIR}/src/cout.cpp
+	${CMAKE_SOURCE_DIR}/src/table.cpp
 	${CMAKE_SOURCE_DIR}/src/a2w.cpp
 	${CMAKE_SOURCE_DIR}/src/w2a.cpp
 	${CMAKE_SOURCE_DIR}/src/log_level.cpp
