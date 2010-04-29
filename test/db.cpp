@@ -157,7 +157,12 @@ int main( int argc, char ** argv )
 	using db::detail::a2w;
 	using db::string;
 
+#ifdef SQLITE_WRAPPER_NARROW_STRING
+	string db_name = argv[0];
+#else
 	string db_name = a2w(argv[0]);
+#endif 
+
 	db_name = db_name.substr(0, db_name.rfind(DB_TEXT("\\")));
 	db_name += DB_TEXT("\\test.db");
 
