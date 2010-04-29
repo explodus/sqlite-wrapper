@@ -729,14 +729,10 @@ namespace db
 			const string& s
 		, const time_t_ce* tmp = 0) 
 		{
-		/// @todo replace UNREFERENCED_PARAMETER
-		UNREFERENCED_PARAMETER(tmp);
 		tm _tm = {0};
 		int err = _stscanf(s.c_str(), DB_TEXT("%d.%d.%d %d:%d:%d"), 
 			&_tm.tm_mday, &_tm.tm_mon, &_tm.tm_year,
 			&_tm.tm_hour, &_tm.tm_min, &_tm.tm_sec);
-		/// @todo replace UNREFERENCED_PARAMETER
-		UNREFERENCED_PARAMETER(err);
 		return time::mktime_ce(&_tm);
 		}
 	}

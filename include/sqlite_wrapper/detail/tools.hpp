@@ -240,15 +240,11 @@ namespace db { namespace detail
 	static COleDateTime from_sql_string(const string& s, 
 		const COleDateTime *tmp=0) 
 	{
-		/// @todo replace UNREFERENCED_PARAMETER
-		UNREFERENCED_PARAMETER(tmp);
 		COleDateTime ret;
 		tm _tm = {0};
 		int err = _stscanf(s.c_str(), DB_TEXT("%d.%d.%d %d:%d:%d"), 
 			&_tm.tm_mday, &_tm.tm_mon, &_tm.tm_year,
 			&_tm.tm_hour, &_tm.tm_min, &_tm.tm_sec);
-		/// @todo replace UNREFERENCED_PARAMETER
-		UNREFERENCED_PARAMETER(err);
 		ret.SetDateTime(_tm.tm_year, _tm.tm_mon, _tm.tm_mday, 
 			_tm.tm_hour, _tm.tm_min, _tm.tm_sec);
 		if (ret.GetStatus()==COleDateTime::invalid)

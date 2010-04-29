@@ -71,7 +71,7 @@ IF (CMAKE_COMPILER_IS_GNUCXX)
 		SQLITE_WRAPPER_HAS_GNU_DEMANGLE
 	)
  
-	SET (CMAKE_REQUIRED_FLAGS "-Wall -Werror -pedantic")
+	SET (CMAKE_REQUIRED_FLAGS "-Wall -Werror -pedantic -Wno-long-long")
  
 	CHECK_CXX_SOURCE_COMPILES(
 		"
