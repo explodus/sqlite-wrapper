@@ -28,7 +28,7 @@ void sub_sub_scope()
 {
 	log_scope scope_(*theLog, DB_TEXT("sub_sub_scope()"));
 
-	throw std::exception("test");
+	throw std::runtime_error("test");
 }
 
 void sub_scope()
@@ -49,7 +49,11 @@ void sub_scope()
 		log_msg msg(
 			  *theLog
 			, db::string(DB_TEXT("exception: "))
+#ifdef SQLITE_WRAPPER_NARROW_STRING
+			+ e.what()
+#else
 			+ static_cast<const wchar_t*>(db::detail::a2w(e.what()))
+#endif
 			, db::log::log_error);
 	}
 }

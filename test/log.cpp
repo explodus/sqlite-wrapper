@@ -23,7 +23,7 @@ void sub_sub_scope()
 		  db::log::singleton::basic::get_log()
 		, DB_TEXT("sub_sub_scope()"));
 
-	throw std::exception("test");
+	throw std::runtime_error("test");
 }
 
 void sub_scope()
@@ -46,7 +46,11 @@ void sub_scope()
 		db::log::singleton::basic::log_msg msg(
 			db::log::singleton::basic::get_log()
 			, db::string(DB_TEXT("exception: "))
+#ifdef SQLITE_WRAPPER_NARROW_STRING
+			+ e.what()
+#else
 			+ static_cast<const wchar_t*>(db::detail::a2w(e.what()))
+#endif // SQLITE_WRAPPER_NARROW_STRING
 			, db::log::log_error);
 	}
 }
