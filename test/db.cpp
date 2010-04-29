@@ -113,14 +113,15 @@ namespace
 	class gps : public db::table
 	{
 	public:
-		gps() : table(DB_TEXT("gps"))
-		{
+		TABLE_BEGIN(gps)
+			TABLE_MEMBER(id)
+			TABLE_MEMBER(longitude)
+			TABLE_MEMBER(latitude)
+		TABLE_END()
 
-		}
-
-		TABLE_MEMBER(id);
-		TABLE_MEMBER(longitude);
-		TABLE_MEMBER(latitude);
+		TABLE_MEMBER_GET_SET(id)
+		TABLE_MEMBER_GET_SET(longitude)
+		TABLE_MEMBER_GET_SET(latitude)
 	};
 }
 

@@ -34,33 +34,6 @@
 namespace db
 {
   /// @brief helper class, generates SELECT SQL statements
-	///
-	/// @code
-	///
-	/// void generate_select_expression()
-	/// {
-	///	 using db::string;
-	///	 using db::sel;
-	///	 using db::field;
-	///
-	///	 string sql(DB_TEXT("SELECT longitude,latitude FROM gps WHERE id = 1234"));
-	///
-	///	 sel s(((
-	/// 		  sel(DB_TEXT("gps")) 
-	/// 		, DB_TEXT("longitude")
-	/// 		, DB_TEXT("latitude"))
-	/// 		% (field(DB_TEXT("id"), 1) == 1234)));
-	/// 
-	/// 	BOOST_CHECK_MESSAGE( sql == string(s)
-	/// 		, "\n sql is: \"" 
-	/// 		<< db::detail::w2a(sql.c_str())
-	/// 		<< "\",\n sel is: \"" 
-	/// 		<< db::detail::w2a(string(s).c_str())
-	/// 		<< "\"" );
-	/// }
-	///
-	/// @endcode
-	///
   class SQLITE_WRAPPER_DLLAPI sel 
   {
   protected:
@@ -395,5 +368,30 @@ namespace db
   }; 
 
 }
+
+///
+/// @page usage examples of the wrapper
+/// @ingroup sqlite_wrapper_examples
+/// an usage example of the select expression generator:
+///
+/// @code
+///
+///	 db::string sql(DB_TEXT("SELECT longitude,latitude FROM gps WHERE id = 1234"));
+///
+///	 db::sel s(((
+/// 		  db::sel(DB_TEXT("gps")) 
+/// 		, DB_TEXT("longitude")
+/// 		, DB_TEXT("latitude"))
+/// 		% (db::field(DB_TEXT("id"), 1) == 1234)));
+/// 
+/// 	BOOST_CHECK_MESSAGE( sql == string(s)
+/// 		, "\n sql is: \"" 
+/// 		<< db::detail::w2a(sql.c_str())
+/// 		<< "\",\n sel is: \"" 
+/// 		<< db::detail::w2a(string(s).c_str())
+/// 		<< "\"" );
+///
+/// @endcode
+///
 
 #endif

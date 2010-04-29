@@ -34,27 +34,6 @@
 namespace db
 {
   /// @brief helper class, generates INSERT SQL statements
-	///
-	/// @code
-	///
-	/// db::string sql(DB_TEXT("INSERT INTO gps (id,latitude,longitude) VALUES (1234,11.1234,53.1234)"));
-	///
-	/// db::ins i((
-	/// 	db::ins(DB_TEXT("gps")) 
-	/// 	% db::field(DB_TEXT("id"), 1234) 
-	/// 	% db::field(DB_TEXT("longitude"), 53.1234) 
-	/// 	% db::field(DB_TEXT("latitude"), 11.1234)
-	/// 	)); 
-	///
-	/// BOOST_CHECK_MESSAGE( sql == db::string(i)
-	/// 	, "\n sql is: \"" 
-	/// 	<< db::detail::w2a(sql.c_str())
-	/// 	<< "\",\n ins is: \"" 
-	/// 	<< db::detail::w2a(db::string(i).c_str())
-	/// 	<< "\"" );
-	///
-	/// @endcode
-	///
   class SQLITE_WRAPPER_DLLAPI ins 
   {
   protected:
@@ -196,5 +175,31 @@ namespace db
   }; 
 
 }
+
+///
+/// @page usage examples of the wrapper
+/// @ingroup sqlite_wrapper_examples
+/// an usage example of the insert expression generator:
+///
+/// @code
+///
+/// db::string sql(DB_TEXT("INSERT INTO gps (id,latitude,longitude) VALUES (1234,11.1234,53.1234)"));
+///
+/// db::ins i((
+/// 	  db::ins(DB_TEXT("gps")) 
+/// 	% db::field(DB_TEXT("id"), 1234) 
+/// 	% db::field(DB_TEXT("longitude"), 53.1234) 
+/// 	% db::field(DB_TEXT("latitude"), 11.1234)
+/// 	)); 
+///
+/// BOOST_CHECK_MESSAGE( sql == db::string(i)
+/// 	, "\n sql is: \"" 
+/// 	<< db::detail::w2a(sql.c_str())
+/// 	<< "\",\n ins is: \"" 
+/// 	<< db::detail::w2a(db::string(i).c_str())
+/// 	<< "\"" );
+///
+/// @endcode
+///
 
 #endif

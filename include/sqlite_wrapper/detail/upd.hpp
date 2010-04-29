@@ -34,28 +34,6 @@
 namespace db
 {
 	///	@brief helper class for generating update sql expressions
-	///
-	/// an usage example:
-	///
-	///@code
-	///void generate_update_expression()
-	///{
-	///	using db::string;
-	///	using db::upd;
-	///	using db::field;
-	///
-	///	string sql(DB_TEXT("UPDATE gps SET longitude=11.12345678,latitude=53.12345678 WHERE id = 1234"));
-	///
-	///	upd u((
-	///		  upd(DB_TEXT("gps")) 
-	///		% field(DB_TEXT("longitude"), 11.12345678)
-	///		% field(DB_TEXT("latitude"), 53.12345678) 
-	///		% (field(DB_TEXT("id"), 1) == 1234)));
-	///
-	///	BOOST_CHECK(sql == string(u));
-	///}
-	///@endcode
-	///
 	class SQLITE_WRAPPER_DLLAPI upd 
   {
     string _delim1;
@@ -184,5 +162,25 @@ namespace db
   };
 
 }
+
+///
+/// @page usage examples of the wrapper
+/// @ingroup sqlite_wrapper_examples
+/// an usage example of the update expression generator:
+///
+///@code
+///
+///db::string sql(DB_TEXT("UPDATE gps SET longitude=11.12345678,latitude=53.12345678 WHERE id = 1234"));
+///
+///db::upd u((
+///	  db::upd(DB_TEXT("gps")) 
+///	% db::field(DB_TEXT("longitude"), 11.12345678)
+///	% db::field(DB_TEXT("latitude"), 53.12345678) 
+///	% (db::field(DB_TEXT("id"), 1) == 1234)));
+///
+///BOOST_CHECK(sql == string(u));
+///
+///@endcode
+///
 
 #endif

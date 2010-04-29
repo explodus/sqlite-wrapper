@@ -32,25 +32,6 @@
 namespace db
 {
   /// @brief helper class, generates DELETE SQL statements
-	///
-	/// an usage example:
-	///
-	/// @code
-	///
-	/// db::string sql(DB_TEXT("DELETE FROM gps WHERE id = 1234"));
-	///
-	/// db::del d(DB_TEXT("gps")); 
-	/// d.where((db::field(DB_TEXT("id"), 1) == 1234));
-	///
-	/// BOOST_CHECK_MESSAGE( sql == db::string(d)
-	/// 	, "\n sql is: \"" 
-	/// 	<< db::detail::w2a(sql.c_str())
-	/// 	<< "\",\n sel is: \"" 
-	/// 	<< db::detail::w2a(db::string(d).c_str())
-	/// 	<< "\"" );
-	///
-	/// @endcode
-	///
   class SQLITE_WRAPPER_DLLAPI del : public sel
   {
   public:
@@ -89,5 +70,27 @@ namespace db
   };
 
 }
+
+///
+/// @page usage examples of the wrapper
+/// @ingroup sqlite_wrapper_examples
+/// an usage example of the delete expression generator:
+///
+/// @code
+///
+/// db::string sql(DB_TEXT("DELETE FROM gps WHERE id = 1234"));
+///
+/// db::del d(DB_TEXT("gps")); 
+/// d.where((db::field(DB_TEXT("id"), 1) == 1234));
+///
+/// BOOST_CHECK_MESSAGE( sql == db::string(d)
+/// 	, "\n sql is: \"" 
+/// 	<< db::detail::w2a(sql.c_str())
+/// 	<< "\",\n sel is: \"" 
+/// 	<< db::detail::w2a(db::string(d).c_str())
+/// 	<< "\"" );
+///
+/// @endcode
+///
 
 #endif
