@@ -60,7 +60,11 @@ void sub_scope()
 
 int main( int /*argc*/, char **argv )
 {
+#ifdef SQLITE_WRAPPER_NARROW_STRING
+	db::string db_name = argv[0];
+#else
 	db::string db_name = db::detail::a2w(argv[0]);
+#endif
 	db_name = db_name.substr(0, db_name.rfind(DB_TEXT("\\")));
 	db_name += DB_TEXT("\\log.db");
 
