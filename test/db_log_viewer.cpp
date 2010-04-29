@@ -330,14 +330,14 @@ void db::test::dialog::refresh()
 		model->Q(
 			db_->execute_ptr(
 			(
-				  db::sel(L"log")
-				, L"id"
-				, L"date_real"
-				, L"date_text"
-				, L"level"
-				, L"msg")
+				  db::sel(DB_TEXT("log"))
+				, DB_TEXT("id")
+				, DB_TEXT("date_real")
+				, DB_TEXT("date_text")
+				, DB_TEXT("level")
+				, DB_TEXT("msg"))
 				.limit(showAllCheckBox->isChecked() ? 0 : 1000)
-				.order_by(L"id", false)
+				.order_by(DB_TEXT("id"), false)
 			)
 		);
 	}

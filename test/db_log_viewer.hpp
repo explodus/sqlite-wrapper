@@ -81,7 +81,7 @@ namespace db { namespace test
 		}
 
 		int columnCount(const QModelIndex & parent = QModelIndex()) const
-		{ UNREFERENCED_PARAMETER(parent); return COLUMN_LAST; }
+		{ return COLUMN_LAST; }
 
 		int rowCount(const QModelIndex & parent = QModelIndex()) const
 		{
