@@ -144,6 +144,7 @@ ENDIF()
  
 FIND_PACKAGE(
 	Boost 1.38.0 REQUIRED COMPONENTS
+	date_time
 	system
 	thread
 )
