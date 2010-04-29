@@ -94,6 +94,8 @@
 #	   else
 #	       define SQLITE_WRAPPER_DLLAPI  __declspec( dllimport )
 #	   endif
+#	else
+#		define SQLITE_WRAPPER_DLLAPI
 #	endif
 #else
 #	define SQLITE_WRAPPER_DLLAPI
