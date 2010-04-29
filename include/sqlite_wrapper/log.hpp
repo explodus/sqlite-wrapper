@@ -552,7 +552,7 @@ namespace db { namespace log {
 	{ 
 		namespace db
 		{
-			typedef ::db::log::buffer::database<::db::base> buffer_type;
+			typedef ::db::log::buffer::database< ::db::base> buffer_type;
 			typedef ::db::log::provider::basic<buffer_type> provider_type;
 			typedef ::db::log::format::database format_type;
 
@@ -611,7 +611,7 @@ namespace db { namespace log {
 
 		namespace io
 		{
-			typedef ::db::log::buffer::file<::db::ofstream> buffer_type;
+			typedef ::db::log::buffer::file< ::db::ofstream> buffer_type;
 			typedef ::db::log::provider::basic<buffer_type> provider_type;
 			typedef ::db::log::format::basic format_type;
 
