@@ -74,11 +74,6 @@
 	namespace sigb = boost::BOOST_SIGNALS_NAMESPACE;
 #endif
 
-/// @todo entfernen
-#ifndef UNREFERENCED_PARAMETER
-#define UNREFERENCED_PARAMETER(P) { (P) = (P); } 
-#endif
-
 #ifndef _tcsstr
 	#ifdef _UNICODE
 		#define _tcsstr wcsstr

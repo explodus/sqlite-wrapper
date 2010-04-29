@@ -65,9 +65,8 @@ db::row::reference db::row::operator[]( size_type field_num )
 	return *(begin()+field_num);
 }
 
-db::param* db::row::operator[]( const string& field_title )
+db::param* db::row::operator[]( const string& )
 {
-	UNREFERENCED_PARAMETER(field_title); 
 	return (0);
 }
 
