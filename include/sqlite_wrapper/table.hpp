@@ -42,7 +42,7 @@ namespace db
 
 ///
 #	define TABLE_BEGIN(name) \
-	name##() : db::table(DB_TEXT(#name)) \
+	name() : db::table(DB_TEXT(#name)) \
 	{ 
 
 ///
@@ -58,19 +58,19 @@ namespace db
 #	define TABLE_MEMBER_GET_SET(name) \
 	public: \
 		template<typename T> \
-		inline const typename T & name##() const \
+		inline const typename T & name() const \
 		{ \
 			static T empty_; \
 			db::table::map_type::const_iterator it(_members.find(DB_TEXT(#name))); \
 			return (it != _members.end()) ? boost::get<T>(it->second) : empty_; \
 		} \
-		inline const db::table::value_type & name##() const \
+		inline const db::table::value_type & name() const \
 		{ \
 			static db::table::value_type empty_; \
 			db::table::map_type::const_iterator it(_members.find(DB_TEXT(#name))); \
 			return (it != _members.end()) ? it->second : empty_; \
 		} \
-		inline void name##(const db::table::value_type & val) \
+		inline void name(const db::table::value_type & val) \
 		{ \
 			db::table::map_type::iterator it(_members.find(DB_TEXT(#name))); \
 			if (it != _members.end()) \
