@@ -165,7 +165,6 @@ int main( int argc, char **argv )
 	QString app_path = app.applicationDirPath();
 
 	db::test::log_db = app_path.toAscii().data();
-	//db::test::log_db = app_path.toStdString();
 	db::test::log_db += "/log.db";
 
 	db::test::dialog dlg;
