@@ -58,7 +58,7 @@ namespace db
 #	define TABLE_MEMBER_GET_SET(name) \
 	public: \
 		template<typename T> \
-		inline const typename T & name() const \
+		inline const T & name() const \
 		{ \
 			static T empty_; \
 			db::table::map_type::const_iterator it(_members.find(DB_TEXT(#name))); \
