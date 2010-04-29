@@ -133,6 +133,14 @@ void test_table_class()
 {
 	gps gps_;
 
+	db::string sql(DB_TEXT("SELECT id,latitude,longitude FROM gps"));
+
+	BOOST_CHECK_MESSAGE( sql == gps_.get_sel().str()
+		, "\n sql is: \"" 
+		<< sql.c_str()
+		<< "\",\n ins is: \"" 
+		<< gps_.get_sel().str().c_str()
+		<< "\"" );
 }
 
 test_suite* init_unit_test_suite( int /*argc*/, char* argv[] ) 
@@ -150,6 +158,7 @@ test_suite* init_unit_test_suite( int /*argc*/, char* argv[] )
 
 	framework::master_test_suite().
 		add( BOOST_TEST_CASE( &generate_delete_expression )/*, 30*/ );
+
 	framework::master_test_suite().
 		add( BOOST_TEST_CASE( &test_table_class )/*, 30*/ );
 

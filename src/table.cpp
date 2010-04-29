@@ -15,7 +15,14 @@
 
 db::sel db::table::get_sel()
 {
-	db::sel ret;
+	db::sel ret(table_name());
+
+	for (
+		  map_type::const_iterator itb(_members.begin())
+		, ite(_members.end())
+		; itb!=ite
+		; ++itb)
+		ret.result(itb->first);
 
 	return ret;
 }
