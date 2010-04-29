@@ -75,7 +75,7 @@ namespace db { namespace log {
 		public:
 			file(const db::string& name) : 
 				#ifdef SQLITE_WRAPPER_NARROW_STRING
-					of_(name)
+					of_(name.c_str())
 				#else
 					of_(static_cast<const char*>(
 						db::detail::w2a(name.c_str())))
