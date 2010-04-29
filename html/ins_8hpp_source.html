@@ -103,43 +103,44 @@ window.onload = initDynSections;
 <a name="l00033"></a>00033 
 <a name="l00034"></a>00034 <span class="keyword">namespace </span>db
 <a name="l00035"></a>00035 {
-<a name="l00058"></a><a class="code" href="classdb_1_1ins.html">00058</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> 
-<a name="l00059"></a>00059   {
-<a name="l00060"></a>00060   <span class="keyword">protected</span>:
-<a name="l00061"></a>00061     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a> _values;
-<a name="l00062"></a>00062     <span class="keywordtype">string</span>    _source;
-<a name="l00063"></a>00063     <span class="keywordtype">string</span>    _delim1;
-<a name="l00064"></a>00064     <span class="keywordtype">string</span>    _delim2;
-<a name="l00065"></a>00065 
-<a name="l00066"></a>00066   <span class="keyword">public</span>:
-<a name="l00077"></a>00077     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab);
-<a name="l00078"></a>00078 
-<a name="l00090"></a>00090     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim);
-<a name="l00091"></a>00091 
-<a name="l00104"></a>00104     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim1, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim2);
-<a name="l00105"></a>00105     
-<a name="l00115"></a>00115     ~<a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>();
-<a name="l00116"></a>00116     
-<a name="l00125"></a>00125     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; clear_values();
-<a name="l00126"></a>00126 
-<a name="l00136"></a>00136     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; operator%(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>&amp; f);
-<a name="l00137"></a>00137 
-<a name="l00148"></a>00148     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; values(<span class="keywordtype">string</span> t, <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>* v);
-<a name="l00149"></a>00149 
-<a name="l00161"></a>00161     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; values(<span class="keywordtype">string</span> t, <span class="keywordtype">string</span> v, param_types p=e_int);
-<a name="l00162"></a>00162 
-<a name="l00173"></a>00173     <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00174"></a><a class="code" href="classdb_1_1ins.html#af62c2aa0514fdf791ee34709ecce5c8a">00174</a>     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; values(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; t, <span class="keyword">const</span> T&amp; v)
-<a name="l00175"></a>00175     { <span class="keywordflow">return</span> <a class="code" href="classdb_1_1ins.html#af62c2aa0514fdf791ee34709ecce5c8a" title="values">values</a>(t, detail::to_string(v), tp(v)); }
+<a name="l00037"></a><a class="code" href="classdb_1_1ins.html">00037</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> 
+<a name="l00038"></a>00038   {
+<a name="l00039"></a>00039   <span class="keyword">protected</span>:
+<a name="l00040"></a>00040     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a> _values;
+<a name="l00041"></a>00041     <span class="keywordtype">string</span>    _source;
+<a name="l00042"></a>00042     <span class="keywordtype">string</span>    _delim1;
+<a name="l00043"></a>00043     <span class="keywordtype">string</span>    _delim2;
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045   <span class="keyword">public</span>:
+<a name="l00056"></a>00056     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab);
+<a name="l00057"></a>00057 
+<a name="l00069"></a>00069     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim);
+<a name="l00070"></a>00070 
+<a name="l00083"></a>00083     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim1, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim2);
+<a name="l00084"></a>00084     
+<a name="l00094"></a>00094     ~<a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>();
+<a name="l00095"></a>00095     
+<a name="l00104"></a>00104     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; clear_values();
+<a name="l00105"></a>00105 
+<a name="l00115"></a>00115     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; operator%(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>&amp; f);
+<a name="l00116"></a>00116 
+<a name="l00127"></a>00127     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; values(<span class="keywordtype">string</span> t, <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>* v);
+<a name="l00128"></a>00128 
+<a name="l00140"></a>00140     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; values(<span class="keywordtype">string</span> t, <span class="keywordtype">string</span> v, param_types p=e_int);
+<a name="l00141"></a>00141 
+<a name="l00152"></a>00152     <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
+<a name="l00153"></a><a class="code" href="classdb_1_1ins.html#af62c2aa0514fdf791ee34709ecce5c8a">00153</a>     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; values(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; t, <span class="keyword">const</span> T&amp; v)
+<a name="l00154"></a>00154     { <span class="keywordflow">return</span> <a class="code" href="classdb_1_1ins.html#af62c2aa0514fdf791ee34709ecce5c8a" title="values">values</a>(t, detail::to_string(v), tp(v)); }
+<a name="l00155"></a>00155 
+<a name="l00164"></a>00164     operator string() <span class="keyword">const</span>;
+<a name="l00165"></a>00165 
+<a name="l00174"></a>00174     <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
+<a name="l00175"></a>00175   }; 
 <a name="l00176"></a>00176 
-<a name="l00185"></a>00185     operator string() <span class="keyword">const</span>;
-<a name="l00186"></a>00186 
-<a name="l00195"></a>00195     <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
-<a name="l00196"></a>00196   }; 
-<a name="l00197"></a>00197 
-<a name="l00198"></a>00198 }
-<a name="l00199"></a>00199 
-<a name="l00200"></a>00200 <span class="preprocessor">#endif</span>
+<a name="l00177"></a>00177 }
+<a name="l00178"></a>00178 
+<a name="l00204"></a>00204 
+<a name="l00205"></a>00205 <span class="preprocessor">#endif</span>
 </pre></div></div>
 <hr class="footer"/><address style="text-align: right;"><small>Generated for sqlite_wrapper</small></address>
 </body>

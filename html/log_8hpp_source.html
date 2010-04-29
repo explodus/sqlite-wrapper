@@ -139,9 +139,9 @@ window.onload = initDynSections;
 <a name="l00075"></a>00075     <span class="keyword">public</span>:
 <a name="l00076"></a>00076       <a class="code" href="classdb_1_1log_1_1buffer_1_1file.html">file</a>(<span class="keyword">const</span> db::string&amp; name) : 
 <a name="l00077"></a>00077 <span class="preprocessor">        #ifdef SQLITE_WRAPPER_NARROW_STRING</span>
-<a name="l00078"></a>00078 <span class="preprocessor"></span>          of_(name)
-<a name="l00079"></a>00079         <span class="preprocessor">#else</span>
-<a name="l00080"></a>00080 <span class="preprocessor"></span>          of_(static_cast&lt;const char*&gt;(
+<a name="l00078"></a>00078 <span class="preprocessor"></span>          of_(name.c_str())
+<a name="l00079"></a>00079         #<span class="keywordflow">else</span>
+<a name="l00080"></a>00080           of_(static_cast&lt;const char*&gt;(
 <a name="l00081"></a>00081             <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">db::detail::w2a</a>(name.c_str())))
 <a name="l00082"></a>00082         #endif <span class="comment">// SQLITE_WRAPPER_NARROW_STRING</span>
 <a name="l00083"></a>00083       {
@@ -554,7 +554,7 @@ window.onload = initDynSections;
 <a name="l00552"></a>00552   { 
 <a name="l00553"></a>00553     <span class="keyword">namespace </span>db
 <a name="l00554"></a>00554     {
-<a name="l00555"></a>00555       typedef ::db::log::buffer::database&lt;::db::base&gt; buffer_type;
+<a name="l00555"></a>00555       typedef ::db::log::buffer::database&lt; ::db::base&gt; buffer_type;
 <a name="l00556"></a>00556       typedef ::db::log::provider::basic&lt;buffer_type&gt; provider_type;
 <a name="l00557"></a>00557       typedef ::db::log::format::database format_type;
 <a name="l00558"></a>00558 
@@ -593,7 +593,7 @@ window.onload = initDynSections;
 <a name="l00611"></a>00611 
 <a name="l00612"></a>00612     <span class="keyword">namespace </span>io
 <a name="l00613"></a>00613     {
-<a name="l00614"></a>00614       typedef ::db::log::buffer::file&lt;::db::ofstream&gt; buffer_type;
+<a name="l00614"></a>00614       typedef ::db::log::buffer::file&lt; ::db::ofstream&gt; buffer_type;
 <a name="l00615"></a>00615       typedef ::db::log::provider::basic&lt;buffer_type&gt; provider_type;
 <a name="l00616"></a>00616       typedef ::db::log::format::basic format_type;
 <a name="l00617"></a>00617 

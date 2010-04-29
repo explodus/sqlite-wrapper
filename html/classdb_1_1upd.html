@@ -105,24 +105,7 @@ access public  <a href="#ae1b592682cf66f339d863a5e0f05ee42"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>helper class for generating update sql expressions </p>
-<p>an usage example:</p>
-<div class="fragment"><pre class="fragment">     <span class="keywordtype">void</span> generate_update_expression()
-     {
-      <span class="keyword">using</span> db::string;
-      <span class="keyword">using</span> <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">db::upd</a>;
-      <span class="keyword">using</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>;
-     
-      <span class="keywordtype">string</span> sql(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;UPDATE gps SET longitude=11.12345678,latitude=53.12345678 WHERE id = 1234&quot;</span>));
-     
-      <a class="code" href="group__constructors.html#ga89539569559a82ce11a99fc5e2797c8d">upd</a> u((
-          <a class="code" href="group__constructors.html#ga89539569559a82ce11a99fc5e2797c8d">upd</a>(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;gps&quot;</span>)) 
-        % field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;longitude&quot;</span>), 11.12345678)
-        % field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;latitude&quot;</span>), 53.12345678) 
-        % (field(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;id&quot;</span>), 1) == 1234)));
-     
-      BOOST_CHECK(sql == <span class="keywordtype">string</span>(u));
-     }
-</pre></div> <hr/><h2>Member Function Documentation</h2>
+<hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a982030f0ad583fcaca3de7e98ce77e29"></a><!-- doxytag: member="db::upd::operator%" ref="a982030f0ad583fcaca3de7e98ce77e29" args="(const db::field &amp;f)" -->
 <div class="memitem">
 <div class="memproto">

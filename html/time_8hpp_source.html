@@ -638,20 +638,18 @@ window.onload = initDynSections;
 <a name="l00729"></a>00729       <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s
 <a name="l00730"></a>00730     , <span class="keyword">const</span> time_t_ce* tmp = 0) 
 <a name="l00731"></a>00731     {
-<a name="l00733"></a>00733     <a class="code" href="config_8hpp.html#ac830dd94a45984c0ad47afc38882bdbf">UNREFERENCED_PARAMETER</a>(tmp);
-<a name="l00734"></a>00734     tm _tm = {0};
-<a name="l00735"></a>00735     <span class="keywordtype">int</span> err = _stscanf(s.c_str(), <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;%d.%d.%d %d:%d:%d&quot;</span>), 
-<a name="l00736"></a>00736       &amp;_tm.tm_mday, &amp;_tm.tm_mon, &amp;_tm.tm_year,
-<a name="l00737"></a>00737       &amp;_tm.tm_hour, &amp;_tm.tm_min, &amp;_tm.tm_sec);
-<a name="l00739"></a>00739     <a class="code" href="config_8hpp.html#ac830dd94a45984c0ad47afc38882bdbf">UNREFERENCED_PARAMETER</a>(err);
-<a name="l00740"></a>00740     <span class="keywordflow">return</span> time::mktime_ce(&amp;_tm);
-<a name="l00741"></a>00741     }
-<a name="l00742"></a>00742   }
-<a name="l00743"></a>00743 }
-<a name="l00744"></a>00744 
-<a name="l00745"></a>00745 <span class="preprocessor">#endif // BOOST_NO_STD_LOCALE</span>
-<a name="l00746"></a>00746 <span class="preprocessor"></span>
-<a name="l00747"></a>00747 <span class="preprocessor">#endif // DB_TIME_HPP_INCLUDED</span>
+<a name="l00732"></a>00732     tm _tm = {0};
+<a name="l00733"></a>00733     <span class="keywordtype">int</span> err = _stscanf(s.c_str(), <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;%d.%d.%d %d:%d:%d&quot;</span>), 
+<a name="l00734"></a>00734       &amp;_tm.tm_mday, &amp;_tm.tm_mon, &amp;_tm.tm_year,
+<a name="l00735"></a>00735       &amp;_tm.tm_hour, &amp;_tm.tm_min, &amp;_tm.tm_sec);
+<a name="l00736"></a>00736     <span class="keywordflow">return</span> time::mktime_ce(&amp;_tm);
+<a name="l00737"></a>00737     }
+<a name="l00738"></a>00738   }
+<a name="l00739"></a>00739 }
+<a name="l00740"></a>00740 
+<a name="l00741"></a>00741 <span class="preprocessor">#endif // BOOST_NO_STD_LOCALE</span>
+<a name="l00742"></a>00742 <span class="preprocessor"></span>
+<a name="l00743"></a>00743 <span class="preprocessor">#endif // DB_TIME_HPP_INCLUDED</span>
 </pre></div></div>
 <hr class="footer"/><address style="text-align: right;"><small>Generated for sqlite_wrapper</small></address>
 </body>

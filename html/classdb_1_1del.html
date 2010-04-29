@@ -100,19 +100,7 @@ Inheritance diagram for db::del:</div>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
 <p>helper class, generates DELETE SQL statements </p>
-<p>an usage example:</p>
-<div class="fragment"><pre class="fragment"> db::string sql(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;DELETE FROM gps WHERE id = 1234&quot;</span>));
-
- <a class="code" href="classdb_1_1del.html" title="helper class, generates DELETE SQL statements">db::del</a> d(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;gps&quot;</span>)); 
- d.where((<a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>(<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;id&quot;</span>), 1) == 1234));
-
- BOOST_CHECK_MESSAGE( sql == db::string(d)
-  , <span class="stringliteral">&quot;\n sql is: \&quot;&quot;</span> 
-  &lt;&lt; <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">db::detail::w2a</a>(sql.c_str())
-  &lt;&lt; <span class="stringliteral">&quot;\&quot;,\n sel is: \&quot;&quot;</span> 
-  &lt;&lt; <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">db::detail::w2a</a>(db::string(d).c_str())
-  &lt;&lt; <span class="stringliteral">&quot;\&quot;&quot;</span> );
-</pre></div> <hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ae14834a21d6f451f4a115e284835cae8"></a><!-- doxytag: member="db::del::~del" ref="ae14834a21d6f451f4a115e284835cae8" args="()" -->
 <div class="memitem">
 <div class="memproto">

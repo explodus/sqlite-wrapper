@@ -203,71 +203,69 @@ window.onload = initDynSections;
 <a name="l00240"></a>00240   <span class="keyword">static</span> COleDateTime from_sql_string(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s, 
 <a name="l00241"></a>00241     <span class="keyword">const</span> COleDateTime *tmp=0) 
 <a name="l00242"></a>00242   {
-<a name="l00244"></a>00244     <a class="code" href="config_8hpp.html#ac830dd94a45984c0ad47afc38882bdbf">UNREFERENCED_PARAMETER</a>(tmp);
-<a name="l00245"></a>00245     COleDateTime ret;
-<a name="l00246"></a>00246     tm _tm = {0};
-<a name="l00247"></a>00247     <span class="keywordtype">int</span> err = _stscanf(s.c_str(), <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;%d.%d.%d %d:%d:%d&quot;</span>), 
-<a name="l00248"></a>00248       &amp;_tm.tm_mday, &amp;_tm.tm_mon, &amp;_tm.tm_year,
-<a name="l00249"></a>00249       &amp;_tm.tm_hour, &amp;_tm.tm_min, &amp;_tm.tm_sec);
-<a name="l00251"></a>00251     <a class="code" href="config_8hpp.html#ac830dd94a45984c0ad47afc38882bdbf">UNREFERENCED_PARAMETER</a>(err);
-<a name="l00252"></a>00252     ret.SetDateTime(_tm.tm_year, _tm.tm_mon, _tm.tm_mday, 
-<a name="l00253"></a>00253       _tm.tm_hour, _tm.tm_min, _tm.tm_sec);
-<a name="l00254"></a>00254     <span class="keywordflow">if</span> (ret.GetStatus()==COleDateTime::invalid)
-<a name="l00255"></a>00255       ret = to_type&lt;double&gt;(s);
-<a name="l00256"></a>00256     <span class="keywordflow">return</span> ret;
-<a name="l00257"></a>00257   }
-<a name="l00258"></a>00258 <span class="preprocessor">#endif // _MFCVER</span>
-<a name="l00259"></a>00259 <span class="preprocessor"></span>
-<a name="l00272"></a>00272   <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt; 
-<a name="l00273"></a>00273   <span class="keyword">inline</span> <span class="keywordtype">void</span> front_back_delim(T&amp; sText, <span class="keyword">const</span> T&amp; delim1, <span class="keyword">const</span> T&amp; delim2)
-<a name="l00274"></a>00274   { sText = delim1 + sText + delim2; }
-<a name="l00275"></a>00275 
-<a name="l00276"></a>00276   <span class="keyword">inline</span> <span class="keywordtype">string</span> escape_sql(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; str)
-<a name="l00277"></a>00277   { 
-<a name="l00278"></a>00278     <span class="keywordflow">if</span> (str == <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;NULL&quot;</span>))
-<a name="l00279"></a>00279       <span class="keywordflow">return</span> str;
-<a name="l00280"></a>00280 
-<a name="l00281"></a>00281     <span class="keywordtype">string</span> ret(detail::replace_all_copy&lt;string&gt;(str, 
-<a name="l00282"></a>00282       <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;\&#39;NULL\&#39;&quot;</span>), <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;NULL&quot;</span>)));
-<a name="l00283"></a>00283     ret = detail::replace_all_copy&lt;string&gt;(str, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&quot;</span>), 
-<a name="l00284"></a>00284       <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&#39;&quot;</span>));
-<a name="l00285"></a>00285     ret = <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&quot;</span>) + ret + <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&quot;</span>);
-<a name="l00286"></a>00286     <span class="keywordflow">return</span> ret;
-<a name="l00287"></a>00287   }  
-<a name="l00288"></a>00288 
-<a name="l00289"></a>00289 } }
-<a name="l00290"></a>00290 
-<a name="l00291"></a>00291 <span class="keyword">namespace </span>db 
-<a name="l00292"></a>00292 {
-<a name="l00294"></a><a class="code" href="classdb_1_1split__map.html">00294</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a> : <span class="keyword">public</span> std::map&lt;string, string&gt; 
-<a name="l00295"></a>00295   {
-<a name="l00296"></a>00296   <span class="keyword">public</span>:
-<a name="l00298"></a>00298     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a>();
-<a name="l00300"></a>00300     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a>(std::map&lt;string, string&gt;&amp; data);
-<a name="l00301"></a>00301 
-<a name="l00303"></a>00303     <span class="keywordtype">string</span> join_fields(<span class="keywordtype">string</span> delim) <span class="keyword">const</span>;
-<a name="l00304"></a>00304 
-<a name="l00305"></a>00305     <span class="keywordtype">string</span> join_values(<span class="keywordtype">string</span> delim) <span class="keyword">const</span>;
-<a name="l00306"></a>00306   };
-<a name="l00307"></a>00307 
-<a name="l00309"></a><a class="code" href="classdb_1_1split.html">00309</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1split.html" title="split basis">split</a> : <span class="keyword">public</span> std::vector&lt;string&gt; 
-<a name="l00310"></a>00310   {
-<a name="l00311"></a>00311   <span class="keyword">public</span>:
-<a name="l00313"></a>00313     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>();
-<a name="l00314"></a>00314 
-<a name="l00316"></a>00316     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>(std::vector&lt;string&gt; data);
-<a name="l00317"></a>00317 
-<a name="l00319"></a>00319     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>(<span class="keywordtype">string</span> s, <span class="keywordtype">string</span> delim=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot; &quot;</span>));
-<a name="l00320"></a>00320 
-<a name="l00336"></a>00336     <a class="code" href="classdb_1_1split.html" title="split basis">split</a> slice(<span class="keywordtype">int</span> start, <span class="keywordtype">int</span> end) <span class="keyword">const</span>;
-<a name="l00337"></a>00337 
-<a name="l00339"></a>00339     <span class="keywordtype">string</span> join(<span class="keywordtype">string</span> delim) <span class="keyword">const</span>;
-<a name="l00340"></a>00340 
-<a name="l00342"></a>00342     <a class="code" href="classdb_1_1split.html" title="split basis">split</a> &amp; extend(<span class="keyword">const</span> <a class="code" href="classdb_1_1split.html" title="split basis">split</a> &amp; s);
-<a name="l00343"></a>00343   }; 
-<a name="l00344"></a>00344 }
-<a name="l00345"></a>00345 
-<a name="l00346"></a>00346 <span class="preprocessor">#endif // DB_DETAIL_HPP_INCLUDED</span>
+<a name="l00243"></a>00243     COleDateTime ret;
+<a name="l00244"></a>00244     tm _tm = {0};
+<a name="l00245"></a>00245     <span class="keywordtype">int</span> err = _stscanf(s.c_str(), <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;%d.%d.%d %d:%d:%d&quot;</span>), 
+<a name="l00246"></a>00246       &amp;_tm.tm_mday, &amp;_tm.tm_mon, &amp;_tm.tm_year,
+<a name="l00247"></a>00247       &amp;_tm.tm_hour, &amp;_tm.tm_min, &amp;_tm.tm_sec);
+<a name="l00248"></a>00248     ret.SetDateTime(_tm.tm_year, _tm.tm_mon, _tm.tm_mday, 
+<a name="l00249"></a>00249       _tm.tm_hour, _tm.tm_min, _tm.tm_sec);
+<a name="l00250"></a>00250     <span class="keywordflow">if</span> (ret.GetStatus()==COleDateTime::invalid)
+<a name="l00251"></a>00251       ret = to_type&lt;double&gt;(s);
+<a name="l00252"></a>00252     <span class="keywordflow">return</span> ret;
+<a name="l00253"></a>00253   }
+<a name="l00254"></a>00254 <span class="preprocessor">#endif // _MFCVER</span>
+<a name="l00255"></a>00255 <span class="preprocessor"></span>
+<a name="l00268"></a>00268   <span class="keyword">template</span>&lt;<span class="keyword">class</span> T&gt; 
+<a name="l00269"></a>00269   <span class="keyword">inline</span> <span class="keywordtype">void</span> front_back_delim(T&amp; sText, <span class="keyword">const</span> T&amp; delim1, <span class="keyword">const</span> T&amp; delim2)
+<a name="l00270"></a>00270   { sText = delim1 + sText + delim2; }
+<a name="l00271"></a>00271 
+<a name="l00272"></a>00272   <span class="keyword">inline</span> <span class="keywordtype">string</span> escape_sql(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; str)
+<a name="l00273"></a>00273   { 
+<a name="l00274"></a>00274     <span class="keywordflow">if</span> (str == <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;NULL&quot;</span>))
+<a name="l00275"></a>00275       <span class="keywordflow">return</span> str;
+<a name="l00276"></a>00276 
+<a name="l00277"></a>00277     <span class="keywordtype">string</span> ret(detail::replace_all_copy&lt;string&gt;(str, 
+<a name="l00278"></a>00278       <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;\&#39;NULL\&#39;&quot;</span>), <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;NULL&quot;</span>)));
+<a name="l00279"></a>00279     ret = detail::replace_all_copy&lt;string&gt;(str, <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&quot;</span>), 
+<a name="l00280"></a>00280       <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&#39;&quot;</span>));
+<a name="l00281"></a>00281     ret = <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&quot;</span>) + ret + <a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&#39;&quot;</span>);
+<a name="l00282"></a>00282     <span class="keywordflow">return</span> ret;
+<a name="l00283"></a>00283   }  
+<a name="l00284"></a>00284 
+<a name="l00285"></a>00285 } }
+<a name="l00286"></a>00286 
+<a name="l00287"></a>00287 <span class="keyword">namespace </span>db 
+<a name="l00288"></a>00288 {
+<a name="l00290"></a><a class="code" href="classdb_1_1split__map.html">00290</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a> : <span class="keyword">public</span> std::map&lt;string, string&gt; 
+<a name="l00291"></a>00291   {
+<a name="l00292"></a>00292   <span class="keyword">public</span>:
+<a name="l00294"></a>00294     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a>();
+<a name="l00296"></a>00296     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a>(std::map&lt;string, string&gt;&amp; data);
+<a name="l00297"></a>00297 
+<a name="l00299"></a>00299     <span class="keywordtype">string</span> join_fields(<span class="keywordtype">string</span> delim) <span class="keyword">const</span>;
+<a name="l00300"></a>00300 
+<a name="l00301"></a>00301     <span class="keywordtype">string</span> join_values(<span class="keywordtype">string</span> delim) <span class="keyword">const</span>;
+<a name="l00302"></a>00302   };
+<a name="l00303"></a>00303 
+<a name="l00305"></a><a class="code" href="classdb_1_1split.html">00305</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1split.html" title="split basis">split</a> : <span class="keyword">public</span> std::vector&lt;string&gt; 
+<a name="l00306"></a>00306   {
+<a name="l00307"></a>00307   <span class="keyword">public</span>:
+<a name="l00309"></a>00309     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>();
+<a name="l00310"></a>00310 
+<a name="l00312"></a>00312     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>(std::vector&lt;string&gt; data);
+<a name="l00313"></a>00313 
+<a name="l00315"></a>00315     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>(<span class="keywordtype">string</span> s, <span class="keywordtype">string</span> delim=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot; &quot;</span>));
+<a name="l00316"></a>00316 
+<a name="l00332"></a>00332     <a class="code" href="classdb_1_1split.html" title="split basis">split</a> slice(<span class="keywordtype">int</span> start, <span class="keywordtype">int</span> end) <span class="keyword">const</span>;
+<a name="l00333"></a>00333 
+<a name="l00335"></a>00335     <span class="keywordtype">string</span> join(<span class="keywordtype">string</span> delim) <span class="keyword">const</span>;
+<a name="l00336"></a>00336 
+<a name="l00338"></a>00338     <a class="code" href="classdb_1_1split.html" title="split basis">split</a> &amp; extend(<span class="keyword">const</span> <a class="code" href="classdb_1_1split.html" title="split basis">split</a> &amp; s);
+<a name="l00339"></a>00339   }; 
+<a name="l00340"></a>00340 }
+<a name="l00341"></a>00341 
+<a name="l00342"></a>00342 <span class="preprocessor">#endif // DB_DETAIL_HPP_INCLUDED</span>
 </pre></div></div>
 <hr class="footer"/><address style="text-align: right;"><small>Generated for sqlite_wrapper</small></address>
 </body>
