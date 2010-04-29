@@ -10,6 +10,12 @@
 ///
 
 #include <sqlite_wrapper/config.hpp>
+
+#ifndef SQLITE_WRAPPER_NARROW_STRING
+	#include <sqlite_wrapper/a2w.hpp>
+	#include <sqlite_wrapper/w2a.hpp>
+#endif
+
 #include <sqlite_wrapper/db.hpp>
 
 #include <sqlite_wrapper/detail/field.hpp>
@@ -152,12 +158,12 @@ test_suite* init_unit_test_suite( int /*argc*/, char* argv[] )
 
 int main( int argc, char ** argv )
 {
-	using db::detail::a2w;
 	using db::string;
 
 #ifdef SQLITE_WRAPPER_NARROW_STRING
 	string db_name = argv[0];
 #else
+	using db::detail::a2w;
 	string db_name = a2w(argv[0]);
 #endif 
 
