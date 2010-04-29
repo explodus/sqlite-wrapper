@@ -10,8 +10,6 @@
 ///
 
 #include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/a2w.hpp>
-#include <sqlite_wrapper/w2a.hpp>
 #include <sqlite_wrapper/db.hpp>
 
 #include <sqlite_wrapper/detail/field.hpp>
@@ -46,9 +44,9 @@ void generate_update_expression()
 
 	BOOST_CHECK_MESSAGE( sql == string(u)
 		, "\n sql is: \"" 
-		<< db::detail::w2a(sql.c_str())
+		<< sql.c_str()
 		<< "\",\n upd is: \"" 
-		<< db::detail::w2a(string(u).c_str())
+		<< string(u).c_str()
 		<< "\"" );
 }
 
@@ -68,9 +66,9 @@ void generate_select_expression()
 
 	BOOST_CHECK_MESSAGE( sql == string(s)
 		, "\n sql is: \"" 
-		<< db::detail::w2a(sql.c_str())
+		<< sql.c_str()
 		<< "\",\n sel is: \"" 
-		<< db::detail::w2a(string(s).c_str())
+		<< string(s).c_str()
 		<< "\"" );
 }
 
@@ -83,9 +81,9 @@ void generate_delete_expression()
 
 	BOOST_CHECK_MESSAGE( sql == db::string(d)
 		, "\n sql is: \"" 
-		<< db::detail::w2a(sql.c_str())
+		<< sql.c_str()
 		<< "\",\n del is: \"" 
-		<< db::detail::w2a(db::string(d).c_str())
+		<< db::string(d).c_str()
 		<< "\"" );
 }
 
@@ -102,9 +100,9 @@ void generate_insert_expression()
 
 	BOOST_CHECK_MESSAGE( sql == db::string(i)
 		, "\n sql is: \"" 
-		<< db::detail::w2a(sql.c_str())
+		<< sql.c_str()
 		<< "\",\n ins is: \"" 
-		<< db::detail::w2a(db::string(i).c_str())
+		<< db::string(i).c_str()
 		<< "\"" );
 }
 
