@@ -32,7 +32,7 @@ namespace db { namespace detail
 		///
 		/// <BR>qualifier throw() : empty_(0)
 		/// <BR>access    private  
-		/// @return       
+		/// 
 		/// @param        psz as const wchar_t*
 		/// @param        nCodePage as unsigned
 		///
@@ -41,6 +41,23 @@ namespace db { namespace detail
 		w2a(const wchar_t* psz, unsigned nCodePage = 0 /*CP_ACP*/ ) : empty_(0)
 		{
 			init( psz, nCodePage );
+		}
+
+		/// @brief        constructor
+		///
+		/// <BR>qualifier : empty_(0)
+		/// <BR>access    private 
+		/// 
+		/// @param        psz as const char *
+		///
+		/// @date         2.5.2010 17:14
+		/// 
+		w2a(const char* psz) : empty_(0)
+		{
+			if (strlen(psz)==0)
+				return;
+			sz_.resize(strlen(psz)+1);
+			memcpy(&*sz_.begin(), psz, strlen(psz));
 		}
 
 		/// <BR>qualifier const throw()

@@ -124,6 +124,44 @@ namespace
 
 		TABLE_MEMBER_GET_SET(longitude)
 		TABLE_MEMBER_GET_SET(latitude)
+		void test()
+		{
+			db::string sql_sel(DB_TEXT("SELECT id,latitude,longitude FROM gps WHERE id = 0"));
+
+			BOOST_CHECK_MESSAGE( sql_sel == get_sel().str()
+				, "\n sql_sel is: \"" 
+				<< static_cast<const char*>(db::detail::w2a(sql_sel.c_str()))
+				<< "\",\n sel is: \"" 
+				<< static_cast<const char*>(db::detail::w2a(get_sel().str().c_str()))
+				<< "\"" );
+
+			db::string sql_del(DB_TEXT("DELETE FROM gps WHERE id = 0"));
+
+			BOOST_CHECK_MESSAGE( sql_del == get_del().str()
+				, "\n sql_del is: \"" 
+				<< static_cast<const char*>(db::detail::w2a(sql_del.c_str()))
+				<< "\",\n del is: \"" 
+				<< static_cast<const char*>(db::detail::w2a(get_del().str().c_str()))
+				<< "\"" );
+
+			db::string sql_ins(DB_TEXT("INSERT INTO gps (id,latitude,longitude) VALUES (0,0,0)"));
+
+			BOOST_CHECK_MESSAGE( sql_ins == get_ins().str()
+				, "\n sql_ins is: \"" 
+				<< static_cast<const char*>(db::detail::w2a(sql_ins.c_str()))
+				<< "\",\n ins is: \"" 
+				<< static_cast<const char*>(db::detail::w2a(get_ins().str().c_str()))
+				<< "\"" );
+
+			db::string sql_upd(DB_TEXT("UPDATE gps SET latitude=0,longitude=0 WHERE id = 0"));
+
+			BOOST_CHECK_MESSAGE( sql_upd == get_upd().str()
+				, "\n sql_upd is: \"" 
+				<< static_cast<const char*>(db::detail::w2a(sql_upd.c_str()))
+				<< "\",\n upd is: \"" 
+				<< static_cast<const char*>(db::detail::w2a(get_upd().str().c_str()))
+				<< "\"" );
+		}
 	};
 }
 
@@ -131,14 +169,8 @@ void test_table_class()
 {
 	gps gps_;
 
-	db::string sql(DB_TEXT("SELECT id,latitude,longitude FROM gps"));
+	gps_.test();
 
-	BOOST_CHECK_MESSAGE( sql == gps_.get_sel().str()
-		, "\n sql is: \"" 
-		<< sql.c_str()
-		<< "\",\n ins is: \"" 
-		<< gps_.get_sel().str().c_str()
-		<< "\"" );
 }
 
 test_suite* init_unit_test_suite( int /*argc*/, char* argv[] ) 

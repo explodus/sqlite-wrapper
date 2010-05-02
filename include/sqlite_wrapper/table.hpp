@@ -93,22 +93,23 @@ namespace db
 
 		TABLE_MEMBER_GET_SET(id)
 
+		virtual void get(db::base& b);
+		virtual void get(db::base& b, vec_type& v);
+
+		virtual void set(db::base& b);
+		virtual void set(db::base& b, vec_type& v);
+
+		virtual void erase(db::base& b);
+
+		virtual void create(db::base& b);
+
+	protected:
+		virtual db::sel get_sel_complete();
 		virtual db::sel get_sel();
 		virtual db::ins get_ins();
 		virtual db::upd get_upd();
 		virtual db::del get_del();
 
-		virtual void get(db::base& b, table& t);
-		virtual void get(db::base& b, vec_type& v);
-
-		virtual void set(db::base& b, table& t);
-		virtual void set(db::base& b, vec_type& v);
-
-		virtual void erase(db::base& b, table& t);
-
-		virtual void create(db::base& b);
-
-	protected:
 		map_type _members;
 
 	private:
