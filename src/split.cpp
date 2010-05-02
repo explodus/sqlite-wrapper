@@ -29,13 +29,13 @@ db::split_map::split_map()
 { 
 }
 
-db::split_map::split_map(std::map<db::string, db::string>& data) 
+db::split_map::split_map(const std::map<db::string, db::string>& data) 
 	: std::map<db::string, db::string>(data) 
 {
 
 }
 
-db::string db::split_map::join_fields(db::string delim) const
+db::string db::split_map::join_fields(const db::string& delim) const
 {
 	string res;
 	for (const_iterator i = begin(); i != end(); i++)
@@ -47,7 +47,7 @@ db::string db::split_map::join_fields(db::string delim) const
 	return res; 
 }
 
-db::string db::split_map::join_values(db::string delim) const
+db::string db::split_map::join_values(const db::string& delim) const
 {
 	string res;
 	for (const_iterator i = begin(); i != end(); i++)
@@ -67,17 +67,18 @@ db::split::split()
 
 }
 
-db::split::split(std::vector<db::string> data) 
+db::split::split(const std::vector<db::string>& data) 
 	: std::vector<db::string>(data) 
 {
 
 }
 
-db::split::split(db::string s, db::string delim/*=DB_TEXT(" ")*/)
+db::split::split(const db::string& s, const db::string& delim)
 {
 	if (s.length()==0)
 		return;
-	db::char_type *ptr(&*s.begin());
+	db::string tmp(s);
+	db::char_type *ptr(&*tmp.begin());
 	int len(delim.length());
 	std::vector<db::char_type*> pointers;
 	pointers.push_back(ptr);
@@ -91,30 +92,37 @@ db::split::split(db::string s, db::string delim/*=DB_TEXT(" ")*/)
 		pointers.push_back(ptr);
 		(ptr = _tcsstr(ptr, delim.c_str()));
 	}
-	for (std::vector<db::char_type*>::iterator i(pointers.begin()), 
-		e(pointers.end()); i != e; ++i)
+
+	for (std::vector<db::char_type*>::iterator 
+		  i(pointers.begin())
+		, e(pointers.end())
+		; i != e
+		; ++i)
 		push_back(string(*i));
 }
 
 db::split db::split::slice(int start, int end) const
 {
 	std::vector<string> data;
+	int size_ = static_cast<int>(size());
+
 	if (start < 0)
-		start = start+size();
+		start = start+size_;
 	if (end < 0)
-		end = end+size();
-	if (start >= static_cast<int>(size()))
-		start = size()-1;
-	if (end >= static_cast<int>(size()))
-		end = size()-1;
+		end = end+size_;
+	if (start >= size_)
+		start = size_-1;
+	if (end >= size_)
+		end = size_-1;
 	if (start >= end)
 		return data;
-	for (int i = start; i < end; i++)
+
+	for (int i = start; i < end; ++i)
 		data.push_back(this->operator[](i));
 	return data; 
 }
 
-db::string db::split::join(db::string delim) const
+db::string db::split::join(const db::string& delim) const
 {
 	string res;
 	for (const_iterator i = begin(); i != end(); i++)

@@ -27,19 +27,23 @@
 #define db_h__
 
 #if _MSC_VER > 1000
-#pragma once
+#	pragma once
 #endif // _MSC_VER > 1000
 
 #include <sqlite_wrapper/config.hpp>
 
-#pragma warning( push, 1 )
+#if _MSC_VER > 1000
+#	pragma warning( push, 1 )
+#endif // _MSC_VER > 1000
 
 #include <boost/detail/allocator_utilities.hpp>
 #include <boost/detail/quick_allocator.hpp> 
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
 
-#pragma warning( pop )
+#if _MSC_VER > 1000
+#	pragma warning( pop )
+#endif // _MSC_VER > 1000
 
 #include <sqlite_wrapper/detail/time.hpp>
 #include <sqlite_wrapper/detail/tools.hpp>

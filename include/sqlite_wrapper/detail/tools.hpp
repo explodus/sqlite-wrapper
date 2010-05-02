@@ -290,51 +290,123 @@ namespace db
 	class SQLITE_WRAPPER_DLLAPI split_map : public std::map<string, string> 
 	{
 	public:
-		/// empty splitmap
+		/// @brief        empty splitmap
+		///
+		/// <BR>qualifier
+		/// <BR>access    public 
+		/// 
+		/// @date         2.5.2010 20:11
+		/// 
 		split_map();
-		/// from map
-		split_map(std::map<string, string>& data);
 
-		/// gibt Text zurück mit eingefügtem Abgrenzer
-		string join_fields(string delim) const;
+		/// @brief        from map
+		///
+		/// <BR>qualifier
+		/// <BR>access    public 
+		/// 
+		/// @param        data as const std::map<string, string> &
+		///
+		/// @date         2.5.2010 20:11
+		/// 
+		split_map(const std::map<string, string>& data);
 
-		string join_values(string delim) const;
+		/// @brief        returns text with added delimiter
+		///
+		/// <BR>qualifier const
+		/// <BR>access    public 
+		/// 
+		/// @return       db::string
+		/// @param        delim as string
+		///
+		/// @date         2.5.2010 20:10
+		/// 
+		string join_fields(const string& delim) const;
+
+		/// @brief        returns text with added delimiter
+		///
+		/// <BR>qualifier const
+		/// <BR>access    public 
+		/// 
+		/// @return       db::string
+		/// @param        delim as string
+		///
+		/// @date         2.5.2010 20:10
+		/// 
+		string join_values(const string& delim) const;
 	};
 
-	///split basis
+	///split base
 	class SQLITE_WRAPPER_DLLAPI split : public std::vector<string> 
 	{
 	public:
-		///empty split
+		/// @brief        empty split
+		///
+		/// <BR>qualifier
+		/// <BR>access    public 
+		/// 
+		/// @date         2.5.2010 19:46
+		/// 
 		split();
 
-		///from string vector
-		split(std::vector<string> data);
+		/// @brief        from string vector
+		///
+		/// <BR>qualifier
+		/// <BR>access    public 
+		/// 
+		/// @param        data as const std::vector<string>&
+		///
+		/// @date         2.5.2010 19:46
+		/// 
+		split(const std::vector<string>& data);
 
-		///from string. split to parts using delimeter
-		split(string s, string delim=DB_TEXT(" "));
+		/// @brief        from string. split to parts using delimeter
+		///
+		/// <BR>qualifier
+		/// <BR>access    public 
+		/// 
+		/// @param        s as const string&
+		/// @param        delim as const string&
+		///
+		/// @date         2.5.2010 19:45
+		/// @ingroup			constructors
+		/// 
+		split(const string& s, const string& delim=DB_TEXT(" "));
 
-		/// @todo to englisch
-		/// @brief        Gibt eine Teilmenge von Texten zurück
-		///								Indexe können negativ sein. 
-		///								Aktueller Index is dann berechnet vom Ende von split.
+		/// @brief        returns a subset of terms
+		///								the current index calculates from the end of the split
 		///
 		/// <BR>qualifier const
 		/// <BR>access    public  
 		/// @return       db::split
-		/// @param        start as int - Startindex
-		/// @param        end as int - Endindex
+		/// @param        start as int - start index - could be negative
+		/// @param        end as int - end index - could be negative
 		///
-		/// @author       Torsten Schroeder
-		/// @author       schroeder@ipe-chemnitz.de / explodus@gmx.de
 		/// @date         12.3.2010 8:30
 		///
 		split slice(int start, int end) const;
 
-		///gibt Text zurück mit eingefügtem Abgrenzer
-		string join(string delim) const;
+		/// @brief        returns text and adds a delimiter
+		///
+		/// <BR>qualifier const
+		/// <BR>access    public 
+		/// 
+		/// @return       db::string
+		/// @param        delim as const string & - the added delimiter
+		///
+		/// @date         2.5.2010 19:37
+		/// 
+		string join(const string & delim) const;
 
-		///Fügt Ausdrücke ans Ende eines anderen split an
+		/// @brief        extend the split with the terms from another one
+		///
+		/// <BR>qualifier
+		/// <BR>access    public 
+		/// 
+		/// @return       split &
+		/// @param        s as const split &
+		///
+		/// @date         2.5.2010 19:39
+		/// 
 		split & extend(const split & s);
 	}; 
 }

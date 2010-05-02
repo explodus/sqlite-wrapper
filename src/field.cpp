@@ -26,24 +26,44 @@
 #include <sqlite_wrapper/db.hpp>
 #include <sqlite_wrapper/detail/expr.hpp>
 
-db::field::field( const string& n, const param_types& t/*=e_long*/ ) : _name(n), _type(t), _extra(e_nullExtra), _length(-1)
+db::field::field( const string& n, const param_types& t/*=e_long*/ ) : 
+	  _name(n)
+	, _type(t)
+	, _extra(e_nullExtra)
+	, _length(-1)
 {
 
 }
 
-db::field::field( const string_pair& n_tbl, const param_types& t/*=e_long*/, const Values& vals /*= Values()*/ ) : _name(n_tbl.first), _type(t), _table(n_tbl.second), _values(vals), 
-_extra(e_nullExtra), _length(-1)
+db::field::field( 
+	  const string_pair& n_tbl
+	, const param_types& t
+	, const Values& vals ) : 
+	  _name(n_tbl.first)
+	, _table(n_tbl.second)
+	, _type(t)
+	, _extra(e_nullExtra)
+	, _values(vals)
+	, _length(-1)
 {
 
 }
 
-db::field::field( const field& f ) : _name(f._name), _type(f._type), _table(f._table), _values(f._values), 
-_extra(f._extra), _length(f._length)
+db::field::field( const field& f ) : 
+	  _name(f._name)
+	, _table(f._table)
+	, _type(f._type)
+	, _extra(f._extra)
+	, _values(f._values)
+	, _length(f._length)
 {
 
 }
 
-db::field::field() : _type(e_long), _extra(e_nullExtra), _length(-1)
+db::field::field() : 
+	  _type(e_long)
+	, _extra(e_nullExtra)
+	, _length(-1)
 {
 
 }

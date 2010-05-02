@@ -13,8 +13,9 @@
 
 #ifndef SQLITE_WRAPPER_NARROW_STRING
 	#include <sqlite_wrapper/a2w.hpp>
-	#include <sqlite_wrapper/w2a.hpp>
 #endif
+
+#include <sqlite_wrapper/w2a.hpp>
 
 #include <sqlite_wrapper/db.hpp>
 
