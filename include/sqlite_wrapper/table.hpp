@@ -14,31 +14,15 @@
 #include <sqlite_wrapper/config.hpp>
 #include <boost/variant.hpp>
 #include <map>
+#include <vector>
 
 namespace db
 {
 	class sel;
-	
-	///	@brief a base wrapper class for a database table
-	class SQLITE_WRAPPER_DLLAPI table
-	{
-	public:
-		typedef boost::variant<int, db::string, double> value_type;
-		typedef std::map<db::string, value_type> map_type;
-
-		table(const db::string& table_name) : _table_name(table_name) {}
-		virtual ~table() 
-		{ }
-
-		const db::string& table_name() const { return _table_name; }
-
-		virtual db::sel get_sel();
-	protected:
-		map_type _members;
-
-	private:
-		db::string _table_name;
-	};
+	class ins;
+	class upd;
+	class del;
+	class base;
 
 ///
 #	define TABLE_BEGIN(name) \
@@ -76,6 +60,61 @@ namespace db
 			if (it != _members.end()) \
 				it->second = val; \
 		}
+	
+	///	@brief a base wrapper class for a database table
+	class SQLITE_WRAPPER_DLLAPI table
+	{
+	public:
+		typedef boost::variant<int, db::string, double> value_type;
+		typedef std::map<db::string, value_type> map_type;
+		typedef std::vector<table> vec_type;
+
+		/// @brief        table
+		///
+		/// <BR>qualifier : _table_name(table_name)
+		/// <BR>access    public 
+		/// 
+		/// @return       
+		/// @param        table_name as const db::string &
+		///
+		/// @author       T. Schröder (explodus@gmx.de)
+		/// @date         30.4.2010 22:34
+		/// 
+		table(const db::string& table_name) : 
+			_table_name(table_name) 
+		{
+			_members.insert(db::table::map_type::value_type(DB_TEXT("id"), value_type()));
+		}
+		
+		virtual ~table() 
+		{ }
+
+		const db::string& table_name() const { return _table_name; }
+
+		TABLE_MEMBER_GET_SET(id)
+
+		virtual db::sel get_sel();
+		virtual db::ins get_ins();
+		virtual db::upd get_upd();
+		virtual db::del get_del();
+
+		virtual void get(db::base& b, table& t);
+		virtual void get(db::base& b, vec_type& v);
+
+		virtual void set(db::base& b, table& t);
+		virtual void set(db::base& b, vec_type& v);
+
+		virtual void erase(db::base& b, table& t);
+
+		virtual void create(db::base& b);
+
+	protected:
+		map_type _members;
+
+	private:
+		db::string _table_name;
+	};
+
 }
 
 /// @page usage examples of the wrapper
