@@ -17,6 +17,32 @@
 
 #include <sqlite_wrapper/db.hpp>
 
+namespace db { namespace detail 
+{
+	template<typename T>
+	class get_field_visitor : public boost::static_visitor<>
+	{
+		db::string _title;
+		T& _expr;
+	public:
+		get_field_visitor(T& expr_) : _expr(expr_) 
+		{ }
+		
+		void operator()( int operand )
+		{ _expr % db::field(_title, operand); }
+		
+		void operator()( const db::string & operand )
+		{ _expr % db::field(_title, operand); }
+		
+		void operator()( const double & operand )
+		{ _expr % db::field(_title, operand); }
+
+		void operator()( const db::table::map_type::value_type & operand )
+		{ _title = operand.first; boost::apply_visitor(*this, operand.second); }
+	};
+
+} }
+
 db::sel db::table::get_sel()
 {
 	db::sel ret(table_name());
@@ -42,6 +68,16 @@ db::upd db::table::get_upd()
 {
 	db::upd ret(table_name());
 
+	ret % (db::field(DB_TEXT("id"), 0) == id<int>());
+
+	detail::get_field_visitor<db::upd> visitor(ret);
+	for (db::table::map_type::const_iterator 
+			itb(_members.begin())
+		, ite(_members.end())
+		; itb!=ite
+		; ++itb)
+		visitor(*itb);
+	
 	return ret;
 }
 
