@@ -75,7 +75,7 @@ window.onload = initDynSections;
 </div>
 <div class="contents">
 <h1>db::split Class Reference</h1><!-- doxytag: class="db::split" --><!-- doxytag: inherits="std::vector" -->
-<p>split basis  
+<p>split base  
 <a href="#_details">More...</a></p>
 
 <p>Inherits std::vector&lt; string &gt;.</p>
@@ -83,27 +83,138 @@ window.onload = initDynSections;
 <p><a href="classdb_1_1split-members.html">List of all members.</a></p>
 <table border="0" cellpadding="0" cellspacing="0">
 <tr><td colspan="2"><h2>Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a305799e6e07edb295ea412e6be9f6c6c"></a><!-- doxytag: member="db::split::split" ref="a305799e6e07edb295ea412e6be9f6c6c" args="(string s, string delim=DB_TEXT(&quot; &quot;))" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1split.html#a305799e6e07edb295ea412e6be9f6c6c">split</a> (string s, string delim=DB_TEXT(&quot; &quot;))</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">from string. split to parts using delimeter <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5ece9fb442a745f95403552c28a52ceb"></a><!-- doxytag: member="db::split::split" ref="a5ece9fb442a745f95403552c28a52ceb" args="(std::vector&lt; string &gt; data)" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1split.html#a5ece9fb442a745f95403552c28a52ceb">split</a> (std::vector&lt; string &gt; data)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">from string vector <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adaa5b701f349126426857d9b1c4c067a"></a><!-- doxytag: member="db::split::split" ref="adaa5b701f349126426857d9b1c4c067a" args="()" -->
-&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1split.html#adaa5b701f349126426857d9b1c4c067a">split</a> ()</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">empty split <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ade59751f834fbbe73860bb4011610f31"></a><!-- doxytag: member="db::split::extend" ref="ade59751f834fbbe73860bb4011610f31" args="(const split &amp;s)" -->
-<a class="el" href="classdb_1_1split.html">split</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1split.html#ade59751f834fbbe73860bb4011610f31">extend</a> (const <a class="el" href="classdb_1_1split.html">split</a> &amp;s)</td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Fügt Ausdrücke ans Ende eines anderen split an. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a61598c8bebcc65aa114d7e6b85d0028d"></a><!-- doxytag: member="db::split::join" ref="a61598c8bebcc65aa114d7e6b85d0028d" args="(string delim) const " -->
-string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1split.html#a61598c8bebcc65aa114d7e6b85d0028d">join</a> (string delim) const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">gibt Text zurück mit eingefügtem Abgrenzer <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__constructors.html#gaf4fdba1d47ca140ee5620d95f8559940">split</a> (const string &amp;s, const string &amp;delim=DB_TEXT(&quot; &quot;))</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">from string. split to parts using delimeter  <a href="group__constructors.html#gaf4fdba1d47ca140ee5620d95f8559940"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1split.html#aa2e56cc6a36af731215f2f405479e027">split</a> (const std::vector&lt; string &gt; &amp;data)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">from string vector  <a href="#aa2e56cc6a36af731215f2f405479e027"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1split.html#adaa5b701f349126426857d9b1c4c067a">split</a> ()</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">empty split  <a href="#adaa5b701f349126426857d9b1c4c067a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdb_1_1split.html">split</a> &amp;&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1split.html#ade59751f834fbbe73860bb4011610f31">extend</a> (const <a class="el" href="classdb_1_1split.html">split</a> &amp;s)</td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">extend the split with the terms from another one  <a href="#ade59751f834fbbe73860bb4011610f31"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1split.html#af85da6db2732fafc2da42a7164607a6b">join</a> (const string &amp;delim) const </td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">returns text and adds a delimiter  <a href="#af85da6db2732fafc2da42a7164607a6b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="classdb_1_1split.html">split</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdb_1_1split.html#a7aee20e0e9972a4eb0373f863c356fe0">slice</a> (int start, int end) const </td></tr>
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Gibt eine Teilmenge von Texten zurück Indexe können negativ sein. Aktueller Index is dann berechnet vom Ende von split.  <a href="#a7aee20e0e9972a4eb0373f863c356fe0"></a><br/></td></tr>
+<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">returns a subset of terms the current index calculates from the end of the split  <a href="#a7aee20e0e9972a4eb0373f863c356fe0"></a><br/></td></tr>
 </table>
 <hr/><a name="_details"></a><h2>Detailed Description</h2>
-<p>split basis </p>
+<p>split base </p>
+<hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="adaa5b701f349126426857d9b1c4c067a"></a><!-- doxytag: member="db::split::split" ref="adaa5b701f349126426857d9b1c4c067a" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">db::split::split </td>
+          <td>(</td>
+          <td class="paramname"></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>empty split </p>
+<p><br/>
+qualifier <br/>
+access public</p>
+<dl class="date"><dt><b>Date:</b></dt><dd>2.5.2010 19:46 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa2e56cc6a36af731215f2f405479e027"></a><!-- doxytag: member="db::split::split" ref="aa2e56cc6a36af731215f2f405479e027" args="(const std::vector&lt; string &gt; &amp;data)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">db::split::split </td>
+          <td>(</td>
+          <td class="paramtype">const std::vector&lt; string &gt; &amp;&nbsp;</td>
+          <td class="paramname"> <em>data</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>from string vector </p>
+<p><br/>
+qualifier <br/>
+access public</p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>data</em>&nbsp;</td><td>as const std::vector&lt;string&gt;&amp;</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>2.5.2010 19:46 </dd></dl>
+
+</div>
+</div>
 <hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ade59751f834fbbe73860bb4011610f31"></a><!-- doxytag: member="db::split::extend" ref="ade59751f834fbbe73860bb4011610f31" args="(const split &amp;s)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classdb_1_1split.html">split</a>&amp; db::split::extend </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classdb_1_1split.html">split</a> &amp;&nbsp;</td>
+          <td class="paramname"> <em>s</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>extend the split with the terms from another one </p>
+<p><br/>
+qualifier <br/>
+access public</p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>split &amp; </dd></dl>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>s</em>&nbsp;</td><td>as const split &amp;</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>2.5.2010 19:39 </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af85da6db2732fafc2da42a7164607a6b"></a><!-- doxytag: member="db::split::join" ref="af85da6db2732fafc2da42a7164607a6b" args="(const string &amp;delim) const " -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string db::split::join </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&nbsp;</td>
+          <td class="paramname"> <em>delim</em></td>
+          <td>&nbsp;)&nbsp;</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>returns text and adds a delimiter </p>
+<p><br/>
+qualifier const <br/>
+access public</p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>db::string </dd></dl>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table border="0" cellspacing="2" cellpadding="0">
+    <tr><td valign="top"></td><td valign="top"><em>delim</em>&nbsp;</td><td>as const string &amp; - the added delimiter</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="date"><dt><b>Date:</b></dt><dd>2.5.2010 19:37 </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a7aee20e0e9972a4eb0373f863c356fe0"></a><!-- doxytag: member="db::split::slice" ref="a7aee20e0e9972a4eb0373f863c356fe0" args="(int start, int end) const " -->
 <div class="memitem">
 <div class="memproto">
@@ -129,22 +240,18 @@ string&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </div>
 <div class="memdoc">
 
-<p>Gibt eine Teilmenge von Texten zurück Indexe können negativ sein. Aktueller Index is dann berechnet vom Ende von split. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000015">Todo:</a></b></dt><dd>to englisch </dd></dl>
+<p>returns a subset of terms the current index calculates from the end of the split </p>
 <p><br/>
 qualifier const <br/>
 access public </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd><a class="el" href="classdb_1_1split.html" title="split basis">db::split</a> </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd><a class="el" href="classdb_1_1split.html" title="split base">db::split</a> </dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>start</em>&nbsp;</td><td>as int - Startindex </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>end</em>&nbsp;</td><td>as int - Endindex</td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>start</em>&nbsp;</td><td>as int - start index - could be negative </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>end</em>&nbsp;</td><td>as int - end index - could be negative</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="author"><dt><b>Author:</b></dt><dd>Torsten Schroeder </dd>
-<dd>
-<a href="mailto:schroeder@ipe-chemnitz.de">schroeder@ipe-chemnitz.de</a> / <a href="mailto:explodus@gmx.de">explodus@gmx.de</a> </dd></dl>
 <dl class="date"><dt><b>Date:</b></dt><dd>12.3.2010 8:30 </dd></dl>
 
 </div>

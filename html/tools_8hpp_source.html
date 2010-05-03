@@ -240,32 +240,33 @@ window.onload = initDynSections;
 <a name="l00290"></a><a class="code" href="classdb_1_1split__map.html">00290</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a> : <span class="keyword">public</span> std::map&lt;string, string&gt; 
 <a name="l00291"></a>00291   {
 <a name="l00292"></a>00292   <span class="keyword">public</span>:
-<a name="l00294"></a>00294     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a>();
-<a name="l00296"></a>00296     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a>(std::map&lt;string, string&gt;&amp; data);
-<a name="l00297"></a>00297 
-<a name="l00299"></a>00299     <span class="keywordtype">string</span> join_fields(<span class="keywordtype">string</span> delim) <span class="keyword">const</span>;
-<a name="l00300"></a>00300 
-<a name="l00301"></a>00301     <span class="keywordtype">string</span> join_values(<span class="keywordtype">string</span> delim) <span class="keyword">const</span>;
-<a name="l00302"></a>00302   };
-<a name="l00303"></a>00303 
-<a name="l00305"></a><a class="code" href="classdb_1_1split.html">00305</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1split.html" title="split basis">split</a> : <span class="keyword">public</span> std::vector&lt;string&gt; 
-<a name="l00306"></a>00306   {
-<a name="l00307"></a>00307   <span class="keyword">public</span>:
-<a name="l00309"></a>00309     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>();
-<a name="l00310"></a>00310 
-<a name="l00312"></a>00312     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>(std::vector&lt;string&gt; data);
-<a name="l00313"></a>00313 
-<a name="l00315"></a>00315     <a class="code" href="classdb_1_1split.html" title="split basis">split</a>(<span class="keywordtype">string</span> s, <span class="keywordtype">string</span> delim=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot; &quot;</span>));
-<a name="l00316"></a>00316 
-<a name="l00332"></a>00332     <a class="code" href="classdb_1_1split.html" title="split basis">split</a> slice(<span class="keywordtype">int</span> start, <span class="keywordtype">int</span> end) <span class="keyword">const</span>;
-<a name="l00333"></a>00333 
-<a name="l00335"></a>00335     <span class="keywordtype">string</span> join(<span class="keywordtype">string</span> delim) <span class="keyword">const</span>;
-<a name="l00336"></a>00336 
-<a name="l00338"></a>00338     <a class="code" href="classdb_1_1split.html" title="split basis">split</a> &amp; extend(<span class="keyword">const</span> <a class="code" href="classdb_1_1split.html" title="split basis">split</a> &amp; s);
-<a name="l00339"></a>00339   }; 
-<a name="l00340"></a>00340 }
-<a name="l00341"></a>00341 
-<a name="l00342"></a>00342 <span class="preprocessor">#endif // DB_DETAIL_HPP_INCLUDED</span>
+<a name="l00300"></a>00300     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a>();
+<a name="l00301"></a>00301 
+<a name="l00311"></a>00311     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a>(<span class="keyword">const</span> std::map&lt;string, string&gt;&amp; data);
+<a name="l00312"></a>00312 
+<a name="l00323"></a>00323     <span class="keywordtype">string</span> join_fields(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim) <span class="keyword">const</span>;
+<a name="l00324"></a>00324 
+<a name="l00335"></a>00335     <span class="keywordtype">string</span> join_values(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim) <span class="keyword">const</span>;
+<a name="l00336"></a>00336   };
+<a name="l00337"></a>00337 
+<a name="l00339"></a><a class="code" href="classdb_1_1split.html">00339</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1split.html" title="split base">split</a> : <span class="keyword">public</span> std::vector&lt;string&gt; 
+<a name="l00340"></a>00340   {
+<a name="l00341"></a>00341   <span class="keyword">public</span>:
+<a name="l00349"></a>00349     <a class="code" href="classdb_1_1split.html" title="split base">split</a>();
+<a name="l00350"></a>00350 
+<a name="l00360"></a>00360     <a class="code" href="classdb_1_1split.html" title="split base">split</a>(<span class="keyword">const</span> std::vector&lt;string&gt;&amp; data);
+<a name="l00361"></a>00361 
+<a name="l00373"></a>00373     <a class="code" href="classdb_1_1split.html" title="split base">split</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot; &quot;</span>));
+<a name="l00374"></a>00374 
+<a name="l00386"></a>00386     <a class="code" href="classdb_1_1split.html" title="split base">split</a> slice(<span class="keywordtype">int</span> start, <span class="keywordtype">int</span> end) <span class="keyword">const</span>;
+<a name="l00387"></a>00387 
+<a name="l00398"></a>00398     <span class="keywordtype">string</span> join(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp; delim) <span class="keyword">const</span>;
+<a name="l00399"></a>00399 
+<a name="l00410"></a>00410     <a class="code" href="classdb_1_1split.html" title="split base">split</a> &amp; extend(<span class="keyword">const</span> <a class="code" href="classdb_1_1split.html" title="split base">split</a> &amp; s);
+<a name="l00411"></a>00411   }; 
+<a name="l00412"></a>00412 }
+<a name="l00413"></a>00413 
+<a name="l00414"></a>00414 <span class="preprocessor">#endif // DB_DETAIL_HPP_INCLUDED</span>
 </pre></div></div>
 <hr class="footer"/><address style="text-align: right;"><small>Generated for sqlite_wrapper</small></address>
 </body>
