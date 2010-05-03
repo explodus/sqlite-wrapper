@@ -41,7 +41,8 @@ void generate_update_expression()
 	using db::upd;
 	using db::field;
 
-	string sql(DB_TEXT("UPDATE gps SET longitude=11.12345678,latitude=53.12345678 WHERE id = 1234"));
+	string sql(DB_TEXT("UPDATE gps SET longitude=11.12345678,")
+						 DB_TEXT("latitude=53.12345678 WHERE id = 1234"));
 
 	upd u((
 		  upd(DB_TEXT("gps")) 
@@ -81,35 +82,44 @@ void generate_select_expression()
 
 void generate_delete_expression()
 {
-	db::string sql(DB_TEXT("DELETE FROM gps WHERE id = 1234"));
+	using db::string;
+	using db::del;
+	using db::field;
 
-	db::del d(DB_TEXT("gps")); 
-	d.where((db::field(DB_TEXT("id"), 1) == 1234));
+	string sql(DB_TEXT("DELETE FROM gps WHERE id = 1234"));
 
-	BOOST_CHECK_MESSAGE( sql == db::string(d)
+	del d(DB_TEXT("gps")); 
+	d.where((field(DB_TEXT("id"), 1) == 1234));
+
+	BOOST_CHECK_MESSAGE( sql == string(d)
 		, "\n sql is: \"" 
 		<< sql.c_str()
 		<< "\",\n del is: \"" 
-		<< db::string(d).c_str()
+		<< string(d).c_str()
 		<< "\"" );
 }
 
 void generate_insert_expression()
 {
-	db::string sql(DB_TEXT("INSERT INTO gps (id,latitude,longitude) VALUES (1234,11.1234,53.1234)"));
+	using db::string;
+	using db::ins;
+	using db::field;
 
-	db::ins i((
-		  db::ins(DB_TEXT("gps")) 
-		% db::field(DB_TEXT("id"), 1234) 
-		% db::field(DB_TEXT("longitude"), 53.1234) 
-		% db::field(DB_TEXT("latitude"), 11.1234)
+	string sql(DB_TEXT("INSERT INTO gps (id,latitude,longitude) ")
+								 DB_TEXT("VALUES (1234,11.1234,53.1234)"));
+
+	ins i((
+		  ins(DB_TEXT("gps")) 
+		% field(DB_TEXT("id"), 1234) 
+		% field(DB_TEXT("longitude"), 53.1234) 
+		% field(DB_TEXT("latitude"), 11.1234)
 	)); 
 
-	BOOST_CHECK_MESSAGE( sql == db::string(i)
+	BOOST_CHECK_MESSAGE( sql == string(i)
 		, "\n sql is: \"" 
 		<< sql.c_str()
 		<< "\",\n ins is: \"" 
-		<< db::string(i).c_str()
+		<< string(i).c_str()
 		<< "\"" );
 }
 
@@ -127,7 +137,8 @@ namespace
 		TABLE_MEMBER_GET_SET(latitude)
 		void test()
 		{
-			db::string sql_sel(DB_TEXT("SELECT id,latitude,longitude FROM gps WHERE id = 0"));
+			db::string sql_sel(DB_TEXT("SELECT id,latitude,longitude ")
+												 DB_TEXT("FROM gps WHERE id = 0"));
 
 			BOOST_CHECK_MESSAGE( sql_sel == get_sel().str()
 				, "\n sql_sel is: \"" 
@@ -145,7 +156,8 @@ namespace
 				<< static_cast<const char*>(db::detail::w2a(get_del().str().c_str()))
 				<< "\"" );
 
-			db::string sql_ins(DB_TEXT("INSERT INTO gps (id,latitude,longitude) VALUES (0,0,0)"));
+			db::string sql_ins(DB_TEXT("INSERT INTO gps (id,latitude,longitude) ")
+												 DB_TEXT("VALUES (0,0,0)"));
 
 			BOOST_CHECK_MESSAGE( sql_ins == get_ins().str()
 				, "\n sql_ins is: \"" 
@@ -154,7 +166,8 @@ namespace
 				<< static_cast<const char*>(db::detail::w2a(get_ins().str().c_str()))
 				<< "\"" );
 
-			db::string sql_upd(DB_TEXT("UPDATE gps SET latitude=0,longitude=0 WHERE id = 0"));
+			db::string sql_upd(DB_TEXT("UPDATE gps SET latitude=0,longitude=0 ")
+												 DB_TEXT("WHERE id = 0"));
 
 			BOOST_CHECK_MESSAGE( sql_upd == get_upd().str()
 				, "\n sql_upd is: \"" 

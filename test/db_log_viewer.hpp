@@ -59,10 +59,10 @@ namespace db { namespace test
 			if (!val)
 				return;
 
-			unsigned old_rows(0), new_rows(val->size());
+			unsigned old_rows(0), new_rows(static_cast<unsigned>(val->size()));
 
 			if (_q && _q->size())
-				old_rows = _q->size();
+				old_rows = static_cast<unsigned>(_q->size());
 
 			_q = val; 
 
@@ -91,7 +91,7 @@ namespace db { namespace test
 			if (!_q)
 				return 0;
 
-			return _q->size();
+			return static_cast<unsigned>(_q->size());
 		}
 
 		QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
