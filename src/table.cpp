@@ -176,11 +176,30 @@ void db::table::get( db::base& b, vec_type& v )
 
 void db::table::set( db::base& b )
 {
-
+	/// todo: insert or update or both?
+	b.execute_ptr(get_upd());
 }
 
 void db::table::set( db::base& b, vec_type& v )
 {
+	try
+	{
+		b.begin();
+
+		for (
+			  vec_type::const_iterator itb(v.begin())
+			, ite(v.end())
+			; itb!=ite
+			; ++itb)
+			b.execute_ptr(itb->get_upd());
+
+		b.commit();
+	}
+	catch (db::exception& e)
+	{	
+		/// todo: do somethin with this exception, rethrow or anything
+		b.rollback();
+	}
 
 }
 
