@@ -68,9 +68,28 @@ namespace db { namespace detail
 		return ret;
 	}
 
+	class are_strict_equals
+		: public boost::static_visitor<bool>
+	{
+	public:
+
+		template <typename T, typename U>
+		bool operator()( const T &, const U & ) const
+		{
+			return false; // cannot compare different types
+		}
+
+		template <typename T>
+		bool operator()( const T & lhs, const T & rhs ) const
+		{
+			return lhs == rhs;
+		}
+
+	};
+
 } }
 
-db::sel db::table::get_sel()
+db::sel db::table::get_sel() const
 {
 	db::sel ret = get_sel_complete();
 
@@ -79,7 +98,7 @@ db::sel db::table::get_sel()
 	return ret;
 }
 
-db::sel db::table::get_sel_complete()
+db::sel db::table::get_sel_complete() const
 {
 	db::sel ret(table_name());
 
@@ -93,7 +112,7 @@ db::sel db::table::get_sel_complete()
 	return ret;
 }
 
-db::ins db::table::get_ins()
+db::ins db::table::get_ins() const
 {
 	db::ins ret(table_name());
 	detail::get_field_visitor<db::ins> visitor(ret);
@@ -108,7 +127,7 @@ db::ins db::table::get_ins()
 	return ret;
 }
 
-db::upd db::table::get_upd()
+db::upd db::table::get_upd() const 
 {
 	db::upd ret(table_name());
 	detail::get_field_visitor<db::upd> visitor(ret);
@@ -125,7 +144,7 @@ db::upd db::table::get_upd()
 	return ret;
 }
 
-db::del db::table::get_del()
+db::del db::table::get_del() const
 {
 	db::del ret(table_name());
 
@@ -176,8 +195,11 @@ void db::table::get( db::base& b, vec_type& v )
 
 void db::table::set( db::base& b )
 {
-	/// todo: insert or update or both?
-	b.execute_ptr(get_upd());
+	// insert or update or both?
+	db::string s = get_upd();
+	s.erase(0, 6);
+	s = DB_TEXT("insert or update ") + s;
+	b.execute_ptr(s);
 }
 
 void db::table::set( db::base& b, vec_type& v )
@@ -195,7 +217,7 @@ void db::table::set( db::base& b, vec_type& v )
 
 		b.commit();
 	}
-	catch (db::exception& e)
+	catch (db::exception::base& /*e*/)
 	{	
 		/// todo: do somethin with this exception, rethrow or anything
 		b.rollback();
@@ -210,5 +232,54 @@ void db::table::erase( db::base& b )
 
 void db::table::create( db::base& b )
 {
+	db::stringstream ss;
 
+	ss 
+		<< DB_TEXT("create table if not exists ") 
+		<< _table_name 
+		<< DB_TEXT("(id integer primary key");
+
+	for (
+		  map_type::const_iterator itb(++_members.begin())
+		, ite(_members.end())
+		; itb!=ite
+		; ++itb)
+	{
+		ss << DB_TEXT(", ") << itb->first;
+		if (itb->second.type() == typeid(int))
+			ss << DB_TEXT("integer");
+		else if (itb->second.type() == typeid(double))
+			ss << DB_TEXT("real");
+		else if (itb->second.type() == typeid(db::string))
+			ss << DB_TEXT("text");
+	}
+
+	b.execute_ptr(ss.str());
+}
+
+bool db::table::operator==( const table& t ) const
+{
+	if (_table_name != t._table_name)
+		return false;
+
+	if (_members.size() != t._members.size())
+		return false;
+
+	for (
+		  map_type::const_iterator itb(_members.begin())
+		, ttb(t._members.begin())
+		, ite(_members.end())
+		; itb!=ite
+		; ++itb)
+	{
+		if (itb->first != ttb->first)
+			return false;
+		if(!boost::apply_visitor(
+			  detail::are_strict_equals()
+			, itb->second
+			, ttb->second))
+			return false;
+	}
+
+	return true;
 }

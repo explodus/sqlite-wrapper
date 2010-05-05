@@ -135,6 +135,7 @@ namespace
 
 		TABLE_MEMBER_GET_SET(longitude)
 		TABLE_MEMBER_GET_SET(latitude)
+		
 		void test()
 		{
 			db::string sql_sel(DB_TEXT("SELECT id,latitude,longitude ")
@@ -182,9 +183,28 @@ namespace
 void test_table_class()
 {
 	gps gps_;
-
 	gps_.test();
 
+	gps_.longitude(53.1234);
+	gps_.latitude(11.1234);
+
+	db::base b;
+
+	try
+	{
+		b.connect(":memory:");
+		gps_.create(b);
+		gps_.set(b);
+		{
+			gps gps_compare;
+			gps_compare.get(b);
+			BOOST_CHECK(gps_ == gps_compare);
+		}
+	}
+	catch (db::exception::base& e)
+	{
+		
+	}
 }
 
 test_suite* init_unit_test_suite( int /*argc*/, char* argv[] ) 

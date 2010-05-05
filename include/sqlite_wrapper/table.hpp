@@ -103,12 +103,14 @@ namespace db
 
 		virtual void create(db::base& b);
 
+		bool operator==(const table& t) const;
+
 	protected:
-		virtual db::sel get_sel_complete();
-		virtual db::sel get_sel();
-		virtual db::ins get_ins();
-		virtual db::upd get_upd();
-		virtual db::del get_del();
+		virtual db::sel get_sel_complete() const;
+		virtual db::sel get_sel() const;
+		virtual db::ins get_ins() const;
+		virtual db::upd get_upd() const;
+		virtual db::del get_del() const;
 
 		map_type _members;
 
