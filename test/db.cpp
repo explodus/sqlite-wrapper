@@ -203,7 +203,7 @@ void test_table_class()
 	}
 	catch (db::exception::base& e)
 	{
-		
+		BOOST_CHECK_MESSAGE( false, e.what() );
 	}
 }
 
