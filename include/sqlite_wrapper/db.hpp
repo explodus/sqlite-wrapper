@@ -45,7 +45,11 @@
 #	pragma warning( pop )
 #endif // _MSC_VER > 1000
 
-#include "../../src/sqlite/sqlite3.h"
+#ifndef SQLITE_ENABLE_COLUMN_METADATA
+#	define SQLITE_ENABLE_COLUMN_METADATA
+#endif
+
+#include <sqlite3.h>
 
 #include <sqlite_wrapper/a2w.hpp>
 #include <sqlite_wrapper/w2a.hpp>
