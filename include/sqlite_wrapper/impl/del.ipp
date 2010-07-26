@@ -22,16 +22,15 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/config.hpp>
+#ifndef SQLITE_WRAPPER_DEL_IPP_INCLUDED
+#define SQLITE_WRAPPER_DEL_IPP_INCLUDED
 
-#include <sqlite_wrapper/detail/del.hpp>
-
-db::del::del( const string& tablename ) : sel(tablename)
+inline db::del::del( const string& tablename ) : sel(tablename)
 {
 
 }
 
-db::del::operator db::string() const
+inline db::del::operator db::string() const
 {
 	string res = DB_TEXT("DELETE FROM ");
 	res += _sources.join(DB_TEXT(","));
@@ -54,7 +53,9 @@ db::del::operator db::string() const
 	return res;
 }
 
-db::del::~del()
+inline db::del::~del()
 {
 
 }
+
+#endif

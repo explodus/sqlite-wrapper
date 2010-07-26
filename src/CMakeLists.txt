@@ -41,25 +41,25 @@ SOURCE_GROUP( "Header Files\\detail" FILES
 	${sqlite_wrapper_header_detail}
 	)
 
-SET( sqlite_wrapper_source_top
-	${CMAKE_SOURCE_DIR}/src/cout.cpp
-	${CMAKE_SOURCE_DIR}/src/table.cpp
-	${CMAKE_SOURCE_DIR}/src/a2w.cpp
-	${CMAKE_SOURCE_DIR}/src/w2a.cpp
-	${CMAKE_SOURCE_DIR}/src/log_level.cpp
-	${CMAKE_SOURCE_DIR}/src/db.cpp
-	${CMAKE_SOURCE_DIR}/src/query.cpp
-	${CMAKE_SOURCE_DIR}/src/row.cpp
-	${CMAKE_SOURCE_DIR}/src/param.cpp
-	${CMAKE_SOURCE_DIR}/src/sel.cpp
-	${CMAKE_SOURCE_DIR}/src/upd.cpp
-	${CMAKE_SOURCE_DIR}/src/del.cpp
-	${CMAKE_SOURCE_DIR}/src/ins.cpp
-	${CMAKE_SOURCE_DIR}/src/expr.cpp
-	${CMAKE_SOURCE_DIR}/src/exception.cpp
-	${CMAKE_SOURCE_DIR}/src/split.cpp
-	${CMAKE_SOURCE_DIR}/src/field.cpp
-	)
+SET( sqlite_wrapper_source_top "" )
+	# ${CMAKE_SOURCE_DIR}/src/cout.cpp
+	# ${CMAKE_SOURCE_DIR}/src/table.cpp
+	# ${CMAKE_SOURCE_DIR}/src/a2w.cpp
+	# ${CMAKE_SOURCE_DIR}/src/w2a.cpp
+	# ${CMAKE_SOURCE_DIR}/src/log_level.cpp
+	# ${CMAKE_SOURCE_DIR}/src/db.cpp
+	# ${CMAKE_SOURCE_DIR}/src/query.cpp
+	# ${CMAKE_SOURCE_DIR}/src/row.cpp
+	# ${CMAKE_SOURCE_DIR}/src/param.cpp
+	# ${CMAKE_SOURCE_DIR}/src/sel.cpp
+	# ${CMAKE_SOURCE_DIR}/src/upd.cpp
+	# ${CMAKE_SOURCE_DIR}/src/del.cpp
+	# ${CMAKE_SOURCE_DIR}/src/ins.cpp
+	# ${CMAKE_SOURCE_DIR}/src/expr.cpp
+	# ${CMAKE_SOURCE_DIR}/src/exception.cpp
+	# ${CMAKE_SOURCE_DIR}/src/split.cpp
+	# ${CMAKE_SOURCE_DIR}/src/field.cpp
+	# )
 
 SET( sqlite3_source_top
 	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3.c
@@ -68,7 +68,7 @@ SET( sqlite3_source_top
 	)
 
 SOURCE_GROUP( "Source Files" FILES
-	${sqlite_wrapper_source_top}
+	#${sqlite_wrapper_source_top}
 	${sqlite3_source_top}
 	)
 

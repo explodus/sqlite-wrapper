@@ -22,20 +22,20 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
+#ifndef SQLITE_WRAPPER_SPLIT_IPP_INCLUDED
+#define SQLITE_WRAPPER_SPLIT_IPP_INCLUDED
 
-db::split_map::split_map() 
+inline db::split_map::split_map() 
 { 
 }
 
-db::split_map::split_map(const std::map<db::string, db::string>& data) 
+inline db::split_map::split_map(const std::map<db::string, db::string>& data) 
 	: std::map<db::string, db::string>(data) 
 {
 
 }
 
-db::string db::split_map::join_fields(const db::string& delim) const
+inline db::string db::split_map::join_fields(const db::string& delim) const
 {
 	string res;
 	for (const_iterator i = begin(); i != end(); i++)
@@ -47,7 +47,7 @@ db::string db::split_map::join_fields(const db::string& delim) const
 	return res; 
 }
 
-db::string db::split_map::join_values(const db::string& delim) const
+inline db::string db::split_map::join_values(const db::string& delim) const
 {
 	string res;
 	for (const_iterator i = begin(); i != end(); i++)
@@ -62,18 +62,18 @@ db::string db::split_map::join_values(const db::string& delim) const
 	return res; 
 }
 
-db::split::split() 
+inline db::split::split() 
 {
 
 }
 
-db::split::split(const std::vector<db::string>& data) 
+inline db::split::split(const std::vector<db::string>& data) 
 	: std::vector<db::string>(data) 
 {
 
 }
 
-db::split::split(const db::string& s, const db::string& delim)
+inline db::split::split(const db::string& s, const db::string& delim)
 {
 	if (s.length()==0)
 		return;
@@ -101,7 +101,7 @@ db::split::split(const db::string& s, const db::string& delim)
 		push_back(string(*i));
 }
 
-db::split db::split::slice(int start, int end) const
+inline db::split db::split::slice(int start, int end) const
 {
 	std::vector<string> data;
 	int size_ = static_cast<int>(size());
@@ -122,7 +122,7 @@ db::split db::split::slice(int start, int end) const
 	return data; 
 }
 
-db::string db::split::join(const db::string& delim) const
+inline db::string db::split::join(const db::string& delim) const
 {
 	string res;
 	for (const_iterator i = begin(); i != end(); i++)
@@ -134,9 +134,11 @@ db::string db::split::join(const db::string& delim) const
 	return res; 
 }
 
-db::split & db::split::extend(const db::split & s)
+inline db::split & db::split::extend(const db::split & s)
 {
 	for (size_t i = 0; i < s.size(); i++)
 		push_back(s[i]);
 	return *this; 
 }
+
+#endif

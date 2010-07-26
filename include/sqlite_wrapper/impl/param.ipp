@@ -22,56 +22,54 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
-#include <sqlite_wrapper/a2w.hpp>
-#include <sqlite_wrapper/w2a.hpp>
-#include "sqlite/sqlite3.h"
+#ifndef SQLITE_WRAPPER_PARAM_IPP_INCLUDED
+#define SQLITE_WRAPPER_PARAM_IPP_INCLUDED
 
-db::param::param() : 
-	  _type(e_null)
+inline db::param::param() 
+	: _type(e_null)
 	, _is_changed(false)
 {
 	_data = DB_TEXT("");
 }
 
-db::param::param( unsigned col ) : 
-	  _col(col)
+inline db::param::param( unsigned col ) 
+	: _col(col)
 	, _type(e_null)
 	, _is_changed(false)
 {
 	_data = DB_TEXT("");
 }
 
-db::param::param( const param& Param ) : 
-	  _col(Param._col)
+inline db::param::param( const param& Param ) 
+	: _col(Param._col)
 	, _type(Param._type)
 	, _is_changed(false)
 	, _data(Param._data)
 {
 
 }
-db::param::~param()
+
+inline db::param::~param()
 {
 
 }
 
-db::param_types db::param::get_type() const
+inline db::param_types db::param::get_type() const
 {
 	return _type;
 }
 
-void db::param::set_type( param_types Type )
+inline void db::param::set_type( param_types Type )
 {
 	_type = Type;
 }
 
-bool& db::param::is_changed()
+inline bool& db::param::is_changed()
 {
 	return _is_changed;
 }
 
-void db::param::set( sqlite3_stmt* stm )
+inline void db::param::set( sqlite3_stmt* stm )
 {
 	if (!stm)
 	{
@@ -117,94 +115,94 @@ void db::param::set( sqlite3_stmt* stm )
 	}
 }
 
-void db::param::set( bool dat )
+inline void db::param::set( bool dat )
 {
 	_type = e_bool;
 	_data = dat ? DB_TEXT("TRUE") : DB_TEXT("FALSE");
 }
 
-void db::param::set( int dat )
+inline void db::param::set( int dat )
 {
 	_type = e_int;
 	_data = boost::str(format(DB_TEXT("%d")) % dat);
 }
 
-void db::param::set( unsigned dat )
+inline void db::param::set( unsigned dat )
 {
 	_type = e_unsigned;
 	_data = boost::str(format(DB_TEXT("%d")) % dat);
 }
 
-void db::param::set( long dat )
+inline void db::param::set( long dat )
 {
 	_type = e_long;
 	_data = boost::str(format(DB_TEXT("%ld")) % dat);
 }
 
-void db::param::set( float dat )
+inline void db::param::set( float dat )
 {
 	_type = e_float;
 	_data = boost::str(format(DB_TEXT("%f")) % dat);
 }
 
-void db::param::set( double dat )
+inline void db::param::set( double dat )
 {
 	_type = e_double;
 	_data = boost::str(format(DB_TEXT("%f")) % dat);
 }
 
-void db::param::set( char dat )
+inline void db::param::set( char dat )
 {
 	_type = e_char;
 	_data = dat;
 }
 
-void db::param::set( const db::char_type* dat )
+inline void db::param::set( const db::char_type* dat )
 {
 	_type = e_string;
 	_data = dat;
 }
 
-void db::param::set( const string& dat, bool isBlob/*=false*/ )
+inline void db::param::set( const string& dat, bool isBlob/*=false*/ )
 {
 	_type = isBlob?e_blob:e_string;
 	_data = dat;
 }
 
 #ifndef BOOST_NO_STD_LOCALE
-void db::param::set( const boost::gregorian::date& dat )
+inline void db::param::set( const boost::gregorian::date& dat )
 {
 	_type = e_date_time;
 	_data = detail::to_sql_string(dat);
 }
 #else
-void db::param::set( const time_t_ce& dat )
+inline void db::param::set( const time_t_ce& dat )
 {
 	_type = e_date_time;
 	_data = detail::to_sql_string(dat);
 }
 #endif
 
-void db::param::set_null()
+inline void db::param::set_null()
 {
 	_type=e_null; _data = DB_TEXT("");
 }
 
-void db::param::set_with_old_type( const string& data )
+inline void db::param::set_with_old_type( const string& data )
 {
 	param_types ty(get_type());
 	set(data);
 	set_type(ty);
 }
 
-void db::param::set_with_old_type( const param& data )
+inline void db::param::set_with_old_type( const param& data )
 {
 	param_types ty(get_type());
 	set(data.str());
 	set_type(ty);
 }
 
-void db::param::set_with_old_type( const param* data )
+inline void db::param::set_with_old_type( const param* data )
 {
 	if (!data)
 		return;
@@ -213,12 +211,12 @@ void db::param::set_with_old_type( const param* data )
 	set_type(ty);
 }
 
-bool db::param::is_null() const
+inline bool db::param::is_null() const
 {
 	return _type==e_null ? true : false;
 }
 
-bool db::param::get_bool() const
+inline bool db::param::get_bool() const
 {
 	if (_type == e_bool)
 		return _data == DB_TEXT("TRUE") ? true : false;
@@ -226,32 +224,32 @@ bool db::param::get_bool() const
 		return false;
 }
 
-int db::param::get_int() const
+inline int db::param::get_int() const
 {
 	return detail::to_type<int>(_data);
 }
 
-unsigned db::param::get_unsigned() const
+inline unsigned db::param::get_unsigned() const
 {
 	return detail::to_type<unsigned>(_data);
 }
 
-long db::param::get_long() const
+inline long db::param::get_long() const
 {
 	return detail::to_type<long>(_data);
 }
 
-float db::param::get_float() const
+inline float db::param::get_float() const
 {
 	return detail::to_type<float>(_data);
 }
 
-double db::param::get_double() const
+inline double db::param::get_double() const
 {
 	return detail::to_type<double>(_data);
 }
 
-db::char_type db::param::get_char() const
+inline db::char_type db::param::get_char() const
 {
 	if (_data.length()==0)
 		return DB_TEXT(' ');
@@ -259,30 +257,30 @@ db::char_type db::param::get_char() const
 		return _data[0];
 }
 
-db::param::operator db::string() const
+inline db::param::operator db::string() const
 {
 	return _data;
 }
 
-db::string& db::param::str()
+inline db::string& db::param::str()
 {
 	return _data;
 }
 
 #ifdef _UNICODE
-const wchar_t* db::param::c_str() const
+inline const wchar_t* db::param::c_str() const
 {
 	return _data.c_str();
 }
 #else
-const char* db::param::c_str() const
+inline const char* db::param::c_str() const
 {
 	return _data.c_str();
 }
 #endif // _UNICODE
 
 #ifndef BOOST_NO_STD_LOCALE
-boost::gregorian::date db::param::get_date_time() const
+inline boost::gregorian::date db::param::get_date_time() const
 {
 #ifdef _UNICODE
 	std::string data = detail::w2a(_data.c_str());
@@ -294,25 +292,25 @@ boost::gregorian::date db::param::get_date_time() const
 #endif // _UNICODE
 }
 #else
-db::time_t_ce db::param::get_date_time( const time_t_ce* tmp /*= 0*/ ) const
+inline db::time_t_ce db::param::get_date_time( const time_t_ce* tmp /*= 0*/ ) const
 {
 	return detail::from_sql_string(_data, tmp);
 }
 #endif
 
 #ifdef _MFC_VER
-COleDateTime db::param::get_date_time( const COleDateTime* tmp /*= 0*/ ) const
+inline COleDateTime db::param::get_date_time( const COleDateTime* tmp /*= 0*/ ) const
 {
 	return detail::from_sql_string(_data, tmp);
 }
 #endif // _MFC_VER
 
-const db::string& db::param::str() const
+inline const db::string& db::param::str() const
 {
 	return _data;
 }
 
-const db::param& db::param::operator=( const param &v )
+inline const db::param& db::param::operator=( const param &v )
 {
 	_data = v._data;
 	_type = v._type;
@@ -320,12 +318,14 @@ const db::param& db::param::operator=( const param &v )
 	return *this;
 }
 
-bool db::param::operator!() const
+inline bool db::param::operator!() const
 {
 	return !this->is_null();
 }
 
-bool db::param::operator==( const param& v ) const
+inline bool db::param::operator==( const param& v ) const
 {
 	return (!(*this) && (!v) && _data == v._data);
 }
+
+#endif

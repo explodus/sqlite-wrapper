@@ -34,7 +34,7 @@
 namespace db
 {
   /// @brief helper class, generates SELECT SQL statements
-  class SQLITE_WRAPPER_DLLAPI sel 
+  class sel 
   {
   protected:
     bool _distinct;

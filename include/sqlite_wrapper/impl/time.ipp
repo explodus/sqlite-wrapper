@@ -22,6 +22,6 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
-
+#ifndef SQLITE_WRAPPER_TIME_IPP_INCLUDED
+#define SQLITE_WRAPPER_TIME_IPP_INCLUDED
+#endif

@@ -22,22 +22,20 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/config.hpp>
-#include "sqlite/sqlite3.h"
-#include <sqlite_wrapper/db.hpp>
-#include <sqlite_wrapper/detail/query.hpp>
+#ifndef SQLITE_WRAPPER_QUERY_IPP_INCLUDED
+#define SQLITE_WRAPPER_QUERY_IPP_INCLUDED
 
-db::query::query() : _base(0), _stm(0)
+inline db::query::query() : _base(0), _stm(0)
 {
 
 }
 
-db::query::query( base& base_ ) : _base(&base_), _stm(0)
+inline db::query::query( base& base_ ) : _base(&base_), _stm(0)
 {
 
 }
 
-db::query::query( const query& q ) : _base(q._base), _stm(q._stm)
+inline db::query::query( const query& q ) : _base(q._base), _stm(q._stm)
 {
 	_data.reserve(q._data.size());
 	std::copy(q.begin(), q.end(), std::back_inserter(_data));
@@ -46,12 +44,12 @@ db::query::query( const query& q ) : _base(q._base), _stm(q._stm)
 	std::copy(q.fbegin(), q.fend(), std::back_inserter(_field));
 }
 
-db::query::~query()
+inline db::query::~query()
 {
 
 }
 
-void db::query::execute(const string& cmd)
+inline void db::query::execute(const string& cmd)
 {
 	if (_stm) { sqlite3_finalize(_stm); _stm = 0; }
 	sqlite3* _db(_base->get_db_ptr());
@@ -145,29 +143,29 @@ void db::query::execute(const string& cmd)
 	_stm = 0; 
 }
 
-const db::row& db::query::getRow( size_type row_num ) const
+inline const db::row& db::query::getRow( size_type row_num ) const
 {
 	const value_type& pValue(*(begin()+row_num));
 	return pValue;
 }
 
-db::row& db::query::getRow( size_type row_num )
+inline db::row& db::query::getRow( size_type row_num )
 {
 	value_type& pValue(*(begin()+row_num));
 	return pValue;
 }
 
-db::query::const_reference db::query::operator[]( size_type row_num ) const
+inline db::query::const_reference db::query::operator[]( size_type row_num ) const
 {
 	return *(begin()+row_num);
 }
 
-db::query::reference db::query::operator[]( size_type row_num )
+inline db::query::reference db::query::operator[]( size_type row_num )
 {
 	return *(begin()+row_num);
 }
 
-int db::query::getIdOf( const string& sField ) const
+inline int db::query::getIdOf( const string& sField ) const
 {
 	field_type::const_iterator iTB(_field.begin());
 	field_type::const_iterator iTE(_field.end());
@@ -177,7 +175,7 @@ int db::query::getIdOf( const string& sField ) const
 	return -1;
 }
 
-db::string db::query::getTitleOf( unsigned iField ) const
+inline db::string db::query::getTitleOf( unsigned iField ) const
 {
 	if (iField<_field.size())
 		return _field[iField].name();
@@ -185,7 +183,7 @@ db::string db::query::getTitleOf( unsigned iField ) const
 		return DB_TEXT("");
 }
 
-const db::field* db::query::getFieldInfo( unsigned iField ) const
+inline const db::field* db::query::getFieldInfo( unsigned iField ) const
 {
 	if (iField<_field.size())
 		return &_field[iField];
@@ -193,70 +191,74 @@ const db::field* db::query::getFieldInfo( unsigned iField ) const
 		return 0;
 }
 
-db::query::const_iterator db::query::begin() const
+inline db::query::const_iterator db::query::begin() const
 {
 	return _data.begin();
 }
 
-db::query::iterator db::query::begin()
+inline db::query::iterator db::query::begin()
 {
 	return _data.begin();
 }
-db::query::const_iterator db::query::end() const
+
+inline db::query::const_iterator db::query::end() const
 {
 	return _data.end();
 }
 
-db::query::iterator db::query::end()
+inline db::query::iterator db::query::end()
 {
 	return _data.end();
 }
 
-db::query::const_fiterator db::query::fbegin() const
+inline db::query::const_fiterator db::query::fbegin() const
 {
 	return _field.begin();
 }
 
-db::query::fiterator db::query::fbegin()
+inline db::query::fiterator db::query::fbegin()
 {
 	return _field.begin();
 }
-db::query::const_fiterator db::query::fend() const
+
+inline db::query::const_fiterator db::query::fend() const
 {
 	return _field.end();
 }
 
-db::query::fiterator db::query::fend()
+inline db::query::fiterator db::query::fend()
 {
 	return _field.end();
 }
 
-db::query::size_type db::query::size() const
+inline db::query::size_type db::query::size() const
 {
 	return _data.size();
 }
 
-bool db::query::empty() const
+inline bool db::query::empty() const
 {
 	return _data.empty();
 }
 
-bool db::query::f_empty() const
+inline bool db::query::f_empty() const
 {
 	return _field.empty();
 }
 
-bool db::query::operator==( const query& t ) const
+inline bool db::query::operator==( const query& t ) const
 {
 	return  _data == t._data;
 }
 
-void db::query::push_back( const value_type& v )
+inline void db::query::push_back( const value_type& v )
 {
 	_data.push_back(v);
 }
 
-void db::query::push_back( const fvalue_type& v )
+inline void db::query::push_back( const fvalue_type& v )
 {
 	_field.push_back(v);
 }
+
+#endif

@@ -16,7 +16,7 @@
 namespace db
 {
 	/// defintion of db::cout
-	SQLITE_WRAPPER_DLLAPI extern ostream& cout;
+	extern ostream& cout;
 }
  
 #endif

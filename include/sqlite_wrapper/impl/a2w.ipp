@@ -1,5 +1,5 @@
 
-/// @file src/cout.cpp
+/// @file src/a2w.cpp
 ///
 /// @date 01.03.2010 15:15
 ///
@@ -9,10 +9,13 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/w2a.hpp>
+#ifndef SQLITE_WRAPPER_A2W_IPP_INCLUDED
+#define SQLITE_WRAPPER_A2W_IPP_INCLUDED
+
+#include <sqlite_wrapper/a2w.hpp>
 #include <sqlite_wrapper/detail/exception.hpp>
 
-void db::detail::w2a::init(const wchar_t* psz, unsigned nConvertCodePage)
+inline void db::detail::a2w::init(const char* psz, unsigned nCodePage)
 {
 	if (psz == 0)
 	{
@@ -21,46 +24,40 @@ void db::detail::w2a::init(const wchar_t* psz, unsigned nConvertCodePage)
 	}
 
 #if defined (WIN32) || defined (WIN64)
-	int lenW(lstrlenW( psz )+1);		 
-	int lenA(lenW*4);
+	int lenA(lstrlenA( psz )+1);		 
+	int lenW(lenA);
 
-	sz_.resize(lenA);
+	sz_.resize(lenW);
 
-	bool failed(0 == ::WideCharToMultiByte( 
-		nConvertCodePage
+	bool failed(0 == ::MultiByteToWideChar(
+		nCodePage
 		, 0
 		, psz
-		, lenW
-		, &*sz_.begin()
 		, lenA
-		, 0
-		, 0));
+		, &*sz_.begin()
+		, lenW));
 
 	if (failed)
 	{
 		if (GetLastError()==ERROR_INSUFFICIENT_BUFFER)
 		{
-			lenA = ::WideCharToMultiByte( 
-				nConvertCodePage
+			lenW = ::MultiByteToWideChar(
+				nCodePage
 				, 0
 				, psz
-				, lenW
-				, 0
-				, 0
+				, lenA
 				, 0
 				, 0);
 
-			sz_.resize(lenA);
+			sz_.resize(lenW);
 
-			failed=(0 == ::WideCharToMultiByte(
-				nConvertCodePage
+			failed=(0 == ::MultiByteToWideChar(
+				nCodePage
 				, 0
 				, psz
-				, lenW
-				, &*sz_.begin()
 				, lenA
-				, 0
-				, 0));
+				, &*sz_.begin()
+				, lenW));
 		}			
 	}
 
@@ -76,3 +73,5 @@ void db::detail::w2a::init(const wchar_t* psz, unsigned nConvertCodePage)
 	/// @todo linux conversion...
 #endif
 }
+
+#endif

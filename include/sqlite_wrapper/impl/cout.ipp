@@ -9,7 +9,8 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/cout.hpp>
+#ifndef SQLITE_WRAPPER_COUT_IPP_INCLUDED
+#define SQLITE_WRAPPER_COUT_IPP_INCLUDED
 
 ///
 db::ostream& db::cout
@@ -20,3 +21,5 @@ db::ostream& db::cout
 	std::wcout
 #endif
 );
+
+#endif

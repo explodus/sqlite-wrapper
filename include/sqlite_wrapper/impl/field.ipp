@@ -22,11 +22,10 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
-#include <sqlite_wrapper/detail/expr.hpp>
+#ifndef SQLITE_WRAPPER_FIELD_IPP_INCLUDED
+#define SQLITE_WRAPPER_FIELD_IPP_INCLUDED
 
-db::field::field( const string& n, const param_types& t/*=e_long*/ ) : 
+inline db::field::field( const string& n, const param_types& t/*=e_long*/ ) : 
 	  _name(n)
 	, _type(t)
 	, _extra(e_nullExtra)
@@ -35,7 +34,7 @@ db::field::field( const string& n, const param_types& t/*=e_long*/ ) :
 
 }
 
-db::field::field( 
+inline db::field::field( 
 	  const string_pair& n_tbl
 	, const param_types& t
 	, const Values& vals ) : 
@@ -49,7 +48,7 @@ db::field::field(
 
 }
 
-db::field::field( const field& f ) : 
+inline db::field::field( const field& f ) : 
 	  _name(f._name)
 	, _table(f._table)
 	, _type(f._type)
@@ -60,7 +59,7 @@ db::field::field( const field& f ) :
 
 }
 
-db::field::field() : 
+inline db::field::field() : 
 	  _type(e_long)
 	, _extra(e_nullExtra)
 	, _length(-1)
@@ -68,7 +67,7 @@ db::field::field() :
 
 }
 
-db::string db::field::fullName() const
+inline db::string db::field::fullName() const
 {
 	if (table().length()>0) 
 		return  table() + DB_TEXT(".") + name(); 
@@ -76,104 +75,106 @@ db::string db::field::fullName() const
 		return  name();
 }
 
-db::string db::field::name() const
+inline db::string db::field::name() const
 {
 	return _name;
 }
 
-db::string db::field::sourcename() const
+inline db::string db::field::sourcename() const
 {
 	return _sourcename;
 }
 
-db::param_types db::field::type() const
+inline db::param_types db::field::type() const
 {
 	return _type;
 }
 
-db::string db::field::table() const
+inline db::string db::field::table() const
 {
 	return _table;
 }
 
-const long& db::field::length() const
+inline const long& db::field::length() const
 {
 	return _length;
 }
 
-db::field& db::field::set_type( param_types type )
+inline db::field& db::field::set_type( param_types type )
 {
 	_type = type; return *this;
 }
 
-void db::field::set_table( const string& table )
+inline void db::field::set_table( const string& table )
 {
 	_table = table;
 }
 
-void db::field::set_sourcename( const string& sourcename )
+inline void db::field::set_sourcename( const string& sourcename )
 {
 	_sourcename = sourcename;
 }
 
-void db::field::set_length( const long& len )
+inline void db::field::set_length( const long& len )
 {
 	_length = len;
 }
 
-bool db::field::has_extra( field_extra extra ) const
+inline bool db::field::has_extra( field_extra extra ) const
 {
 	return ((_extra&extra)==1);
 }
 
-void db::field::add_extra( field_extra extra )
+inline void db::field::add_extra( field_extra extra )
 {
 	if(!(_extra&extra)) 
 		_extra |= extra;
 }
 
-void db::field::remove_extra( field_extra extra )
+inline void db::field::remove_extra( field_extra extra )
 {
 	if(_extra&extra) 
 		_extra &= ~extra;
 }
 
-db::field::Values& db::field::values()
+inline db::field::Values& db::field::values()
 {
 	return _values;
 }
 
-const db::field::Values& db::field::values() const
+inline const db::field::Values& db::field::values() const
 {
 	return _values;
 }
 
-bool db::field::operator==( const field & fd ) const
+inline bool db::field::operator==( const field & fd ) const
 {
 	return fd.fullName() == fullName();
 }
 
-bool db::field::operator!=( const field & fd ) const
+inline bool db::field::operator!=( const field & fd ) const
 {
 	return ! (*this == fd);
 }
 
-db::expr::in db::field::In(const string& set) const
+inline db::expr::in db::field::In(const string& set) const
 { 
 	return expr::in(*this, set); 
 }
 
-db::expr::in db::field::In(const sel& sel) const
+inline db::expr::in db::field::In(const sel& sel) const
 { 
 	return expr::in(*this, sel); 
 }
 
-db::expr::like db::field::Like(const string& s)
+inline db::expr::like db::field::Like(const string& s)
 { 
 	return expr::like(*this, s); 
 }
 
-db::field::~field()
+inline db::field::~field()
 {
 
 }
+
+#endif

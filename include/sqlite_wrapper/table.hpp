@@ -12,18 +12,13 @@
 #define SQLITE_WRAPPER_TABLE_HPP_INCLUDED
 
 #include <sqlite_wrapper/config.hpp>
+#include <sqlite_wrapper/db.hpp>
 #include <boost/variant.hpp>
 #include <map>
 #include <vector>
 
 namespace db
 {
-	class sel;
-	class ins;
-	class upd;
-	class del;
-	class base;
-
 ///
 #	define TABLE_BEGIN(name) \
 	name() : db::table(DB_TEXT(#name)) \
@@ -62,7 +57,7 @@ namespace db
 		}
 	
 	///	@brief a base wrapper class for a database table
-	class SQLITE_WRAPPER_DLLAPI table
+	class table
 	{
 	public:
 		typedef boost::variant<int, db::string, double> value_type;
@@ -144,5 +139,7 @@ namespace db
 ///
 /// @endcode
 ///
+
+#include <sqlite_wrapper/impl/table.ipp>
 
 #endif

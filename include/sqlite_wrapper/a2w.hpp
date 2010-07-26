@@ -25,7 +25,7 @@ namespace db { namespace detail
 	/// std::wstring wblob = db::detail::a2w( blob.c_str() );
 	///
 	/// @endcode
-	class SQLITE_WRAPPER_DLLAPI a2w
+	class a2w
 	{
 	public:
 		/// @brief        constructor

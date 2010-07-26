@@ -22,104 +22,104 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/detail/row.hpp>
-#include <sqlite_wrapper/detail/query.hpp>
-#include "sqlite/sqlite3.h"
+#ifndef SQLITE_WRAPPER_ROW_IPP_INCLUDED
+#define SQLITE_WRAPPER_ROW_IPP_INCLUDED
 
-db::row::row( db::query* query_, unsigned row_ ) : _query(query_), _row(row_)
+inline db::row::row( db::query* query_, unsigned row_ ) 
+	: _query(query_), _row(row_)
 {
 
 }
 
-db::row::row( const row& r ) : _query(r._query), _row(r._row)
+inline db::row::row( const row& r ) : _query(r._query), _row(r._row)
 {
 	_data.reserve(r.size());
 	std::copy(r.begin(), r.end(), std::back_inserter(_data));
 }
 
-db::row::~row()
+inline db::row::~row()
 {
 
 }
 
-const db::param& db::row::value( size_type field_num ) const
+inline const db::param& db::row::value( size_type field_num ) const
 {
 	const value_type& pValue(*(begin()+field_num));
 	return pValue;
 }
 
-db::param& db::row::value( size_type field_num )
+inline db::param& db::row::value( size_type field_num )
 {
 	value_type& pValue(*(begin()+field_num));
 	return pValue;
 }
 
-db::row::const_reference db::row::operator[]( size_type field_num ) const
+inline db::row::const_reference db::row::operator[]( size_type field_num ) const
 {
 	return *(begin()+field_num);
 }
 
-db::row::reference db::row::operator[]( size_type field_num )
+inline db::row::reference db::row::operator[]( size_type field_num )
 {
 	return *(begin()+field_num);
 }
 
-db::param* db::row::operator[]( const string& )
+inline db::param* db::row::operator[]( const string& )
 {
 	return (0);
 }
 
-db::row::const_iterator db::row::begin() const
+inline db::row::const_iterator db::row::begin() const
 {
 	return _data.begin();
 }
 
-db::row::iterator db::row::begin()
+inline db::row::iterator db::row::begin()
 {
 	return _data.begin();
 }
-db::row::const_iterator db::row::end() const
+
+inline db::row::const_iterator db::row::end() const
 {
 	return _data.end();
 }
 
-db::row::iterator db::row::end()
+inline db::row::iterator db::row::end()
 {
 	return _data.end();
 }
 
-db::row::reverse_iterator db::row::rbegin()
+inline db::row::reverse_iterator db::row::rbegin()
 {
 	return _data.rbegin();
 }
 
-db::row::reverse_iterator db::row::rend()
+inline db::row::reverse_iterator db::row::rend()
 {
 	return _data.rend();
 }
 
-db::row::size_type db::row::size() const
+inline db::row::size_type db::row::size() const
 {
 	return _data.size();
 }
 
-bool db::row::empty() const
+inline bool db::row::empty() const
 {
 	return _data.empty();
 }
 
-bool db::row::operator==( const row& t ) const
+inline bool db::row::operator==( const row& t ) const
 {
 	return _data == t._data;
 }
 
-void db::row::push_back( const value_type& v )
+inline void db::row::push_back( const value_type& v )
 {
 	_data.push_back(v);
 }
 
-void db::row::fill(sqlite3_stmt* stm)
+inline void db::row::fill(sqlite3_stmt* stm)
 {
 	if (!stm)
 		return;
@@ -133,3 +133,5 @@ void db::row::fill(sqlite3_stmt* stm)
 		_data.back().set(stm);
 	} 
 }
+
+#endif

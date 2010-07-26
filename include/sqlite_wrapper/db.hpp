@@ -45,6 +45,11 @@
 #	pragma warning( pop )
 #endif // _MSC_VER > 1000
 
+#include "../../src/sqlite/sqlite3.h"
+
+#include <sqlite_wrapper/a2w.hpp>
+#include <sqlite_wrapper/w2a.hpp>
+#include <sqlite_wrapper/cout.hpp>
 #include <sqlite_wrapper/detail/time.hpp>
 #include <sqlite_wrapper/detail/tools.hpp>
 #include <sqlite_wrapper/detail/exception.hpp>
@@ -52,15 +57,19 @@
 #include <sqlite_wrapper/detail/expr.hpp>
 #include <sqlite_wrapper/detail/row.hpp>
 #include <sqlite_wrapper/detail/query.hpp>
+#include <sqlite_wrapper/detail/sel.hpp>
+#include <sqlite_wrapper/detail/ins.hpp>
+#include <sqlite_wrapper/detail/upd.hpp>
+#include <sqlite_wrapper/detail/del.hpp>
 
 namespace db
 {
   ///datenbank interface
-  class SQLITE_WRAPPER_DLLAPI base
+  class base
   {
     sqlite3* _db;
 
-    class SQLITE_WRAPPER_DLLAPI progress_handler
+    class progress_handler
     {
 			/// @brief        got called from sqlite, and calls the connected signal
       ///
@@ -72,7 +81,24 @@ namespace db
       /// @author       T. Schroeder (explodus@gmx.de)
       /// @date         15.4.2010 13:47
       ///
-      static int xProgressCallback(void* db_); 
+      static int xProgressCallback(void* db_)
+			{
+				if (!db_)
+					return 1;
+				base* base_(reinterpret_cast<base*> (db_));
+
+				if (!base_)
+					return 1;
+
+				//if (!base_->Sig_Progress().connected())
+				//  return 1;
+
+				//if (base_->Sig_Progress()(0,0))
+				//  return 0;
+				//else
+
+				return 0;
+			}
 
       sqlite3* _db;
     public:
@@ -99,8 +125,8 @@ namespace db
 		void throw_error(int status); 
 
   public:
-    base();
-    ~base();
+    base(void);
+    ~base(void);
 
     enum feature
     {
@@ -200,7 +226,23 @@ namespace db
   };
   typedef boost::shared_ptr<base> base_ptr;
 
-
 } // namespace db
+
+#include <sqlite_wrapper/impl/cout.ipp>
+#include <sqlite_wrapper/impl/a2w.ipp>
+#include <sqlite_wrapper/impl/w2a.ipp>
+#include <sqlite_wrapper/impl/time.ipp>
+#include <sqlite_wrapper/impl/split.ipp>
+#include <sqlite_wrapper/impl/exception.ipp>
+#include <sqlite_wrapper/impl/field.ipp>
+#include <sqlite_wrapper/impl/expr.ipp>
+#include <sqlite_wrapper/impl/sel.ipp>
+#include <sqlite_wrapper/impl/del.ipp>
+#include <sqlite_wrapper/impl/upd.ipp>
+#include <sqlite_wrapper/impl/ins.ipp>
+#include <sqlite_wrapper/impl/param.ipp>
+#include <sqlite_wrapper/impl/row.ipp>
+#include <sqlite_wrapper/impl/query.ipp>
+#include <sqlite_wrapper/impl/db.ipp>
 
 #endif // db_h__

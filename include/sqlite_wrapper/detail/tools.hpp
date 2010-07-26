@@ -287,7 +287,7 @@ namespace db { namespace detail
 namespace db 
 {
 	/// splitmap basis
-	class SQLITE_WRAPPER_DLLAPI split_map : public std::map<string, string> 
+	class split_map : public std::map<string, string> 
 	{
 	public:
 		/// @brief        empty splitmap
@@ -336,7 +336,7 @@ namespace db
 	};
 
 	///split base
-	class SQLITE_WRAPPER_DLLAPI split : public std::vector<string> 
+	class split : public std::vector<string> 
 	{
 	public:
 		/// @brief        empty split

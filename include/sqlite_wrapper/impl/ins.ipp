@@ -22,16 +22,15 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/config.hpp>
+#ifndef SQLITE_WRAPPER_INS_IPP_INCLUDED
+#define SQLITE_WRAPPER_INS_IPP_INCLUDED
 
-#include <sqlite_wrapper/detail/ins.hpp>
-
-db::ins::ins( const string& tab ) : _source(tab)
+inline db::ins::ins( const string& tab ) : _source(tab)
 {
 
 }
 
-db::ins::ins( 
+inline db::ins::ins( 
 	  const string& tab
 	, const string& delim ) : 
 	  _source(tab)
@@ -41,7 +40,7 @@ db::ins::ins(
 
 }
 
-db::ins::ins( 
+inline db::ins::ins( 
 	  const string& tab
 	, const string& delim1
 	, const string& delim2 ) : 
@@ -52,18 +51,18 @@ db::ins::ins(
 
 }
 
-db::ins::~ins()
+inline db::ins::~ins()
 {
 
 }
 
-db::ins & db::ins::clear_values()
+inline db::ins & db::ins::clear_values()
 {
 	_values.clear();
 	return *this;
 }
 
-db::ins & db::ins::operator%( const db::field& f )
+inline db::ins & db::ins::operator%( const db::field& f )
 {
 	if (f.values().size()==1)
 		return values(f.name(), f.values().begin()->second, f.type());
@@ -71,7 +70,7 @@ db::ins & db::ins::operator%( const db::field& f )
 		return *this;
 }
 
-db::ins & db::ins::values( string t, param* v )
+inline db::ins & db::ins::values( string t, param* v )
 {
 	string sV(v->str());
 	if (sV.length()==0)
@@ -90,7 +89,7 @@ db::ins & db::ins::values( string t, param* v )
 	return *this;
 }
 
-db::ins & db::ins::values( string t, string v, param_types p/*=e_int*/ )
+inline db::ins & db::ins::values( string t, string v, param_types p/*=e_int*/ )
 {
 	switch(p) 
 	{
@@ -110,12 +109,12 @@ db::ins & db::ins::values( string t, string v, param_types p/*=e_int*/ )
 	return *this;
 }
 
-db::ins::operator db::string() const
+inline db::ins::operator db::string() const
 {
 	return str();
 }
 
-db::string db::ins::str() const
+inline db::string db::ins::str() const
 {
 	string res = DB_TEXT("INSERT INTO ");
 	res += _source;
@@ -130,3 +129,5 @@ db::string db::ins::str() const
 	}
 	return res;
 }
+
+#endif

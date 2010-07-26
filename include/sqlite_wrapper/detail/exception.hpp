@@ -30,7 +30,7 @@
 namespace db { namespace exception
 {
 	/// exception basis interface
-	class SQLITE_WRAPPER_DLLAPI base
+	class base
 	{
 	private:
 		string _msg; 
@@ -88,56 +88,56 @@ namespace db { namespace exception
 	};
 
 	/// exception thrown when a record is not found
-	class SQLITE_WRAPPER_DLLAPI not_found : public base 
+	class not_found : public base 
 	{
 	public:
 		explicit not_found(const string& s=DB_TEXT(""));
 	};
 
 	/// exception thrown when database cannot be accessed
-	class SQLITE_WRAPPER_DLLAPI db_error : public base 
+	class db_error : public base 
 	{
 	public:
 		explicit db_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when SQL statement cannot be executed
-	class SQLITE_WRAPPER_DLLAPI sql_error : public base 
+	class sql_error : public base 
 	{
 	public:
 		explicit sql_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when Param handling get failed
-	class SQLITE_WRAPPER_DLLAPI param_error : public base 
+	class param_error : public base 
 	{
 	public:
 		explicit param_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when backend produces internal error
-	class SQLITE_WRAPPER_DLLAPI internal_error : public base 
+	class internal_error : public base 
 	{
 	public:
 		explicit internal_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when backend cannot allocate memory
-	class SQLITE_WRAPPER_DLLAPI memory_error : public base 
+	class memory_error : public base 
 	{
 	public:
 		explicit memory_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when database (disk) is full
-	class SQLITE_WRAPPER_DLLAPI insertion_error : public base 
+	class insertion_error : public base 
 	{
 	public:
 		explicit insertion_error(const string& m=DB_TEXT(""));
 	};
 
 	/// exception thrown when none of other exceptions match
-	class SQLITE_WRAPPER_DLLAPI unknown_error : public base 
+	class unknown_error : public base 
 	{
 		// handles the rest
 	public:

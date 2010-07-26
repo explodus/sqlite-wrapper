@@ -22,23 +22,22 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/config.hpp>
+#ifndef SQLITE_WRAPPER_UPD_IPP_INCLUDED
+#define SQLITE_WRAPPER_UPD_IPP_INCLUDED
 
-#include <sqlite_wrapper/detail/upd.hpp>
-
-db::upd::~upd()
+inline db::upd::~upd()
 {
 
 }
 
-db::upd::upd( const string& t ) : 
+inline db::upd::upd( const string& t ) : 
 	  table(t)
 	, _where(DB_TEXT("True"))
 {
 
 }
 
-db::upd::upd( 
+inline db::upd::upd( 
 	  const string& t
 	, const string& d ) : 
 	  table(t)
@@ -49,7 +48,7 @@ db::upd::upd(
 
 }
 
-db::upd::upd( 
+inline db::upd::upd( 
 	  const string& t
 	, const string& d1
 	, const string& d2 ) : 
@@ -61,18 +60,18 @@ db::upd::upd(
 
 }
 
-db::upd& db::upd::where( const expr::base& e )
+inline db::upd& db::upd::where( const expr::base& e )
 {
 	_where = expr::and_(expr::raw(_where), e).str();
 	return *this;
 }
 
-db::upd & db::upd::operator%( const expr::base& e )
+inline db::upd & db::upd::operator%( const expr::base& e )
 {
 	return where(e);
 }
 
-db::upd & db::upd::operator%( const db::field& f )
+inline db::upd & db::upd::operator%( const db::field& f )
 {
 	if (f.values().size()==1)
 		return set(f, f.values().begin()->second);
@@ -80,7 +79,7 @@ db::upd & db::upd::operator%( const db::field& f )
 		return *this;
 }
 
-db::upd& db::upd::set( const field& f, const string& val )
+inline db::upd& db::upd::set( const field& f, const string& val )
 {
 	fields.push_back(f.name());
 	if (f.type()==e_string||f.type()==e_char||
@@ -91,12 +90,12 @@ db::upd& db::upd::set( const field& f, const string& val )
 	return *this;
 }
 
-db::upd::operator db::string() const
+inline db::upd::operator db::string() const
 {
 	return str();
 }
 
-db::string db::upd::str() const
+inline db::string db::upd::str() const
 {
 	string q = DB_TEXT("UPDATE ") + table + DB_TEXT(" SET ");
 	split sets;
@@ -107,3 +106,5 @@ db::string db::upd::str() const
 		q += DB_TEXT(" WHERE ") + _where;
 	return q;
 }
+
+#endif

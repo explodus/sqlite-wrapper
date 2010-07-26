@@ -10,24 +10,6 @@
 ///
 
 #include <sqlite_wrapper/config.hpp>
-
-#ifndef SQLITE_WRAPPER_NARROW_STRING
-	#include <sqlite_wrapper/a2w.hpp>
-#endif
-
-#include <sqlite_wrapper/w2a.hpp>
-
-#include <sqlite_wrapper/db.hpp>
-
-#include <sqlite_wrapper/detail/field.hpp>
-
-#include <sqlite_wrapper/detail/sel.hpp>
-#include <sqlite_wrapper/detail/del.hpp>
-#include <sqlite_wrapper/detail/ins.hpp>
-#include <sqlite_wrapper/detail/upd.hpp>
-
-#include <sqlite_wrapper/detail/expr.hpp>
-
 #include <sqlite_wrapper/table.hpp>
 
 #define BOOST_TEST_NO_MAIN

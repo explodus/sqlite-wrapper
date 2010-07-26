@@ -8,14 +8,8 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/table.hpp>
-
-#include <sqlite_wrapper/detail/sel.hpp>
-#include <sqlite_wrapper/detail/ins.hpp>
-#include <sqlite_wrapper/detail/upd.hpp>
-#include <sqlite_wrapper/detail/del.hpp>
-
-#include <sqlite_wrapper/db.hpp>
+#ifndef SQLITE_WRAPPER_TABLE_IPP_INCLUDED
+#define SQLITE_WRAPPER_TABLE_IPP_INCLUDED
 
 namespace db { namespace detail 
 {
@@ -89,7 +83,7 @@ namespace db { namespace detail
 
 } }
 
-db::sel db::table::get_sel() const
+inline db::sel db::table::get_sel() const
 {
 	db::sel ret = get_sel_complete();
 
@@ -98,7 +92,7 @@ db::sel db::table::get_sel() const
 	return ret;
 }
 
-db::sel db::table::get_sel_complete() const
+inline db::sel db::table::get_sel_complete() const
 {
 	db::sel ret(table_name());
 
@@ -112,7 +106,7 @@ db::sel db::table::get_sel_complete() const
 	return ret;
 }
 
-db::ins db::table::get_ins() const
+inline db::ins db::table::get_ins() const
 {
 	db::ins ret(table_name());
 	detail::get_field_visitor<db::ins> visitor(ret);
@@ -127,7 +121,7 @@ db::ins db::table::get_ins() const
 	return ret;
 }
 
-db::upd db::table::get_upd() const 
+inline db::upd db::table::get_upd() const 
 {
 	db::upd ret(table_name());
 	detail::get_field_visitor<db::upd> visitor(ret);
@@ -144,7 +138,7 @@ db::upd db::table::get_upd() const
 	return ret;
 }
 
-db::del db::table::get_del() const
+inline db::del db::table::get_del() const
 {
 	db::del ret(table_name());
 
@@ -153,7 +147,7 @@ db::del db::table::get_del() const
 	return ret;
 }
 
-void db::table::get( db::base& b )
+inline void db::table::get( db::base& b )
 {
 	db::query_ptr q(b.execute_ptr(get_sel()));
 	if (q && q->size())
@@ -167,7 +161,7 @@ void db::table::get( db::base& b )
 	}
 }
 
-void db::table::get( db::base& b, vec_type& v )
+inline void db::table::get( db::base& b, vec_type& v )
 {
 	db::query_ptr q(b.execute_ptr(get_sel_complete()));
 	if (q && q->size())
@@ -193,7 +187,7 @@ void db::table::get( db::base& b, vec_type& v )
 	}
 }
 
-void db::table::set( db::base& b )
+inline void db::table::set( db::base& b )
 {
 	// insert or update or both?
 	db::string s = get_upd();
@@ -202,7 +196,7 @@ void db::table::set( db::base& b )
 	b.execute_ptr(s);
 }
 
-void db::table::set( db::base& b, vec_type& v )
+inline void db::table::set( db::base& b, vec_type& v )
 {
 	try
 	{
@@ -225,12 +219,12 @@ void db::table::set( db::base& b, vec_type& v )
 
 }
 
-void db::table::erase( db::base& b )
+inline void db::table::erase( db::base& b )
 {
 	b.execute_ptr(get_del());
 }
 
-void db::table::create( db::base& b )
+inline void db::table::create( db::base& b )
 {
 	db::stringstream ss;
 
@@ -257,7 +251,7 @@ void db::table::create( db::base& b )
 	b.execute_ptr(ss.str());
 }
 
-bool db::table::operator==( const table& t ) const
+inline bool db::table::operator==( const table& t ) const
 {
 	if (_table_name != t._table_name)
 		return false;
@@ -283,3 +277,5 @@ bool db::table::operator==( const table& t ) const
 
 	return true;
 }
+
+#endif
