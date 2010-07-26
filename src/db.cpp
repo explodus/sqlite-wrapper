@@ -69,16 +69,15 @@ db::base::~base()
 
 void db::base::throw_error( int status )
 {
-	string err(boost::str(
-		format(DB_TEXT("%d=status code : %s")) % 
-		status % sqlite3_errmsg(_db)));
+	stringstream err;
+	err << status << DB_TEXT("=status code : ") << sqlite3_errmsg(_db);
 	switch(status) 
 	{
-	case SQLITE_ERROR: throw exception::sql_error(err);
-	case SQLITE_INTERNAL: throw exception::internal_error(err);
-	case SQLITE_NOMEM: throw exception::memory_error(err);
-	case SQLITE_FULL: throw exception::insertion_error(err);
-	default: throw exception::unknown_error(DB_TEXT("compile failed: ") + err);
+	case SQLITE_ERROR: throw exception::sql_error(err.str());
+	case SQLITE_INTERNAL: throw exception::internal_error(err.str());
+	case SQLITE_NOMEM: throw exception::memory_error(err.str());
+	case SQLITE_FULL: throw exception::insertion_error(err.str());
+	default: throw exception::unknown_error(DB_TEXT("compile failed: ") + err.str());
 	}
 }
 
