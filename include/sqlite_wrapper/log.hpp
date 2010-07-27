@@ -26,10 +26,7 @@
 #define DB_LOG_HPP_INCLUDED
 
 #include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/cout.hpp>
-#include <sqlite_wrapper/a2w.hpp>
-#include <sqlite_wrapper/w2a.hpp>
-#include <sqlite_wrapper/detail/ins.hpp>
+#include <sqlite_wrapper/db.hpp>
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
@@ -48,8 +45,8 @@ namespace db { namespace log {
 		log_debug        //!< debug level messages
 	};
 
-	SQLITE_WRAPPER_DLLAPI extern level global_level();
-	SQLITE_WRAPPER_DLLAPI extern void  global_level(level lvl);
+	level global_level();
+	void global_level(level lvl);
 
 	namespace buffer
 	{
@@ -577,8 +574,7 @@ namespace db { namespace log {
 			/// @author       T. Schroeder (explodus@gmx.de)
 			/// @date         27.3.2010 8:56
 			/// 
-			SQLITE_WRAPPER_DLLAPI extern log_type& 
-			get_log(const string& name = DB_TEXT("log.db"));
+			log_type& get_log(const string& name = DB_TEXT("log.db"));
 		} 
 
 		namespace basic
@@ -606,7 +602,7 @@ namespace db { namespace log {
 			/// @author       T. Schroeder (explodus@gmx.de)
 			/// @date         29.3.2010 11:37
 			///
-			SQLITE_WRAPPER_DLLAPI extern log_type& get_log();
+			log_type& get_log();
 		}
 
 		namespace io
@@ -635,11 +631,12 @@ namespace db { namespace log {
 			/// @author       T. Schroeder (explodus@gmx.de)
 			/// @date         29.3.2010 11:45
 			///
-			SQLITE_WRAPPER_DLLAPI extern log_type& 
-			get_log(const string& name = DB_TEXT("log.txt"));
+			log_type& get_log(const string& name = DB_TEXT("log.txt"));
 		}
 	}
 
 } }
+
+#include <sqlite_wrapper/impl/log_level.ipp>
 
 #endif // DB_LOG_HPP_INCLUDED

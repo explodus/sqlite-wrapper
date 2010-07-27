@@ -1,7 +1,7 @@
-///	@file		src/row.cpp
+///	@file		include/sqlite_wrapper/impl/row.ipp
 ///	@date		15.3.2010 14:23
-///	file base	log_level
-///	file ext	cpp
+///	file base	row
+///	file ext	ipp
 ///
 /// @author		T. Schroeder (explodus@gmx.de)
 ///	

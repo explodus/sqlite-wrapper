@@ -1,5 +1,5 @@
 
-/// @file src/cout.cpp
+/// @file include/sqlite_wrapper/impl/cout.ipp
 ///
 /// @date 01.03.2010 15:15
 ///

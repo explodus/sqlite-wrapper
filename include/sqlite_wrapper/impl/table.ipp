@@ -1,4 +1,4 @@
-/// @file src/table.cpp
+/// @file include/sqlite_wrapper/impl/table.ipp
 ///
 /// @date 28.04.2010 15:15
 ///

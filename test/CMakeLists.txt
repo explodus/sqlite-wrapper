@@ -20,38 +20,42 @@ ENDMACRO ()
 
 IF(MSVC)
 	MACRO (ADD_SQLITE_WRAPPER_TEST name)
+		INCLUDE_DIRECTORIES (${SQLITE3_INCLUDE_DIR})
 		ADD_DEFINITIONS( -DSQLITE_WRAPPER_USE=1 -DSQLITE_WRAPPER_SHARED )
-		ADD_EXECUTABLE (sqlite_wrapper_test_${name} ${name}.cpp)
-		TARGET_LINK_LIBRARIES (sqlite_wrapper_test_${name} sqlite_wrapper)
+		ADD_EXECUTABLE (sqlite_wrapper_test_${name} ${name}.cpp ${SQLITE3_SRC_DIR}/sqlite3.c)
+		TARGET_LINK_LIBRARIES (sqlite_wrapper_test_${name})
 		ADD_TARGET_TEST(${name})
 	ENDMACRO ()
 ELSE(MSVC)
 	MACRO (ADD_SQLITE_WRAPPER_TEST name)
+		INCLUDE_DIRECTORIES (${SQLITE3_INCLUDE_DIR})
 		ADD_DEFINITIONS( -DSQLITE_WRAPPER_USE=1 )
-		ADD_EXECUTABLE (sqlite_wrapper_test_${name} ${name}.cpp)
-		TARGET_LINK_LIBRARIES (sqlite_wrapper_test_${name} sqlite_wrapper_static)
+		ADD_EXECUTABLE (sqlite_wrapper_test_${name} ${name}.cpp ${SQLITE3_SRC_DIR}/sqlite3.c)
+		TARGET_LINK_LIBRARIES (sqlite_wrapper_test_${name})
 		ADD_TARGET_TEST(${name})
 	ENDMACRO ()
 ENDIF()
 
 MACRO( ADD_SQLITE_WRAPPER_QT4_TEST name )
+	INCLUDE_DIRECTORIES (${SQLITE3_INCLUDE_DIR})
 	IF( QT4_FOUND )
 		SET( sqlite_wrapper_test_${name}_header
 			${CMAKE_SOURCE_DIR}/test/${name}.hpp
 		)
 		SET( sqlite_wrapper_test_${name}_source
 			${CMAKE_SOURCE_DIR}/test/${name}.cpp
+			${SQLITE3_SRC_DIR}/sqlite3.c
 		)
 		QT4_WRAP_CPP(sqlite_wrapper_test_${name}_moc_source ${sqlite_wrapper_test_${name}_header})
 
 IF(MSVC)
 		ADD_DEFINITIONS( -DSQLITE_WRAPPER_USE=1 )
 		ADD_EXECUTABLE (sqlite_wrapper_test_${name} ${sqlite_wrapper_test_${name}_source} ${sqlite_wrapper_test_${name}_moc_source})
-		TARGET_LINK_LIBRARIES (sqlite_wrapper_test_${name} libsqlite_wrapper ${QT_LIBRARIES})
+		TARGET_LINK_LIBRARIES (sqlite_wrapper_test_${name} ${QT_LIBRARIES})
 ELSE(MSVC)
 		ADD_DEFINITIONS( -DSQLITE_WRAPPER_USE=1 )
 		ADD_EXECUTABLE (sqlite_wrapper_test_${name} ${sqlite_wrapper_test_${name}_source} ${sqlite_wrapper_test_${name}_moc_source})
-		TARGET_LINK_LIBRARIES (sqlite_wrapper_test_${name} libsqlite_wrapper ${QT_LIBRARIES})
+		TARGET_LINK_LIBRARIES (sqlite_wrapper_test_${name} ${QT_LIBRARIES})
 ENDIF()
 		ADD_TARGET_TEST(${name})
 

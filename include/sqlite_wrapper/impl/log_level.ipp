@@ -1,7 +1,7 @@
-///	@file		src/log_level.cpp
+///	@file		include/sqlite_wrapper/impl/log_level.ipp
 ///	@date		15.3.2010 14:23
 ///	file base	log_level
-///	file ext	cpp
+///	file ext	ipp
 ///
 /// @author		T. Schroeder (explodus@gmx.de)
 ///	
@@ -22,14 +22,16 @@
 ///
 /// This file is part of the sqlite-wrapper project
 
-#include <sqlite_wrapper/config.hpp>
-#include <sqlite_wrapper/db.hpp>
-#include <sqlite_wrapper/log.hpp>
+#ifndef SQLITE_WRAPPER_LOGLEVEL_IPP_INCLUDED
+#define SQLITE_WRAPPER_LOGLEVEL_IPP_INCLUDED
 
 #include <boost/make_shared.hpp>
 
 ///
-static db::log::level _global_level(db::log::log_error);
+namespace db { namespace log 
+{
+	static db::log::level _global_level(db::log::log_error);
+}}
 
 db::log::level db::log::global_level()
 {
@@ -40,7 +42,6 @@ void db::log::global_level(db::log::level lvl)
 {
 	_global_level = lvl;
 }
-
 
 db::log::singleton::db::log_type& 
 db::log::singleton::db::get_log(const string& name/* = DB_TEXT("log.db")*/)
@@ -73,3 +74,5 @@ db::log::singleton::io::get_log(const string& name/* = DB_TEXT("log.txt")*/)
 		( boost::make_shared<buffer_type >(name)));
 	return ret;
 }
+
+#endif

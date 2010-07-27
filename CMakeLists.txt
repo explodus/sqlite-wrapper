@@ -7,6 +7,8 @@ IF(MSVC)   # Do not generate manifests for the plugins - caused issues loading p
 	SET(CMAKE_EXTRA_LINK_FLAGS "${CMAKE_EXTRA_LINK_FLAGS} /NOMANIFEST /MANIFESTFILE:"" /MANIFEST:NO /incremental:no /pdb:none")
 ENDIF()
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/")
+
 PROJECT (sqlite_wrapper)
 
 set (SQLITE_WRAPPER_VERSION_MAJOR 0)
@@ -142,6 +144,8 @@ IF(MSVC)
 	SET(Boost_USE_STATIC_LIBS ON)
 ENDIF()
  
+FIND_PACKAGE( SQLITE3 REQUIRED )
+
 FIND_PACKAGE(
 	Boost 1.38.0 REQUIRED COMPONENTS
 	date_time
