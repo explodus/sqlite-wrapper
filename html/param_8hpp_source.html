@@ -157,7 +157,7 @@ window.onload = initDynSections;
 <a name="l00090"></a>00090     eZeroLengthAllowed  = 64  
 <a name="l00091"></a>00091   };
 <a name="l00092"></a>00092 
-<a name="l00094"></a><a class="code" href="classdb_1_1param.html">00094</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a> 
+<a name="l00094"></a><a class="code" href="classdb_1_1param.html">00094</a>   <span class="keyword">class </span><a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a> 
 <a name="l00095"></a>00095 <span class="comment">//#ifndef BOOST_NO_STD_LOCALE</span>
 <a name="l00096"></a>00096 <span class="comment">//    : sigb::trackable</span>
 <a name="l00097"></a>00097 <span class="comment">//#endif // _DEBUG</span>
@@ -168,19 +168,19 @@ window.onload = initDynSections;
 <a name="l00102"></a>00102     <span class="keywordtype">unsigned</span> _col; 
 <a name="l00103"></a>00103 
 <a name="l00104"></a>00104   <span class="keyword">public</span>:
-<a name="l00106"></a>00106     <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>();
+<a name="l00106"></a>00106     <a class="code" href="classdb_1_1param.html#a326a04480d42456e54ac7c90f0f929e6">param</a>();
 <a name="l00107"></a>00107 
-<a name="l00117"></a>00117     <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>(<span class="keywordtype">unsigned</span> col);
+<a name="l00117"></a>00117     <a class="code" href="classdb_1_1param.html#a326a04480d42456e54ac7c90f0f929e6">param</a>(<span class="keywordtype">unsigned</span> col);
 <a name="l00118"></a>00118 
-<a name="l00127"></a>00127     ~<a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>();
+<a name="l00127"></a>00127     <a class="code" href="classdb_1_1param.html#a2a6ede88ce9e209be29d48ba806cf02d" title="~param">~param</a>();
 <a name="l00128"></a>00128 
-<a name="l00138"></a>00138     <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; Param);               
+<a name="l00138"></a>00138     <a class="code" href="classdb_1_1param.html#a326a04480d42456e54ac7c90f0f929e6">param</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; Param);               
 <a name="l00139"></a>00139 
-<a name="l00147"></a>00147     param_types get_type() <span class="keyword">const</span>;
+<a name="l00147"></a>00147     param_types <a class="code" href="classdb_1_1param.html#a914f91b63b21f840d296b0d9818dd3c1">get_type</a>() <span class="keyword">const</span>;
 <a name="l00148"></a>00148 
-<a name="l00158"></a>00158     <span class="keywordtype">void</span> set_type(param_types Type);
+<a name="l00158"></a>00158     <span class="keywordtype">void</span> <a class="code" href="classdb_1_1param.html#ac8d069fa3923ac5abfd3858d37646272" title="set_type">set_type</a>(param_types Type);
 <a name="l00159"></a>00159 
-<a name="l00168"></a>00168     <span class="keywordtype">bool</span>&amp; is_changed();
+<a name="l00168"></a>00168     <span class="keywordtype">bool</span>&amp; <a class="code" href="classdb_1_1param.html#ab61367b9b95ba605cbbf9d24130affc1" title="is param changed?">is_changed</a>();
 <a name="l00169"></a>00169 
 <a name="l00178"></a>00178     <span class="keywordtype">void</span> <span class="keyword">set</span>(sqlite3_stmt* stm);
 <a name="l00179"></a>00179 
@@ -202,36 +202,36 @@ window.onload = initDynSections;
 <a name="l00204"></a>00204     <span class="keywordtype">void</span> <span class="keyword">set</span>(<span class="keyword">const</span> time_t_ce&amp; dat); 
 <a name="l00205"></a>00205 <span class="preprocessor">#endif</span>
 <a name="l00206"></a>00206 <span class="preprocessor"></span>
-<a name="l00215"></a>00215     <span class="keywordtype">void</span> set_null();
+<a name="l00215"></a>00215     <span class="keywordtype">void</span> <a class="code" href="classdb_1_1param.html#a0c877f25837a58ff01b2134d871eeb58" title="set_null">set_null</a>();
 <a name="l00216"></a>00216 
-<a name="l00226"></a>00226     <span class="keywordtype">void</span> set_with_old_type(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; data);
+<a name="l00226"></a>00226     <span class="keywordtype">void</span> <a class="code" href="classdb_1_1param.html#af4c4d23f177280b5eda53c26389ca485" title="set_with_old_type">set_with_old_type</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; data);
 <a name="l00227"></a>00227 
-<a name="l00237"></a>00237     <span class="keywordtype">void</span> set_with_old_type(<span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; data);
+<a name="l00237"></a>00237     <span class="keywordtype">void</span> <a class="code" href="classdb_1_1param.html#af4c4d23f177280b5eda53c26389ca485" title="set_with_old_type">set_with_old_type</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; data);
 <a name="l00238"></a>00238 
-<a name="l00248"></a>00248     <span class="keywordtype">void</span> set_with_old_type(<span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>* data);
+<a name="l00248"></a>00248     <span class="keywordtype">void</span> <a class="code" href="classdb_1_1param.html#af4c4d23f177280b5eda53c26389ca485" title="set_with_old_type">set_with_old_type</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>* data);
 <a name="l00249"></a>00249 
-<a name="l00258"></a>00258     <span class="keywordtype">bool</span> is_null() <span class="keyword">const</span>;
+<a name="l00258"></a>00258     <span class="keywordtype">bool</span> <a class="code" href="classdb_1_1param.html#ae188c6f1e44b49e967e87de7ee860c09" title="is_null">is_null</a>() <span class="keyword">const</span>;
 <a name="l00259"></a>00259 
-<a name="l00267"></a>00267     <span class="keywordtype">bool</span> get_bool() <span class="keyword">const</span>; 
+<a name="l00267"></a>00267     <span class="keywordtype">bool</span> <a class="code" href="classdb_1_1param.html#a8e6b69b1adb4ada02c9a0d539bbae1cc">get_bool</a>() <span class="keyword">const</span>; 
 <a name="l00268"></a>00268 
 <a name="l00269"></a>00269 
-<a name="l00277"></a>00277     <span class="keywordtype">int</span> get_int() <span class="keyword">const</span>;
+<a name="l00277"></a>00277     <span class="keywordtype">int</span> <a class="code" href="classdb_1_1param.html#a3aa69dbadd6770fb7a9e81315874a2f3">get_int</a>() <span class="keyword">const</span>;
 <a name="l00278"></a>00278 
-<a name="l00286"></a>00286     <span class="keywordtype">unsigned</span> get_unsigned() <span class="keyword">const</span>;
+<a name="l00286"></a>00286     <span class="keywordtype">unsigned</span> <a class="code" href="classdb_1_1param.html#abffc15f1d76d5e2fed7e6b1d21a65883">get_unsigned</a>() <span class="keyword">const</span>;
 <a name="l00287"></a>00287 
-<a name="l00295"></a>00295     <span class="keywordtype">long</span> get_long() <span class="keyword">const</span>;
+<a name="l00295"></a>00295     <span class="keywordtype">long</span> <a class="code" href="classdb_1_1param.html#a6cc97c5e2aad9e03daf0c91b38d701d3">get_long</a>() <span class="keyword">const</span>;
 <a name="l00296"></a>00296 
-<a name="l00304"></a>00304     <span class="keywordtype">float</span> get_float() <span class="keyword">const</span>;
+<a name="l00304"></a>00304     <span class="keywordtype">float</span> <a class="code" href="classdb_1_1param.html#adf2bddebceefe47e0ede73441112cb60">get_float</a>() <span class="keyword">const</span>;
 <a name="l00305"></a>00305 
-<a name="l00313"></a>00313     <span class="keywordtype">double</span> get_double() <span class="keyword">const</span>;
+<a name="l00313"></a>00313     <span class="keywordtype">double</span> <a class="code" href="classdb_1_1param.html#a7879f07929a766a4f47fdff39edabac3">get_double</a>() <span class="keyword">const</span>;
 <a name="l00314"></a>00314 
-<a name="l00322"></a>00322     db::char_type get_char() <span class="keyword">const</span>;
+<a name="l00322"></a>00322     db::char_type <a class="code" href="classdb_1_1param.html#a328dcac14b7c5b973f9185ddbea59a91">get_char</a>() <span class="keyword">const</span>;
 <a name="l00323"></a>00323 
 <a name="l00324"></a>00324     operator string() <span class="keyword">const</span>;
 <a name="l00325"></a>00325 
-<a name="l00333"></a>00333     <span class="keywordtype">string</span>&amp; str();
+<a name="l00333"></a>00333     <span class="keywordtype">string</span>&amp; <a class="code" href="classdb_1_1param.html#acdf564be6358d34737ebfcd86a534f06">str</a>();
 <a name="l00334"></a>00334 
-<a name="l00342"></a>00342     <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; str() <span class="keyword">const</span>;
+<a name="l00342"></a>00342     <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; <a class="code" href="classdb_1_1param.html#acdf564be6358d34737ebfcd86a534f06">str</a>() <span class="keyword">const</span>;
 <a name="l00343"></a>00343 
 <a name="l00344"></a>00344 <span class="preprocessor">#ifdef _UNICODE</span>
 <a name="l00345"></a>00345 <span class="preprocessor"></span>    <span class="keyword">const</span> <span class="keywordtype">wchar_t</span>* c_str() <span class="keyword">const</span>;
@@ -247,7 +247,7 @@ window.onload = initDynSections;
 <a name="l00355"></a>00355 
 <a name="l00356"></a>00356 
 <a name="l00357"></a>00357 
-<a name="l00358"></a>00358     boost::gregorian::date get_date_time() <span class="keyword">const</span>;
+<a name="l00358"></a>00358     boost::gregorian::date <a class="code" href="classdb_1_1param.html#a43e7d0125064bd9109e2b236f1aed447">get_date_time</a>() <span class="keyword">const</span>;
 <a name="l00359"></a>00359 <span class="preprocessor">#else</span>
 <a name="l00360"></a>00360 <span class="preprocessor"></span>
 <a name="l00361"></a>00361 
@@ -257,7 +257,7 @@ window.onload = initDynSections;
 <a name="l00365"></a>00365 
 <a name="l00366"></a>00366 
 <a name="l00367"></a>00367 
-<a name="l00368"></a>00368     time_t_ce get_date_time(<span class="keyword">const</span> time_t_ce* tmp = 0) <span class="keyword">const</span>;
+<a name="l00368"></a>00368     time_t_ce <a class="code" href="classdb_1_1param.html#a43e7d0125064bd9109e2b236f1aed447">get_date_time</a>(<span class="keyword">const</span> time_t_ce* tmp = 0) <span class="keyword">const</span>;
 <a name="l00369"></a>00369 <span class="preprocessor">#endif</span>
 <a name="l00370"></a>00370 <span class="preprocessor"></span>
 <a name="l00371"></a>00371 <span class="preprocessor">#ifdef _MFC_VER</span>
@@ -269,14 +269,14 @@ window.onload = initDynSections;
 <a name="l00377"></a>00377 
 <a name="l00378"></a>00378 
 <a name="l00379"></a>00379 
-<a name="l00380"></a>00380     COleDateTime get_date_time(<span class="keyword">const</span> COleDateTime* tmp = 0) <span class="keyword">const</span>;
+<a name="l00380"></a>00380     COleDateTime <a class="code" href="classdb_1_1param.html#a43e7d0125064bd9109e2b236f1aed447">get_date_time</a>(<span class="keyword">const</span> COleDateTime* tmp = 0) <span class="keyword">const</span>;
 <a name="l00381"></a>00381 <span class="preprocessor">#endif // _MFCVER</span>
 <a name="l00382"></a>00382 <span class="preprocessor"></span>
-<a name="l00392"></a>00392     <span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; operator=( <span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a> &amp;v );
+<a name="l00392"></a>00392     <span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; <a class="code" href="classdb_1_1param.html#ab21454db5f07d6b2396d24ca4414059d" title="operator=">operator=</a>( <span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a> &amp;v );
 <a name="l00393"></a>00393 
-<a name="l00402"></a>00402     <span class="keywordtype">bool</span> operator!() <span class="keyword">const</span>;
+<a name="l00402"></a>00402     <span class="keywordtype">bool</span> <a class="code" href="classdb_1_1param.html#a455ab1f2e5b020b43aeea017f85daaab" title="operator!">operator!</a>() <span class="keyword">const</span>;
 <a name="l00403"></a>00403 
-<a name="l00413"></a>00413     <span class="keywordtype">bool</span> operator== (<span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; v) <span class="keyword">const</span>;
+<a name="l00413"></a>00413     <span class="keywordtype">bool</span> <a class="code" href="classdb_1_1param.html#a41bd9be26a79f0a50baf232e52da494b" title="operator==">operator== </a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; v) <span class="keyword">const</span>;
 <a name="l00414"></a>00414 
 <a name="l00415"></a>00415 <span class="comment">//#ifndef BOOST_NO_STD_LOCALE</span>
 <a name="l00416"></a>00416 <span class="comment">//    typedef boost::signal2&lt;void, const string&amp;, bool&amp;&gt; type_signal_external_check; </span>
@@ -291,7 +291,7 @@ window.onload = initDynSections;
 <a name="l00425"></a>00425   {
 <a name="l00426"></a>00426     <span class="keyword">template</span>&lt;&gt; 
 <a name="l00427"></a>00427     <span class="keyword">inline</span> <span class="keywordtype">string</span> to_string(<span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">db::param</a>&amp; a) 
-<a name="l00428"></a>00428     { <span class="keywordflow">return</span> a.<a class="code" href="classdb_1_1param.html#a66a7cbc5eaeb5d9c70f808304beaf786">str</a>(); } 
+<a name="l00428"></a>00428     { <span class="keywordflow">return</span> a.<a class="code" href="classdb_1_1param.html#acdf564be6358d34737ebfcd86a534f06">str</a>(); } 
 <a name="l00429"></a>00429   }
 <a name="l00430"></a>00430 
 <a name="l00431"></a>00431 }

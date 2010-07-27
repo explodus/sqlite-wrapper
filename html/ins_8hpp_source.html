@@ -103,7 +103,7 @@ window.onload = initDynSections;
 <a name="l00033"></a>00033 
 <a name="l00034"></a>00034 <span class="keyword">namespace </span>db
 <a name="l00035"></a>00035 {
-<a name="l00037"></a><a class="code" href="classdb_1_1ins.html">00037</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> 
+<a name="l00037"></a><a class="code" href="classdb_1_1ins.html">00037</a>   <span class="keyword">class </span><a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> 
 <a name="l00038"></a>00038   {
 <a name="l00039"></a>00039   <span class="keyword">protected</span>:
 <a name="l00040"></a>00040     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a> _values;
@@ -112,29 +112,29 @@ window.onload = initDynSections;
 <a name="l00043"></a>00043     <span class="keywordtype">string</span>    _delim2;
 <a name="l00044"></a>00044 
 <a name="l00045"></a>00045   <span class="keyword">public</span>:
-<a name="l00056"></a>00056     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab);
+<a name="l00056"></a>00056     <a class="code" href="group__constructors.html#ga4b26aa8c7d27c76bcd357b12522cf31d">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab);
 <a name="l00057"></a>00057 
-<a name="l00069"></a>00069     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim);
+<a name="l00069"></a>00069     <a class="code" href="group__constructors.html#ga4b26aa8c7d27c76bcd357b12522cf31d">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim);
 <a name="l00070"></a>00070 
-<a name="l00083"></a>00083     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim1, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim2);
+<a name="l00083"></a>00083     <a class="code" href="group__constructors.html#ga4b26aa8c7d27c76bcd357b12522cf31d">ins</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tab, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim1, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim2);
 <a name="l00084"></a>00084     
-<a name="l00094"></a>00094     ~<a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a>();
+<a name="l00094"></a>00094     <a class="code" href="classdb_1_1ins.html#a0561f59b43cfceb6ac7c3ebf27b215a6" title="destructor">~ins</a>();
 <a name="l00095"></a>00095     
-<a name="l00104"></a>00104     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; clear_values();
+<a name="l00104"></a>00104     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; <a class="code" href="classdb_1_1ins.html#a7efd034ba6d4982f97244efa5fd1c8d4" title="clear_values">clear_values</a>();
 <a name="l00105"></a>00105 
-<a name="l00115"></a>00115     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; operator%(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>&amp; f);
+<a name="l00115"></a>00115     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; <a class="code" href="classdb_1_1ins.html#a5c63c3b0071fc846dbc646de4c640611" title="operator%">operator%</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>&amp; f);
 <a name="l00116"></a>00116 
-<a name="l00127"></a>00127     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; values(<span class="keywordtype">string</span> t, <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>* v);
+<a name="l00127"></a>00127     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; <a class="code" href="classdb_1_1ins.html#a90f3a0a107d8e92418951e8d667a0546" title="values">values</a>(<span class="keywordtype">string</span> t, <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>* v);
 <a name="l00128"></a>00128 
-<a name="l00140"></a>00140     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; values(<span class="keywordtype">string</span> t, <span class="keywordtype">string</span> v, param_types p=e_int);
+<a name="l00140"></a>00140     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; <a class="code" href="classdb_1_1ins.html#a90f3a0a107d8e92418951e8d667a0546" title="values">values</a>(<span class="keywordtype">string</span> t, <span class="keywordtype">string</span> v, param_types p=e_int);
 <a name="l00141"></a>00141 
 <a name="l00152"></a>00152     <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00153"></a><a class="code" href="classdb_1_1ins.html#af62c2aa0514fdf791ee34709ecce5c8a">00153</a>     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; values(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; t, <span class="keyword">const</span> T&amp; v)
+<a name="l00153"></a><a class="code" href="classdb_1_1ins.html#af62c2aa0514fdf791ee34709ecce5c8a">00153</a>     <a class="code" href="classdb_1_1ins.html" title="helper class, generates INSERT SQL statements">ins</a> &amp; <a class="code" href="classdb_1_1ins.html#a90f3a0a107d8e92418951e8d667a0546" title="values">values</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; t, <span class="keyword">const</span> T&amp; v)
 <a name="l00154"></a>00154     { <span class="keywordflow">return</span> <a class="code" href="classdb_1_1ins.html#af62c2aa0514fdf791ee34709ecce5c8a" title="values">values</a>(t, detail::to_string(v), tp(v)); }
 <a name="l00155"></a>00155 
-<a name="l00164"></a>00164     operator string() <span class="keyword">const</span>;
+<a name="l00164"></a>00164     <a class="code" href="classdb_1_1ins.html#adada9d805c97782a7e8295b7b07e5286" title="operator string">operator string</a>() <span class="keyword">const</span>;
 <a name="l00165"></a>00165 
-<a name="l00174"></a>00174     <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
+<a name="l00174"></a>00174     <span class="keywordtype">string</span> <a class="code" href="classdb_1_1ins.html#a2cffb37f11a4df7edb1879965ad862b3" title="str">str</a>() <span class="keyword">const</span>;
 <a name="l00175"></a>00175   }; 
 <a name="l00176"></a>00176 
 <a name="l00177"></a>00177 }

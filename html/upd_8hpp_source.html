@@ -103,7 +103,7 @@ window.onload = initDynSections;
 <a name="l00033"></a>00033 
 <a name="l00034"></a>00034 <span class="keyword">namespace </span>db
 <a name="l00035"></a>00035 {
-<a name="l00037"></a><a class="code" href="classdb_1_1upd.html">00037</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a> 
+<a name="l00037"></a><a class="code" href="classdb_1_1upd.html">00037</a>   <span class="keyword">class </span><a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a> 
 <a name="l00038"></a>00038   {
 <a name="l00039"></a>00039     <span class="keywordtype">string</span> _delim1;
 <a name="l00040"></a>00040     <span class="keywordtype">string</span> _delim2;
@@ -114,17 +114,17 @@ window.onload = initDynSections;
 <a name="l00045"></a>00045   <span class="keyword">public</span>:
 <a name="l00046"></a>00046     ~<a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a>();
 <a name="l00047"></a>00047 
-<a name="l00056"></a>00056     <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; t);
+<a name="l00056"></a>00056     <a class="code" href="group__constructors.html#ga89539569559a82ce11a99fc5e2797c8d">upd</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; t);
 <a name="l00057"></a>00057 
-<a name="l00067"></a>00067     <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; t, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; d);
+<a name="l00067"></a>00067     <a class="code" href="group__constructors.html#ga89539569559a82ce11a99fc5e2797c8d">upd</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; t, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; d);
 <a name="l00068"></a>00068 
-<a name="l00081"></a>00081     <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; t, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; d1, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; d2);
+<a name="l00081"></a>00081     <a class="code" href="group__constructors.html#ga89539569559a82ce11a99fc5e2797c8d">upd</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; t, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; d1, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; d2);
 <a name="l00082"></a>00082 
-<a name="l00092"></a>00092     <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a>&amp; where(<span class="keyword">const</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">expr::base</a>&amp; e);
+<a name="l00092"></a>00092     <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a>&amp; <a class="code" href="classdb_1_1upd.html#a98830be2b96d4bfb887fd478f0c15e6d" title=" qualifier  access public">where</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">expr::base</a>&amp; e);
 <a name="l00093"></a>00093 
-<a name="l00103"></a>00103     <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a> &amp; operator%(<span class="keyword">const</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">expr::base</a>&amp; e);
+<a name="l00103"></a>00103     <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a> &amp; <a class="code" href="classdb_1_1upd.html#a81474f731470129c531271b54cfd145d" title="insert a sql where expression through the operator % overload">operator%</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">expr::base</a>&amp; e);
 <a name="l00104"></a>00104 
-<a name="l00114"></a>00114     <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a> &amp; operator%(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>&amp; f);
+<a name="l00114"></a>00114     <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a> &amp; <a class="code" href="classdb_1_1upd.html#a81474f731470129c531271b54cfd145d" title="insert a sql where expression through the operator % overload">operator%</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">db::field</a>&amp; f);
 <a name="l00115"></a>00115 
 <a name="l00126"></a>00126     <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a>&amp; <span class="keyword">set</span>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a>&amp; f, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; val);
 <a name="l00127"></a>00127 
@@ -132,9 +132,9 @@ window.onload = initDynSections;
 <a name="l00139"></a><a class="code" href="classdb_1_1upd.html#a64a6109a79ffb372870642711e9c413d">00139</a>     <a class="code" href="classdb_1_1upd.html" title="helper class for generating update sql expressions">upd</a>&amp; <span class="keyword">set</span>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a>&amp; f, <span class="keyword">const</span> T&amp; val)
 <a name="l00140"></a>00140     { <span class="keywordflow">return</span> <span class="keyword">set</span>(f, detail::to_string(val)); }
 <a name="l00141"></a>00141 
-<a name="l00151"></a>00151     operator string() <span class="keyword">const</span>;
+<a name="l00151"></a>00151     <a class="code" href="group__operators.html#gafb0ac8864bca50621ef75e94264a216a" title="string overload">operator string</a>() <span class="keyword">const</span>;
 <a name="l00152"></a>00152 
-<a name="l00161"></a>00161     <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
+<a name="l00161"></a>00161     <span class="keywordtype">string</span> <a class="code" href="classdb_1_1upd.html#a4492618495cfdfe7d6b4ae4fde1bd3e5" title="same as the string operator overload, more stl like">str</a>() <span class="keyword">const</span>;
 <a name="l00162"></a>00162   };
 <a name="l00163"></a>00163 
 <a name="l00164"></a>00164 }

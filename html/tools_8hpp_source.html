@@ -237,32 +237,32 @@ window.onload = initDynSections;
 <a name="l00286"></a>00286 
 <a name="l00287"></a>00287 <span class="keyword">namespace </span>db 
 <a name="l00288"></a>00288 {
-<a name="l00290"></a><a class="code" href="classdb_1_1split__map.html">00290</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a> : <span class="keyword">public</span> std::map&lt;string, string&gt; 
+<a name="l00290"></a><a class="code" href="classdb_1_1split__map.html">00290</a>   <span class="keyword">class </span><a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a> : <span class="keyword">public</span> std::map&lt;string, string&gt; 
 <a name="l00291"></a>00291   {
 <a name="l00292"></a>00292   <span class="keyword">public</span>:
-<a name="l00300"></a>00300     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a>();
+<a name="l00300"></a>00300     <a class="code" href="classdb_1_1split__map.html#a4f81db3917e6477617194f159643dcf2" title="empty splitmap">split_map</a>();
 <a name="l00301"></a>00301 
-<a name="l00311"></a>00311     <a class="code" href="classdb_1_1split__map.html" title="splitmap basis">split_map</a>(<span class="keyword">const</span> std::map&lt;string, string&gt;&amp; data);
+<a name="l00311"></a>00311     <a class="code" href="classdb_1_1split__map.html#a4f81db3917e6477617194f159643dcf2" title="empty splitmap">split_map</a>(<span class="keyword">const</span> std::map&lt;string, string&gt;&amp; data);
 <a name="l00312"></a>00312 
-<a name="l00323"></a>00323     <span class="keywordtype">string</span> join_fields(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim) <span class="keyword">const</span>;
+<a name="l00323"></a>00323     <span class="keywordtype">string</span> <a class="code" href="classdb_1_1split__map.html#a29e99d9769632471fed97812918c90ea" title="returns text with added delimiter">join_fields</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim) <span class="keyword">const</span>;
 <a name="l00324"></a>00324 
-<a name="l00335"></a>00335     <span class="keywordtype">string</span> join_values(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim) <span class="keyword">const</span>;
+<a name="l00335"></a>00335     <span class="keywordtype">string</span> <a class="code" href="classdb_1_1split__map.html#a30ecb7bd1319c7c63bfcf04bf7c20318" title="returns text with added delimiter">join_values</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim) <span class="keyword">const</span>;
 <a name="l00336"></a>00336   };
 <a name="l00337"></a>00337 
-<a name="l00339"></a><a class="code" href="classdb_1_1split.html">00339</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1split.html" title="split base">split</a> : <span class="keyword">public</span> std::vector&lt;string&gt; 
+<a name="l00339"></a><a class="code" href="classdb_1_1split.html">00339</a>   <span class="keyword">class </span><a class="code" href="classdb_1_1split.html" title="split base">split</a> : <span class="keyword">public</span> std::vector&lt;string&gt; 
 <a name="l00340"></a>00340   {
 <a name="l00341"></a>00341   <span class="keyword">public</span>:
-<a name="l00349"></a>00349     <a class="code" href="classdb_1_1split.html" title="split base">split</a>();
+<a name="l00349"></a>00349     <a class="code" href="classdb_1_1split.html#adaa5b701f349126426857d9b1c4c067a" title="empty split">split</a>();
 <a name="l00350"></a>00350 
-<a name="l00360"></a>00360     <a class="code" href="classdb_1_1split.html" title="split base">split</a>(<span class="keyword">const</span> std::vector&lt;string&gt;&amp; data);
+<a name="l00360"></a>00360     <a class="code" href="classdb_1_1split.html#adaa5b701f349126426857d9b1c4c067a" title="empty split">split</a>(<span class="keyword">const</span> std::vector&lt;string&gt;&amp; data);
 <a name="l00361"></a>00361 
-<a name="l00373"></a>00373     <a class="code" href="classdb_1_1split.html" title="split base">split</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot; &quot;</span>));
+<a name="l00373"></a>00373     <a class="code" href="classdb_1_1split.html#adaa5b701f349126426857d9b1c4c067a" title="empty split">split</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot; &quot;</span>));
 <a name="l00374"></a>00374 
-<a name="l00386"></a>00386     <a class="code" href="classdb_1_1split.html" title="split base">split</a> slice(<span class="keywordtype">int</span> start, <span class="keywordtype">int</span> end) <span class="keyword">const</span>;
+<a name="l00386"></a>00386     <a class="code" href="classdb_1_1split.html" title="split base">split</a> <a class="code" href="classdb_1_1split.html#a4f36ca95b087345cf4f57d62e347bd17" title="returns a subset of terms the current index calculates from the end of the split">slice</a>(<span class="keywordtype">int</span> start, <span class="keywordtype">int</span> end) <span class="keyword">const</span>;
 <a name="l00387"></a>00387 
-<a name="l00398"></a>00398     <span class="keywordtype">string</span> join(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp; delim) <span class="keyword">const</span>;
+<a name="l00398"></a>00398     <span class="keywordtype">string</span> <a class="code" href="classdb_1_1split.html#aaba8c64f45f8d042941e5e5a9e8db978" title="returns text and adds a delimiter">join</a>(<span class="keyword">const</span> <span class="keywordtype">string</span> &amp; delim) <span class="keyword">const</span>;
 <a name="l00399"></a>00399 
-<a name="l00410"></a>00410     <a class="code" href="classdb_1_1split.html" title="split base">split</a> &amp; extend(<span class="keyword">const</span> <a class="code" href="classdb_1_1split.html" title="split base">split</a> &amp; s);
+<a name="l00410"></a>00410     <a class="code" href="classdb_1_1split.html" title="split base">split</a> &amp; <a class="code" href="classdb_1_1split.html#ac6222a1bc953060034f3fee0b97ad4b4" title="extend the split with the terms from another one">extend</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1split.html" title="split base">split</a> &amp; s);
 <a name="l00411"></a>00411   }; 
 <a name="l00412"></a>00412 }
 <a name="l00413"></a>00413 

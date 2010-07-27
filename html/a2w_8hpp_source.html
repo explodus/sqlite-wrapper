@@ -85,15 +85,15 @@ window.onload = initDynSections;
 <a name="l00015"></a>00015 
 <a name="l00016"></a>00016 <span class="keyword">namespace </span>db { <span class="keyword">namespace </span>detail 
 <a name="l00017"></a>00017 {
-<a name="l00028"></a><a class="code" href="classdb_1_1detail_1_1a2w.html">00028</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1detail_1_1a2w.html">a2w</a>
+<a name="l00028"></a><a class="code" href="classdb_1_1detail_1_1a2w.html">00028</a>   <span class="keyword">class </span><a class="code" href="classdb_1_1detail_1_1a2w.html">a2w</a>
 <a name="l00029"></a>00029   {
 <a name="l00030"></a>00030   <span class="keyword">public</span>:
-<a name="l00041"></a><a class="code" href="classdb_1_1detail_1_1a2w.html#a0aa4b8a9be08ed964371c61414cad5d4">00041</a>     <a class="code" href="classdb_1_1detail_1_1a2w.html">a2w</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* psz, <span class="keywordtype">unsigned</span> nCodePage = 65001 <span class="comment">/*CP_UTF8*/</span> ) : empty_(0)
+<a name="l00041"></a><a class="code" href="classdb_1_1detail_1_1a2w.html#a0aa4b8a9be08ed964371c61414cad5d4">00041</a>     <a class="code" href="classdb_1_1detail_1_1a2w.html#a0aa4b8a9be08ed964371c61414cad5d4" title="constructor">a2w</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* psz, <span class="keywordtype">unsigned</span> nCodePage = 65001 <span class="comment">/*CP_UTF8*/</span> ) : empty_(0)
 <a name="l00042"></a>00042     {
 <a name="l00043"></a>00043       init( psz, nCodePage );
 <a name="l00044"></a>00044     }
 <a name="l00045"></a>00045 
-<a name="l00052"></a><a class="code" href="classdb_1_1detail_1_1a2w.html#a3342951acbe45cb763875e6669090cd8">00052</a>     operator const wchar_t*() <span class="keyword">const</span> throw()
+<a name="l00052"></a><a class="code" href="classdb_1_1detail_1_1a2w.html#a3342951acbe45cb763875e6669090cd8">00052</a>     <a class="code" href="classdb_1_1detail_1_1a2w.html#a3342951acbe45cb763875e6669090cd8">operator const wchar_t*</a>() <span class="keyword">const</span> throw()
 <a name="l00053"></a>00053     {
 <a name="l00054"></a>00054       <span class="keywordflow">if</span> (sz_.size())
 <a name="l00055"></a>00055         <span class="keywordflow">return</span>( &amp;*sz_.begin() );
@@ -109,7 +109,7 @@ window.onload = initDynSections;
 <a name="l00075"></a>00075     std::vector&lt;wchar_t&gt; sz_;
 <a name="l00076"></a>00076 
 <a name="l00077"></a>00077   <span class="keyword">private</span>:
-<a name="l00078"></a>00078     <a class="code" href="classdb_1_1detail_1_1a2w.html">a2w</a>( <span class="keyword">const</span> <a class="code" href="classdb_1_1detail_1_1a2w.html">a2w</a>&amp; ) throw();
+<a name="l00078"></a>00078     <a class="code" href="classdb_1_1detail_1_1a2w.html#a0aa4b8a9be08ed964371c61414cad5d4" title="constructor">a2w</a>( <span class="keyword">const</span> <a class="code" href="classdb_1_1detail_1_1a2w.html">a2w</a>&amp; ) throw();
 <a name="l00079"></a>00079     <a class="code" href="classdb_1_1detail_1_1a2w.html">a2w</a>&amp; operator=( const <a class="code" href="classdb_1_1detail_1_1a2w.html">a2w</a>&amp; ) throw();
 <a name="l00080"></a>00080   };
 <a name="l00081"></a>00081 

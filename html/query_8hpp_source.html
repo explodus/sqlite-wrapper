@@ -103,7 +103,7 @@ window.onload = initDynSections;
 <a name="l00033"></a>00033 {
 <a name="l00034"></a>00034   <span class="keyword">class </span>base;
 <a name="l00035"></a>00035 
-<a name="l00037"></a><a class="code" href="classdb_1_1query.html">00037</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>
+<a name="l00037"></a><a class="code" href="classdb_1_1query.html">00037</a>   <span class="keyword">class </span><a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>
 <a name="l00038"></a>00038   {
 <a name="l00039"></a>00039   <span class="keyword">protected</span>:
 <a name="l00040"></a>00040     <span class="keyword">typedef</span> <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a> <a class="code" href="classdb_1_1row.html" title="table rows interface">_value_type</a>;
@@ -130,57 +130,57 @@ window.onload = initDynSections;
 <a name="l00061"></a>00061     <span class="keyword">typedef</span> field_type::iterator fiterator;
 <a name="l00062"></a>00062     <span class="keyword">typedef</span> field_type::const_iterator const_fiterator;
 <a name="l00063"></a>00063     
-<a name="l00070"></a>00070     <a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>();
+<a name="l00070"></a>00070     <a class="code" href="classdb_1_1query.html#ae69393581766cdde3d85c3275980be39" title="query">query</a>();
 <a name="l00071"></a>00071 
-<a name="l00083"></a>00083     <a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>(<a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a>&amp; base_);
+<a name="l00083"></a>00083     <a class="code" href="classdb_1_1query.html#ae69393581766cdde3d85c3275980be39" title="query">query</a>(<a class="code" href="classdb_1_1base.html" title="datenbank interface">base</a>&amp; base_);
 <a name="l00084"></a>00084 
-<a name="l00096"></a>00096     <a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>&amp; q);
+<a name="l00096"></a>00096     <a class="code" href="classdb_1_1query.html#ae69393581766cdde3d85c3275980be39" title="query">query</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>&amp; q);
 <a name="l00097"></a>00097 
-<a name="l00108"></a>00108     ~<a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>();
+<a name="l00108"></a>00108     <a class="code" href="classdb_1_1query.html#a3cc66c7c56f3334ddb79efa3ea94ea0c" title="~query">~query</a>();
 <a name="l00109"></a>00109 
-<a name="l00121"></a>00121     <span class="keywordtype">void</span> execute(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; cmd);
+<a name="l00121"></a>00121     <span class="keywordtype">void</span> <a class="code" href="classdb_1_1query.html#abd3023e4cb57d7b2ec61d34ef32c7f1e" title="execute">execute</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; cmd);
 <a name="l00122"></a>00122 
-<a name="l00134"></a>00134     <span class="keyword">const</span> <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>&amp; getRow(size_type row_num) <span class="keyword">const</span>;
+<a name="l00134"></a>00134     <span class="keyword">const</span> <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>&amp; <a class="code" href="classdb_1_1query.html#abe1db0f9c479f1958298663db2d9c008" title="get a row by number">getRow</a>(size_type row_num) <span class="keyword">const</span>;
 <a name="l00135"></a>00135 
-<a name="l00147"></a>00147     <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>&amp; getRow(size_type row_num);
+<a name="l00147"></a>00147     <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>&amp; <a class="code" href="classdb_1_1query.html#abe1db0f9c479f1958298663db2d9c008" title="get a row by number">getRow</a>(size_type row_num);
 <a name="l00148"></a>00148 
-<a name="l00160"></a>00160     const_reference operator[] (size_type row_num) <span class="keyword">const</span>;
+<a name="l00160"></a>00160     const_reference <a class="code" href="classdb_1_1query.html#a4f9bfa6d704c1fcdc1b32b4bce3a9af4" title="get a row by number">operator[] </a>(size_type row_num) <span class="keyword">const</span>;
 <a name="l00161"></a>00161 
-<a name="l00173"></a>00173     reference operator[] (size_type row_num);
+<a name="l00173"></a>00173     reference <a class="code" href="classdb_1_1query.html#a4f9bfa6d704c1fcdc1b32b4bce3a9af4" title="get a row by number">operator[] </a>(size_type row_num);
 <a name="l00174"></a>00174 
-<a name="l00186"></a>00186     <span class="keywordtype">int</span> getIdOf(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; sField) <span class="keyword">const</span>;
+<a name="l00186"></a>00186     <span class="keywordtype">int</span> <a class="code" href="classdb_1_1query.html#a2b9ae20086336a9573db2935ffe8b09b" title="get id from field title">getIdOf</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; sField) <span class="keyword">const</span>;
 <a name="l00187"></a>00187 
-<a name="l00199"></a>00199     <span class="keywordtype">string</span> getTitleOf(<span class="keywordtype">unsigned</span> iField) <span class="keyword">const</span>;
+<a name="l00199"></a>00199     <span class="keywordtype">string</span> <a class="code" href="classdb_1_1query.html#a3a7b27e7b6c3d8716dc495c8c84a38b5" title="get id from field title">getTitleOf</a>(<span class="keywordtype">unsigned</span> iField) <span class="keyword">const</span>;
 <a name="l00200"></a>00200 
-<a name="l00212"></a>00212     <span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a>* getFieldInfo(<span class="keywordtype">unsigned</span> iField) <span class="keyword">const</span>;
+<a name="l00212"></a>00212     <span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a>* <a class="code" href="classdb_1_1query.html#a1f5b8e91035c581503ade85c191b8078" title="getFieldInfo">getFieldInfo</a>(<span class="keywordtype">unsigned</span> iField) <span class="keyword">const</span>;
 <a name="l00213"></a>00213 
-<a name="l00224"></a>00224     const_iterator begin() <span class="keyword">const</span>;
+<a name="l00224"></a>00224     const_iterator <a class="code" href="classdb_1_1query.html#afbc446ef022de48fe6f7195093ec1e1b" title="begin iterator">begin</a>() <span class="keyword">const</span>;
 <a name="l00225"></a>00225 
-<a name="l00236"></a>00236     const_iterator end() <span class="keyword">const</span>;
+<a name="l00236"></a>00236     const_iterator <a class="code" href="classdb_1_1query.html#a77c1ac337856b90fb8d246845589fc8b" title="end iterator">end</a>() <span class="keyword">const</span>;
 <a name="l00237"></a>00237 
-<a name="l00248"></a>00248     iterator begin();
+<a name="l00248"></a>00248     iterator <a class="code" href="classdb_1_1query.html#afbc446ef022de48fe6f7195093ec1e1b" title="begin iterator">begin</a>();
 <a name="l00249"></a>00249 
-<a name="l00260"></a>00260     iterator end();
+<a name="l00260"></a>00260     iterator <a class="code" href="classdb_1_1query.html#a77c1ac337856b90fb8d246845589fc8b" title="end iterator">end</a>();
 <a name="l00261"></a>00261 
-<a name="l00272"></a>00272     const_fiterator fbegin() <span class="keyword">const</span>;
+<a name="l00272"></a>00272     const_fiterator <a class="code" href="classdb_1_1query.html#aa80cec8e0efa6083e3499c2a4848563e" title="begin iterator">fbegin</a>() <span class="keyword">const</span>;
 <a name="l00273"></a>00273 
-<a name="l00284"></a>00284     const_fiterator fend() <span class="keyword">const</span>;
+<a name="l00284"></a>00284     const_fiterator <a class="code" href="classdb_1_1query.html#a962d892e2b94452694a9bbd6e33610cd" title="end iterator">fend</a>() <span class="keyword">const</span>;
 <a name="l00285"></a>00285 
-<a name="l00296"></a>00296     fiterator fbegin();
+<a name="l00296"></a>00296     fiterator <a class="code" href="classdb_1_1query.html#aa80cec8e0efa6083e3499c2a4848563e" title="begin iterator">fbegin</a>();
 <a name="l00297"></a>00297 
-<a name="l00308"></a>00308     fiterator fend();
+<a name="l00308"></a>00308     fiterator <a class="code" href="classdb_1_1query.html#a962d892e2b94452694a9bbd6e33610cd" title="end iterator">fend</a>();
 <a name="l00309"></a>00309 
-<a name="l00320"></a>00320     size_type size() <span class="keyword">const</span>;
+<a name="l00320"></a>00320     size_type <a class="code" href="classdb_1_1query.html#a40efc70f41484417ebe97888599e99fc" title="container size">size</a>() <span class="keyword">const</span>;
 <a name="l00321"></a>00321 
-<a name="l00332"></a>00332     <span class="keywordtype">bool</span> empty() <span class="keyword">const</span>;
+<a name="l00332"></a>00332     <span class="keywordtype">bool</span> <a class="code" href="classdb_1_1query.html#a9efe77499e15ac0a1465571a1f6cccf4" title="is container empty?">empty</a>() <span class="keyword">const</span>;
 <a name="l00333"></a>00333 
-<a name="l00344"></a>00344     <span class="keywordtype">bool</span> f_empty() <span class="keyword">const</span>;
+<a name="l00344"></a>00344     <span class="keywordtype">bool</span> <a class="code" href="classdb_1_1query.html#ae7b3aee17f6b23bf92f6dd6a89e8b429" title="is container empty?">f_empty</a>() <span class="keyword">const</span>;
 <a name="l00345"></a>00345 
-<a name="l00358"></a>00358     <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>&amp; t) <span class="keyword">const</span>;
+<a name="l00358"></a>00358     <span class="keywordtype">bool</span> <a class="code" href="classdb_1_1query.html#a4b4f7139068fe06b0da4dad8a148b89e" title="operator==">operator==</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>&amp; t) <span class="keyword">const</span>;
 <a name="l00359"></a>00359 
-<a name="l00371"></a>00371     <span class="keywordtype">void</span> push_back(<span class="keyword">const</span> <a class="code" href="classdb_1_1row.html" title="table rows interface">value_type</a>&amp; v);
+<a name="l00371"></a>00371     <span class="keywordtype">void</span> <a class="code" href="classdb_1_1query.html#a32d61fdfa75584aabccf4210a9c17084" title="push a row to the row container">push_back</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1row.html" title="table rows interface">value_type</a>&amp; v);
 <a name="l00372"></a>00372 
-<a name="l00384"></a>00384     <span class="keywordtype">void</span> push_back(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">fvalue_type</a>&amp; v);
+<a name="l00384"></a>00384     <span class="keywordtype">void</span> <a class="code" href="classdb_1_1query.html#a32d61fdfa75584aabccf4210a9c17084" title="push a row to the row container">push_back</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">fvalue_type</a>&amp; v);
 <a name="l00385"></a>00385   };
 <a name="l00386"></a>00386 
 <a name="l00387"></a>00387   <span class="keyword">typedef</span> boost::shared_ptr&lt;query&gt; query_ptr;

@@ -102,7 +102,7 @@ window.onload = initDynSections;
 <a name="l00032"></a>00032 {
 <a name="l00033"></a>00033   <span class="keyword">class </span>query;
 <a name="l00034"></a>00034 
-<a name="l00036"></a><a class="code" href="classdb_1_1row.html">00036</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>
+<a name="l00036"></a><a class="code" href="classdb_1_1row.html">00036</a>   <span class="keyword">class </span><a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>
 <a name="l00037"></a>00037   {
 <a name="l00038"></a>00038   <span class="keyword">protected</span>:
 <a name="l00039"></a>00039     <span class="keyword">typedef</span> std::vector&lt;param, alloc_param &gt; data_type;
@@ -122,43 +122,43 @@ window.onload = initDynSections;
 <a name="l00053"></a>00053 
 <a name="l00055"></a><a class="code" href="classdb_1_1row.html#a28f5ec5e0da8e46b6380d5fc8535c8fc">00055</a>     <a class="code" href="classdb_1_1row.html#a28f5ec5e0da8e46b6380d5fc8535c8fc">row</a>() {}
 <a name="l00056"></a>00056 
-<a name="l00067"></a>00067     <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>(<a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>* query_, <span class="keywordtype">unsigned</span> row_);
+<a name="l00067"></a>00067     <a class="code" href="classdb_1_1row.html#a28f5ec5e0da8e46b6380d5fc8535c8fc">row</a>(<a class="code" href="classdb_1_1query.html" title="cursor interface">query</a>* query_, <span class="keywordtype">unsigned</span> row_);
 <a name="l00068"></a>00068 
-<a name="l00078"></a>00078     <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>&amp; r);
+<a name="l00078"></a>00078     <a class="code" href="classdb_1_1row.html#a28f5ec5e0da8e46b6380d5fc8535c8fc">row</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>&amp; r);
 <a name="l00079"></a>00079 
-<a name="l00088"></a>00088     ~<a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>();
+<a name="l00088"></a>00088     <a class="code" href="classdb_1_1row.html#ab49a7d72bf93170636f1f3df5596c7d6" title="~row">~row</a>();
 <a name="l00089"></a>00089 
-<a name="l00099"></a>00099     <span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; value(size_type field_num) <span class="keyword">const</span>;
+<a name="l00099"></a>00099     <span class="keyword">const</span> <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; <a class="code" href="classdb_1_1row.html#ad757b1820466b1dbe7ec15745cf53e8d" title="get a value by number">value</a>(size_type field_num) <span class="keyword">const</span>;
 <a name="l00100"></a>00100 
-<a name="l00110"></a>00110     <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; value(size_type field_num);
+<a name="l00110"></a>00110     <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>&amp; <a class="code" href="classdb_1_1row.html#ad757b1820466b1dbe7ec15745cf53e8d" title="get a value by number">value</a>(size_type field_num);
 <a name="l00111"></a>00111 
-<a name="l00121"></a>00121     const_reference operator[] (size_type field_num) <span class="keyword">const</span>;
+<a name="l00121"></a>00121     const_reference <a class="code" href="classdb_1_1row.html#ae2da9ac1b75c7045a1546be1304eb4d8" title="get a value by number">operator[] </a>(size_type field_num) <span class="keyword">const</span>;
 <a name="l00122"></a>00122 
-<a name="l00132"></a>00132     reference operator[] (size_type field_num);
+<a name="l00132"></a>00132     reference <a class="code" href="classdb_1_1row.html#ae2da9ac1b75c7045a1546be1304eb4d8" title="get a value by number">operator[] </a>(size_type field_num);
 <a name="l00133"></a>00133 
-<a name="l00144"></a>00144     <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>* operator[] (<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; field_title);
+<a name="l00144"></a>00144     <a class="code" href="classdb_1_1param.html" title="dynamic parameter class">param</a>* <a class="code" href="classdb_1_1row.html#ae2da9ac1b75c7045a1546be1304eb4d8" title="get a value by number">operator[] </a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; field_title);
 <a name="l00145"></a>00145 
-<a name="l00154"></a>00154     const_iterator begin() <span class="keyword">const</span>;
+<a name="l00154"></a>00154     const_iterator <a class="code" href="classdb_1_1row.html#a8d50c74ffd45656beeb84e3676c23056" title="const begin iterator">begin</a>() <span class="keyword">const</span>;
 <a name="l00155"></a>00155 
-<a name="l00164"></a>00164     const_iterator end() <span class="keyword">const</span>;
+<a name="l00164"></a>00164     const_iterator <a class="code" href="classdb_1_1row.html#a8af34bf659e1fb0155c13d1cb69fb072" title="const end iterator">end</a>() <span class="keyword">const</span>;
 <a name="l00165"></a>00165 
-<a name="l00174"></a>00174     iterator begin();
+<a name="l00174"></a>00174     iterator <a class="code" href="classdb_1_1row.html#a8d50c74ffd45656beeb84e3676c23056" title="const begin iterator">begin</a>();
 <a name="l00175"></a>00175 
-<a name="l00184"></a>00184     iterator end();
+<a name="l00184"></a>00184     iterator <a class="code" href="classdb_1_1row.html#a8af34bf659e1fb0155c13d1cb69fb072" title="const end iterator">end</a>();
 <a name="l00185"></a>00185 
-<a name="l00194"></a>00194     reverse_iterator rbegin();
+<a name="l00194"></a>00194     reverse_iterator <a class="code" href="classdb_1_1row.html#a849196f3d0606d464b92b1fecb675926" title="begin reverse iterator">rbegin</a>();
 <a name="l00195"></a>00195 
-<a name="l00204"></a>00204     reverse_iterator rend();
+<a name="l00204"></a>00204     reverse_iterator <a class="code" href="classdb_1_1row.html#a02a03a6558c738e7c7ad98f19f96bc37" title="end reverse iterator">rend</a>();
 <a name="l00205"></a>00205 
-<a name="l00214"></a>00214     size_type size() <span class="keyword">const</span>;
+<a name="l00214"></a>00214     size_type <a class="code" href="classdb_1_1row.html#acc31c599362e2f2178cbe52c86644eda" title="container size">size</a>() <span class="keyword">const</span>;
 <a name="l00215"></a>00215 
-<a name="l00224"></a>00224     <span class="keywordtype">bool</span> empty() <span class="keyword">const</span>;
+<a name="l00224"></a>00224     <span class="keywordtype">bool</span> <a class="code" href="classdb_1_1row.html#a8e44aeccb8c2fdef339f3ac112ebf742" title="returns true if the container is empty">empty</a>() <span class="keyword">const</span>;
 <a name="l00225"></a>00225 
-<a name="l00235"></a>00235     <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>&amp; t) <span class="keyword">const</span>;
+<a name="l00235"></a>00235     <span class="keywordtype">bool</span> <a class="code" href="classdb_1_1row.html#a36046f580a827d7f341b2bbc4752ddc9" title="operator==">operator==</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1row.html" title="table rows interface">row</a>&amp; t) <span class="keyword">const</span>;
 <a name="l00236"></a>00236 
-<a name="l00246"></a>00246     <span class="keywordtype">void</span> push_back(<span class="keyword">const</span> value_type&amp; v);
+<a name="l00246"></a>00246     <span class="keywordtype">void</span> <a class="code" href="classdb_1_1row.html#ae87993a6a14952cb7fc498b2a292a937" title="push a param to the container">push_back</a>(<span class="keyword">const</span> value_type&amp; v);
 <a name="l00247"></a>00247 
-<a name="l00257"></a>00257     <span class="keywordtype">void</span> fill(sqlite3_stmt* stm);
+<a name="l00257"></a>00257     <span class="keywordtype">void</span> <a class="code" href="classdb_1_1row.html#a38f3b6a5568643438119729633630921" title="fill">fill</a>(sqlite3_stmt* stm);
 <a name="l00258"></a>00258 
 <a name="l00259"></a>00259   };
 <a name="l00260"></a>00260   

@@ -103,7 +103,7 @@ window.onload = initDynSections;
 <a name="l00033"></a>00033 
 <a name="l00034"></a>00034 <span class="keyword">namespace </span>db
 <a name="l00035"></a>00035 {
-<a name="l00037"></a><a class="code" href="classdb_1_1sel.html">00037</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> 
+<a name="l00037"></a><a class="code" href="classdb_1_1sel.html">00037</a>   <span class="keyword">class </span><a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> 
 <a name="l00038"></a>00038   {
 <a name="l00039"></a>00039   <span class="keyword">protected</span>:
 <a name="l00040"></a>00040     <span class="keywordtype">bool</span> _distinct;
@@ -122,60 +122,60 @@ window.onload = initDynSections;
 <a name="l00053"></a>00053 
 <a name="l00054"></a>00054   <span class="keyword">public</span>:
 <a name="l00057"></a>00057 
-<a name="l00067"></a>00067     <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>();
+<a name="l00067"></a>00067     <a class="code" href="group__constructors.html#ga04b3051f6a5a229b2c1d8d018de272f0" title="constructor">sel</a>();
 <a name="l00068"></a>00068 
-<a name="l00079"></a>00079     <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tablename);
+<a name="l00079"></a>00079     <a class="code" href="group__constructors.html#ga04b3051f6a5a229b2c1d8d018de272f0" title="constructor">sel</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tablename);
 <a name="l00080"></a>00080 
-<a name="l00092"></a>00092     <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tablename, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim);
+<a name="l00092"></a>00092     <a class="code" href="group__constructors.html#ga04b3051f6a5a229b2c1d8d018de272f0" title="constructor">sel</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tablename, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim);
 <a name="l00093"></a>00093 
-<a name="l00106"></a>00106     <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tablename, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim1, 
+<a name="l00106"></a>00106     <a class="code" href="group__constructors.html#ga04b3051f6a5a229b2c1d8d018de272f0" title="constructor">sel</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; tablename, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim1, 
 <a name="l00107"></a>00107       <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; delim2);
 <a name="l00108"></a>00108 
-<a name="l00119"></a>00119     <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>&amp; s);
+<a name="l00119"></a>00119     <a class="code" href="group__constructors.html#ga04b3051f6a5a229b2c1d8d018de272f0" title="constructor">sel</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>&amp; s);
 <a name="l00120"></a>00120 
-<a name="l00129"></a>00129     <span class="keyword">virtual</span> ~<a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>();
+<a name="l00129"></a>00129     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html#aebc057b1bcab9b147115ad1db7960900" title="destructor">~sel</a>();
 <a name="l00130"></a>00130 
-<a name="l00141"></a>00141     <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; operator=(<span class="keyword">const</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>&amp; s);
+<a name="l00141"></a>00141     <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="group__operators.html#ga377035f48bbfc6e053a25757b49d0346" title="simple copy operator">operator=</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>&amp; s);
 <a name="l00142"></a>00142 
-<a name="l00153"></a>00153     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; operator,(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s);
+<a name="l00153"></a>00153     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="group__operators.html#gacff2d7c1ca3d9f57b153b4e08e18e77d" title="adds a column name">operator,</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s);
 <a name="l00154"></a>00154 
-<a name="l00165"></a>00165     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; operator%(<span class="keyword">const</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">expr::base</a>&amp; e);
+<a name="l00165"></a>00165     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="group__operators.html#ga743fc2f514e5f6321c4e7caaae5ab230" title="adds a where expression">operator%</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">expr::base</a>&amp; e);
 <a name="l00166"></a>00166 
-<a name="l00177"></a>00177     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; operator&lt;(<span class="keyword">const</span> field_pair&amp; f);
+<a name="l00177"></a>00177     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="group__operators.html#ga830c2c1816e3900bcf2ae777940b5eb4" title="joins two fields">operator&lt;</a>(<span class="keyword">const</span> field_pair&amp; f);
 <a name="l00178"></a>00178 
-<a name="l00188"></a>00188     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; distinct(<span class="keywordtype">bool</span> d);
+<a name="l00188"></a>00188     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#a651a4abb3506b5b44e3f7ae3e8826b34" title="distinct">distinct</a>(<span class="keywordtype">bool</span> d);
 <a name="l00189"></a>00189 
-<a name="l00199"></a>00199     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; limit(<span class="keywordtype">int</span> value);
+<a name="l00199"></a>00199     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#ae198934bdaa4752b5ededbb1a11ad04f" title="limit">limit</a>(<span class="keywordtype">int</span> value);
 <a name="l00200"></a>00200 
-<a name="l00210"></a>00210     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; join(<span class="keyword">const</span> field_pair&amp; f);
+<a name="l00210"></a>00210     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#a063bb74f74cfa7b00a802b8eace6026f" title="join">join</a>(<span class="keyword">const</span> field_pair&amp; f);
 <a name="l00211"></a>00211 
-<a name="l00221"></a>00221     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; offset(<span class="keywordtype">int</span> value);
+<a name="l00221"></a>00221     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#ac5dc21f3de52783f3b1316a984ff6b8e" title="offset">offset</a>(<span class="keywordtype">int</span> value);
 <a name="l00222"></a>00222 
-<a name="l00233"></a>00233     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; result_no_delim(<span class="keywordtype">string</span> r, <span class="keywordtype">string</span> alias=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00233"></a>00233     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#a19dd339ae0260aedb031207ca8bf8bdb" title="result_no_delim">result_no_delim</a>(<span class="keywordtype">string</span> r, <span class="keywordtype">string</span> alias=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&quot;</span>));
 <a name="l00234"></a>00234 
-<a name="l00245"></a>00245     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; result(<span class="keywordtype">string</span> r, <span class="keywordtype">string</span> alias=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00245"></a>00245     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#a2a6233c8eedfd27400cfa2b0b6c5bc9b" title="result">result</a>(<span class="keywordtype">string</span> r, <span class="keywordtype">string</span> alias=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&quot;</span>));
 <a name="l00246"></a>00246 
-<a name="l00257"></a>00257     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; result_max(<span class="keywordtype">string</span> r, <span class="keywordtype">string</span> alias=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00257"></a>00257     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#ac0b60f3b99133a618264a8f2ddd30a3f" title="result_max">result_max</a>(<span class="keywordtype">string</span> r, <span class="keywordtype">string</span> alias=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&quot;</span>));
 <a name="l00258"></a>00258 
-<a name="l00267"></a>00267     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; clear();
+<a name="l00267"></a>00267     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#a68edc0cc573448c665003ecb73b19a2f" title="clear">clear</a>();
 <a name="l00268"></a>00268 
-<a name="l00279"></a>00279     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; source(<span class="keywordtype">string</span> s, <span class="keywordtype">string</span> alias=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&quot;</span>));
+<a name="l00279"></a>00279     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#a9029f755f592e553d5028193df17f641" title="source">source</a>(<span class="keywordtype">string</span> s, <span class="keywordtype">string</span> alias=<a class="code" href="config_8hpp.html#a189afc410993de3087af3ba58f928251">DB_TEXT</a>(<span class="stringliteral">&quot;&quot;</span>));
 <a name="l00280"></a>00280 
-<a name="l00290"></a>00290     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; where(<span class="keyword">const</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">expr::base</a> &amp; w);
+<a name="l00290"></a>00290     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#ac934a9792ba61e631538a44c8629987a" title="where">where</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">expr::base</a> &amp; w);
 <a name="l00291"></a>00291 
-<a name="l00301"></a>00301     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; where(<span class="keywordtype">string</span> w);
+<a name="l00301"></a>00301     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#ac934a9792ba61e631538a44c8629987a" title="where">where</a>(<span class="keywordtype">string</span> w);
 <a name="l00302"></a>00302 
-<a name="l00312"></a>00312     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; group_by(<span class="keywordtype">string</span> gb);
+<a name="l00312"></a>00312     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#ae2f10fc7cb519aa41c133f1a7e1b8864" title="group_by">group_by</a>(<span class="keywordtype">string</span> gb);
 <a name="l00313"></a>00313 
-<a name="l00323"></a>00323     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; having(<span class="keyword">const</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">expr::base</a> &amp; h);
+<a name="l00323"></a>00323     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#a00527e1aa981a7ea651abcbfeaa4ef6c" title="having">having</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1expr_1_1base.html" title="expression base class">expr::base</a> &amp; h);
 <a name="l00324"></a>00324 
-<a name="l00334"></a>00334     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; having(<span class="keywordtype">string</span> h);
+<a name="l00334"></a>00334     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#a00527e1aa981a7ea651abcbfeaa4ef6c" title="having">having</a>(<span class="keywordtype">string</span> h);
 <a name="l00335"></a>00335 
-<a name="l00346"></a>00346     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; order_by(<span class="keywordtype">string</span> ob, <span class="keywordtype">bool</span> ascending=<span class="keyword">true</span>);
+<a name="l00346"></a>00346     <span class="keyword">virtual</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a> &amp; <a class="code" href="classdb_1_1sel.html#a6d3232cfd96793a522f7d6b803d31cd2" title="order_by">order_by</a>(<span class="keywordtype">string</span> ob, <span class="keywordtype">bool</span> ascending=<span class="keyword">true</span>);
 <a name="l00347"></a>00347 
-<a name="l00357"></a>00357     <span class="keyword">virtual</span> operator string() <span class="keyword">const</span>;
+<a name="l00357"></a>00357     <span class="keyword">virtual</span> <a class="code" href="group__operators.html#ga2c3c2e434060a255d6546be26f3c74b6" title="db::string overload">operator string</a>() <span class="keyword">const</span>;
 <a name="l00358"></a>00358 
-<a name="l00367"></a>00367     <span class="keyword">virtual</span> <span class="keywordtype">string</span> str() <span class="keyword">const</span>;
+<a name="l00367"></a>00367     <span class="keyword">virtual</span> <span class="keywordtype">string</span> <a class="code" href="classdb_1_1sel.html#a07d9b99a672db27d79db306d07f4e7fb" title="same as the string operator overload, more stl like">str</a>() <span class="keyword">const</span>;
 <a name="l00368"></a>00368   }; 
 <a name="l00369"></a>00369 
 <a name="l00370"></a>00370 }

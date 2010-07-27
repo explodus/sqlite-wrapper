@@ -111,7 +111,7 @@ window.onload = initDynSections;
 <a name="l00041"></a>00041   <span class="keyword">class </span>ins;
 <a name="l00042"></a>00042   <span class="keyword">class </span>upd;
 <a name="l00043"></a>00043 
-<a name="l00045"></a><a class="code" href="classdb_1_1field.html">00045</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> 
+<a name="l00045"></a><a class="code" href="classdb_1_1field.html">00045</a>   <span class="keyword">class </span><a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> 
 <a name="l00046"></a>00046   {
 <a name="l00047"></a>00047   <span class="keyword">public</span>:
 <a name="l00048"></a>00048     <span class="keyword">typedef</span> std::vector&lt; std::pair&lt;string, string&gt; &gt; Values;
@@ -124,23 +124,23 @@ window.onload = initDynSections;
 <a name="l00055"></a>00055     <span class="keywordtype">long</span> _length;
 <a name="l00056"></a>00056 
 <a name="l00057"></a>00057   <span class="keyword">public</span>:
-<a name="l00069"></a>00069     <span class="keyword">explicit</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, 
+<a name="l00069"></a>00069     <span class="keyword">explicit</span> <a class="code" href="classdb_1_1field.html#ab16b4a8af56fd44adb84a6e301d89f51" title="field">field</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, 
 <a name="l00070"></a>00070       <span class="keyword">const</span> param_types&amp; t=e_long);
 <a name="l00071"></a>00071 
 <a name="l00082"></a>00082     <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
-<a name="l00083"></a><a class="code" href="classdb_1_1field.html#a1937f39226f36f1e48bd3d2a71a38b73">00083</a>     <span class="keyword">explicit</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, <span class="keyword">const</span> T&amp; val)
+<a name="l00083"></a><a class="code" href="classdb_1_1field.html#a1937f39226f36f1e48bd3d2a71a38b73">00083</a>     <span class="keyword">explicit</span> <a class="code" href="classdb_1_1field.html#ab16b4a8af56fd44adb84a6e301d89f51" title="field">field</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, <span class="keyword">const</span> T&amp; val)
 <a name="l00084"></a>00084       : _name(n), _type(tp(val)), _extra(e_nullExtra), _length(-1) 
 <a name="l00085"></a>00085     {
 <a name="l00086"></a>00086       _values.push_back(Values::value_type(n, detail::to_string(val))); 
 <a name="l00087"></a>00087     }
 <a name="l00088"></a>00088 
-<a name="l00101"></a>00101     <span class="keyword">explicit</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a>(<span class="keyword">const</span> string_pair&amp; n_tbl,
+<a name="l00101"></a>00101     <span class="keyword">explicit</span> <a class="code" href="classdb_1_1field.html#ab16b4a8af56fd44adb84a6e301d89f51" title="field">field</a>(<span class="keyword">const</span> string_pair&amp; n_tbl,
 <a name="l00102"></a>00102       <span class="keyword">const</span> param_types&amp; t=e_long, 
 <a name="l00103"></a>00103       <span class="keyword">const</span> Values&amp; vals = Values());
 <a name="l00104"></a>00104 
-<a name="l00115"></a>00115     <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a>&amp; f);
+<a name="l00115"></a>00115     <a class="code" href="classdb_1_1field.html#ab16b4a8af56fd44adb84a6e301d89f51" title="field">field</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a>&amp; f);
 <a name="l00116"></a>00116 
-<a name="l00125"></a>00125     <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a>();
+<a name="l00125"></a>00125     <a class="code" href="classdb_1_1field.html#ab16b4a8af56fd44adb84a6e301d89f51" title="field">field</a>();
 <a name="l00126"></a>00126 
 <a name="l00127"></a>00127     <span class="keywordtype">string</span> fullName() <span class="keyword">const</span>;
 <a name="l00128"></a>00128 
@@ -160,15 +160,15 @@ window.onload = initDynSections;
 <a name="l00142"></a>00142     <span class="keywordtype">void</span>        add_extra(field_extra extra);
 <a name="l00143"></a>00143     <span class="keywordtype">void</span>        remove_extra(field_extra extra);
 <a name="l00144"></a>00144 
-<a name="l00153"></a>00153     Values&amp; values();
+<a name="l00153"></a>00153     Values&amp; <a class="code" href="classdb_1_1field.html#a288ff589a96bb786475611be82240763" title="values">values</a>();
 <a name="l00154"></a>00154 
-<a name="l00163"></a>00163     <span class="keyword">const</span> Values&amp; values() <span class="keyword">const</span>;
+<a name="l00163"></a>00163     <span class="keyword">const</span> Values&amp; <a class="code" href="classdb_1_1field.html#a288ff589a96bb786475611be82240763" title="values">values</a>() <span class="keyword">const</span>;
 <a name="l00164"></a>00164 
-<a name="l00174"></a>00174     <a class="code" href="classdb_1_1expr_1_1in.html" title="in Operator">db::expr::in</a> In(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; <span class="keyword">set</span>) <span class="keyword">const</span>;
+<a name="l00174"></a>00174     <a class="code" href="classdb_1_1expr_1_1in.html" title="in Operator">db::expr::in</a> <a class="code" href="classdb_1_1field.html#a2916ac60c608a1a023b91df8fb1af67b" title="syntactic sugar to expression-api, field.in(sel)">In</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; <span class="keyword">set</span>) <span class="keyword">const</span>;
 <a name="l00175"></a>00175 
-<a name="l00185"></a>00185     <a class="code" href="classdb_1_1expr_1_1in.html" title="in Operator">db::expr::in</a> In(<span class="keyword">const</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>&amp; <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>) <span class="keyword">const</span>;
+<a name="l00185"></a>00185     <a class="code" href="classdb_1_1expr_1_1in.html" title="in Operator">db::expr::in</a> <a class="code" href="classdb_1_1field.html#a2916ac60c608a1a023b91df8fb1af67b" title="syntactic sugar to expression-api, field.in(sel)">In</a>(<span class="keyword">const</span> <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>&amp; <a class="code" href="classdb_1_1sel.html" title="helper class, generates SELECT SQL statements">sel</a>) <span class="keyword">const</span>;
 <a name="l00186"></a>00186 
-<a name="l00196"></a>00196     <a class="code" href="classdb_1_1expr_1_1like.html" title="like operator">db::expr::like</a> Like(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s);
+<a name="l00196"></a>00196     <a class="code" href="classdb_1_1expr_1_1like.html" title="like operator">db::expr::like</a> <a class="code" href="classdb_1_1field.html#a045f9b5ad7b586e91e874d0358cee06f" title="syntactic sugar to expression-api, field.like(string)">Like</a>(<span class="keyword">const</span> <span class="keywordtype">string</span>&amp; s);
 <a name="l00197"></a>00197 
 <a name="l00198"></a>00198     <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fd) <span class="keyword">const</span>;
 <a name="l00199"></a>00199     <span class="keywordtype">bool</span> operator!=(<span class="keyword">const</span> <a class="code" href="classdb_1_1field.html" title="fieldtype interface">field</a> &amp; fd) <span class="keyword">const</span>;

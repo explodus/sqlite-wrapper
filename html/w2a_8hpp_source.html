@@ -85,15 +85,15 @@ window.onload = initDynSections;
 <a name="l00015"></a>00015 
 <a name="l00016"></a>00016 <span class="keyword">namespace </span>db { <span class="keyword">namespace </span>detail
 <a name="l00017"></a>00017 {
-<a name="l00028"></a><a class="code" href="classdb_1_1detail_1_1w2a.html">00028</a>   <span class="keyword">class </span>SQLITE_WRAPPER_DLLAPI <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">w2a</a>
+<a name="l00028"></a><a class="code" href="classdb_1_1detail_1_1w2a.html">00028</a>   <span class="keyword">class </span><a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">w2a</a>
 <a name="l00029"></a>00029   {
 <a name="l00030"></a>00030   <span class="keyword">public</span>:
-<a name="l00041"></a><a class="code" href="classdb_1_1detail_1_1w2a.html#ac5753d6ff1b87fc5689881ce2fbcb6c8">00041</a>     <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">w2a</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span>* psz, <span class="keywordtype">unsigned</span> nCodePage = 0 <span class="comment">/*CP_ACP*/</span> ) : empty_(0)
+<a name="l00041"></a><a class="code" href="classdb_1_1detail_1_1w2a.html#ac5753d6ff1b87fc5689881ce2fbcb6c8">00041</a>     <a class="code" href="classdb_1_1detail_1_1w2a.html#ac5753d6ff1b87fc5689881ce2fbcb6c8" title="constructor">w2a</a>(<span class="keyword">const</span> <span class="keywordtype">wchar_t</span>* psz, <span class="keywordtype">unsigned</span> nCodePage = 0 <span class="comment">/*CP_ACP*/</span> ) : empty_(0)
 <a name="l00042"></a>00042     {
 <a name="l00043"></a>00043       init( psz, nCodePage );
 <a name="l00044"></a>00044     }
 <a name="l00045"></a>00045 
-<a name="l00055"></a><a class="code" href="classdb_1_1detail_1_1w2a.html#aef0d74ae1cc2e67b32659bffb1e6d34f">00055</a>     <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">w2a</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* psz) : empty_(0)
+<a name="l00055"></a><a class="code" href="classdb_1_1detail_1_1w2a.html#aef0d74ae1cc2e67b32659bffb1e6d34f">00055</a>     <a class="code" href="classdb_1_1detail_1_1w2a.html#ac5753d6ff1b87fc5689881ce2fbcb6c8" title="constructor">w2a</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* psz) : empty_(0)
 <a name="l00056"></a>00056     {
 <a name="l00057"></a>00057       <span class="keywordflow">if</span> (strlen(psz)==0)
 <a name="l00058"></a>00058         <span class="keywordflow">return</span>;
@@ -101,7 +101,7 @@ window.onload = initDynSections;
 <a name="l00060"></a>00060       memcpy(&amp;*sz_.begin(), psz, strlen(psz));
 <a name="l00061"></a>00061     }
 <a name="l00062"></a>00062 
-<a name="l00069"></a><a class="code" href="classdb_1_1detail_1_1w2a.html#a77751496b40a2b17bd88dad63dd3339d">00069</a>     operator const char*() <span class="keyword">const</span> throw()
+<a name="l00069"></a><a class="code" href="classdb_1_1detail_1_1w2a.html#a77751496b40a2b17bd88dad63dd3339d">00069</a>     <a class="code" href="classdb_1_1detail_1_1w2a.html#a77751496b40a2b17bd88dad63dd3339d">operator const char*</a>() <span class="keyword">const</span> throw()
 <a name="l00070"></a>00070     {
 <a name="l00071"></a>00071       <span class="keywordflow">if</span> (sz_.size())
 <a name="l00072"></a>00072         <span class="keywordflow">return</span>( &amp;*sz_.begin() );
@@ -117,7 +117,7 @@ window.onload = initDynSections;
 <a name="l00092"></a>00092     std::vector&lt;char&gt; sz_;
 <a name="l00093"></a>00093 
 <a name="l00094"></a>00094   <span class="keyword">private</span>:
-<a name="l00095"></a>00095     <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">w2a</a>( <span class="keyword">const</span> <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">w2a</a>&amp; ) throw();
+<a name="l00095"></a>00095     <a class="code" href="classdb_1_1detail_1_1w2a.html#ac5753d6ff1b87fc5689881ce2fbcb6c8" title="constructor">w2a</a>( <span class="keyword">const</span> <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">w2a</a>&amp; ) throw();
 <a name="l00096"></a>00096     <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">w2a</a>&amp; operator=( const <a class="code" href="classdb_1_1detail_1_1w2a.html" title="wchar_t to char conversion class">w2a</a>&amp; ) throw();
 <a name="l00097"></a>00097   };
 <a name="l00098"></a>00098 
