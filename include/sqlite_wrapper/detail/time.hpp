@@ -27,8 +27,8 @@
 
 #include <sqlite_wrapper/config.hpp>
 
-namespace db { namespace detail {
-
+namespace db { namespace detail 
+{
 	/// @todo need documentation
 	///
 	/// <BR>qualifier
@@ -39,7 +39,7 @@ namespace db { namespace detail {
 	///
 	/// @date         16.3.2010 21:26
 	/// 
-	inline string to_sql_string(const tm* _tm) 
+	inline db::string to_sql_string(const tm* _tm) 
 	{
 		ostringstream ss;
 		if (!_tm)
@@ -56,53 +56,7 @@ namespace db { namespace detail {
 
 } }
 
-#ifndef BOOST_NO_STD_LOCALE
-
-#include <boost/date_time/gregorian/gregorian.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-
-namespace db { namespace detail 
-{
-	/// @todo need documentation
-	/// <BR>qualifier
-	/// <BR>access    public  
-	/// @return    db::string
-	/// @param     d as const boost::gregorian::date & 
-	///
-	/// @date      18:2:2009   11:44
-	///
-	inline string to_sql_string(const boost::gregorian::date& d) 
-	{
-		boost::gregorian::date::ymd_type ymd = d.year_month_day();
-		ostringstream ss;
-		ss << ymd.year << DB_TEXT("-")
-			<< std::setw(2) << std::setfill(DB_TEXT('0')) 
-			<< ymd.month.as_number() //solves problem with gcc 3.1 hanging
-			<< DB_TEXT("-")
-			<< std::setw(2) << std::setfill(DB_TEXT('0')) 
-			<< ymd.day;
-		return ss.str();
-	}
-
-	/// @todo need documentation
-	///
-	/// <BR>qualifier
-	/// <BR>access    public 
-	/// 
-	/// @return       db::string
-	/// @param        t as const boost::posix_time::ptime &
-	///
-	/// @date         16.3.2010 21:20
-	/// 
-	inline string to_sql_string(const boost::posix_time::ptime& t) 
-	{
-		tm pt_tm = boost::posix_time::to_tm(t);
-		return to_sql_string(&pt_tm);
-	}
-
-} }
-
-#else
+#ifdef BOOST_NO_STD_LOCALE
 
 #include <time.h>
 
@@ -653,8 +607,10 @@ namespace db
 		///
 		/// @date      18:3:2009   13:43
 		///
-		inline struct tm *gmtime_r_ce(const time_t_ce *timer, 
-		struct tm *tmbuf, BOOLEAN local)
+		inline struct tm *gmtime_r_ce(
+			  const time_t_ce *timer
+			, struct tm *tmbuf
+			, BOOLEAN local)
 		{
 			SYSTEMTIME	st;
 
@@ -679,8 +635,9 @@ namespace db
 		///
 		/// @date      18:3:2009   13:40
 		///
-		inline struct tm *localtime_r_ce(const time_t_ce *timer, 
-		struct tm *tmbuf)
+		inline struct tm *localtime_r_ce(
+			  const time_t_ce *timer
+			, struct tm *tmbuf)
 		{
 			return gmtime_r_ce(timer, tmbuf, TRUE);
 		}
@@ -695,7 +652,6 @@ namespace db
 		///
 		inline struct tm* localtime_ce(const time_t_ce* timer)
 		{ return localtime_r_ce(timer, &tmbuf); }
-		}
 
 	} // namespace time 
 
@@ -709,11 +665,11 @@ namespace db
 		///
 		/// @date      18:2:2009   11:44
 		///
-		inline string to_sql_string(const time_t_ce& d) 
+		inline db::string to_sql_string(const db::time_t_ce& d) 
 		{
 			tm* _tm(0);
-			_tm = time::localtime_ce(&d);
-			return to_sql_string(_tm);
+			_tm = db::time::localtime_ce(&d);
+			return db::detail::to_sql_string(_tm);
 		}
 
 		/// @todo need documentation
@@ -725,18 +681,70 @@ namespace db
 		///
 		/// @date      19:3:2009   10:32
 		///
-		inline time_t_ce from_sql_string(
-			const string& s
-		, const time_t_ce* tmp = 0) 
+		inline db::time_t_ce from_sql_string(
+			  const db::string& s
+			, const db::time_t_ce* tmp = 0) 
 		{
-		tm _tm = {0};
-		int err = _stscanf(s.c_str(), DB_TEXT("%d.%d.%d %d:%d:%d"), 
-			&_tm.tm_mday, &_tm.tm_mon, &_tm.tm_year,
-			&_tm.tm_hour, &_tm.tm_min, &_tm.tm_sec);
-		return time::mktime_ce(&_tm);
+			tm _tm;
+			int err = _stscanf(
+				s.c_str()
+				, DB_TEXT("%d.%d.%d %d:%d:%d")
+				, &_tm.tm_mday
+				, &_tm.tm_mon
+				, &_tm.tm_year
+				, &_tm.tm_hour
+				, &_tm.tm_min
+				, &_tm.tm_sec);
+			return db::time::mktime_ce(&_tm);
 		}
 	}
 }
+
+#else
+
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+namespace db { namespace detail 
+{
+	/// @todo need documentation
+	/// <BR>qualifier
+	/// <BR>access    public  
+	/// @return    db::string
+	/// @param     d as const boost::gregorian::date & 
+	///
+	/// @date      18:2:2009   11:44
+	///
+	inline string to_sql_string(const boost::gregorian::date& d) 
+	{
+		boost::gregorian::date::ymd_type ymd = d.year_month_day();
+		ostringstream ss;
+		ss << ymd.year << DB_TEXT("-")
+			<< std::setw(2) << std::setfill(DB_TEXT('0')) 
+			<< ymd.month.as_number() //solves problem with gcc 3.1 hanging
+			<< DB_TEXT("-")
+			<< std::setw(2) << std::setfill(DB_TEXT('0')) 
+			<< ymd.day;
+		return ss.str();
+	}
+
+	/// @todo need documentation
+	///
+	/// <BR>qualifier
+	/// <BR>access    public 
+	/// 
+	/// @return       db::string
+	/// @param        t as const boost::posix_time::ptime &
+	///
+	/// @date         16.3.2010 21:20
+	/// 
+	inline string to_sql_string(const boost::posix_time::ptime& t) 
+	{
+		tm pt_tm = boost::posix_time::to_tm(t);
+		return to_sql_string(&pt_tm);
+	}
+
+} }
 
 #endif // BOOST_NO_STD_LOCALE
 

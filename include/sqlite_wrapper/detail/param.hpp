@@ -27,7 +27,9 @@
 
 #include <sqlite_wrapper/config.hpp>
 #include <sqlite_wrapper/detail/tools.hpp>
-#include <boost/date_time.hpp>
+#ifndef BOOST_NO_STD_LOCALE
+#	include <boost/date_time.hpp>
+#endif
 
 struct sqlite3;
 struct sqlite3_stmt;

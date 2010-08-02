@@ -23,13 +23,13 @@ inline void db::detail::a2w::init(const char* psz, unsigned nCodePage)
 	}
 
 #if defined (WIN32) || defined (WIN64)
-	int lenA(lstrlenA( psz )+1);		 
+	int lenA(strlen( psz )+1);		 
 	int lenW(lenA);
 
 	sz_.resize(lenW);
 
 	bool failed(0 == ::MultiByteToWideChar(
-		nCodePage
+		  nCodePage
 		, 0
 		, psz
 		, lenA
@@ -41,7 +41,7 @@ inline void db::detail::a2w::init(const char* psz, unsigned nCodePage)
 		if (GetLastError()==ERROR_INSUFFICIENT_BUFFER)
 		{
 			lenW = ::MultiByteToWideChar(
-				nCodePage
+				  nCodePage
 				, 0
 				, psz
 				, lenA
@@ -51,7 +51,7 @@ inline void db::detail::a2w::init(const char* psz, unsigned nCodePage)
 			sz_.resize(lenW);
 
 			failed=(0 == ::MultiByteToWideChar(
-				nCodePage
+				  nCodePage
 				, 0
 				, psz
 				, lenA
@@ -63,9 +63,9 @@ inline void db::detail::a2w::init(const char* psz, unsigned nCodePage)
 	if (failed)
 	{
 		db::stringstream err;
-		err	<< DB_TEXT("Lasterror was ") 
-				<< GetLastError() 
-				<< DB_TEXT("\n");
+		err << DB_TEXT("Lasterror was ") 
+			<< GetLastError() 
+			<< DB_TEXT("\n");
 		throw db::exception::unknown_error(err.str());
 	}
 #else
