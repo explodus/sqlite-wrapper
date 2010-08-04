@@ -185,7 +185,9 @@ void test_table_class()
 	}
 	catch (db::exception::base& e)
 	{
-		BOOST_CHECK_MESSAGE( false, e.what() );
+		BOOST_CHECK_MESSAGE( 
+			  false
+			, static_cast<const char*>(db::detail::w2a(e.what())) );
 	}
 }
 

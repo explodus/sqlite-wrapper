@@ -134,7 +134,7 @@ inline db::upd db::table::get_upd() const
 		; itb!=ite
 		; ++itb)
 		visitor(*itb);
-	
+
 	return ret;
 }
 
@@ -191,9 +191,14 @@ inline void db::table::set( db::base& b )
 {
 	// insert or update or both?
 	db::string s = get_upd();
-	s.erase(0, 6);
-	s = DB_TEXT("insert or update ") + s;
-	b.execute_ptr(s);
+	try
+	{
+		b.execute_ptr(get_upd());
+	}
+	catch (db::exception::base&)
+	{
+		b.execute_ptr(get_ins());
+	}
 }
 
 inline void db::table::set( db::base& b, vec_type& v )
@@ -241,12 +246,14 @@ inline void db::table::create( db::base& b )
 	{
 		ss << DB_TEXT(", ") << itb->first;
 		if (itb->second.type() == typeid(int))
-			ss << DB_TEXT("integer");
+			ss << DB_TEXT(" integer");
 		else if (itb->second.type() == typeid(double))
-			ss << DB_TEXT("real");
+			ss << DB_TEXT(" real");
 		else if (itb->second.type() == typeid(db::string))
-			ss << DB_TEXT("text");
+			ss << DB_TEXT(" text");
 	}
+
+	ss << DB_TEXT("); ");
 
 	b.execute_ptr(ss.str());
 }
@@ -264,7 +271,7 @@ inline bool db::table::operator==( const table& t ) const
 		, ttb(t._members.begin())
 		, ite(_members.end())
 		; itb!=ite
-		; ++itb)
+		; ++itb, ++ttb)
 	{
 		if (itb->first != ttb->first)
 			return false;

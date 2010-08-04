@@ -42,9 +42,9 @@
 #cmakedefine SQLITE_WRAPPER_HAVE_GCC_VISIBILITY
 #endif
 
-#ifndef SQLITE_WRAPPER_STATIC
-#	include <sqlite_wrapper/private_assemblies.hpp>
-#endif
+//#ifndef SQLITE_WRAPPER_STATIC
+//#	include <sqlite_wrapper/private_assemblies.hpp>
+//#endif
 
 #include <string>
 #include <vector>
