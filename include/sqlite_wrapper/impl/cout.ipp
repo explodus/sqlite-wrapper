@@ -13,13 +13,13 @@
 #define SQLITE_WRAPPER_COUT_IPP_INCLUDED
 
 ///
-db::ostream& db::cout
-(
-#ifdef SQLITE_WRAPPER_NARROW_STRING
-	std::cout
-#else
-	std::wcout
-#endif
-);
+//inline db::ostream& db::cout
+//(
+//#ifdef SQLITE_WRAPPER_NARROW_STRING
+//	std::cout
+//#else
+//	std::wcout
+//#endif
+//);
 
 #endif

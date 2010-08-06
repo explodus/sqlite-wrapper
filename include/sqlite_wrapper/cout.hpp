@@ -16,7 +16,16 @@
 namespace db
 {
 	/// defintion of db::cout
-	extern ostream& cout;
+	//extern ostream& cout;
+	static db::ostream& cout
+	(
+#ifdef SQLITE_WRAPPER_NARROW_STRING
+		std::cout
+#else
+		std::wcout
+#endif
+	);
+
 }
  
 #endif

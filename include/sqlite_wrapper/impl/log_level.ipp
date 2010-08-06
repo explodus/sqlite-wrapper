@@ -33,17 +33,17 @@ namespace db { namespace log
 	static db::log::level _global_level(db::log::log_error);
 }}
 
-db::log::level db::log::global_level()
+inline db::log::level db::log::global_level()
 {
 	return _global_level;
 }
 
-void db::log::global_level(db::log::level lvl)
+inline void db::log::global_level(db::log::level lvl)
 {
 	_global_level = lvl;
 }
 
-db::log::singleton::db::log_type& 
+inline db::log::singleton::db::log_type& 
 db::log::singleton::db::get_log(const string& name/* = DB_TEXT("log.db")*/)
 {
 	static log_type ret
@@ -52,7 +52,7 @@ db::log::singleton::db::get_log(const string& name/* = DB_TEXT("log.db")*/)
 	return ret;
 }
 
-db::log::singleton::basic::log_type& 
+inline db::log::singleton::basic::log_type& 
 db::log::singleton::basic::get_log()
 {
 	static log_type ret
@@ -66,7 +66,7 @@ db::log::singleton::basic::get_log()
 	return ret;
 }
 
-db::log::singleton::io::log_type& 
+inline db::log::singleton::io::log_type& 
 db::log::singleton::io::get_log(const string& name/* = DB_TEXT("log.txt")*/)
 {
 	static log_type ret
