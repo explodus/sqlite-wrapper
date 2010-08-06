@@ -42,6 +42,7 @@ namespace db { namespace detail
 		switch (p.get_type())
 		{
 		case db::e_null:
+			ret = static_cast<int>(0);
 			break;
 		case db::e_bool:
 		case db::e_int:
@@ -153,10 +154,13 @@ inline void db::table::get( db::base& b )
 	if (q && q->size())
 	{
 		const db::row& r = *q->begin();
-		db::row::const_iterator itb(++r.begin()), ite(r.end());
 		map_type::iterator mtb(++_members.begin());
 
-		for (; itb!=ite; ++itb)
+		for (db::row::const_iterator 
+			  itb(++r.begin())
+			, ite(r.end())
+			; itb!=ite
+			; ++itb, ++mtb)
 			mtb->second = detail::get_variant(*itb);
 	}
 }
@@ -181,7 +185,7 @@ inline void db::table::get( db::base& b, vec_type& v )
 				  db::row::const_iterator rtb(qtb->begin())
 				, rte(qtb->end())
 				; rtb!=rte
-				; ++rtb)
+				; ++rtb, ++mtb)
 				mtb->second = detail::get_variant(*rtb);
 		}
 	}
@@ -189,16 +193,10 @@ inline void db::table::get( db::base& b, vec_type& v )
 
 inline void db::table::set( db::base& b )
 {
-	// insert or update or both?
-	db::string s = get_upd();
 	try
-	{
-		b.execute_ptr(get_upd());
-	}
+	{ b.execute_ptr(get_ins()); }
 	catch (db::exception::base&)
-	{
-		b.execute_ptr(get_ins());
-	}
+	{ b.execute_ptr(get_upd()); }
 }
 
 inline void db::table::set( db::base& b, vec_type& v )
@@ -275,6 +273,7 @@ inline bool db::table::operator==( const table& t ) const
 	{
 		if (itb->first != ttb->first)
 			return false;
+
 		if(!boost::apply_visitor(
 			  detail::are_strict_equals()
 			, itb->second

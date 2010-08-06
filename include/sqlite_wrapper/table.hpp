@@ -54,7 +54,7 @@ namespace db
 			db::table::map_type::iterator it(_members.find(DB_TEXT(#name))); \
 			if (it != _members.end()) \
 				it->second = val; \
-		}
+		} 
 	
 	///	@brief a base wrapper class for a database table
 	class table

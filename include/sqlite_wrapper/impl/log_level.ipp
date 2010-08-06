@@ -35,12 +35,12 @@ namespace db { namespace log
 
 inline db::log::level db::log::global_level()
 {
-	return _global_level;
+	return db::log::_global_level;
 }
 
 inline void db::log::global_level(db::log::level lvl)
 {
-	_global_level = lvl;
+	db::log::_global_level = lvl;
 }
 
 inline db::log::singleton::db::log_type& 
