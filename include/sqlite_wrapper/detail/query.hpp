@@ -58,6 +58,8 @@ namespace db
     typedef data_type::difference_type difference_type;
     typedef data_type::iterator iterator;
     typedef data_type::const_iterator const_iterator;
+		typedef data_type::reverse_iterator reverse_iterator;
+		typedef data_type::const_reverse_iterator const_reverse_iterator;
     typedef field_type::iterator fiterator;
     typedef field_type::const_iterator const_fiterator;
 		
@@ -259,6 +261,50 @@ namespace db
     /// 
     iterator end();
 
+		/// @brief        begin reverse iterator
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       db::query::reverse_iterator
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.9.2010 11:28
+		///
+		reverse_iterator rbegin();
+		
+		/// @brief        end reverse iterator
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       db::query::reverse_iterator
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.9.2010 11:28
+		///
+		reverse_iterator rend();
+
+		/// @brief        const begin reverse iterator
+		///
+		/// <BR>qualifier const
+		/// <BR>access    public  
+		/// @return       db::query::const_reverse_iterator
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.9.2010 11:29
+		///
+		const_reverse_iterator rbegin() const;
+		
+		/// @brief        const end reverse iterator
+		///
+		/// <BR>qualifier const
+		/// <BR>access    public  
+		/// @return       db::query::const_reverse_iterator
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.9.2010 11:29
+		///
+		const_reverse_iterator rend() const;
+
     /// @brief        begin iterator
     ///
     /// <BR>qualifier const
@@ -306,6 +352,31 @@ namespace db
     /// @date         31.3.2010 21:57
     /// 
     fiterator fend();
+
+		/// @brief        erase
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       db::query::iterator
+		/// @param        _Where as const_iterator
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.9.2010 11:35
+		///
+		iterator erase(const_iterator _Where);
+
+		/// @brief        erase
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       db::query::iterator
+		/// @param        _First_arg as const_iterator
+		/// @param        _Last_arg as const_iterator
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.9.2010 11:35
+		///
+		iterator erase(const_iterator _First_arg, const_iterator _Last_arg);
 
     /// @brief        container size
     ///

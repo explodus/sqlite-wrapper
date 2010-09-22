@@ -211,6 +211,26 @@ inline db::query::iterator db::query::end()
 	return _data.end();
 }
 
+inline db::query::const_reverse_iterator db::query::rbegin() const
+{
+	return _data.rbegin();
+}
+
+inline db::query::reverse_iterator db::query::rbegin()
+{
+	return _data.rbegin();
+}
+
+inline db::query::const_reverse_iterator db::query::rend() const
+{
+	return _data.rend();
+}
+
+inline db::query::reverse_iterator db::query::rend()
+{
+	return _data.rend();
+}
+
 inline db::query::const_fiterator db::query::fbegin() const
 {
 	return _field.begin();
@@ -259,6 +279,18 @@ inline void db::query::push_back( const value_type& v )
 inline void db::query::push_back( const fvalue_type& v )
 {
 	_field.push_back(v);
+}
+
+inline db::query::iterator db::query::erase(const_iterator _Where)
+{
+	return _data.erase(_Where);
+}
+
+inline db::query::iterator db::query::erase(
+	  const_iterator _First_arg
+	, const_iterator _Last_arg)
+{
+	return _data.erase(_First_arg, _Last_arg);
 }
 
 #endif
