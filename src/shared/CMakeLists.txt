@@ -1,6 +1,6 @@
 MACRO(MAKE_SQLITE_WRAPPER_LIBRARY TARGETNAME VARIANT)
 	ADD_DEFINITIONS(-DSQLITE_WRAPPER_SHARED -DSQLITE_WRAPPER_USE=1)
-	ADD_LIBRARY (${TARGETNAME} ${VARIANT} ${sqlite_wrapper_files} ${sqlite_wrapper_source} ${SQLITE_WRAPPER_INCLUDE_DIR}/private_assemblies.hpp)
+	ADD_LIBRARY (${TARGETNAME} ${VARIANT} ${sqlite_wrapper_files} ${sqlite_wrapper_source})
 
 	SOURCE_GROUP( "Header Files\\impl" FILES ${sqlite_wrapper_impl_all} )
 	SOURCE_GROUP( "Header Files\\detail" FILES ${sqlite_wrapper_header_detail} )

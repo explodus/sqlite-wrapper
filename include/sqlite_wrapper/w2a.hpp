@@ -25,7 +25,7 @@ namespace db { namespace detail
 	/// return boost::date_time::parse_date< boost::gregorian::date >( data );
 	///
 	/// @endcode
-	class w2a
+	class SQLITE_WRAPPER_DLLAPI w2a
 	{
 	public:
 		/// @brief        constructor

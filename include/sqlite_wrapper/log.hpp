@@ -51,7 +51,7 @@ namespace db { namespace log {
 	namespace buffer
 	{
 		/// Simplest buffer.
-		class basic : private boost::noncopyable
+		class SQLITE_WRAPPER_DLLAPI basic : private boost::noncopyable
 		{
 		public:
 			db::ostream& output_stream() 
@@ -95,6 +95,19 @@ namespace db { namespace log {
 		{
 			T db_;
 
+			inline void init()
+			{
+				db::ostringstream s_cr;
+				s_cr 
+					<< DB_TEXT("create table if not exists ") 
+					<< DB_TEXT("log(id integer primary key autoincrement")
+					<< DB_TEXT(", date_real real")
+					<< DB_TEXT(", date_text text")
+					<< DB_TEXT(", level integer")
+					<< DB_TEXT(", msg text);");
+				db_.execute_ptr(s_cr.str());
+			}
+
 		public:
 			database(const db::string& name)
 			{
@@ -105,18 +118,22 @@ namespace db { namespace log {
 						db::detail::w2a(name.c_str())));
 				#endif // SQLITE_WRAPPER_NARROW_STRING
 
-				{
-					db::ostringstream s_cr;
-					s_cr 
-						<< DB_TEXT("create table if not exists ") 
-						<< DB_TEXT("log(id integer primary key autoincrement")
-						<< DB_TEXT(", date_real real")
-						<< DB_TEXT(", date_text text")
-						<< DB_TEXT(", level integer")
-						<< DB_TEXT(", msg text);");
-					db_.execute_ptr(s_cr.str());
-				}
+				init();
 			}
+
+#ifdef SQLITE_HAS_CODEC
+			database(const db::string& name, const std::string& key)
+			{
+#ifdef SQLITE_WRAPPER_NARROW_STRING
+				db_.connect(name, key);
+#else
+				db_.connect(
+					  static_cast<const char*>(db::detail::w2a(name.c_str()))
+					, key);
+#endif // SQLITE_WRAPPER_NARROW_STRING
+				init();
+			}
+#endif // SQLITE_HAS_CODEC
 
 			T& output_stream() 
 			{ return db_; }
@@ -172,7 +189,7 @@ namespace db { namespace log {
 	namespace format
 	{
 		/// Simplest formatter.
-		class basic
+		class SQLITE_WRAPPER_DLLAPI basic
 		{
 		private:
 			basic();
@@ -209,6 +226,9 @@ namespace db { namespace log {
 					break;
 				case log_debug:
 					return DB_TEXT("debug");
+					break;
+				case log_undef:
+					return DB_TEXT("undef");
 					break;
 				default:
 					return DB_TEXT("undef");
@@ -271,8 +291,12 @@ namespace db { namespace log {
 			{ return db::string(DB_TEXT("\\")) + msg; }
 		};
 
+#ifndef BOOST_NO_STD_LOCALE
+		static const boost::posix_time::ptime time_t_epoch(boost::gregorian::date(1970, 1, 1));
+#endif
+
 		/// Simplest formatter.
-		class database
+		class SQLITE_WRAPPER_DLLAPI database
 		{
 			database();
 			~database();
@@ -287,8 +311,8 @@ namespace db { namespace log {
 				,	db::log::level lvl = db::log::log_undef)
 			{
 #ifndef BOOST_NO_STD_LOCALE
-				static boost::posix_time::ptime time_t_epoch(
-					boost::gregorian::date(1970, 1, 1));
+				//boost::posix_time::ptime time_t_epoch(
+				//	boost::gregorian::date(1970, 1, 1));
 				boost::posix_time::ptime local_time
 					(boost::posix_time::second_clock::local_time());
 				string local_time_string(db::detail::to_sql_string(local_time));

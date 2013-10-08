@@ -150,6 +150,21 @@ namespace db
     ///
     void connect(const std::string& file);
 
+#if SQLITE_HAS_CODEC
+		/// @brief        open the specified encrypted db
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public   
+		/// @return       void
+		/// @param        const std::string & file
+		/// @param        const std::string & key
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         28.6.2013 11:03
+		/// 
+		void connect(const std::string& file, const std::string& key);
+#endif
+
     /// @brief				begins SQL transaction
     ///
     /// <BR>qualifier

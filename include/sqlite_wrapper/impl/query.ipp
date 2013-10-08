@@ -98,6 +98,7 @@ SQLITE_WRAPPER_INLINE void db::query::execute(const string& cmd)
 	unsigned nRowCnt(0);
 	while ((rc = sqlite3_step(_stm)) == SQLITE_ROW) 
 	{
+#ifndef UNDER_CE
 		if (nRowCnt==0)
 		{
 			_field.reserve(sqlite3_column_count(_stm)); string tmp;
@@ -106,8 +107,12 @@ SQLITE_WRAPPER_INLINE void db::query::execute(const string& cmd)
 #ifdef _UNICODE
 				tmp = static_cast<const wchar_t*>(
 					sqlite3_column_origin_name16(_stm, i));
+				if (tmp.length()==0)
+					tmp = L"noname";
 #else
 				tmp = sqlite3_column_origin_name(_stm, i);
+				if (tmp.length()==0)
+					tmp = "noname";
 #endif // _UNICODE
 
 				_field.push_back(db::field(tmp));
@@ -135,6 +140,7 @@ SQLITE_WRAPPER_INLINE void db::query::execute(const string& cmd)
 				}
 			}
 		}
+#endif // UNDER_CE
 
 		_data.push_back(row(this, nRowCnt++));
 		_data.back().fill(_stm);

@@ -381,8 +381,10 @@ namespace db
           DWORD_PTR cnt_fields(ar.ReadCount());
           DWORD_PTR cnt_rows(ar.ReadCount());
           
-          CString name; ar >> name;
-          _name = name;
+          CString name_; 
+					ar >> name_;
+					if (name_.GetLength())
+	          _name = name_;
 
 #ifdef _BOOST_TEST
 #ifdef _DEBUG

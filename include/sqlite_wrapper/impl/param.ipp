@@ -99,7 +99,7 @@ SQLITE_WRAPPER_INLINE void db::param::set( sqlite3_stmt* stm )
 #ifdef _UNICODE
 			std::string blob(reinterpret_cast<const char*>(
 				sqlite3_column_blob(stm, _col)));
-			std::wstring wblob = detail::a2w(blob.c_str());
+			std::wstring wblob = static_cast<const wchar_t*>(detail::a2w(blob.c_str()));
 			set(wblob);
 #else
 			set(reinterpret_cast<const char*>(
@@ -283,7 +283,7 @@ SQLITE_WRAPPER_INLINE const char* db::param::c_str() const
 SQLITE_WRAPPER_INLINE boost::gregorian::date db::param::get_date_time() const
 {
 #ifdef _UNICODE
-	std::string data = detail::w2a(_data.c_str());
+	std::string data = static_cast<const char*>(detail::w2a(_data.c_str()));
 	return boost::date_time::parse_date<
 		boost::gregorian::date>(data);
 #else

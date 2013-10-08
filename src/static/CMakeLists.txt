@@ -1,7 +1,12 @@
 MACRO(MAKE_SQLITE_WRAPPER_LIBRARY TARGETNAME VARIANT)
 	ADD_DEFINITIONS(-DSQLITE_WRAPPER_USE=1)
-	ADD_LIBRARY (${TARGETNAME} ${VARIANT} ${sqlite_wrapper_files})
+	ADD_LIBRARY (${TARGETNAME} ${VARIANT} ${sqlite_wrapper_files} ${sqlite_wrapper_source})
 
+	SOURCE_GROUP( "Header Files\\impl" FILES ${sqlite_wrapper_impl_all} )
+	SOURCE_GROUP( "Header Files\\detail" FILES ${sqlite_wrapper_header_detail} )
+	SOURCE_GROUP( "Header Files" FILES ${sqlite_wrapper_header_top} )
+	SOURCE_GROUP( "Source Files" FILES ${sqlite3_source_top} )
+	SOURCE_GROUP( "Source Files" FILES ${sqlite_wrapper_src_all} ) 
 	#SET_TARGET_PROPERTIES(${TARGETNAME} PROPERTIES VERSION ${SQLITE_WRAPPER_VERSION})
 
 	#IF(${TARGETNAME} STREQUAL sqlite_wrapper)

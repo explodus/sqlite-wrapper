@@ -75,6 +75,29 @@ namespace db
 			throw_error(rc);
 	}
 
+#ifdef SQLITE_HAS_CODEC
+	SQLITE_WRAPPER_INLINE void base::connect( 
+		  const std::string& file
+		, const std::string& key )
+	{
+		if (_db) 
+			sqlite3_close(_db);
+		int rc = sqlite3_open(file.c_str(), &_db); 
+		if (rc != SQLITE_OK)
+			throw_error(rc);
+		rc = sqlite3_errcode(_db);
+		if (rc != SQLITE_OK)
+			throw_error(rc);
+
+		rc = sqlite3_key(
+			  _db
+			, reinterpret_cast<const void*>(key.c_str())
+			, key.length());
+		if (rc != SQLITE_OK)
+			throw_error(rc);
+	}
+#endif
+
 	SQLITE_WRAPPER_INLINE void base::begin()
 	{
 		int rc(sqlite3_exec(_db, "BEGIN;", 0, 0, 0)); 

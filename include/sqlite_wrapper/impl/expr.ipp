@@ -118,9 +118,17 @@ SQLITE_WRAPPER_INLINE bool db::expr::oper::check_escape( const param_types& type
 	case e_date_time:
 		return true;
 		break;
-	default:
+	case e_null:
+	case e_bool:
+	case e_int:
+	case e_unsigned:
+	case e_long:
+	case e_float:
+	case e_double:
 		return false;
+		break;
 	}
+	return false;
 }
 
 SQLITE_WRAPPER_INLINE db::expr::oper::oper( const field & fld, const string& o, const string& d ) : _field(fld), op(o), data(d), escape(check_escape(_field.type()))
