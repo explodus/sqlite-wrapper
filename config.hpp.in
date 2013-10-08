@@ -82,6 +82,12 @@
 	#endif // _UNICODE
 #endif
 
+#ifdef SQLITE_WRAPPER_HEADER_ONLY
+#	define SQLITE_WRAPPER_INLINE inline 
+#else
+#	define SQLITE_WRAPPER_INLINE
+#endif
+
 #ifdef SQLITE_WRAPPER_SHARED
 #	if defined (WIN32) || defined (WIN64)
 #	   ifdef sqlite_wrapper_EXPORTS

@@ -69,7 +69,7 @@
 namespace db
 {
   ///datenbank interface
-  class base
+  class SQLITE_WRAPPER_DLLAPI base
   {
     sqlite3* _db;
 
@@ -232,21 +232,23 @@ namespace db
 
 } // namespace db
 
-#include <sqlite_wrapper/impl/cout.ipp>
-#include <sqlite_wrapper/impl/a2w.ipp>
-#include <sqlite_wrapper/impl/w2a.ipp>
-#include <sqlite_wrapper/impl/time.ipp>
-#include <sqlite_wrapper/impl/split.ipp>
-#include <sqlite_wrapper/impl/exception.ipp>
-#include <sqlite_wrapper/impl/field.ipp>
-#include <sqlite_wrapper/impl/expr.ipp>
-#include <sqlite_wrapper/impl/sel.ipp>
-#include <sqlite_wrapper/impl/del.ipp>
-#include <sqlite_wrapper/impl/upd.ipp>
-#include <sqlite_wrapper/impl/ins.ipp>
-#include <sqlite_wrapper/impl/param.ipp>
-#include <sqlite_wrapper/impl/row.ipp>
-#include <sqlite_wrapper/impl/query.ipp>
-#include <sqlite_wrapper/impl/db.ipp>
+#if SQLITE_WRAPPER_HEADER_ONLY
+#	include <sqlite_wrapper/impl/cout.ipp>
+#	include <sqlite_wrapper/impl/a2w.ipp>
+#	include <sqlite_wrapper/impl/w2a.ipp>
+#	include <sqlite_wrapper/impl/time.ipp>
+#	include <sqlite_wrapper/impl/split.ipp>
+#	include <sqlite_wrapper/impl/exception.ipp>
+#	include <sqlite_wrapper/impl/field.ipp>
+#	include <sqlite_wrapper/impl/expr.ipp>
+#	include <sqlite_wrapper/impl/sel.ipp>
+#	include <sqlite_wrapper/impl/del.ipp>
+#	include <sqlite_wrapper/impl/upd.ipp>
+#	include <sqlite_wrapper/impl/ins.ipp>
+#	include <sqlite_wrapper/impl/param.ipp>
+#	include <sqlite_wrapper/impl/row.ipp>
+#	include <sqlite_wrapper/impl/query.ipp>
+#	include <sqlite_wrapper/impl/db.ipp>
+#endif
 
 #endif // db_h__

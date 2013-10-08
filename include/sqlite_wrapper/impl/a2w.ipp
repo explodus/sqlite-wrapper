@@ -14,7 +14,7 @@
 #include <sqlite_wrapper/a2w.hpp>
 #include <sqlite_wrapper/detail/exception.hpp>
 
-inline void db::detail::a2w::init(const char* psz, unsigned nCodePage)
+SQLITE_WRAPPER_INLINE void db::detail::a2w::init(const char* psz, unsigned nCodePage)
 {
 	if (psz == 0)
 	{

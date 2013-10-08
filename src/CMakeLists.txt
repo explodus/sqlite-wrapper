@@ -14,7 +14,7 @@ SET( sqlite_wrapper_header_top
 	${SQLITE_WRAPPER_INCLUDE_DIR}/log.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/a2w.hpp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/w2a.hpp
-	${SQLITE_WRAPPER_INCLUDE_DIR}/table.hpp
+	#${SQLITE_WRAPPER_INCLUDE_DIR}/table.hpp
 	)
 
 SET( sqlite_wrapper_header_detail
@@ -48,26 +48,52 @@ SET( sqlite_wrapper_impl_all
 	${SQLITE_WRAPPER_INCLUDE_DIR}/impl/row.ipp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/impl/sel.ipp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/impl/split.ipp
-	${SQLITE_WRAPPER_INCLUDE_DIR}/impl/table.ipp
+	#${SQLITE_WRAPPER_INCLUDE_DIR}/impl/table.ipp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/impl/time.ipp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/impl/upd.ipp
 	${SQLITE_WRAPPER_INCLUDE_DIR}/impl/w2a.ipp
 	)
+	
+SET( sqlite_wrapper_src_all
+	${CMAKE_SOURCE_DIR}/src/shared/a2w.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/cout.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/db.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/del.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/exception.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/expr.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/field.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/ins.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/log_level.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/param.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/query.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/row.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/sel.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/split.cpp
+	#${CMAKE_SOURCE_DIR}/src/shared/table.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/time.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/upd.cpp
+	${CMAKE_SOURCE_DIR}/src/shared/w2a.cpp
+	)
 
 FILE (GLOB H_FILES *.hpp )
-FILE (GLOB H_FILES *.ipp )
-SOURCE_GROUP( "Header Files\\impl" FILES ${sqlite_wrapper_impl_all} )
-SOURCE_GROUP( "Header Files\\detail" FILES ${sqlite_wrapper_header_detail} )
-SOURCE_GROUP( "Header Files" FILES ${sqlite_wrapper_header_top} )
-SOURCE_GROUP( "Source Files" FILES ${sqlite3_source_top} )
+FILE (GLOB H_FILES *.cpp )
+#SOURCE_GROUP( "Header Files\\impl" FILES ${sqlite_wrapper_impl_all} )
+#SOURCE_GROUP( "Header Files\\detail" FILES ${sqlite_wrapper_header_detail} )
+#SOURCE_GROUP( "Header Files" FILES ${sqlite_wrapper_header_top} )
+#SOURCE_GROUP( "Source Files" FILES ${sqlite3_source_top} )
 
 SET( sqlite_wrapper_source_top "" )
 
-SET( sqlite3_source_top
-	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3.c
-	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3.h
-	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3ext.h
+IF (ENABLE_ENCRYPTION)
+	SET( sqlite3_source_top
+		${SQLITE3_SRC_DIR}/sha2.c
+		${SQLITE3_SRC_DIR}/sqlite3secure.c
 	)
+ELSE ()
+	SET( sqlite3_source_top
+		${SQLITE3_SRC_DIR}/sqlite3.c
+	)
+ENDIF()
 
 SET( sqlite_wrapper_header
 	${sqlite_wrapper_header_top}
@@ -75,6 +101,7 @@ SET( sqlite_wrapper_header
 
 SET( sqlite_wrapper_source
 	${sqlite_wrapper_source_top}
+	${sqlite_wrapper_src_all}
 	)
 
 SET (sqlite_wrapper_files ${sqlite_wrapper_header} ${sqlite_wrapper_header_detail} ${sqlite_wrapper_impl_all})
@@ -89,17 +116,21 @@ SET( sqlite_wrapper_header
 	${sqlite_wrapper_header_top}
 	${sqlite_wrapper_header_detail}
 	${sqlite_wrapper_impl_all}
-	${sqlite3_header_top}
+	${SQLITE3_INCLUDE_DIR}/sqlite3.h
+	${SQLITE3_INCLUDE_DIR}/sqlite3ext.h
 	)
 
 SET( sqlite_wrapper_source
 	${sqlite_wrapper_source_top}
 	${sqlite3_source_top}
+	${sqlite_wrapper_src_all}
 	)
 
 SET (sqlite_wrapper_files ${sqlite_wrapper_source} ${sqlite_wrapper_header} )
 
 SET( sqlite_wrapper_files_string ${files_string} PARENT_SCOPE )
+
+INCLUDE_DIRECTORIES(${SQLITE3_INCLUDE_DIR})
 
 ADD_SUBDIRECTORY (shared)
 ADD_SUBDIRECTORY (static)

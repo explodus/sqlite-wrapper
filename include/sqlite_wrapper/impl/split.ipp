@@ -25,17 +25,17 @@
 #ifndef SQLITE_WRAPPER_SPLIT_IPP_INCLUDED
 #define SQLITE_WRAPPER_SPLIT_IPP_INCLUDED
 
-inline db::split_map::split_map() 
+SQLITE_WRAPPER_INLINE db::split_map::split_map() 
 { 
 }
 
-inline db::split_map::split_map(const std::map<db::string, db::string>& data) 
+SQLITE_WRAPPER_INLINE db::split_map::split_map(const std::map<db::string, db::string>& data) 
 	: std::map<db::string, db::string>(data) 
 {
 
 }
 
-inline db::string db::split_map::join_fields(const db::string& delim) const
+SQLITE_WRAPPER_INLINE db::string db::split_map::join_fields(const db::string& delim) const
 {
 	string res;
 	for (const_iterator i = begin(); i != end(); i++)
@@ -47,7 +47,7 @@ inline db::string db::split_map::join_fields(const db::string& delim) const
 	return res; 
 }
 
-inline db::string db::split_map::join_values(const db::string& delim) const
+SQLITE_WRAPPER_INLINE db::string db::split_map::join_values(const db::string& delim) const
 {
 	string res;
 	for (const_iterator i = begin(); i != end(); i++)
@@ -62,18 +62,18 @@ inline db::string db::split_map::join_values(const db::string& delim) const
 	return res; 
 }
 
-inline db::split::split() 
+SQLITE_WRAPPER_INLINE db::split::split() 
 {
 
 }
 
-inline db::split::split(const std::vector<db::string>& data) 
+SQLITE_WRAPPER_INLINE db::split::split(const std::vector<db::string>& data) 
 	: std::vector<db::string>(data) 
 {
 
 }
 
-inline db::split::split(const db::string& s, const db::string& delim)
+SQLITE_WRAPPER_INLINE db::split::split(const db::string& s, const db::string& delim)
 {
 	if (s.length()==0)
 		return;
@@ -101,7 +101,7 @@ inline db::split::split(const db::string& s, const db::string& delim)
 		push_back(string(*i));
 }
 
-inline db::split db::split::slice(int start, int end) const
+SQLITE_WRAPPER_INLINE db::split db::split::slice(int start, int end) const
 {
 	std::vector<string> data;
 	int size_ = static_cast<int>(size());
@@ -122,7 +122,7 @@ inline db::split db::split::slice(int start, int end) const
 	return data; 
 }
 
-inline db::string db::split::join(const db::string& delim) const
+SQLITE_WRAPPER_INLINE db::string db::split::join(const db::string& delim) const
 {
 	string res;
 	for (const_iterator i = begin(); i != end(); i++)
@@ -134,7 +134,7 @@ inline db::string db::split::join(const db::string& delim) const
 	return res; 
 }
 
-inline db::split & db::split::extend(const db::split & s)
+SQLITE_WRAPPER_INLINE db::split & db::split::extend(const db::split & s)
 {
 	for (size_t i = 0; i < s.size(); i++)
 		push_back(s[i]);

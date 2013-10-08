@@ -34,7 +34,7 @@
 namespace db
 {
 	///	@brief helper class for generating update sql expressions
-	class upd 
+	class SQLITE_WRAPPER_DLLAPI upd 
   {
     string _delim1;
     string _delim2;

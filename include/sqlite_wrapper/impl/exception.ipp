@@ -25,74 +25,74 @@
 #ifndef SQLITE_WRAPPER_EXCEPTION_IPP_INCLUDED
 #define SQLITE_WRAPPER_EXCEPTION_IPP_INCLUDED
 
-inline db::exception::base::base( const string& msg ) : _msg(msg)
+SQLITE_WRAPPER_INLINE db::exception::base::base( const string& msg ) : _msg(msg)
 {
 
 }
 
-inline db::exception::base::base( const base& _That ) : _msg(_That._msg)
+SQLITE_WRAPPER_INLINE db::exception::base::base( const base& _That ) : _msg(_That._msg)
 {
 
 }
 
-inline db::exception::base::~base()
+SQLITE_WRAPPER_INLINE db::exception::base::~base()
 {
 
 }
 
-inline const db::char_type* db::exception::base::what()
+SQLITE_WRAPPER_INLINE const db::char_type* db::exception::base::what()
 {
 	return _msg.c_str();
 }
 
-inline void db::exception::base::report()
+SQLITE_WRAPPER_INLINE void db::exception::base::report()
 {
 	db::cout << _msg << DB_TEXT("\n");
 }
 
-inline db::exception::not_found::not_found( const string& s/*=DB_TEXT("")*/ ) : 
+SQLITE_WRAPPER_INLINE db::exception::not_found::not_found( const string& s/*=DB_TEXT("")*/ ) : 
 	base(DB_TEXT("NotFound: ")+s)
 {
 
 }
 
-inline db::exception::db_error::db_error( const string& m/*=DB_TEXT("")*/ ) : 
+SQLITE_WRAPPER_INLINE db::exception::db_error::db_error( const string& m/*=DB_TEXT("")*/ ) : 
 	base(DB_TEXT("Database Error: ")+m)
 {
 
 }
 
-inline db::exception::sql_error::sql_error( const string& m/*=DB_TEXT("")*/ ) : 
+SQLITE_WRAPPER_INLINE db::exception::sql_error::sql_error( const string& m/*=DB_TEXT("")*/ ) : 
 	base(DB_TEXT("SQL Error: ")+m)
 {
 
 }
 
-inline db::exception::param_error::param_error( const string& m/*=DB_TEXT("")*/ ) : 
+SQLITE_WRAPPER_INLINE db::exception::param_error::param_error( const string& m/*=DB_TEXT("")*/ ) : 
 	base(DB_TEXT("Param Error: ")+m)
 {
 
 }
 
-inline db::exception::internal_error::internal_error( const string& m/*=DB_TEXT("")*/ ) : 
+SQLITE_WRAPPER_INLINE db::exception::internal_error::internal_error( const string& m/*=DB_TEXT("")*/ ) : 
 	base(DB_TEXT("Internal Error: ")+m)
 {
 
 }
 
-inline db::exception::memory_error::memory_error( const string& m/*=DB_TEXT("")*/ ) : 
+SQLITE_WRAPPER_INLINE db::exception::memory_error::memory_error( const string& m/*=DB_TEXT("")*/ ) : 
 	base(DB_TEXT("Allocation failed: ")+m)
 {
 
 }
 
-inline db::exception::insertion_error::insertion_error( const string& m/*=DB_TEXT("")*/ ) : 
+SQLITE_WRAPPER_INLINE db::exception::insertion_error::insertion_error( const string& m/*=DB_TEXT("")*/ ) : 
 	base(DB_TEXT("Database full: ")+m)
 {
 
 }
 
-inline db::exception::unknown_error::unknown_error( const string& m/*=DB_TEXT("")*/ ) : 
+SQLITE_WRAPPER_INLINE db::exception::unknown_error::unknown_error( const string& m/*=DB_TEXT("")*/ ) : 
 	base(DB_TEXT("Unknown Error: ")+m)
 {
 

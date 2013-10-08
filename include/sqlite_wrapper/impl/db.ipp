@@ -27,29 +27,29 @@
 
 namespace db
 {
-	inline base::progress_handler::progress_handler( sqlite3* db_, base* base_ ) : _db(db_)
+	SQLITE_WRAPPER_INLINE base::progress_handler::progress_handler( sqlite3* db_, base* base_ ) : _db(db_)
 	{
 		sqlite3_progress_handler(_db, 4, 
 			progress_handler::xProgressCallback, base_);
 	}
 
-	inline base::progress_handler::~progress_handler()
+	SQLITE_WRAPPER_INLINE base::progress_handler::~progress_handler()
 	{
 		sqlite3_progress_handler(_db, 0, 0, 0);
 	}
 
-	inline base::base(void) : _db(0)
+	SQLITE_WRAPPER_INLINE base::base(void) : _db(0)
 	{
 
 	}
 
-	inline base::~base(void)
+	SQLITE_WRAPPER_INLINE base::~base(void)
 	{
 		if (_db) 
 			sqlite3_close(_db);
 	}
 
-	inline void base::throw_error( int status )
+	SQLITE_WRAPPER_INLINE void base::throw_error( int status )
 	{
 		stringstream err;
 		err << status << DB_TEXT("=status code : ") << sqlite3_errmsg(_db);
@@ -63,7 +63,7 @@ namespace db
 		}
 	}
 
-	inline void base::connect( const std::string& file )
+	SQLITE_WRAPPER_INLINE void base::connect( const std::string& file )
 	{
 		if (_db) 
 			sqlite3_close(_db);
@@ -75,28 +75,28 @@ namespace db
 			throw_error(rc);
 	}
 
-	inline void base::begin()
+	SQLITE_WRAPPER_INLINE void base::begin()
 	{
 		int rc(sqlite3_exec(_db, "BEGIN;", 0, 0, 0)); 
 		if (rc != SQLITE_OK)
 			throw_error(rc);
 	}
 
-	inline void base::commit()
+	SQLITE_WRAPPER_INLINE void base::commit()
 	{
 		int rc(sqlite3_exec(_db, "COMMIT;", 0, 0, 0)); 
 		if (rc != SQLITE_OK)
 			throw_error(rc);
 	}
 
-	inline void base::rollback()
+	SQLITE_WRAPPER_INLINE void base::rollback()
 	{
 		int rc(sqlite3_exec(_db, "ROLLBACK;", 0, 0, 0)); 
 		if (rc != SQLITE_OK)
 			throw_error(rc);
 	}
 
-	inline db::query& base::execute(const string& cmd)
+	SQLITE_WRAPPER_INLINE db::query& base::execute(const string& cmd)
 	{
 		progress_handler progress(_db, this);
 
@@ -111,7 +111,7 @@ namespace db
 		return it->second;
 	}
 
-	inline db::query_ptr base::execute_ptr(const db::string& cmd)
+	SQLITE_WRAPPER_INLINE db::query_ptr base::execute_ptr(const db::string& cmd)
 	{
 		progress_handler progress(_db, this);
 		db::query_ptr ret(new query(*this));

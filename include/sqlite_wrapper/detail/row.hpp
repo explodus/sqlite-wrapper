@@ -33,7 +33,7 @@ namespace db
 	class query;
 
   ///table rows interface
-  class row
+  class SQLITE_WRAPPER_DLLAPI row
   {
   protected:
     typedef std::vector<param, alloc_param > data_type;

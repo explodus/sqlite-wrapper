@@ -1,6 +1,12 @@
 MACRO(MAKE_SQLITE_WRAPPER_LIBRARY TARGETNAME VARIANT)
 	ADD_DEFINITIONS(-DSQLITE_WRAPPER_SHARED -DSQLITE_WRAPPER_USE=1)
-	ADD_LIBRARY (${TARGETNAME} ${VARIANT} ${sqlite_wrapper_files} ${SQLITE_WRAPPER_INCLUDE_DIR}/private_assemblies.hpp)
+	ADD_LIBRARY (${TARGETNAME} ${VARIANT} ${sqlite_wrapper_files} ${sqlite_wrapper_source} ${SQLITE_WRAPPER_INCLUDE_DIR}/private_assemblies.hpp)
+
+	SOURCE_GROUP( "Header Files\\impl" FILES ${sqlite_wrapper_impl_all} )
+	SOURCE_GROUP( "Header Files\\detail" FILES ${sqlite_wrapper_header_detail} )
+	SOURCE_GROUP( "Header Files" FILES ${sqlite_wrapper_header_top} )
+	SOURCE_GROUP( "Source Files" FILES ${sqlite3_source_top} )
+	SOURCE_GROUP( "Source Files" FILES ${sqlite_wrapper_src_all} )
 
 	#SET_TARGET_PROPERTIES(${TARGETNAME} PROPERTIES VERSION ${SQLITE_WRAPPER_VERSION})
 
@@ -18,8 +24,9 @@ MACRO(MAKE_SQLITE_WRAPPER_LIBRARY TARGETNAME VARIANT)
 		${TARGETNAME} PROPERTIES OUTPUT_NAME_DEBUGSTATIC sqlite_wrapper_st_debug
 		${TARGETNAME} PROPERTIES OUTPUT_NAME_MINSIZEREL sqlite_wrapper_minsizerel
 		${TARGETNAME} PROPERTIES OUTPUT_NAME_RELWITHDEBINFO sqlite_wrapper_relwithdebinfo
+		LINK_FLAGS "/MANIFEST:NO"
 	)
-
+	
 	IF (NOT MSVC)
 		TARGET_LINK_LIBRARIES (
 			${TARGETNAME}

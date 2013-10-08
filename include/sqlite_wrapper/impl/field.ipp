@@ -25,7 +25,7 @@
 #ifndef SQLITE_WRAPPER_FIELD_IPP_INCLUDED
 #define SQLITE_WRAPPER_FIELD_IPP_INCLUDED
 
-inline db::field::field( const string& n, const param_types& t/*=e_long*/ ) : 
+SQLITE_WRAPPER_INLINE db::field::field( const string& n, const param_types& t/*=e_long*/ ) : 
 	  _name(n)
 	, _type(t)
 	, _extra(e_nullExtra)
@@ -34,7 +34,7 @@ inline db::field::field( const string& n, const param_types& t/*=e_long*/ ) :
 
 }
 
-inline db::field::field( 
+SQLITE_WRAPPER_INLINE db::field::field( 
 	  const string_pair& n_tbl
 	, const param_types& t
 	, const Values& vals ) : 
@@ -48,7 +48,7 @@ inline db::field::field(
 
 }
 
-inline db::field::field( const field& f ) : 
+SQLITE_WRAPPER_INLINE db::field::field( const field& f ) : 
 	  _name(f._name)
 	, _table(f._table)
 	, _type(f._type)
@@ -59,7 +59,7 @@ inline db::field::field( const field& f ) :
 
 }
 
-inline db::field::field() : 
+SQLITE_WRAPPER_INLINE db::field::field() : 
 	  _type(e_long)
 	, _extra(e_nullExtra)
 	, _length(-1)
@@ -67,7 +67,7 @@ inline db::field::field() :
 
 }
 
-inline db::string db::field::fullName() const
+SQLITE_WRAPPER_INLINE db::string db::field::fullName() const
 {
 	if (table().length()>0) 
 		return  table() + DB_TEXT(".") + name(); 
@@ -75,104 +75,104 @@ inline db::string db::field::fullName() const
 		return  name();
 }
 
-inline db::string db::field::name() const
+SQLITE_WRAPPER_INLINE db::string db::field::name() const
 {
 	return _name;
 }
 
-inline db::string db::field::sourcename() const
+SQLITE_WRAPPER_INLINE db::string db::field::sourcename() const
 {
 	return _sourcename;
 }
 
-inline db::param_types db::field::type() const
+SQLITE_WRAPPER_INLINE db::param_types db::field::type() const
 {
 	return _type;
 }
 
-inline db::string db::field::table() const
+SQLITE_WRAPPER_INLINE db::string db::field::table() const
 {
 	return _table;
 }
 
-inline const long& db::field::length() const
+SQLITE_WRAPPER_INLINE const long& db::field::length() const
 {
 	return _length;
 }
 
-inline db::field& db::field::set_type( param_types type )
+SQLITE_WRAPPER_INLINE db::field& db::field::set_type( param_types type )
 {
 	_type = type; return *this;
 }
 
-inline void db::field::set_table( const string& table )
+SQLITE_WRAPPER_INLINE void db::field::set_table( const string& table )
 {
 	_table = table;
 }
 
-inline void db::field::set_sourcename( const string& sourcename )
+SQLITE_WRAPPER_INLINE void db::field::set_sourcename( const string& sourcename )
 {
 	_sourcename = sourcename;
 }
 
-inline void db::field::set_length( const long& len )
+SQLITE_WRAPPER_INLINE void db::field::set_length( const long& len )
 {
 	_length = len;
 }
 
-inline bool db::field::has_extra( field_extra extra ) const
+SQLITE_WRAPPER_INLINE bool db::field::has_extra( field_extra extra ) const
 {
 	return ((_extra&extra)==1);
 }
 
-inline void db::field::add_extra( field_extra extra )
+SQLITE_WRAPPER_INLINE void db::field::add_extra( field_extra extra )
 {
 	if(!(_extra&extra)) 
 		_extra |= extra;
 }
 
-inline void db::field::remove_extra( field_extra extra )
+SQLITE_WRAPPER_INLINE void db::field::remove_extra( field_extra extra )
 {
 	if(_extra&extra) 
 		_extra &= ~extra;
 }
 
-inline db::field::Values& db::field::values()
+SQLITE_WRAPPER_INLINE db::field::Values& db::field::values()
 {
 	return _values;
 }
 
-inline const db::field::Values& db::field::values() const
+SQLITE_WRAPPER_INLINE const db::field::Values& db::field::values() const
 {
 	return _values;
 }
 
-inline bool db::field::operator==( const field & fd ) const
+SQLITE_WRAPPER_INLINE bool db::field::operator==( const field & fd ) const
 {
 	return fd.fullName() == fullName();
 }
 
-inline bool db::field::operator!=( const field & fd ) const
+SQLITE_WRAPPER_INLINE bool db::field::operator!=( const field & fd ) const
 {
 	return ! (*this == fd);
 }
 
-inline db::expr::in db::field::In(const string& set) const
+SQLITE_WRAPPER_INLINE db::expr::in db::field::In(const string& set) const
 { 
 	return expr::in(*this, set); 
 }
 
-inline db::expr::in db::field::In(const sel& sel) const
+SQLITE_WRAPPER_INLINE db::expr::in db::field::In(const sel& sel) const
 { 
 	return expr::in(*this, sel); 
 }
 
-inline db::expr::like db::field::Like(const string& s)
+SQLITE_WRAPPER_INLINE db::expr::like db::field::Like(const string& s)
 { 
 	return expr::like(*this, s); 
 }
 
-inline db::field::~field()
+SQLITE_WRAPPER_INLINE db::field::~field()
 {
 
 }

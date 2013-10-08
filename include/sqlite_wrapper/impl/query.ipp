@@ -25,17 +25,17 @@
 #ifndef SQLITE_WRAPPER_QUERY_IPP_INCLUDED
 #define SQLITE_WRAPPER_QUERY_IPP_INCLUDED
 
-inline db::query::query() : _base(0), _stm(0)
+SQLITE_WRAPPER_INLINE db::query::query() : _base(0), _stm(0)
 {
 
 }
 
-inline db::query::query( base& base_ ) : _base(&base_), _stm(0)
+SQLITE_WRAPPER_INLINE db::query::query( base& base_ ) : _base(&base_), _stm(0)
 {
 
 }
 
-inline db::query::query( const query& q ) : _base(q._base), _stm(q._stm)
+SQLITE_WRAPPER_INLINE db::query::query( const query& q ) : _base(q._base), _stm(q._stm)
 {
 	_data.reserve(q._data.size());
 	std::copy(q.begin(), q.end(), std::back_inserter(_data));
@@ -44,12 +44,12 @@ inline db::query::query( const query& q ) : _base(q._base), _stm(q._stm)
 	std::copy(q.fbegin(), q.fend(), std::back_inserter(_field));
 }
 
-inline db::query::~query()
+SQLITE_WRAPPER_INLINE db::query::~query()
 {
 
 }
 
-inline void db::query::execute(const string& cmd)
+SQLITE_WRAPPER_INLINE void db::query::execute(const string& cmd)
 {
 	if (_stm) { sqlite3_finalize(_stm); _stm = 0; }
 	sqlite3* _db(_base->get_db_ptr());
@@ -143,29 +143,29 @@ inline void db::query::execute(const string& cmd)
 	_stm = 0; 
 }
 
-inline const db::row& db::query::getRow( size_type row_num ) const
+SQLITE_WRAPPER_INLINE const db::row& db::query::getRow( size_type row_num ) const
 {
 	const value_type& pValue(*(begin()+row_num));
 	return pValue;
 }
 
-inline db::row& db::query::getRow( size_type row_num )
+SQLITE_WRAPPER_INLINE db::row& db::query::getRow( size_type row_num )
 {
 	value_type& pValue(*(begin()+row_num));
 	return pValue;
 }
 
-inline db::query::const_reference db::query::operator[]( size_type row_num ) const
+SQLITE_WRAPPER_INLINE db::query::const_reference db::query::operator[]( size_type row_num ) const
 {
 	return *(begin()+row_num);
 }
 
-inline db::query::reference db::query::operator[]( size_type row_num )
+SQLITE_WRAPPER_INLINE db::query::reference db::query::operator[]( size_type row_num )
 {
 	return *(begin()+row_num);
 }
 
-inline int db::query::getIdOf( const string& sField ) const
+SQLITE_WRAPPER_INLINE int db::query::getIdOf( const string& sField ) const
 {
 	field_type::const_iterator iTB(_field.begin());
 	field_type::const_iterator iTE(_field.end());
@@ -175,7 +175,7 @@ inline int db::query::getIdOf( const string& sField ) const
 	return -1;
 }
 
-inline db::string db::query::getTitleOf( unsigned iField ) const
+SQLITE_WRAPPER_INLINE db::string db::query::getTitleOf( unsigned iField ) const
 {
 	if (iField<_field.size())
 		return _field[iField].name();
@@ -183,7 +183,7 @@ inline db::string db::query::getTitleOf( unsigned iField ) const
 		return DB_TEXT("");
 }
 
-inline const db::field* db::query::getFieldInfo( unsigned iField ) const
+SQLITE_WRAPPER_INLINE const db::field* db::query::getFieldInfo( unsigned iField ) const
 {
 	if (iField<_field.size())
 		return &_field[iField];
@@ -191,102 +191,102 @@ inline const db::field* db::query::getFieldInfo( unsigned iField ) const
 		return 0;
 }
 
-inline db::query::const_iterator db::query::begin() const
+SQLITE_WRAPPER_INLINE db::query::const_iterator db::query::begin() const
 {
 	return _data.begin();
 }
 
-inline db::query::iterator db::query::begin()
+SQLITE_WRAPPER_INLINE db::query::iterator db::query::begin()
 {
 	return _data.begin();
 }
 
-inline db::query::const_iterator db::query::end() const
+SQLITE_WRAPPER_INLINE db::query::const_iterator db::query::end() const
 {
 	return _data.end();
 }
 
-inline db::query::iterator db::query::end()
+SQLITE_WRAPPER_INLINE db::query::iterator db::query::end()
 {
 	return _data.end();
 }
 
-inline db::query::const_reverse_iterator db::query::rbegin() const
+SQLITE_WRAPPER_INLINE db::query::const_reverse_iterator db::query::rbegin() const
 {
 	return _data.rbegin();
 }
 
-inline db::query::reverse_iterator db::query::rbegin()
+SQLITE_WRAPPER_INLINE db::query::reverse_iterator db::query::rbegin()
 {
 	return _data.rbegin();
 }
 
-inline db::query::const_reverse_iterator db::query::rend() const
+SQLITE_WRAPPER_INLINE db::query::const_reverse_iterator db::query::rend() const
 {
 	return _data.rend();
 }
 
-inline db::query::reverse_iterator db::query::rend()
+SQLITE_WRAPPER_INLINE db::query::reverse_iterator db::query::rend()
 {
 	return _data.rend();
 }
 
-inline db::query::const_fiterator db::query::fbegin() const
+SQLITE_WRAPPER_INLINE db::query::const_fiterator db::query::fbegin() const
 {
 	return _field.begin();
 }
 
-inline db::query::fiterator db::query::fbegin()
+SQLITE_WRAPPER_INLINE db::query::fiterator db::query::fbegin()
 {
 	return _field.begin();
 }
 
-inline db::query::const_fiterator db::query::fend() const
+SQLITE_WRAPPER_INLINE db::query::const_fiterator db::query::fend() const
 {
 	return _field.end();
 }
 
-inline db::query::fiterator db::query::fend()
+SQLITE_WRAPPER_INLINE db::query::fiterator db::query::fend()
 {
 	return _field.end();
 }
 
-inline db::query::size_type db::query::size() const
+SQLITE_WRAPPER_INLINE db::query::size_type db::query::size() const
 {
 	return _data.size();
 }
 
-inline bool db::query::empty() const
+SQLITE_WRAPPER_INLINE bool db::query::empty() const
 {
 	return _data.empty();
 }
 
-inline bool db::query::f_empty() const
+SQLITE_WRAPPER_INLINE bool db::query::f_empty() const
 {
 	return _field.empty();
 }
 
-inline bool db::query::operator==( const query& t ) const
+SQLITE_WRAPPER_INLINE bool db::query::operator==( const query& t ) const
 {
 	return  _data == t._data;
 }
 
-inline void db::query::push_back( const value_type& v )
+SQLITE_WRAPPER_INLINE void db::query::push_back( const value_type& v )
 {
 	_data.push_back(v);
 }
 
-inline void db::query::push_back( const fvalue_type& v )
+SQLITE_WRAPPER_INLINE void db::query::push_back( const fvalue_type& v )
 {
 	_field.push_back(v);
 }
 
-inline db::query::iterator db::query::erase(const_iterator _Where)
+SQLITE_WRAPPER_INLINE db::query::iterator db::query::erase(const_iterator _Where)
 {
 	return _data.erase(_Where);
 }
 
-inline db::query::iterator db::query::erase(
+SQLITE_WRAPPER_INLINE db::query::iterator db::query::erase(
 	  const_iterator _First_arg
 	, const_iterator _Last_arg)
 {

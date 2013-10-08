@@ -25,101 +25,101 @@
 #ifndef SQLITE_WRAPPER_ROW_IPP_INCLUDED
 #define SQLITE_WRAPPER_ROW_IPP_INCLUDED
 
-inline db::row::row( db::query* query_, unsigned row_ ) 
+SQLITE_WRAPPER_INLINE db::row::row( db::query* query_, unsigned row_ ) 
 	: _query(query_), _row(row_)
 {
 
 }
 
-inline db::row::row( const row& r ) : _query(r._query), _row(r._row)
+SQLITE_WRAPPER_INLINE db::row::row( const row& r ) : _query(r._query), _row(r._row)
 {
 	_data.reserve(r.size());
 	std::copy(r.begin(), r.end(), std::back_inserter(_data));
 }
 
-inline db::row::~row()
+SQLITE_WRAPPER_INLINE db::row::~row()
 {
 
 }
 
-inline const db::param& db::row::value( size_type field_num ) const
+SQLITE_WRAPPER_INLINE const db::param& db::row::value( size_type field_num ) const
 {
 	const value_type& pValue(*(begin()+field_num));
 	return pValue;
 }
 
-inline db::param& db::row::value( size_type field_num )
+SQLITE_WRAPPER_INLINE db::param& db::row::value( size_type field_num )
 {
 	value_type& pValue(*(begin()+field_num));
 	return pValue;
 }
 
-inline db::row::const_reference db::row::operator[]( size_type field_num ) const
+SQLITE_WRAPPER_INLINE db::row::const_reference db::row::operator[]( size_type field_num ) const
 {
 	return *(begin()+field_num);
 }
 
-inline db::row::reference db::row::operator[]( size_type field_num )
+SQLITE_WRAPPER_INLINE db::row::reference db::row::operator[]( size_type field_num )
 {
 	return *(begin()+field_num);
 }
 
-inline db::param* db::row::operator[]( const string& )
+SQLITE_WRAPPER_INLINE db::param* db::row::operator[]( const string& )
 {
 	return (0);
 }
 
-inline db::row::const_iterator db::row::begin() const
+SQLITE_WRAPPER_INLINE db::row::const_iterator db::row::begin() const
 {
 	return _data.begin();
 }
 
-inline db::row::iterator db::row::begin()
+SQLITE_WRAPPER_INLINE db::row::iterator db::row::begin()
 {
 	return _data.begin();
 }
 
-inline db::row::const_iterator db::row::end() const
+SQLITE_WRAPPER_INLINE db::row::const_iterator db::row::end() const
 {
 	return _data.end();
 }
 
-inline db::row::iterator db::row::end()
+SQLITE_WRAPPER_INLINE db::row::iterator db::row::end()
 {
 	return _data.end();
 }
 
-inline db::row::reverse_iterator db::row::rbegin()
+SQLITE_WRAPPER_INLINE db::row::reverse_iterator db::row::rbegin()
 {
 	return _data.rbegin();
 }
 
-inline db::row::reverse_iterator db::row::rend()
+SQLITE_WRAPPER_INLINE db::row::reverse_iterator db::row::rend()
 {
 	return _data.rend();
 }
 
-inline db::row::size_type db::row::size() const
+SQLITE_WRAPPER_INLINE db::row::size_type db::row::size() const
 {
 	return _data.size();
 }
 
-inline bool db::row::empty() const
+SQLITE_WRAPPER_INLINE bool db::row::empty() const
 {
 	return _data.empty();
 }
 
-inline bool db::row::operator==( const row& t ) const
+SQLITE_WRAPPER_INLINE bool db::row::operator==( const row& t ) const
 {
 	return _data == t._data;
 }
 
-inline void db::row::push_back( const value_type& v )
+SQLITE_WRAPPER_INLINE void db::row::push_back( const value_type& v )
 {
 	_data.push_back(v);
 }
 
-inline void db::row::fill(sqlite3_stmt* stm)
+SQLITE_WRAPPER_INLINE void db::row::fill(sqlite3_stmt* stm)
 {
 	if (!stm)
 		return;

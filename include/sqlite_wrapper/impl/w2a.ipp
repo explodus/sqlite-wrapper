@@ -11,7 +11,7 @@
 #ifndef SQLITE_WRAPPER_W2A_IPP_INCLUDED
 #define SQLITE_WRAPPER_W2A_IPP_INCLUDED
 
-inline void db::detail::w2a::init(const wchar_t* psz, unsigned nConvertCodePage)
+SQLITE_WRAPPER_INLINE void db::detail::w2a::init(const wchar_t* psz, unsigned nConvertCodePage)
 {
 	if (psz == 0)
 	{

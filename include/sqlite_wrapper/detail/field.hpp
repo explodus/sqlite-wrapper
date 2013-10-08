@@ -42,7 +42,7 @@ namespace db
 	class upd;
 
 	/// fieldtype interface
-	class field 
+	class SQLITE_WRAPPER_DLLAPI field 
 	{
 	public:
 		typedef std::vector< std::pair<string, string> > Values;

@@ -25,7 +25,7 @@
 #ifndef SQLITE_WRAPPER_SEL_IPP_INCLUDED
 #define SQLITE_WRAPPER_SEL_IPP_INCLUDED
 
-inline db::sel::sel() 
+SQLITE_WRAPPER_INLINE db::sel::sel() 
 	: _distinct(false)
 	, _limit(0)
 	, _offset(0)
@@ -36,7 +36,7 @@ inline db::sel::sel()
 
 }
 
-inline db::sel::sel( const string& tablename ) 
+SQLITE_WRAPPER_INLINE db::sel::sel( const string& tablename ) 
 	: _distinct(false)
 	, _limit(0)
 	, _offset(0)
@@ -47,7 +47,7 @@ inline db::sel::sel( const string& tablename )
 	source(tablename);
 }
 
-inline db::sel::sel( const string& tablename, const string& delim ) 
+SQLITE_WRAPPER_INLINE db::sel::sel( const string& tablename, const string& delim ) 
 	: _distinct(false)
 	, _limit(0)
 	, _offset(0)
@@ -58,7 +58,7 @@ inline db::sel::sel( const string& tablename, const string& delim )
 	source(tablename);
 }
 
-inline db::sel::sel( 
+SQLITE_WRAPPER_INLINE db::sel::sel( 
 	  const string& tablename
 	, const string& delim1
 	, const string& delim2 ) 
@@ -72,7 +72,7 @@ inline db::sel::sel(
 	source(tablename);
 }
 
-inline db::sel::sel( const sel& s ) 
+SQLITE_WRAPPER_INLINE db::sel::sel( const sel& s ) 
 	: _distinct(s._distinct)
 	, _limit(s._limit)
 	, _offset(s._offset)
@@ -89,12 +89,12 @@ inline db::sel::sel( const sel& s )
 
 }
 
-inline db::sel::~sel()
+SQLITE_WRAPPER_INLINE db::sel::~sel()
 {
 
 }
 
-inline db::sel & db::sel::operator=( const sel& s )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::operator=( const sel& s )
 {
 	_distinct = s._distinct;
 	_limit = s._limit;
@@ -113,46 +113,46 @@ inline db::sel & db::sel::operator=( const sel& s )
 	return *this;
 }
 
-inline db::sel & db::sel::operator,( const db::string& s )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::operator,( const db::string& s )
 {
 	return this->result(s);
 }
 
-inline db::sel & db::sel::operator%( const expr::base& e )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::operator%( const expr::base& e )
 {
 	return this->where(e.str());
 }
 
-inline db::sel & db::sel::operator<( const field_pair& f )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::operator<( const field_pair& f )
 {
 	return this->join(f);
 }
 
-inline db::sel & db::sel::distinct( bool d )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::distinct( bool d )
 {
 	_distinct = d; 
 	return *this;
 }
 
-inline db::sel & db::sel::limit( int value )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::limit( int value )
 {
 	_limit = value;	
 	return *this;
 }
 
-inline db::sel & db::sel::join( const field_pair& f )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::join( const field_pair& f )
 {
 	_join = f;	
 	return *this;
 }
 
-inline db::sel & db::sel::offset( int value )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::offset( int value )
 {
 	_offset = value; 
 	return *this;
 }
 
-inline db::sel & db::sel::result_no_delim( string r, string alias/*=DB_TEXT("")*/ )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::result_no_delim( string r, string alias/*=DB_TEXT("")*/ )
 {
 	if (alias.length())
 		r += DB_TEXT(" AS ") + alias;
@@ -160,7 +160,7 @@ inline db::sel & db::sel::result_no_delim( string r, string alias/*=DB_TEXT("")*
 	return *this;
 }
 
-inline db::sel & db::sel::result( string r, string alias/*=DB_TEXT("")*/ )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::result( string r, string alias/*=DB_TEXT("")*/ )
 {
 	if (alias.length())
 		r += DB_TEXT(" AS ") + alias;
@@ -170,7 +170,7 @@ inline db::sel & db::sel::result( string r, string alias/*=DB_TEXT("")*/ )
 	return *this;
 }
 
-inline db::sel & db::sel::result_max( string r, string alias/*=DB_TEXT("")*/ )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::result_max( string r, string alias/*=DB_TEXT("")*/ )
 {
 	r = DB_TEXT("MAX(")+r;
 	r += DB_TEXT(")");
@@ -185,14 +185,14 @@ inline db::sel & db::sel::result_max( string r, string alias/*=DB_TEXT("")*/ )
 	return *this;
 }
 
-inline db::sel & db::sel::clear()
+SQLITE_WRAPPER_INLINE db::sel & db::sel::clear()
 {
 	_results.clear();
 	_sources.clear();
 	return *this;
 }
 
-inline db::sel & db::sel::source( string s, string alias/*=DB_TEXT("")*/ )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::source( string s, string alias/*=DB_TEXT("")*/ )
 {
 	detail::front_back_delim(s, _delim1, _delim2);
 	if (alias.length())
@@ -204,38 +204,38 @@ inline db::sel & db::sel::source( string s, string alias/*=DB_TEXT("")*/ )
 	return *this;
 }
 
-inline db::sel & db::sel::where( const expr::base & w )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::where( const expr::base & w )
 {
 	_where = expr::and_(expr::raw(_where), w).str();	
 	return *this;
 }
 
-inline db::sel & db::sel::where( string w )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::where( string w )
 {
 	_where = expr::and_(expr::raw(_where), expr::raw(w)).str();
 	return *this;
 }
 
-inline db::sel & db::sel::group_by( string gb )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::group_by( string gb )
 {
 	detail::front_back_delim(gb, _delim1, _delim2);
 	_groupBy.push_back(gb);	
 	return *this;
 }
 
-inline db::sel & db::sel::having( const expr::base & h )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::having( const expr::base & h )
 {
 	_having = h.str(); 
 	return *this;
 }
 
-inline db::sel & db::sel::having( string h )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::having( string h )
 {
 	_having = h;
 	return *this;
 }
 
-inline db::sel & db::sel::order_by( string ob, bool ascending/*=true*/ )
+SQLITE_WRAPPER_INLINE db::sel & db::sel::order_by( string ob, bool ascending/*=true*/ )
 {
 	string value = ob;
 	detail::front_back_delim(value, _delim1, _delim2);
@@ -245,7 +245,7 @@ inline db::sel & db::sel::order_by( string ob, bool ascending/*=true*/ )
 	return *this;
 }
 
-inline db::sel::operator db::string() const
+SQLITE_WRAPPER_INLINE db::sel::operator db::string() const
 {
 	ostringstream res;
 	res << DB_TEXT("SELECT ");
@@ -282,7 +282,7 @@ inline db::sel::operator db::string() const
 	return ret;
 }
 
-inline db::string db::sel::str() const
+SQLITE_WRAPPER_INLINE db::string db::sel::str() const
 {
 	return this->operator db::string();
 }

@@ -93,7 +93,7 @@ namespace db
 	};
 
   ///dynamic parameter class
-  class param 
+  class SQLITE_WRAPPER_DLLAPI param 
 //#ifndef BOOST_NO_STD_LOCALE
 //    : sigb::trackable
 //#endif // _DEBUG

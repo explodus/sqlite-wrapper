@@ -34,7 +34,7 @@ namespace db
 	class base;
 
   ///cursor interface
-  class query
+  class SQLITE_WRAPPER_DLLAPI query
   {
   protected:
     typedef row _value_type;

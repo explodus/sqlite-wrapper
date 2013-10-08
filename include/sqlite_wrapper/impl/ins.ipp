@@ -25,12 +25,12 @@
 #ifndef SQLITE_WRAPPER_INS_IPP_INCLUDED
 #define SQLITE_WRAPPER_INS_IPP_INCLUDED
 
-inline db::ins::ins( const string& tab ) : _source(tab)
+SQLITE_WRAPPER_INLINE db::ins::ins( const string& tab ) : _source(tab)
 {
 
 }
 
-inline db::ins::ins( 
+SQLITE_WRAPPER_INLINE db::ins::ins( 
 	  const string& tab
 	, const string& delim ) : 
 	  _source(tab)
@@ -40,7 +40,7 @@ inline db::ins::ins(
 
 }
 
-inline db::ins::ins( 
+SQLITE_WRAPPER_INLINE db::ins::ins( 
 	  const string& tab
 	, const string& delim1
 	, const string& delim2 ) : 
@@ -51,18 +51,18 @@ inline db::ins::ins(
 
 }
 
-inline db::ins::~ins()
+SQLITE_WRAPPER_INLINE db::ins::~ins()
 {
 
 }
 
-inline db::ins & db::ins::clear_values()
+SQLITE_WRAPPER_INLINE db::ins & db::ins::clear_values()
 {
 	_values.clear();
 	return *this;
 }
 
-inline db::ins & db::ins::operator%( const db::field& f )
+SQLITE_WRAPPER_INLINE db::ins & db::ins::operator%( const db::field& f )
 {
 	if (f.values().size()==1)
 		return values(f.name(), f.values().begin()->second, f.type());
@@ -70,7 +70,7 @@ inline db::ins & db::ins::operator%( const db::field& f )
 		return *this;
 }
 
-inline db::ins & db::ins::values( string t, param* v )
+SQLITE_WRAPPER_INLINE db::ins & db::ins::values( string t, param* v )
 {
 	string sV(v->str());
 	if (sV.length()==0)
@@ -89,7 +89,7 @@ inline db::ins & db::ins::values( string t, param* v )
 	return *this;
 }
 
-inline db::ins & db::ins::values( string t, string v, param_types p/*=e_int*/ )
+SQLITE_WRAPPER_INLINE db::ins & db::ins::values( string t, string v, param_types p/*=e_int*/ )
 {
 	switch(p) 
 	{
@@ -109,12 +109,12 @@ inline db::ins & db::ins::values( string t, string v, param_types p/*=e_int*/ )
 	return *this;
 }
 
-inline db::ins::operator db::string() const
+SQLITE_WRAPPER_INLINE db::ins::operator db::string() const
 {
 	return str();
 }
 
-inline db::string db::ins::str() const
+SQLITE_WRAPPER_INLINE db::string db::ins::str() const
 {
 	string res = DB_TEXT("INSERT INTO ");
 	res += _source;

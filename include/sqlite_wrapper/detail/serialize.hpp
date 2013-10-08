@@ -33,7 +33,7 @@ namespace db
 
   namespace serialize
   {
-    class field : public CObject
+    class SQLITE_WRAPPER_DLLAPI field : public CObject
     {
       string _name;
       int    _type;
@@ -145,7 +145,7 @@ namespace db
 
     typedef std::vector<db::serialize::field> t_ser_field;
 
-    class row : public CObject
+    class SQLITE_WRAPPER_DLLAPI row : public CObject
     {
       string_vec _data;
       
@@ -270,7 +270,7 @@ namespace db
     typedef std::vector<db::serialize::row> t_ser_row;
 
 
-    class table : public CObject
+    class SQLITE_WRAPPER_DLLAPI table : public CObject
     {
       string _name;
       t_ser_field  _fields;

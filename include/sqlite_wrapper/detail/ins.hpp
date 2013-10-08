@@ -34,7 +34,7 @@
 namespace db
 {
   /// @brief helper class, generates INSERT SQL statements
-  class ins 
+  class SQLITE_WRAPPER_DLLAPI ins 
   {
   protected:
     split_map _values;

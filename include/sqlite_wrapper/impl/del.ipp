@@ -25,12 +25,12 @@
 #ifndef SQLITE_WRAPPER_DEL_IPP_INCLUDED
 #define SQLITE_WRAPPER_DEL_IPP_INCLUDED
 
-inline db::del::del( const string& tablename ) : sel(tablename)
+SQLITE_WRAPPER_INLINE db::del::del( const string& tablename ) : sel(tablename)
 {
 
 }
 
-inline db::del::operator db::string() const
+SQLITE_WRAPPER_INLINE db::del::operator db::string() const
 {
 	string res = DB_TEXT("DELETE FROM ");
 	res += _sources.join(DB_TEXT(","));
@@ -53,7 +53,7 @@ inline db::del::operator db::string() const
 	return res;
 }
 
-inline db::del::~del()
+SQLITE_WRAPPER_INLINE db::del::~del()
 {
 
 }
