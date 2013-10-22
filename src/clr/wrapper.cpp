@@ -16,6 +16,7 @@ using namespace msclr::interop;
 
 namespace clr_db 
 {
+	/// @brief Parameter Typen 
 	public enum class param_types : unsigned short
 	{
 		e_null = 0/*= db::e_null*/,       //!< \a null type
@@ -31,6 +32,18 @@ namespace clr_db
 		e_date_time /*= db::e_date_time*/   //!< \a boost::gregorian::date type
 	};
 
+	/// @brief Parameter Extras
+	public enum class field_extra : unsigned short
+	{
+		e_nullExtra         = 0,  //!< null extra
+		eFixedField         = 2,  //!< Feld mit fester Größe (numerischer Typ)
+		eVariableField      = 4,  //!< variables Feld (textlicher Typ)
+		eAutoIncrField      = 8,  //!< automatisch erhöhendes Feld
+		eUpdatableField     = 16, //!< veränderbares Feld
+		eRequiredField      = 32, //!< benötigtes Feld
+		eZeroLengthAllowed  = 64  //!< Nulllänge erlaubt
+	};
+	
 	inline param_types tp(Boolean)
 	{ return param_types::e_bool; }
 	inline param_types tp(Int16)
@@ -52,6 +65,22 @@ namespace clr_db
 
 	typedef KeyValuePair<String^, String^> StringPair;
 	typedef List< StringPair > Values;
+
+	namespace detail
+	{
+		inline String^ escape_sql(String^ const str)
+		{ 
+			if (str == "NULL")
+				return gcnew String(str);
+			
+			String^ ret = gcnew String(str);
+			ret->Replace("\'NULL\'", "NULL");
+			ret->Replace("'", "''");
+
+			ret = "'" + ret + "'";
+			return ret;
+		}
+	}
 
 	/// splitmap basis
 	public ref class split_map : public Dictionary<String^, String^>
@@ -279,161 +308,433 @@ namespace clr_db
 		}
 	}; 
 
+	ref class sel;
+
+	namespace expr
+	{
+		ref class in;
+		ref class like;
+	}
+
 	/// fieldtype interface
 	public ref class field 
 	{
 	public:
 
 	protected:
-		String^ _name, _table, _sourcename;
+		String^ _name;
+		String^ _table;
+		String^ _sourcename;
 		param_types _type;
 		unsigned _extra;
 		Values^ _values;
 		long _length;
 
 	public:
-		/// @brief     field
-		/// @todo need documentation
+		/// @brief        field
 		///
-		/// <BR>qualifier : _name(n), _type(t), _extra(e_nullExtra), _length(-1)
-		/// <BR>access    public  
-		/// @return    
-		/// @param     n as const string & 
-		/// @param     t as const param_types & 
+		/// <BR>qualifier : _name(n) , _table(gcnew String("")) , _sourcename(gcnew String("")) , _type(t) , _extra(e_nullExtra) , _values(gcnew Values()) , _length(-1)
+		/// <BR>access    public   
+		/// @return       
+		/// @param        String ^ n
+		/// @param        const param_types & t
 		///
-		/// @date      20:2:2009   11:03
-		///
-		field(const string& n, 
-			const param_types& t=e_long);
-
-		/// @brief     field
-		///
-		/// <BR>qualifier : _name(n), _type(tp(val)), _extra(e_nullExtra), _length(-1)
-		/// <BR>access    public  
-		/// @return    
-		/// @param     n as const string & 
-		/// @param     val as const T & 
-		///
-		/// @date      20:2:2009   11:03
-		///
-		template<typename T>
-		explicit field(const string& n, const T& val)
-			: _name(n), _type(tp(val)), _extra(e_nullExtra), _length(-1) 
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:39
+		/// 
+		field(String^ n, param_types t/*=e_long*/)
+			: _name(n)
+			, _table(gcnew String(""))
+			, _sourcename(gcnew String(""))
+			, _type(t)
+			, _extra(static_cast<unsigned>(field_extra::e_nullExtra))
+			, _values(gcnew Values())
+			, _length(-1)
 		{
-			_values.push_back(Values::value_type(n, detail::to_string(val))); 
+
 		}
 
-		/// @brief     field
 		///
-		/// <BR>qualifier : _name(n_tbl.first), _type(t), _table(n_tbl.second), 
-		///              _values(vals), _extra(e_nullExtra), _length(-1)
-		/// <BR>access    public  
-		/// @return    
-		/// @param     n_tbl as const string_pair & 
-		/// @param     t as const param_types & 
-		/// @param     vals as const Values & 
+		/// <BR>qualifier : _name(n) , _table(gcnew String("")) , _sourcename(gcnew String("")) , _type(tp(val)) , _extra(e_nullExtra) , _values(gcnew Values()) , _length(-1)
+		/// <BR>access    public   
+		/// @return       
+		/// @param        String ^ n
+		/// @param        T val
 		///
-		/// @date      6:8:2009   12:57
-		///
-		explicit field(const string_pair& n_tbl,
-			const param_types& t=e_long, 
-			const Values& vals = Values());
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:39
+		/// 
+		template<class T>
+		field(String^ n, T val)
+			: _name(n)
+			, _table(gcnew String(""))
+			, _sourcename(gcnew String(""))
+			, _type(tp(val))
+			, _extra(static_cast<unsigned>(field_extra::e_nullExtra))
+			, _values(gcnew Values())
+			, _length(-1) 
+		{
+			_values.Add(gcnew StringPair(_name, val.ToString())); 
+		}
 
-		/// @brief     field
+		/// @brief        field
 		///
-		/// <BR>qualifier : _name(f._name), _type(f._type), _table(f._table), 
-		///              _values(f._values), _extra(f._extra), _length(f._length)
-		/// <BR>access    public  
-		/// @return    
-		/// @param     f as const field &
+		/// <BR>qualifier : _name(n_tbl->Key) , _table(n_tbl->Value) , _sourcename(gcnew String("")) , _type(t) , _extra(e_nullExtra) , _values(vals) , _length(-1)
+		/// <BR>access    public   
+		/// @return       
+		/// @param        StringPair ^ n_tbl
+		/// @param        param_types t
+		/// @param        Values ^ vals
 		///
-		/// @date      6:8:2009   10:56
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:41
+		/// 
+		field(
+			  StringPair^ n_tbl
+			, param_types t/*=e_long*/
+			, Values^ vals/* = Values()*/)
+			: _name(n_tbl->Key)
+			, _table(n_tbl->Value)
+			, _sourcename(gcnew String(""))
+			, _type(t)
+			, _extra(static_cast<unsigned>(field_extra::e_nullExtra))
+			, _values(vals)
+			, _length(-1) 
+		{
+
+		}
+
+		/// @brief        field
 		///
-		field(const field& f);
-
-		/// @brief     field
+		/// <BR>qualifier : _name(f->_name) , _table(f->_table) , _sourcename(f->_sourcename) , _type(f->_type) , _extra(f->_extra) , _values(f->_values) , _length(f->_length)
+		/// <BR>access    public   
+		/// @return       
+		/// @param        field ^ f
 		///
-		/// <BR>qualifier : _type(e_long), _extra(e_nullExtra), _length(-1)
-		/// <BR>access    public  
-		/// @return    
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:43
+		/// 
+		field(field^ f)
+			: _name(f->_name)
+			, _table(f->_table)
+			, _sourcename(f->_sourcename)
+			, _type(f->_type)
+			, _extra(f->_extra)
+			, _values(f->_values)
+			, _length(f->_length) 
+		{
+
+		}
+
 		///
-		/// @date      6:8:2009   11:30
+		/// <BR>qualifier : _name(gcnew String("")) , _table(gcnew String("")) , _sourcename(gcnew String("")) , _type(e_int) , _extra(e_nullExtra) , _values(gcnew Values()) , _length(-1)
+		/// <BR>access    public   
+		/// @return       
 		///
-		field();
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:53
+		/// 
+		field()
+			: _name(gcnew String(""))
+			, _table(gcnew String(""))
+			, _sourcename(gcnew String(""))
+			, _type(param_types::e_int)
+			, _extra(static_cast<unsigned>(field_extra::e_nullExtra))
+			, _values(gcnew Values())
+			, _length(-1)
 
-		string fullName() const;
+		{
 
-		~field();
+		}
 
-		string      name()        const;
-		string      sourcename()  const;
-		param_types type()        const;
-		string      table()       const;
-		const long& length()      const;
-
-		field&      set_type(param_types type);
-		void        set_table(const string& table);
-		void        set_sourcename(const string& sourcename);
-		void        set_length(const long& len);
-		bool        has_extra(field_extra extra) const;
-		void        add_extra(field_extra extra);
-		void        remove_extra(field_extra extra);
-
-		/// @brief     values
+		/// @brief        fullName
 		///
 		/// <BR>qualifier
-		/// <BR>access    public  
-		/// @return    Values&
+		/// <BR>access    public   
+		/// @return       String^
 		///
-		/// @date      20:2:2009   14:26
-		///
-		Values& values();
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:53
+		/// 
+		String^ fullName()
+		{
+			if (table()->Length > 0) 
+				return  table() + "." + name(); 
+			else
+				return  name();
+		}
 
-		/// @brief     values
+		/// @brief        ~field
 		///
-		/// <BR>qualifier const
-		/// <BR>access    public  
-		/// @return    const Values&
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       
 		///
-		/// @date      20:2:2009   14:26
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:53
+		/// 
+		~field()
+		{
+
+		}
+
+		/// @brief        name
 		///
-		const Values& values() const;
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       String^
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		inline String^ name()
+		{
+			return _name;
+		}
+
+		/// @brief        sourcename
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       String^
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		inline String^ sourcename()
+		{
+			return _sourcename;
+		}
+
+		/// @brief        type
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       clr_db::param_types
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		inline param_types type()
+		{
+			return _type;
+		}
+		
+		/// @brief        table
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       String^
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		inline String^ table()
+		{
+			return _table;
+		}
+
+		/// @brief        length
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       long
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		inline long length()
+		{
+			return _length;
+		}
+
+		/// @brief        set_type
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       field^
+		/// @param        param_types type
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		inline field^ set_type(param_types type)
+		{
+			_type = type;
+			return this;
+		}
+
+		/// @brief        set_table
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       void
+		/// @param        String ^ table
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		void set_table(String^ table)
+		{
+			_table = table;
+		}
+
+		/// @brief        set_sourcename
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       void
+		/// @param        String ^ sourcename
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		void set_sourcename(String^ sourcename)
+		{
+			_sourcename = sourcename;
+		}
+
+		/// @brief        set_length
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       void
+		/// @param        const long & len
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		void set_length(const long& len)
+		{
+			_length = len;
+		}
+
+		/// @brief        has_extra
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       bool
+		/// @param        field_extra extra
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		bool has_extra(field_extra extra)
+		{
+			return ((_extra&static_cast<unsigned>(extra))==1);
+		}
+
+		/// @brief        add_extra
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       void
+		/// @param        field_extra extra
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		void add_extra(field_extra extra)
+		{
+			if(!(_extra&static_cast<unsigned>(extra))) 
+				_extra |= static_cast<unsigned>(extra);
+		}
+
+		/// @brief        remove_extra
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       void
+		/// @param        field_extra extra
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:58
+		/// 
+		void remove_extra(field_extra extra)
+		{
+			if(_extra&static_cast<unsigned>(extra)) 
+				_extra &= ~static_cast<unsigned>(extra);
+		}
+
+		/// @brief        values
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       Values^
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 7:59
+		/// 
+		Values^ values()
+		{
+			return _values;
+		}
 
 		/// @brief     syntactic sugar to expression-api, field.in(sel)
 		///
-		/// <BR>qualifier const
-		/// <BR>access    public  
-		/// @return    db::expr::in
-		/// @param     set as const string &
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       clr_db::expr::in^
+		/// @param        String ^ set
 		///
-		/// @date      20:2:2009   14:24
-		///
-		db::expr::in In(const string& set) const;
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 8:04
+		/// 
+		inline clr_db::expr::in^ In(String^ set);
 
 		/// @brief     syntactic sugar to expression-api, field.in(sel)
 		///
-		/// <BR>qualifier const
-		/// <BR>access    public  
-		/// @return    db::expr::in
-		/// @param     sel as const sel &
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       clr_db::expr::in^
+		/// @param        clr_db::sel ^ sel
 		///
-		/// @date      20:2:2009   14:23
-		///
-		db::expr::in In(const sel& sel) const;
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 8:05
+		/// 
+		//inline clr_db::expr::in^ In(clr_db::sel^ sel);
 
 		/// @brief     syntactic sugar to expression-api, field.like(string)
 		///
 		/// <BR>qualifier
-		/// <BR>access    public  
-		/// @return    db::expr::like
-		/// @param     s as const string &
+		/// <BR>access    public   
+		/// @return       clr_db::expr::like^
+		/// @param        String ^ const s
 		///
-		/// @date      20:2:2009   14:24
-		///
-		db::expr::like Like(const string& s);
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 8:07
+		/// 
+		inline clr_db::expr::like^ Like(String^ const s);
 
-		bool operator==(const field & fd) const;
-		bool operator!=(const field & fd) const;
+		/// @brief        operator==
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       bool
+		/// @param        field ^ const fd
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 8:07
+		/// 
+		bool operator==(field^ const fd)
+		{
+			return fd->fullName() == fullName();
+		}
+
+		/// @brief        operator!=
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       bool
+		/// @param        field ^ const fd
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         22.10.2013 8:07
+		/// 
+		bool operator!=(field^ const fd)
+		{
+			return ! (*this == fd);
+		}
 	};
 
 	//typedef boost::detail::allocator::partial_std_allocator_wrapper<
@@ -626,7 +927,7 @@ namespace clr_db
 			/// @date      18:2:2009   11:22
 			///
 			or_(base^ const e1_, base^ const e2_) 
-				: connective(gcnew String("or"), e1_, e2)
+				: connective(gcnew String("or"), e1_, e2_)
 			{
 
 			}
@@ -683,12 +984,12 @@ namespace clr_db
 		};
 
 		///base class for operators in sql terms
-		class oper : public base 
+		public ref class oper : public base 
 		{
 		protected:
-			const field & _field;
-			string op;
-			string data;
+			field^ const _field;
+			String^ op;
+			String^ data;
 			bool escape;
 
 			/// @brief as an example, e_string got escaped
@@ -696,24 +997,54 @@ namespace clr_db
 			/// <BR>qualifier
 			/// <BR>access    protected  
 			/// @return    bool
-			/// @param     type_ as const param_types &
+			/// @param     type_ as param_types
 			///
 			/// @date      18:2:2009   11:26
 			///
-			bool check_escape(const param_types& type_);
+			bool check_escape(param_types type_)
+			{
+				switch(type_) 
+				{
+				case param_types::e_string:
+				case param_types::e_char:
+				case param_types::e_blob:
+				case param_types::e_date_time:
+					return true;
+					break;
+				case param_types::e_null:
+				case param_types::e_bool:
+				case param_types::e_int:
+				case param_types::e_unsigned:
+				case param_types::e_long:
+				case param_types::e_float:
+				case param_types::e_double:
+					return false;
+					break;
+				}
+				return false;
+			}
 
 			/// @brief     string overload
 			///
-			/// <BR>qualifier : _field(fld), op(o), data(d), escape(check_escape(_field.type()))
-			/// <BR>access    protected  
-			/// @return    
-			/// @param     fld as const field & 
-			/// @param     o as const string &
-			/// @param     d as const string &
+			/// <BR>qualifier : base() , _field(fld) , op(o) , data(d) , escape(check_escape(fld->type()))
+			/// <BR>access    protected   
+			/// @return       
+			/// @param        field ^ const fld
+			/// @param        String ^ o
+			/// @param        String ^ d
 			///
-			/// @date      18:2:2009   11:28
-			///
-			explicit oper(const field & fld, const string& o, const string& d);
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         22.10.2013 8:16
+			/// 
+			oper(field^ const fld, String^ o, String^ d)
+				: base()
+				, _field(fld)
+				, op(o)
+				, data(d)
+				, escape(check_escape(fld->type()))
+			{
+				extraTables->Add(fld->table());
+			}
 
 			/// <BR>qualifier : _field(fld)*/, op(o)*/, data(DB_TEXT("0"))*/, escape(check_escape(_field.type()))
 			/// <BR>access    protected 
@@ -725,13 +1056,16 @@ namespace clr_db
 			///
 			/// @date         4.4.2010 21:16
 			/// 
-			template<typename T>
-			explicit oper(const field & fld, const string& o, const T& d) 
-				: _field(fld), op(o), data(DB_TEXT("0")), 
-				escape(check_escape(_field.type())) 
+			template<class T>
+			oper(field^ const fld, String^ o, T d) 
+				: base()
+				, _field(fld)
+				, op(o)
+				, data(gcnew String("0"))
+				, escape(check_escape(_field.type())) 
 			{
-				data = detail::to_string(d);
-				extraTables.push_back(fld.table());
+				data = d.ToString();
+				extraTables->Add(fld->table());
 			}
 
 			/// @brief     db::field overload
@@ -745,150 +1079,178 @@ namespace clr_db
 			///
 			/// @date      18:2:2009   11:30
 			///
-			explicit oper(const field & fld, const string& o, const field &f2);
+			oper(field^ const fld, String^ o, field^ f2)
+				: base()
+				, _field(fld)
+				, op(o)
+				, data(f2->fullName())
+				, escape(false)
+			{
+				extraTables->Add(fld->table());
+			}
 
 		public:
-			/// <BR>qualifier const
-			/// <BR>access    virtual public  
-			/// @return    db::string
 			///
-			/// @date      20:2:2009   13:03
+			/// <BR>qualifier
+			/// <BR>access    virtual public   
+			/// @return       String^
 			///
-			virtual string str() const;
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         22.10.2013 8:20
+			/// 
+			virtual String^ str() override 
+			{
+				String^ res = gcnew String("");
+				res += _field->fullName() + " " + op + " " + 
+					(escape ? detail::escape_sql(data) : data);
+				return res;
+			}
 		};
 
 		///==, is equal operator
-		class SQLITE_WRAPPER_DLLAPI eq : public oper {
+		public ref class eq : public oper 
+		{
 		public:
 			/// @brief     ==, is equal operator
 			///
-			/// <BR>qualifier : oper<typename T>(fld, DB_TEXT("="), d)
-			/// <BR>access    public  
-			/// @return    
-			/// @param     fld as const field &
-			/// @param     d as const T &
+			/// <BR>qualifier : oper(fld, gcnew String("="), d)
+			/// <BR>access    public   
+			/// @return       
+			/// @param        field ^ const fld
+			/// @param        T d
 			///
-			/// @date      20:2:2009   11:52
-			///
-			template<typename T>
-			explicit eq(const field & fld, const T& d)
-				: oper(fld, DB_TEXT("="), d) 
-			{}
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         22.10.2013 8:27
+			/// 
+			template<class T>
+			eq(field^ const fld, T d) : oper(fld, gcnew String("="), d) 
+			{ }
 		};
 
 		///<> not equal operator
-		class SQLITE_WRAPPER_DLLAPI not_eq_ : public oper {
+		public ref class not_eq_ : public oper 
+		{
 		public:
 			/// @brief     !=, not equal constructor
 			///
-			/// <BR>qualifier : oper(fld, DB_TEXT("<>"), d)
-			/// <BR>access    public  
-			/// @return    
-			/// @param     fld as const field &
-			/// @param     d as const T &
+			/// <BR>qualifier : oper(fld, gcnew String("<>"), d)
+			/// <BR>access    public   
+			/// @return       
+			/// @param        field ^ const fld
+			/// @param        T d
 			///
-			/// @date      20:2:2009   13:03
-			///
-			template<typename T>
-			explicit not_eq_(const field & fld, const T& d)
-				: oper(fld, DB_TEXT("<>"), d) 
-			{}
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         22.10.2013 8:28
+			/// 
+			template<class T>
+			not_eq_(field^ const fld, T d) : oper(fld, gcnew String("<>"), d)
+			{ }
 		};
 
 		///> greater then operator
-		class SQLITE_WRAPPER_DLLAPI gt : public oper {
+		public ref class gt : public oper 
+		{
 		public:
-			/// @brief     gt
+			/// @brief     >, greater then operator
 			///
-			/// <BR>qualifier : oper(fld, DB_TEXT(">"), d)
-			/// <BR>access    public  
-			/// @return    
-			/// @param     fld as const field &
-			/// @param     d as const T &
+			/// <BR>qualifier : oper(fld, gcnew String(">"), d)
+			/// <BR>access    public   
+			/// @return       
+			/// @param        field ^ const fld
+			/// @param        T d
 			///
-			/// @date      20:2:2009   13:02
-			///
-			template<typename T>
-			explicit gt(const field & fld, const T& d)
-				: oper(fld, DB_TEXT(">"), d) 
-			{}
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         22.10.2013 8:29
+			/// 
+			template<class T>
+			gt(field^ const fld, T d) : oper(fld, gcnew String(">"), d)
+			{ }
 		};
 
 		///greater then or equal operator
-		class SQLITE_WRAPPER_DLLAPI gt_eq : public oper {
+		public ref class gt_eq : public oper 
+		{
 		public:
-			/// @brief     gt_eq
+			/// @brief        greater then or equal operator
 			///
-			/// <BR>qualifier : oper(fld, DB_TEXT(">="), d)
-			/// <BR>access    public  
-			/// @return    
-			/// @param     fld as const field &
-			/// @param     d as const T &
+			/// <BR>qualifier : oper(fld, gcnew String(">="), d)
+			/// <BR>access    public   
+			/// @return       
+			/// @param        field ^ const fld
+			/// @param        T d
 			///
-			/// @date      20:2:2009   13:01
-			///
-			template<typename T>
-			explicit gt_eq(const field & fld, const T& d)
-				: oper(fld, DB_TEXT(">="), d) 
-			{}
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         22.10.2013 8:29
+			/// 
+			template<class T>
+			gt_eq(field^ const fld, T d) : oper(fld, gcnew String(">="), d)
+			{ }
 		};
 
 		///lower then operator
-		class SQLITE_WRAPPER_DLLAPI lt : public oper {
+		public ref class lt : public oper 
+		{
 		public:
 			/// @brief     <, lower then constructor
 			///
-			/// <BR>qualifier : oper(fld, DB_TEXT("<"), d)
-			/// <BR>access    public  
-			/// @return    
-			/// @param     fld as const field &
-			/// @param     d as const T &
+			/// <BR>qualifier : oper(fld, gcnew String("<"), d)
+			/// <BR>access    public   
+			/// @return       
+			/// @param        field ^ const fld
+			/// @param        T d
 			///
-			/// @date      20:2:2009   13:01
-			///
-			template<typename T>
-			explicit lt(const field & fld, const T& d)
-				: oper(fld, DB_TEXT("<"), d) 
-			{}
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         22.10.2013 8:30
+			/// 
+			template<class T>
+			lt(field^ const fld, T d) : oper(fld, gcnew String("<"), d)
+			{ }
 		};
 
 		///lower then or equal operator
-		class SQLITE_WRAPPER_DLLAPI lt_eq : public oper {
+		public ref class lt_eq : public oper 
+		{
 		public:
 			/// @brief     <=, lower then or equal constructor
 			///
-			/// <BR>qualifier : oper(fld, DB_TEXT("<="), d)
-			/// <BR>access    public  
-			/// @return    
-			/// @param     fld as const field &
-			/// @param     d as const T &
+			/// <BR>qualifier : oper(fld, gcnew String("<="), d)
+			/// <BR>access    public   
+			/// @return       
+			/// @param        field ^ const fld
+			/// @param        T d
 			///
-			/// @date      20:2:2009   13:01
-			///
-			template<typename T>
-			explicit lt_eq(const field & fld, const T& d)
-				: oper(fld, DB_TEXT("<="), d) 
-			{}
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         22.10.2013 8:31
+			/// 
+			template<class T>
+			lt_eq(field^ const fld, T d) : oper(fld, gcnew String("<="), d)
+			{ }
 		};
 
 		///like operator
-		class SQLITE_WRAPPER_DLLAPI like : public oper {
+		public ref class like : public oper 
+		{
 		public:
 			/// @brief     like constructor
 			///
-			/// <BR>qualifier : oper(fld, DB_TEXT("LIKE"), d)
-			/// <BR>access    public  
-			/// @return    
-			/// @param     fld as const field &
-			/// @param     d as const string &
+			/// <BR>qualifier : oper(fld, gcnew String("LIKE"), d)
+			/// <BR>access    public   
+			/// @return       
+			/// @param        field ^ const fld
+			/// @param        String ^ d
 			///
-			/// @date      20:2:2009   13:00
-			///
-			explicit like(const field & fld, const string& d);
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         22.10.2013 8:32
+			/// 
+			like(field^ const fld, String^ d) : oper(fld, gcnew String("LIKE"), d)
+			{
+
+			}
 		};
 
 		///in Operator
-		class SQLITE_WRAPPER_DLLAPI in : public oper {
+		public ref class in : public oper 
+		{
 		public:
 			/// @brief     in constructor
 			///
@@ -900,7 +1262,11 @@ namespace clr_db
 			///
 			/// @date      20:2:2009   13:01
 			///
-			explicit in(const field & fld, const string& set);
+			in(field^ const fld, String^ set) 
+				: oper(fld, gcnew String("IN"), gcnew String("(" + set + ")"))
+			{
+
+			}
 
 			/// @brief     in constructor
 			///
@@ -912,16 +1278,20 @@ namespace clr_db
 			///
 			/// @date      20:2:2009   13:01
 			///
-			explicit in(const field & fld, const sel& s);
+			//inline in(field^ const fld, clr_db::sel^ s);
 
-			/// <BR>qualifier const
-			/// <BR>access    virtual public  
-			/// @return    db::string
 			///
-			/// @date      20:2:2009   13:01
+			/// <BR>qualifier
+			/// <BR>access    virtual public   
+			/// @return       String^
 			///
-			virtual string str() const;
-
+			/// @author       T. Schroeder (explodus@gmx.de)
+			/// @date         22.10.2013 8:36
+			/// 
+			virtual String^ str() override 
+			{
+				return gcnew String(_field->fullName() + " " + op + " " + data);
+			}
 		};
 	}
 
@@ -1556,3 +1926,24 @@ namespace clr_db
 		}
 	};
 }
+
+inline clr_db::expr::in^ clr_db::field::In(String^ set)
+{
+	return gcnew clr_db::expr::in(this, set);
+}
+
+//inline clr_db::expr::in^ clr_db::field::In(clr_db::sel^ sel)
+//{
+//	return gcnew clr_db::expr::in(this, sel); 
+//}
+
+inline clr_db::expr::like^ clr_db::field::Like(String^ const s)
+{
+	return gcnew clr_db::expr::like(this, s); 
+}
+
+//clr_db::in::in(clr_db::field^ const fld, clr_db::sel^ s)
+//	: clr_db::oper(fld, gcnew String("IN"), gcnew String("(" + s->str() + ")"))
+//{
+//
+//}
