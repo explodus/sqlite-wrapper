@@ -68,6 +68,13 @@ namespace clr_db
 
 	namespace detail
 	{
+		template<class T> 
+		inline T front_back_delim(T sText, T delim1, T delim2)
+		{ 
+			sText = delim1 + sText + delim2; 
+			return sText;
+		}
+
 		inline String^ escape_sql(String^ const str)
 		{ 
 			if (str == "NULL")
@@ -312,7 +319,7 @@ namespace clr_db
 
 	namespace expr
 	{
-		ref class in;
+		ref class in_;
 		ref class like;
 	}
 
@@ -374,7 +381,7 @@ namespace clr_db
 			, _values(gcnew Values())
 			, _length(-1) 
 		{
-			_values.Add(gcnew StringPair(_name, val.ToString())); 
+			_values.Add(gcnew StringPair(_name, System::Convert::ToString(val))); 
 		}
 
 		/// @brief        field
@@ -680,7 +687,7 @@ namespace clr_db
 		/// @author       T. Schroeder (explodus@gmx.de)
 		/// @date         22.10.2013 8:04
 		/// 
-		inline clr_db::expr::in^ In(String^ set);
+		inline clr_db::expr::in_^ In(String^ set);
 
 		/// @brief     syntactic sugar to expression-api, field.in(sel)
 		///
@@ -692,7 +699,7 @@ namespace clr_db
 		/// @author       T. Schroeder (explodus@gmx.de)
 		/// @date         22.10.2013 8:05
 		/// 
-		//inline clr_db::expr::in^ In(clr_db::sel^ sel);
+		inline clr_db::expr::in_^ In(clr_db::sel^ sel);
 
 		/// @brief     syntactic sugar to expression-api, field.like(string)
 		///
@@ -740,12 +747,14 @@ namespace clr_db
 	//typedef boost::detail::allocator::partial_std_allocator_wrapper<
 	//	boost::detail::quick_allocator<field > > alloc_field; 
 	//typedef std::allocator<field> alloc_field; 
-	typedef std::pair<field, field> field_pair;
-	
+	typedef KeyValuePair<field^, field^> FieldPair;
+
 	namespace expr
 	{
+		ref class and_;
+
 		///expression base class
-		public ref class base 
+		public ref class base_ 
 		{
 		protected:
 			split^ extraTables; //!< extra tables, to be joined
@@ -787,7 +796,7 @@ namespace clr_db
 				return extraTables;
 			}
 
-			base()
+			base_()
 				: extraTables(gcnew split())
 			{
 
@@ -801,19 +810,21 @@ namespace clr_db
 			///
 			/// @date      18:2:2009   11:17
 			///
-			virtual ~base()
+			virtual ~base_()
 			{
 
 			}
+
+			virtual and_^ operator&(base_^ o);
 		}; 
 
-		public ref class raw : public base 
+		public ref class raw : public base_ 
 		{
 			String^ expr;
 		public:
 			/// @brief        usable for special expressions in WHERE terms
 			///
-			/// <BR>qualifier : base(), expr(e)
+			/// <BR>qualifier : base_(), expr(e)
 			/// <BR>access    public   
 			/// @return       
 			/// @param        String ^ e
@@ -821,7 +832,7 @@ namespace clr_db
 			/// @author       T. Schroeder (explodus@gmx.de)
 			/// @date         21.10.2013 15:34
 			/// 
-			raw(String^ e) : base(), expr(e)
+			raw(String^ e) : base_(), expr(e)
 			{
 
 			}
@@ -832,13 +843,13 @@ namespace clr_db
 			}
 		};
 
-		public ref class connective : public base 
+		public ref class connective : public base_ 
 		{
 		private:
 			String^ op;
 		protected:
-			base^ const e1;
-			base^ const e2;
+			base_^ const e1;
+			base_^ const e2;
 
 			/// @brief     base class to connect 2 expressions
 			///
@@ -846,13 +857,13 @@ namespace clr_db
 			/// <BR>access    protected  
 			/// @return    
 			/// @param     string o
-			/// @param     e1_ as const base &
-			/// @param     e2_ as const base &
+			/// @param     e1_ as const base_ &
+			/// @param     e2_ as const base_ &
 			///
 			/// @date      18:2:2009   11:20
 			///
-			connective(String^ o, base^ const e1_, base^ const e2_) 
-				: base(), op(o), e1(e1_), e2(e2_)
+			connective(String^ o, base_^ const e1_, base_^ const e2_) 
+				: base_(), op(o), e1(e1_), e2(e2_)
 			{
 
 			}
@@ -883,12 +894,12 @@ namespace clr_db
 			/// <BR>qualifier : connective(DB_TEXT("and"), e1_, e2_)
 			/// <BR>access    public  
 			/// @return    
-			/// @param     e1_ as const base &
-			/// @param     e2_ as const base &
+			/// @param     e1_ as const base_ &
+			/// @param     e2_ as const base_ &
 			///
 			/// @date      18:2:2009   11:22
 			///
-			and_(base^ const e1_, base^ const e2_) 
+			and_(base_^ const e1_, base_^ const e2_) 
 				: connective(gcnew String("and"), e1_, e2_)
 			{
 
@@ -921,12 +932,12 @@ namespace clr_db
 			/// <BR>qualifier : connective(DB_TEXT("or"), e1_, e2_)
 			/// <BR>access    public  
 			/// @return    
-			/// @param     e1_ as const base &
-			/// @param     e2_ as const base &
+			/// @param     e1_ as const base_ &
+			/// @param     e2_ as const base_ &
 			///
 			/// @date      18:2:2009   11:22
 			///
-			or_(base^ const e1_, base^ const e2_) 
+			or_(base_^ const e1_, base_^ const e2_) 
 				: connective(gcnew String("or"), e1_, e2_)
 			{
 
@@ -949,23 +960,23 @@ namespace clr_db
 			}
 		};
 
-		public ref class not_ : public base 
+		public ref class not_ : public base_ 
 		{
 		private:
-			base^ const exp;
+			base_^ const exp;
 		public:
 			/// @brief        negates expression
 			///
-			/// <BR>qualifier : base(), exp(_exp)
+			/// <BR>qualifier : base_(), exp(_exp)
 			/// <BR>access    public   
 			/// @return       
-			/// @param        base ^ const _exp
+			/// @param        base_ ^ const _exp
 			///
 			/// @author       T. Schroeder (explodus@gmx.de)
 			/// @date         21.10.2013 15:47
 			/// 
-			not_(base^ const _exp)
-				: base(), exp(_exp)
+			not_(base_^ const _exp)
+				: base_(), exp(_exp)
 			{
 
 			}
@@ -984,7 +995,7 @@ namespace clr_db
 		};
 
 		///base class for operators in sql terms
-		public ref class oper : public base 
+		public ref class oper : public base_ 
 		{
 		protected:
 			field^ const _field;
@@ -1026,7 +1037,7 @@ namespace clr_db
 
 			/// @brief     string overload
 			///
-			/// <BR>qualifier : base() , _field(fld) , op(o) , data(d) , escape(check_escape(fld->type()))
+			/// <BR>qualifier : base_() , _field(fld) , op(o) , data(d) , escape(check_escape(fld->type()))
 			/// <BR>access    protected   
 			/// @return       
 			/// @param        field ^ const fld
@@ -1037,7 +1048,7 @@ namespace clr_db
 			/// @date         22.10.2013 8:16
 			/// 
 			oper(field^ const fld, String^ o, String^ d)
-				: base()
+				: base_()
 				, _field(fld)
 				, op(o)
 				, data(d)
@@ -1058,13 +1069,13 @@ namespace clr_db
 			/// 
 			template<class T>
 			oper(field^ const fld, String^ o, T d) 
-				: base()
+				: base_()
 				, _field(fld)
 				, op(o)
 				, data(gcnew String("0"))
 				, escape(check_escape(_field.type())) 
 			{
-				data = d.ToString();
+				data = System::Convert::ToString(d);
 				extraTables->Add(fld->table());
 			}
 
@@ -1080,7 +1091,7 @@ namespace clr_db
 			/// @date      18:2:2009   11:30
 			///
 			oper(field^ const fld, String^ o, field^ f2)
-				: base()
+				: base_()
 				, _field(fld)
 				, op(o)
 				, data(f2->fullName())
@@ -1249,7 +1260,7 @@ namespace clr_db
 		};
 
 		///in Operator
-		public ref class in : public oper 
+		public ref class in_ : public oper 
 		{
 		public:
 			/// @brief     in constructor
@@ -1262,7 +1273,7 @@ namespace clr_db
 			///
 			/// @date      20:2:2009   13:01
 			///
-			in(field^ const fld, String^ set) 
+			in_(field^ const fld, String^ set) 
 				: oper(fld, gcnew String("IN"), gcnew String("(" + set + ")"))
 			{
 
@@ -1278,7 +1289,7 @@ namespace clr_db
 			///
 			/// @date      20:2:2009   13:01
 			///
-			//inline in(field^ const fld, clr_db::sel^ s);
+			inline in_(field^ const fld, clr_db::sel^ s);
 
 			///
 			/// <BR>qualifier
@@ -1526,6 +1537,544 @@ namespace clr_db
 			return ret;
 		}
 	};
+
+	/// @brief helper class, generates SELECT SQL statements
+	public ref class sel
+	{
+	protected:
+		bool _distinct;
+		int _limit;
+		int _offset;
+		split^ _results;
+		split^ _sources;
+		split^ _groupBy;
+		split^ _orderBy;
+
+		String^ _where; 
+		String^ _having;
+		String^ _delim1;
+		String^ _delim2;
+		FieldPair^ _join;
+
+	public:
+		/// @defgroup constructors summary of all constructors
+		/// @defgroup operators summary of all operator overloads
+
+		/// @brief        constructor
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       
+		///
+		/// @date         20.4.2010 10:38
+		/// @ingroup			constructors
+		///
+		sel() 
+			: _distinct(false)
+			, _limit(0)
+			, _offset(0)
+			, _results(gcnew split())
+			, _sources(gcnew split())
+			, _groupBy(gcnew split())
+			, _orderBy(gcnew split())
+			, _where(gcnew String("True"))
+			, _having(gcnew String(""))
+			, _delim1(gcnew String(""))
+			, _delim2(gcnew String(""))
+		{
+
+		}
+
+		/// @brief        constructor
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       
+		/// @param        tablename as const string &
+		///
+		/// @date         20.4.2010 10:38
+		/// @ingroup			constructors
+		///
+		sel(String^ tablename)
+			: _distinct(false)
+			, _limit(0)
+			, _offset(0)
+			, _results(gcnew split())
+			, _sources(gcnew split())
+			, _groupBy(gcnew split())
+			, _orderBy(gcnew split())
+			, _where(gcnew String("True"))
+			, _having(gcnew String(""))
+			, _delim1(gcnew String(""))
+			, _delim2(gcnew String(""))
+		{
+			source(tablename, nullptr);
+		}
+
+		/// @brief        constructor
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       
+		/// @param        tablename as const string &
+		/// @param        delim as const string &
+		///
+		/// @date         20.4.2010 10:39
+		/// @ingroup			constructors
+		///
+		sel(String^ tablename, String^ delim)
+			: _distinct(false)
+			, _limit(0)
+			, _offset(0)
+			, _results(gcnew split())
+			, _sources(gcnew split())
+			, _groupBy(gcnew split())
+			, _orderBy(gcnew split())
+			, _where(gcnew String("True"))
+			, _having(gcnew String(""))
+			, _delim1(gcnew String(delim))
+			, _delim2(gcnew String(delim))
+		{
+			source(tablename, nullptr);
+		}
+
+		/// @brief        constructor
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       
+		/// @param        tablename as const string &
+		/// @param        delim1 as const string &
+		/// @param        delim2 as const string &
+		///
+		/// @date         20.4.2010 10:39
+		/// @ingroup			constructors
+		///
+		sel(String^ tablename, String^ delim1, String^ delim2)
+			: _distinct(false)
+			, _limit(0)
+			, _offset(0)
+			, _results(gcnew split())
+			, _sources(gcnew split())
+			, _groupBy(gcnew split())
+			, _orderBy(gcnew split())
+			, _where(gcnew String("True"))
+			, _having(gcnew String(""))
+			, _delim1(delim1)
+			, _delim2(delim2)
+		{
+			source(tablename, nullptr);
+		}
+
+
+		/// @brief        copy constructor
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       
+		/// @param        s as const sel &
+		///
+		/// @date         20.4.2010 10:39
+		/// @ingroup			constructors
+		///
+		sel(sel^ const s)
+			: _distinct(s->_distinct)
+			, _limit(s->_limit)
+			, _offset(s->_offset)
+			, _results(s->_results)
+			, _sources(s->_sources)
+			, _groupBy(s->_groupBy)
+			, _orderBy(s->_orderBy)
+			, _where(s->_where)
+			, _having(s->_having)
+			, _delim1(s->_delim1)
+			, _delim2(s->_delim2)
+			, _join(s->_join)
+		{
+
+		}
+
+		/// @brief        destructor
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       
+		///
+		/// @date         20.4.2010 10:41
+		///
+		virtual ~sel()
+		{
+
+		}
+
+		/// @brief        adds a column name
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       sel & - itself
+		/// @param        s as const string & - column name
+		///
+		/// @date         20.4.2010 10:51
+		/// @ingroup			operators
+		///
+		virtual sel^ operator,(String^ s)
+		{
+			return result(s, nullptr);
+		}
+
+		/// @brief        adds a where expression
+		///
+		/// <BR>qualifier
+		/// <BR>access    public  
+		/// @return       sel & - itself
+		/// @param        e as const expr::base & - where expression
+		///
+		/// @date         20.4.2010 10:53
+		/// @ingroup			operators
+		///
+		virtual sel^ operator%(expr::base_^ e)
+		{
+			return where(e->str());
+		}
+
+		/// @brief        joins two fields
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return       sel & - itself
+		/// @param        f as const FieldPair &
+		///
+		/// @date         20.4.2010 10:56
+		/// @ingroup			operators
+		///
+		virtual sel^ operator<(FieldPair^ f)
+		{
+			return join(f);
+		}
+
+		/// @brief     distinct
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     d as bool
+		///
+		/// @date      20:2:2009   14:02
+		///
+		virtual sel^ distinct(bool d)
+		{
+			_distinct = d;
+			return this;
+		}
+
+		/// @brief     limit
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     value as int
+		///
+		/// @date      20:2:2009   14:02
+		///
+		virtual sel^ limit(int value)
+		{
+			_limit = value;
+			return this;
+		}
+
+		/// @brief     join
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     f as const FieldPair&
+		///
+		/// @date      20:2:2009   14:02
+		///
+		virtual sel^ join(FieldPair^ f)
+		{
+			_join = f;
+			return this;
+		}
+
+		/// @brief     offset
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     value as int 
+		///
+		/// @date      20:2:2009   14:02
+		///
+		virtual sel^ offset(int value)
+		{
+			_offset = value;
+			return this;
+		}
+
+		/// @brief     result_no_delim
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     r as string
+		/// @param     alias as string
+		///
+		/// @date      20:2:2009   14:02
+		///
+		virtual sel^ result_no_delim(String^ r, String^ alias/*=DB_TEXT("")*/)
+		{
+			if (alias && alias->Length)
+				r += DB_TEXT(" AS ") + alias;
+			_results->Add(r); 
+			return this;
+		}
+
+		/// @brief     result
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     r as string
+		/// @param     alias as string
+		///
+		/// @date      20:2:2009   14:02
+		///
+		virtual sel^ result(String^ r, String^ alias/*=DB_TEXT("")*/)
+		{
+			if (r != "*") 
+				r = detail::front_back_delim(r, _delim1, _delim2);
+			if (alias && alias->Length)
+				r += " AS " + detail::front_back_delim(alias, _delim1, _delim2);
+			_results->Add(r); 
+			return this;
+		}
+
+		/// @brief     result_max
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     r as string
+		/// @param     alias as string
+		///
+		/// @date      20:2:2009   14:02
+		///
+		virtual sel^ result_max(String^ r, String^ alias/*=DB_TEXT("")*/)
+		{
+			if (r != "*") 
+				r = detail::front_back_delim(r, _delim1, _delim2);
+
+			r = "MAX(" + r + ")";
+
+			if (alias && alias->Length)
+				r += " AS " + detail::front_back_delim(alias, _delim1, _delim2);
+
+			_results->Add(r); 
+			return this;
+		}
+
+		/// @brief     clear
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		///
+		/// @date      20:2:2009   14:01
+		///
+		virtual void clear()
+		{
+			_results->Clear();
+			_sources->Clear();
+		}
+
+		/// @brief     source
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     s as string
+		/// @param     alias as string
+		///
+		/// @date      20:2:2009   14:01
+		///
+		virtual sel^ source(String^ s, String^ alias/*=DB_TEXT("")*/)
+		{
+			s = detail::front_back_delim(s, _delim1, _delim2);
+
+			if (alias && alias->Length)
+				s += " AS " + detail::front_back_delim(alias, _delim1, _delim2);
+
+			_sources->Add(s);
+			return this;
+		}
+
+		/// @brief     where
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     w as const expr::base_ &
+		///
+		/// @date      20:2:2009   14:01
+		///
+		virtual sel^ where(expr::base_^ w)
+		{
+			expr::and_^ a = gcnew expr::and_(gcnew expr::raw(_where), w);
+			_where = a->str();	
+			return this;
+		}
+
+		/// @brief     where
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     w as string
+		///
+		/// @date      20:2:2009   14:01
+		///
+		virtual sel^ where(String^ w)
+		{
+			expr::and_^ a = gcnew expr::and_(gcnew expr::raw(_where), gcnew expr::raw(w));
+			_where = a->str();
+			return this;
+		}
+
+		/// @brief     group_by
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     gb as string
+		///
+		/// @date      20:2:2009   14:01
+		///
+		virtual sel^ group_by(String^ gb)
+		{
+			gb = detail::front_back_delim(gb, _delim1, _delim2);
+			_groupBy->Add(gb);	
+			return this;
+		}
+
+		/// @brief     having
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     h as const expr::base_ &
+		///
+		/// @date      20:2:2009   14:01
+		///
+		virtual sel^ having(expr::base_^ h)
+		{
+			_having = h->str(); 
+			return this;
+		}
+
+		/// @brief     having
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     h as string
+		///
+		/// @date      20:2:2009   14:01
+		///
+		virtual sel^ having(String^ h)
+		{
+			_having = h; 
+			return this;
+		}
+
+		/// @brief     order_by
+		///
+		/// <BR>qualifier
+		/// <BR>access    virtual public  
+		/// @return    sel &
+		/// @param     ob as string
+		/// @param     ascending as bool 
+		///
+		/// @date      20:2:2009   14:00
+		///
+		virtual sel^ order_by(String^ ob, bool ascending/*=true*/)
+		{
+			ob = detail::front_back_delim(ob, _delim1, _delim2);
+			if (!ascending)
+				ob += " DESC";
+			_orderBy->Add(ob); 
+			return this;
+		}
+
+		/// @brief        db::string overload
+		///
+		/// <BR>qualifier const
+		/// <BR>access    virtual public  
+		/// @return       
+		///
+		/// @date         20.4.2010 10:57
+		/// @ingroup			operators
+		///
+		virtual operator String^()
+		{
+			return str();
+		}
+
+		/// @brief        same as the string operator overload, more stl like 
+		///
+		/// <BR>qualifier const
+		/// <BR>access    public  
+		/// @return       db::string
+		///
+		/// @date         15.4.2010 13:59
+		///
+		virtual String^ str()
+		{
+			String^ res = gcnew String("SELECT ");
+
+			if (_distinct)
+				res += "DISTINCT ";
+			res += _results->join(",");
+			res += " FROM ";
+			res += _sources->join(",");
+
+			if (_join 
+				&& _join->Key->table()->Length != 0 
+				&& _join->Value->table()->Length != 0 
+				&& _sources->Count == 1)
+			{
+				res += " INNER JOIN ";
+				res += _join->Key->table();
+				res += " ON ";
+				res += _join->Key->fullName();
+				res += " = ";
+				res += _join->Value->fullName();
+				res += " ";
+			}
+
+			if (_where != "True")
+				res += " WHERE " + _where;
+			if (_groupBy->Count > 0)
+				res += " GROUP BY " + _groupBy->join(",");
+			if (_having->Length)
+				res += " HAVING " + _having;
+			if (_orderBy->Count > 0)
+				res += " ORDER BY " + _orderBy->join(",");
+			if (_limit) 
+				res += " LIMIT " + System::Convert::ToString(_limit);
+			if (_offset) 
+				res += " OFFSET " + System::Convert::ToString(_offset);
+
+			if (_delim1->Length > 0)
+			{
+				res->Replace(_delim1+_delim1, _delim1);
+				if (_delim1 != _delim2)
+					res->Replace(_delim2+_delim2, _delim2);
+			}
+
+			return res;
+		}
+	}; 
 
 	/// @brief helper class, generates INSERT SQL statements
 	public ref class ins 
@@ -1824,52 +2373,70 @@ namespace clr_db
 
 		}
 
+		/// @brief        Table
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       String^ const
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         24.10.2013 11:03
+		/// 
+		String^ const Table() { return table; }
+		
+		/// @brief        Table
+		///
+		/// <BR>qualifier
+		/// <BR>access    public   
+		/// @return       void
+		/// @param        String ^ val
+		///
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         24.10.2013 11:03
+		/// 
+		void Table(String^ val) { table = val; }
+
 		/// @brief        
 		///
 		/// <BR>qualifier
 		/// <BR>access    public  
-		/// @return       upd&
-		/// @param        e as const expr::base &
+		/// @return       upd^
+		/// @param        e as expr::base_^
 		///
 		/// @date         15.4.2010 13:55
 		///
-		//upd& where(const expr::base& e);
-
-		/// @brief        insert a sql where expression through the operator % overload 
-		///
-		/// <BR>qualifier
-		/// <BR>access    public  
-		/// @return       upd &
-		/// @param        e as const expr::base &
-		///
-		/// @date         15.4.2010 13:55
-		///
-		//upd & operator%(const expr::base& e);
+		virtual upd^ where(expr::base_^ w)
+		{
+			expr::and_^ a = gcnew expr::and_(gcnew expr::raw(_where), w);
+			_where = a->str();	
+			return this;
+		}
 
 		/// @brief        insert a new field with it name and the value
 		///
 		/// <BR>qualifier
-		/// <BR>access    public  
-		/// @return       upd &
-		/// @param        f as const db::field &
+		/// <BR>access    public   
+		/// @return       upd^
+		/// @param        field ^ f
+		/// @param        String ^ val
 		///
-		/// @date         15.4.2010 13:58
-		///
-		//upd & operator%(const db::field& f);
+		/// @author       T. Schroeder (explodus@gmx.de)
+		/// @date         24.10.2013 10:03
+		/// 
+		upd^ set(field^ f, String^ val)
+		{
+			fields.Add(f->name());
+			if ( f->type()==param_types::e_string
+				|| f->type()==param_types::e_char
+				|| f->type()==param_types::e_blob
+				|| f->type()==param_types::e_date_time)
+				values.Add(detail::escape_sql(val));
+			else
+				values.Add(val);
+			return this;
+		}
 
-		/// @brief        insert a new field with it name and the value
-		///
-		/// <BR>qualifier
-		/// <BR>access    public  
-		/// @return       upd&
-		/// @param        f as const field &
-		/// @param        val as const string &
-		///
-		/// @date         15.4.2010 13:56
-		///
-		//upd& set(const field& f, const string& val);
-
-		/// @brief        insert a new field with it name and the value
+		/// @brief        insert a new field with its name and the value
 		///
 		/// <BR>qualifier
 		/// <BR>access    public  
@@ -1879,9 +2446,17 @@ namespace clr_db
 		///
 		/// @date         15.4.2010 13:58
 		///
-		//template<typename T>
-		//upd& set(const field& f, const T& val)
-		//{ return set(f, detail::to_string(val)); }
+		template<class T>
+		upd^ set(field^ f, T val)
+		{ return set(f, System::Convert::ToString(val)); }
+
+		template<>
+		upd^ set(field^ f, Int32 val)
+		{ return set(f, System::Convert::ToString(val)); }
+
+		template<>
+		upd^ set(field^ f, Double val)
+		{ return set(f, System::Convert::ToString(val)); }
 
 		/// @brief        String^ overload
 		///
@@ -1927,23 +2502,34 @@ namespace clr_db
 	};
 }
 
-inline clr_db::expr::in^ clr_db::field::In(String^ set)
+inline clr_db::expr::in_^ clr_db::field::In(String^ set)
 {
-	return gcnew clr_db::expr::in(this, set);
+	return gcnew clr_db::expr::in_(this, set);
 }
 
-//inline clr_db::expr::in^ clr_db::field::In(clr_db::sel^ sel)
-//{
-//	return gcnew clr_db::expr::in(this, sel); 
-//}
+inline clr_db::expr::in_^ clr_db::field::In(clr_db::sel^ sel)
+{
+	return gcnew clr_db::expr::in_(this, sel); 
+}
 
 inline clr_db::expr::like^ clr_db::field::Like(String^ const s)
 {
 	return gcnew clr_db::expr::like(this, s); 
 }
 
-//clr_db::in::in(clr_db::field^ const fld, clr_db::sel^ s)
-//	: clr_db::oper(fld, gcnew String("IN"), gcnew String("(" + s->str() + ")"))
-//{
-//
-//}
+inline clr_db::expr::in_::in_(clr_db::field^ const fld, clr_db::sel^ s)
+	: clr_db::expr::oper(fld, gcnew String("IN")
+	, gcnew String("(" + s->str() + ")"))
+{
+
+}
+
+clr_db::expr::and_^ clr_db::expr::base_::operator&(clr_db::expr::base_^ o)
+{ 
+	return gcnew clr_db::expr::and_(this, o); 
+}
+
+clr_db::expr::and_^ operator&(clr_db::expr::base_^ o1, clr_db::expr::base_^ o2)
+{ 
+	return gcnew clr_db::expr::and_(o1,o2); 
+}
