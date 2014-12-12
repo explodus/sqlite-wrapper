@@ -1365,9 +1365,18 @@ namespace clr_db
 		/// 
 		base_wrapper(String^ db_file_name)
 		{
-			_base = new db::base();
-			if (_base)
-				_base->connect(marshal_as<std::string>(db_file_name), "");
+			try
+			{
+				_base = new db::base();
+				if (_base)
+					_base->connect(marshal_as<std::string>(db_file_name), "");
+			}
+			catch (...)
+			{
+				if (_base)
+					delete _base;
+				_base = 0;
+			}
 		}
 
 		/// @brief        base
@@ -1383,9 +1392,18 @@ namespace clr_db
 		/// 
 		base_wrapper(String^ db_file_name, String^ key)
 		{
-			_base = new db::base();
-			if (_base)
-				_base->connect(marshal_as<std::string>(db_file_name), marshal_as<std::string>(key));
+			try
+			{
+				_base = new db::base();
+				if (_base)
+					_base->connect(marshal_as<std::string>(db_file_name), marshal_as<std::string>(key));
+			}
+			catch (...)
+			{
+				if (_base)
+					delete _base;
+				_base = 0;
+			}
 		}
 
 		/// @brief        ~base
@@ -1462,6 +1480,9 @@ namespace clr_db
 		{
 			ObservableCollection<row^>^ ret = gcnew ObservableCollection<row^>;
 			db::query_ptr q;
+
+			if (!_base)
+				return ret;
 
 			try
 			{
@@ -2250,7 +2271,14 @@ namespace clr_db
 		{ return values(t, System::Convert::ToString(v), tp(v)); }
 		template<>
 		ins^ values(String^ t, Double v)
-		{ return values(t, System::Convert::ToString(v), tp(v)); }
+		{ 
+			return values(
+				t
+				, System::Convert::ToString(
+					  v
+					, System::Globalization::CultureInfo::InvariantCulture)
+				, tp(v)); 
+		}
 		template<>
 		ins^ values(String^ t, String^ v)
 		{ return values(t, v, tp(v, false)); }

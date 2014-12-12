@@ -93,6 +93,8 @@ namespace db { namespace log {
 		template<typename T = db::base>
 		class database : private boost::noncopyable
 		{
+			bool is_connected_;
+
 			T db_;
 
 			inline void init()
@@ -106,32 +108,64 @@ namespace db { namespace log {
 					<< DB_TEXT(", level integer")
 					<< DB_TEXT(", msg text);");
 				db_.execute_ptr(s_cr.str());
+
+				is_connected_ = true;
 			}
 
 		public:
-			database(const db::string& name)
+			database() : is_connected_(false)
 			{
-				#ifdef SQLITE_WRAPPER_NARROW_STRING
+
+			}
+
+			bool is_connected() const { return is_connected_; }
+
+			void connect(const db::string& name) 
+			{ 
+				try
+				{
+#					ifdef SQLITE_WRAPPER_NARROW_STRING
 					db_.connect(name);
-				#else
+#					else
 					db_.connect(static_cast<const char*>(
 						db::detail::w2a(name.c_str())));
-				#endif // SQLITE_WRAPPER_NARROW_STRING
-
-				init();
+#					endif // SQLITE_WRAPPER_NARROW_STRING
+					init();
+				}
+				catch (const db::exception::base & e)
+				{
+					is_connected_ = false;
+				}
+			}
+			
+			database(const db::string& name)
+			{
+				connect(name);
 			}
 
 #ifdef SQLITE_HAS_CODEC
+			void connect(const db::string& name, const std::string& key) 
+			{ 
+				try
+				{
+#					ifdef SQLITE_WRAPPER_NARROW_STRING
+					db_.connect(name, key);
+#					else
+					db_.connect(
+						  static_cast<const char*>(db::detail::w2a(name.c_str()))
+						, key);
+#					endif // SQLITE_WRAPPER_NARROW_STRING
+					init();
+				}
+				catch (const db::exception::base & e)
+				{
+					is_connected_ = false;
+				}
+			}
+
 			database(const db::string& name, const std::string& key)
 			{
-#ifdef SQLITE_WRAPPER_NARROW_STRING
-				db_.connect(name, key);
-#else
-				db_.connect(
-					  static_cast<const char*>(db::detail::w2a(name.c_str()))
-					, key);
-#endif // SQLITE_WRAPPER_NARROW_STRING
-				init();
+				connect(name, key);
 			}
 #endif // SQLITE_HAS_CODEC
 
@@ -192,9 +226,6 @@ namespace db { namespace log {
 		class SQLITE_WRAPPER_DLLAPI basic
 		{
 		private:
-			basic();
-			~basic();
-
 			static db::string get_akt_time()
 			{
 #ifndef BOOST_NO_STD_LOCALE
@@ -236,44 +267,47 @@ namespace db { namespace log {
 			}
 
 		public:
-			template <typename OutputStream>
-			static void do_format(
-				OutputStream& stream
+			basic() {}
+			~basic() {}
+
+			template <typename Buffer>
+			void do_format(
+				  Buffer& b
 				, size_t indent
 				, const db::string& data
 				,	db::log::level lvl = db::log::log_undef)
 			{
 				for (size_t i(0); i<indent; ++i)
-					stream << DB_TEXT(' ');
+					b.output_stream() << DB_TEXT(' ');
 				
-				stream << get_akt_time();
-				stream << DB_TEXT(" - ");
-				stream << to_string(lvl);
-				stream << DB_TEXT(" - ");
+				b.output_stream() << get_akt_time();
+				b.output_stream() << DB_TEXT(" - ");
+				b.output_stream() << to_string(lvl);
+				b.output_stream() << DB_TEXT(" - ");
 				// Push data.
-				stream << data.c_str();
+				b.output_stream() << data.c_str();
 				// Push delimiter (end of line).
-				stream << std::endl;
+				b.output_stream() << std::endl;
 			}
 
-			template <typename OutputStream, typename T>
-			static void do_format(
-				  OutputStream& stream
+			template <typename Buffer, typename T>
+			void do_format(
+				  Buffer& b
 				, size_t indent
 				, const T& data
 				,	db::log::level lvl = db::log::log_undef)
 			{
 				for (size_t i(0); i<indent; ++i)
-					stream << DB_TEXT(' ');
+					b.output_stream() << DB_TEXT(' ');
 
-				stream << get_akt_time();
-				stream << DB_TEXT(" - ");
-				stream << to_string(lvl);
-				stream << DB_TEXT(" - ");
+				b.output_stream() << get_akt_time();
+				b.output_stream() << DB_TEXT(" - ");
+				b.output_stream() << to_string(lvl);
+				b.output_stream() << DB_TEXT(" - ");
 				// Push data.
-				stream << data;
+				b.output_stream() << data;
 				// Push delimiter (end of line).
-				stream << DB_TEXT('\n');
+				b.output_stream() << DB_TEXT('\n');
 			}
 
 			static db::string decorate_message(const db::string& msg)
@@ -298,14 +332,23 @@ namespace db { namespace log {
 		/// Simplest formatter.
 		class SQLITE_WRAPPER_DLLAPI database
 		{
-			database();
-			~database();
+			struct save 
+			{
+				double local_time_d;
+				string local_time_s;
+				unsigned lvl;
+				string data;
+			};
+
+			std::vector<save> save_;
 
 		public:
+			database() {}
+			~database() {}
 
-			template <typename Database, typename T>
-			static void do_format(
-				  Database& db_
+			template <typename Buffer, typename T>
+			void do_format(
+				  Buffer& b
 				, size_t /*indent*/
 				, const T& data
 				,	db::log::level lvl = db::log::log_undef)
@@ -324,13 +367,55 @@ namespace db { namespace log {
 				string local_time_string(db::detail::to_sql_string(local_time));
 				double local_time_double(local_time);
 #endif
+				if (!b.is_connected())
+				{
+					save s = 
+					{ 
+						  local_time_double
+						, local_time_string
+						, static_cast<unsigned>(lvl)
+						, db::detail::to_string(data)
+					};
 
-				db_.execute_ptr((
-					  db::ins(DB_TEXT("log"))
-					% db::field(DB_TEXT("date_real"), local_time_double)
-					% db::field(DB_TEXT("date_text"), local_time_string)
-					% db::field(DB_TEXT("level"), static_cast<unsigned>(lvl))
-					% db::field(DB_TEXT("msg"), db::detail::to_string(data))));
+					save_.push_back(s);
+
+					return;
+				}
+
+				if (save_.size())
+				{
+					b.output_stream().begin();
+
+					for (std::vector<save>::const_iterator 
+						  itb(save_.begin())
+						, ite(save_.end())
+						; itb != ite
+						; ++itb)
+					{
+						b.output_stream().execute_ptr((
+							  db::ins(DB_TEXT("log"))
+							% db::field(DB_TEXT("date_real"), itb->local_time_d)
+							% db::field(DB_TEXT("date_text"), itb->local_time_s)
+							% db::field(DB_TEXT("level"), itb->lvl)
+							% db::field(DB_TEXT("msg"), itb->data)));
+					}
+
+					b.output_stream().execute_ptr((
+						  db::ins(DB_TEXT("log"))
+						% db::field(DB_TEXT("date_real"), local_time_double)
+						% db::field(DB_TEXT("date_text"), local_time_string)
+						% db::field(DB_TEXT("level"), static_cast<unsigned>(lvl))
+						% db::field(DB_TEXT("msg"), db::detail::to_string(data))));
+
+					b.output_stream().commit();
+				}
+				else
+					b.output_stream().execute_ptr((
+						  db::ins(DB_TEXT("log"))
+						% db::field(DB_TEXT("date_real"), local_time_double)
+						% db::field(DB_TEXT("date_text"), local_time_string)
+						% db::field(DB_TEXT("level"), static_cast<unsigned>(lvl))
+						% db::field(DB_TEXT("msg"), db::detail::to_string(data))));
 			}
 
 			static db::string decorate_message(const db::string& msg)
@@ -426,9 +511,14 @@ namespace db { namespace log {
 		template <typename T>
 		base& operator << (const T& data)
 		{
+			if (!provider_)
+				return *this;
+			if (!provider_->get_buffer())
+				return *this;
+			
 #if defined(SQLITE_WRAPPER_USE) && defined(SQLITE_WRAPPER_USE) == 1
-			formatter_type::do_format(
-				  provider_->get_buffer()->output_stream()
+			f_.do_format(
+				  *provider_->get_buffer()
 				, provider_->indent()
 				, data
 				, last_level_);
@@ -436,11 +526,16 @@ namespace db { namespace log {
 			return *this;
 		}
 
+		provider_ptr_type get_provider() const
+		{ return provider_; }
+
 	private:
 		/// The provider of output streams utilized by the log.
 		provider_ptr_type provider_;
-
+		
 		level last_level_;
+
+		formatter_type f_;
 	};
 
 	/// constructs a message

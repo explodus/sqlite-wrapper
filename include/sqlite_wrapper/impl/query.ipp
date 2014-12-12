@@ -99,45 +99,52 @@ SQLITE_WRAPPER_INLINE void db::query::execute(const string& cmd)
 	while ((rc = sqlite3_step(_stm)) == SQLITE_ROW) 
 	{
 #ifndef UNDER_CE
-		if (nRowCnt==0)
+		if (nRowCnt==0 && cmd.find(DB_TEXT("last_insert_rowid")) == std::string::npos)
 		{
-			_field.reserve(sqlite3_column_count(_stm)); string tmp;
-			for (int i(0), sz(sqlite3_column_count(_stm)); i < sz; ++i)
+			try
 			{
-#ifdef _UNICODE
-				tmp = static_cast<const wchar_t*>(
-					sqlite3_column_origin_name16(_stm, i));
-				if (tmp.length()==0)
-					tmp = L"noname";
-#else
-				tmp = sqlite3_column_origin_name(_stm, i);
-				if (tmp.length()==0)
-					tmp = "noname";
-#endif // _UNICODE
-
-				_field.push_back(db::field(tmp));
-
-				switch (sqlite3_column_type(_stm, i))
+				_field.reserve(sqlite3_column_count(_stm)); string tmp;
+				for (int i(0), sz(sqlite3_column_count(_stm)); i < sz; ++i)
 				{
-				case SQLITE_NULL:
-					_field.back().set_type(db::e_null);
-					break;
-				case SQLITE_INTEGER:
-					_field.back().set_type(db::e_long);
-					break;
-				case SQLITE_FLOAT:
-					_field.back().set_type(db::e_double);
-					break;
-				case SQLITE_TEXT:
-					_field.back().set_type(db::e_string);
-					break;
-				case SQLITE_BLOB:
-					_field.back().set_type(db::e_blob);
-					break;
-				default:
-					_field.back().set_type(db::e_null);
-					break;
+	#ifdef _UNICODE
+					tmp = static_cast<const wchar_t*>(
+						sqlite3_column_origin_name16(_stm, i));
+					if (tmp.length()==0)
+						tmp = L"noname";
+	#else
+					tmp = sqlite3_column_origin_name(_stm, i);
+					if (tmp.length()==0)
+						tmp = "noname";
+	#endif // _UNICODE
+
+					_field.push_back(db::field(tmp));
+
+					switch (sqlite3_column_type(_stm, i))
+					{
+					case SQLITE_NULL:
+						_field.back().set_type(db::e_null);
+						break;
+					case SQLITE_INTEGER:
+						_field.back().set_type(db::e_long);
+						break;
+					case SQLITE_FLOAT:
+						_field.back().set_type(db::e_double);
+						break;
+					case SQLITE_TEXT:
+						_field.back().set_type(db::e_string);
+						break;
+					case SQLITE_BLOB:
+						_field.back().set_type(db::e_blob);
+						break;
+					default:
+						_field.back().set_type(db::e_null);
+						break;
+					}
 				}
+			}
+			catch(...)
+			{
+				_field.clear();
 			}
 		}
 #endif // UNDER_CE
