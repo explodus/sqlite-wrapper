@@ -1,3 +1,4 @@
+.vs
 build
 include/sqlite_wrapper/config.hpp
 include/sqlite_wrapper/version.hpp

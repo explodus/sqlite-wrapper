@@ -107,6 +107,8 @@ INCLUDE_DIRECTORIES (${CMAKE_SOURCE_DIR}/include)
  
 SET (LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 SET (EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install)
  
 # Create package file for relocateable package
 SET (pkgfile "${CMAKE_BINARY_DIR}/sqlite_wrapper.pc")
