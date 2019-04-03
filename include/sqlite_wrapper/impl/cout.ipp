@@ -5,7 +5,7 @@
 ///
 /// @author T. Schroeder (explodus@gmx.de)
 ///
-/// @brief 
+/// @brief
 ///
 /// This file is part of the sqlite-wrapper project
 
@@ -13,7 +13,7 @@
 #define SQLITE_WRAPPER_COUT_IPP_INCLUDED
 
 ///
-//inline db::ostream& db::cout
+// inline db::ostream& db::cout
 //(
 //#ifdef SQLITE_WRAPPER_NARROW_STRING
 //	std::cout

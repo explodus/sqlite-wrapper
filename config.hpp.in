@@ -4,13 +4,12 @@
 ///
 /// @author T. Schröder (explodus@gmx.de)
 ///
-/// @brief 
+/// @brief
 ///
 /// This file is part of the sqlite-wrapper project
- 
+
 #ifndef SQLITE_WRAPPER_CONFIG_HPP_INCLUDED
 #define SQLITE_WRAPPER_CONFIG_HPP_INCLUDED
-
 
 #cmakedefine SQLITE_WRAPPER_HAVE_VARIADIC_TEMPLATES
 #cmakedefine SQLITE_WRAPPER_HAVE_POSIX
@@ -21,7 +20,7 @@
 #cmakedefine SQLITE_WRAPPER_STRING_IS_UTF8
 #cmakedefine SQLITE_WRAPPER_HAS_GNU_DEMANGLE
 #cmakedefine SQLITE_WRAPPER_HAVE_GCC_PRAGMA_MESSAGE
- 
+
 #ifdef _WIN32
 #define SQLITE_WRAPPER_WINDOWS_PLATFORM 1
 #elif defined(SQLITE_WRAPPER_HAVE_POSIX)
@@ -35,9 +34,9 @@
 //	#define SQLITE_WRAPPER_USE 1
 //#endif
 
-#define SQLITE_WRAPPER_VERSION_MAJOR @SQLITE_WRAPPER_VERSION_MAJOR@
-#define SQLITE_WRAPPER__VERSION_MINOR @SQLITE_WRAPPER_VERSION_MINOR@
- 
+#define SQLITE_WRAPPER_VERSION_MAJOR @SQLITE_WRAPPER_VERSION_MAJOR @
+#define SQLITE_WRAPPER__VERSION_MINOR @SQLITE_WRAPPER_VERSION_MINOR @
+
 #ifdef __GNUC__
 #cmakedefine SQLITE_WRAPPER_HAVE_GCC_VISIBILITY
 #endif
@@ -55,104 +54,93 @@
 #include <fstream>
 #include <iomanip>
 
-#if defined (WIN32) || defined (WIN64)
-	#include <windows.h>
-	
-	#ifdef max	
-		#undef max
-	#endif
+#if defined(WIN32) || defined(WIN64)
+#include <windows.h>
 
-	#ifdef min
-		#undef min
-	#endif
-#endif 
+#ifdef max
+#undef max
+#endif
+
+#ifdef min
+#undef min
+#endif
+#endif
 
 #include <boost/format.hpp>
 
 #ifndef BOOST_NO_STD_LOCALE
-	#include <boost/signals.hpp>
-	namespace sigb = boost::BOOST_SIGNALS_NAMESPACE;
+#include <boost/signals.hpp>
+namespace sigb = boost::BOOST_SIGNALS_NAMESPACE;
 #endif
 
 #ifndef _tcsstr
-	#ifdef _UNICODE
-		#define _tcsstr wcsstr
-	#else
-		#define _tcsstr strstr
-	#endif // _UNICODE
+#ifdef _UNICODE
+#define _tcsstr wcsstr
+#else
+#define _tcsstr strstr
+#endif  // _UNICODE
 #endif
 
 #ifdef SQLITE_WRAPPER_HEADER_ONLY
-#	define SQLITE_WRAPPER_INLINE inline 
+#define SQLITE_WRAPPER_INLINE inline
 #else
-#	define SQLITE_WRAPPER_INLINE
+#define SQLITE_WRAPPER_INLINE
 #endif
 
 #ifdef SQLITE_WRAPPER_SHARED
-#	if defined (WIN32) || defined (WIN64)
-#	   ifdef sqlite_wrapper_EXPORTS
-#	       define SQLITE_WRAPPER_DLLAPI  __declspec( dllexport )
-#	   else
-#	       define SQLITE_WRAPPER_DLLAPI  __declspec( dllimport )
-#	   endif
-#	else
-#		define SQLITE_WRAPPER_DLLAPI
-#	endif
+#if defined(WIN32) || defined(WIN64)
+#ifdef sqlite_wrapper_EXPORTS
+#define SQLITE_WRAPPER_DLLAPI __declspec(dllexport)
 #else
-#	define SQLITE_WRAPPER_DLLAPI
+#define SQLITE_WRAPPER_DLLAPI __declspec(dllimport)
+#endif
+#else
+#define SQLITE_WRAPPER_DLLAPI
+#endif
+#else
+#define SQLITE_WRAPPER_DLLAPI
 #endif
 
-namespace db
-{
+namespace db {
 #ifdef SQLITE_WRAPPER_NARROW_STRING
-	typedef char char_type;
-	/// Generic text macros to be used with string literals and character constants.
-	/// Will also allow symbolic constants that resolve to same.
-	#define DB_TEXT(x) x
+typedef char char_type;
+/// Generic text macros to be used with string literals and character constants.
+/// Will also allow symbolic constants that resolve to same.
+#define DB_TEXT(x) x
 #else
-	typedef wchar_t char_type;
-	/// Generic text macros to be used with string literals and character constants.
-	/// Will also allow symbolic constants that resolve to same.
-	#define DB_TEXT(x) L ## x
+using char_type = wchar_t;
+/// Generic text macros to be used with string literals and character constants.
+/// Will also allow symbolic constants that resolve to same.
+#define DB_TEXT(x) L##x
 #endif
 
-	/*! Creates a type name for db::string */ 
-	typedef std::basic_string<char_type > string;
-	
-	/*! Creates a type name for db::ostream */ 
-	typedef std::basic_ostream<char_type> ostream;
-	/*! Creates a type name for db::istream */ 
-	typedef std::basic_istream<char_type> istream;
-	
-	/*! Creates a type name for db::ofstream */ 
-	typedef std::basic_ofstream
-	<
-	  char_type
-	, std::char_traits<char_type> 
-	> 
-	ofstream;
-	
-	/*! Creates a type name for db::ifstream */ 
-	typedef std::basic_ifstream
-	<
-	  char_type
-	, std::char_traits<char_type> 
-	> 
-	ifstream;
-	
-	/*! Creates a type name for db::ostringstream */ 
-	typedef std::basic_ostringstream<char_type> ostringstream;
-	/*! Creates a type name for db::istringstream */ 
-	typedef std::basic_istringstream<char_type> istringstream;
-	/*! Creates a type name for db::stringstream */ 
-	typedef std::basic_stringstream<char_type>  stringstream;
-	/*! Creates a type name for db::format */ 
-	typedef boost::basic_format<char_type > format;
+/*! Creates a type name for db::string */
+typedef std::basic_string< char_type > string;
 
-	/*! Creates a type name for db::string_pair */ 
-	typedef std::pair<string, string> string_pair;
-	/*! Creates a type name for db::string_vec */ 
-	typedef std::vector<string> string_vec;
-}
- 
+/*! Creates a type name for db::ostream */
+typedef std::basic_ostream< char_type > ostream;
+/*! Creates a type name for db::istream */
+typedef std::basic_istream< char_type > istream;
+
+/*! Creates a type name for db::ofstream */
+using ofstream = std::basic_ofstream< char_type, std::char_traits< char_type > >;
+
+/*! Creates a type name for db::ifstream */
+using ifstream = std::basic_ifstream< char_type, std::char_traits< char_type > >;
+
+/*! Creates a type name for db::ostringstream */
+typedef std::basic_ostringstream< char_type > ostringstream;
+/*! Creates a type name for db::istringstream */
+typedef std::basic_istringstream< char_type > istringstream;
+/*! Creates a type name for db::stringstream */
+typedef std::basic_stringstream< char_type > stringstream;
+/*! Creates a type name for db::format */
+typedef boost::basic_format< char_type > format;
+
+/*! Creates a type name for db::string_pair */
+using string_pair = std::pair< string, string >;
+/*! Creates a type name for db::string_vec */
+typedef std::vector< string > string_vec;
+}  // namespace db
+
 #endif

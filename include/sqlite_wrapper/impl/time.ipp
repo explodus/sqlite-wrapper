@@ -4,21 +4,21 @@
 ///	file ext	ipp
 ///
 /// @author		T. Schroeder (explodus@gmx.de)
-///	
+///
 ///	Using		:
 ///		This code may be used in compiled form in any way you desire. This
 ///		file may be redistributed unmodified by any means PROVIDING it is
 ///		not sold for profit without the authors written consent, and
 ///		providing that this notice and the authors name is included.
 ///		This file is provided 'as is' with no expressed or implied warranty.
-///		The author accepts no liability if it causes any damage to your 
+///		The author accepts no liability if it causes any damage to your
 ///		computer.
 ///	Expect Bugs		:
 ///		Please let me know of any bugs/mods/improvements.
 ///		and I will try to fix/incorporate them into this file.
 ///		Enjoy!
 ///
-/// @brief 
+/// @brief
 ///
 /// This file is part of the sqlite-wrapper project
 

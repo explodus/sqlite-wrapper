@@ -156,6 +156,22 @@ SET (Boost_ADDITIONAL_VERSIONS "1.38" "1.38.0")
 IF(MSVC)
 	SET(Boost_USE_STATIC_LIBS ON)
 ENDIF()
+
+CONFIGURE_FILE(
+	${CMAKE_SOURCE_DIR}/sqlite3.c.in
+	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3.c
+)
+CONFIGURE_FILE(
+	${CMAKE_SOURCE_DIR}/sqlite3.h.in
+	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3.h
+)
+CONFIGURE_FILE(
+	${CMAKE_SOURCE_DIR}/sqlite3ext.h.in
+	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3ext.h
+)
+
+SET(SQLITE3_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/sqlite)
+SET(SQLITE3_SRC_DIR ${CMAKE_SOURCE_DIR}/src/sqlite)
  
 FIND_PACKAGE( SQLITE3 REQUIRED )
 
@@ -199,19 +215,6 @@ CONFIGURE_FILE(
 	${CMAKE_SOURCE_DIR}/include/sqlite_wrapper/version.hpp
 )
 
-CONFIGURE_FILE(
-	${CMAKE_SOURCE_DIR}/sqlite3.c.in
-	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3.c
-)
-CONFIGURE_FILE(
-	${CMAKE_SOURCE_DIR}/sqlite3.h.in
-	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3.h
-)
-CONFIGURE_FILE(
-	${CMAKE_SOURCE_DIR}/sqlite3ext.h.in
-	${CMAKE_SOURCE_DIR}/src/sqlite/sqlite3ext.h
-)
- 
 SET( SQLITE_WRAPPER_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/sqlite_wrapper )
   
 SET( sqlite_wrapper_files_string "" )
